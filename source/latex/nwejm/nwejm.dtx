@@ -233,10 +233,11 @@ Running "make install" installs the files in the local TeX tree.
 % As subsequent class, the \Cls{book} is loaded, with "openany", "english" and
 % "french" options.
 %    \begin{macrocode}
-\PassOptionsToClass{openany,french,ngerman,dutch,english,fleqn}{book}
+\PassOptionsToClass{openany,french,ngerman,dutch,english}{book}
 \LoadClass { book }
 \PassOptionsToPackage{table,cmyk}{xcolor}%
 \PassOptionsToPackage{export}{adjustbox}%
+\PassOptionsToPackage{fleqn}{mathtools}%
 % \PassOptionsToPackage{french,ngerman,dutch,english}{translator}
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
@@ -324,11 +325,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[group=false]{standalone}%
 %    \end{macrocode}
 %
-% \item Tools to load and manipulate data:
-%    \begin{macrocode}
-\RequirePackage{datatool}%
-%    \end{macrocode}
-%
 % \item In case of \hologo{pdfTeX} engine, we enforce \pkg{fontenc} to be loaded
 %   with its \docAuxKey*{T1} option (usual for French and English documents) and
 %   \pkg{inputenc} to be loaded with its \docAuxKey*{utf8} option. Otherwise
@@ -342,11 +338,6 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \RequirePackage{fontspec}
   }
-%    \end{macrocode}
-%
-% Load of main font to be used:
-%    \begin{macrocode}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
 %    \end{macrocode}
 %
 % \item Formatting both header and footers (pagestyle), and sections headers:
@@ -443,7 +434,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
 %   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
-%   loads \pkg{amsmath}, hence it's not necessary to load the latter.}:
+%   loads \pkg{amsmath}, hence it's not necessary to load the
+%   latter. It has to be loaded before \pkg{datatool} and \pkg{fpfonts},
+%   otherwise its ×fleqn× option isn't taken into account.}:
 %    \begin{macrocode}
 \RequirePackage{mathtools}
 %    \end{macrocode}
@@ -456,6 +449,11 @@ Running "make install" installs the files in the local TeX tree.
 % \item Vector arrows:
 %    \begin{macrocode}
 \RequirePackage{esvect}
+%    \end{macrocode}
+%
+% Load of main font to be used:
+%    \begin{macrocode}
+\RequirePackage[easyscsl,noDcommand]{kpfonts}
 %    \end{macrocode}
 %
 % \item Hooks to do actions on every page or on the current page:
@@ -548,6 +546,11 @@ Running "make install" installs the files in the local TeX tree.
 % \item Extensions to theorem environments:
 %    \begin{macrocode}
 \RequirePackage{thmtools}
+%    \end{macrocode}
+%
+% \item Tools to load and manipulate data:
+%    \begin{macrocode}
+\RequirePackage{datatool}%
 %    \end{macrocode}
 %
 % \item Control float placement:
