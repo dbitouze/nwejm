@@ -2566,6 +2566,13 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_title_tl
 \RenewDocumentCommand \title { o m } {
 %    \end{macrocode}
+%
+% We don't want the (next) title to appear in the headers of the preceding
+% article.
+%    \begin{macrocode}
+  \cleardoublepage
+%    \end{macrocode}
+%
 % We increment the "\g_@@_articles_int" integer that counts the number of
 % articles in order to provide for each of them a unique bibliographic key.
 %    \begin{macrocode}
@@ -2615,6 +2622,14 @@ Running "make install" installs the files in the local TeX tree.
 % The command for article's author (including its affiliation) is redefined.
 %    \begin{macrocode}
 \RenewDocumentCommand \author { o m } {
+%    \end{macrocode}
+%
+% We don't want the (next) authors to appear in the headers of the preceding
+% article.
+%    \begin{macrocode}
+  \cleardoublepage
+%    \end{macrocode}
+%
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm/authors } { #1 }
@@ -2935,10 +2950,6 @@ Running "make install" installs the files in the local TeX tree.
   {%
   }%
 }%
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-  \cleardoublepage
 %    \end{macrocode}
 %
 % We don't want headers.
