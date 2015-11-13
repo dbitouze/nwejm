@@ -2289,17 +2289,6 @@ Running "make install" installs the files in the local TeX tree.
 }
 \tl_new:N \g_@@_display_dates_tl%
 \tl_gset:Nn \g_@@_display_dates_tl {%
-  % \begin{flushleft}
-    % \footnotesize
-  %   \begin{tabular}{ll}
-  %     \GetTranslation{received}\c_@@_colon_tl &
-  %                                               \_@@_date:n{\g_@@_issue_received_tl}\\
-  %     \GetTranslation{accepted}\c_@@_colon_tl &
-  %                                               \_@@_date:n{\g_@@_issue_accepted_tl}\\
-  %     \GetTranslation{online}\c_@@_colon_tl &
-  %                                             \_@@_date:n{\g_@@_issue_online_tl}
-  %   \end{tabular}
-  % \end{flushleft}
   \footnotesize%
   \GetTranslation{Received}\c_@@_colon_tl\space
   \_@@_date:n{\g_@@_issue_received_tl}/%
@@ -3226,10 +3215,6 @@ Running "make install" installs the files in the local TeX tree.
   {
     \keys_set:nn { nwejm / newtheorem } { #1 }
   }
-  % \tl_show:N \l_@@_newtheorem_style_tl
-  % \tl_show:N \l_@@_newtheorem_french_title_tl
-  % \tl_show:N \l_@@_newtheorem_english_title_tl
-  % \tl_show:N \l_@@_newtheorem_dutch_title_tl
   %
   \_@@_new_theorem:nnVVVV
   {style=\l_@@_newtheorem_style_tl}
