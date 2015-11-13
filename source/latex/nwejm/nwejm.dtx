@@ -2304,20 +2304,28 @@ Running "make install" installs the files in the local TeX tree.
 % \section{Displaying the keywords}
 %
 % \begin{macro}{\keywords}
-% \begin{macro}{\g_@@_keywords_tl}
+% \begin{macro}{\l_@@_keywords_tl}
 %   The command for article's keywords is defined: the article's keywords is
-%   store in "\g_@@_keywords_tl" for later use.
+%   store in "\l_@@_keywords_tl" for later use.
 %    \begin{macrocode}
-\tl_new:N \g_@@_keywords_tl
+\seq_new:N \l_@@_keywords_seq
+\tl_new:N \l_@@_keywords_tl
 \NewDocumentCommand \keywords { m } {
-%    \end{macrocode}
-%
-% We increment the "\g_@@_articles_int" integer that counts the number of
-% articles in order to provide for each of them a unique bibliographic key.
-%    \begin{macrocode}
-  \tl_gclear:N \g_@@_keywords_tl
+  \seq_clear:N \l_@@_keywords_seq
+  \tl_clear:N \l_@@_keywords_tl
   %
-  \tl_gset:Nn \g_@@_keywords_tl {#1}
+  % does what the name suggests, set a sequence from the clist
+  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
+  % applies final arg to each element of second seq and stores result in first seq
+  \seq_set_map:NNn \l_@@_keywords_seq \l_tmpa_seq {
+    \exp_not:n {
+      % \textbf { ##1 } % It is possible to format each of the keywords
+      ##1
+    }
+  }
+  % \seq_use puts the items from the seq back in the input with "+" as a separator
+  \tl_set:Nn \l_@@_keywords_tl { \seq_use:Nn \l_@@_keywords_seq {,~} }
+%<class-article>    \hypersetup{pdfkeywords=\seq_use:Nn \l_tmpb_seq}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2957,7 +2965,11 @@ Running "make install" installs the files in the local TeX tree.
 }
 \tl_set:Nn \l_@@_keywords_box_tl
 {%
-  \noindent\textbf{\GetTranslation{Keywords}\c_@@_colon_tl}~\_@@_keywords:n {\g_@@_keywords_tl}
+  \noindent\textbf{\GetTranslation{Keywords}\c_@@_colon_tl}~\l_@@_keywords_tl
+}
+\tl_set:Nn \l_@@_msc_box_tl
+{%
+  \noindent\textbf{\c_@@_msc_string_tl}\c_@@_colon_tl\space\l_@@_msc_tl
 }
 \tl_set:Nn \l_@@_abstract_box_tl
 {%
