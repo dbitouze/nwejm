@@ -759,9 +759,14 @@ Running "make install" installs the files in the local TeX tree.
   bibliography~of~your~article~to~appear~in~the~next~issue~of~the
   \c_@@_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
+%    \end{macrocode}
 % For the unspecified date.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_unspecified_date_string_tl {??}
+%    \end{macrocode}
+% For the \textsc{msc}.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_msc_string_tl {\textsc{msc}}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -2331,24 +2336,36 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 % \end{macro}
 %
-% We create the variable that displays the keywords.
+% \section{Displaying the Mathematical Subject Classification (\textsc{msc})}
+%
+% \begin{macro}{\msc}
+% \begin{macro}{\l_@@_msc_tl}
+%   The command for article's \textsc{msc} is defined: the article's \textsc{msc} is
+%   store in "\l_@@_msc_tl" for later use.
 %    \begin{macrocode}
-\cs_new_protected:Npn \_@@_keywords:n #1
- {
+\seq_new:N \l_@@_msc_seq
+\tl_new:N \l_@@_msc_tl
+\NewDocumentCommand \msc { m } {
+  \seq_clear:N \l_@@_msc_seq
+  \tl_clear:N \l_@@_msc_tl
+  %
   % does what the name suggests, set a sequence from the clist
   \seq_set_from_clist:Nn \l_tmpa_seq {#1}
   % applies final arg to each element of second seq and stores result in first seq
-  \seq_set_map:NNn \l_tmpb_seq \l_tmpa_seq {
-    \exp_not:n {
-      % \textbf { ##1 } % It is possible to format each of the keywords
+  \seq_set_map:NNn \l_@@_msc_seq \l_tmpa_seq {
+    % \exp_not:n {
+      % \textbf { ##1 } % It is possible to format each of the msc
       ##1
-    }
+    % }
   }
-  % \seq_use puts the items from the seq back in the input with "+" as a separator
-  \seq_use:Nn \l_tmpb_seq {,~}
-%<class-article>    \hypersetup{pdfkeywords=\seq_use:Nn \l_tmpb_seq}
+  %
+  % \seq_use puts the items from the seq back in the input with ",~" as a separator
+  \tl_set:Nn \l_@@_msc_tl {\seq_use:Nn \l_@@_msc_seq {,~}}
+%%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 %
 % \section{User level commands}
 %
@@ -3008,6 +3025,9 @@ Running "make install" installs the files in the local TeX tree.
 \par%
 \vskip 1em%
 \l_@@_keywords_box_tl
+\par%
+\vskip 1em%
+\l_@@_msc_box_tl
 \par%
 \vskip 1em%
 %
