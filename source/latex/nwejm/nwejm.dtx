@@ -2788,17 +2788,16 @@ Running "make install" installs the files in the local TeX tree.
 %
 \setcounter{equation}{0}
 %
-\setcounter{theorem}{0}
-\setcounter{corollary}{0}
-\setcounter{conjecture}{0}
-\setcounter{proposition}{0}
-\setcounter{lemma}{0}
-\setcounter{axiom}{0}
-%
-\setcounter{definition}{0}
-\setcounter{remark}{0}
-\setcounter{example}{0}
-\setcounter{notation}{0}
+\setcounter{Theorem}{0}
+\setcounter{Corollary}{0}
+\setcounter{Conjecture}{0}
+\setcounter{Proposition}{0}
+\setcounter{Lemma}{0}
+\setcounter{Axiom}{0}
+\setcounter{Definition}{0}
+\setcounter{Remark}{0}
+\setcounter{Example}{0}
+\setcounter{Notation}{0}
 %    \end{macrocode}
 %
 % We store the unique bibliographic key of the current article in the
@@ -3191,45 +3190,49 @@ Running "make install" installs the files in the local TeX tree.
 %
 % Finally, we define some usual theorems:
 %    \begin{macrocode}
-\newtheorem{theorem}
-\newtheorem{corollary}
-\newtheorem{conjecture}
-\newtheorem{proposition}
-\newtheorem{lemma}
-\newtheorem{axiom}
+\newtheorem{Theorem}
+\newtheorem{Corollary}
+\newtheorem{Conjecture}
+\newtheorem{Proposition}
+\newtheorem{Lemma}
+\newtheorem{Axiom}
 %
-\newtheorem[style=definition]{definition}
-\newtheorem[style=definition]{remark}
-\newtheorem[style=definition]{example}
-\newtheorem[style=definition]{notation}
+\newtheorem[style=definition]{Definition}
+\newtheorem[style=definition]{Remark}
+\newtheorem[style=definition]{Example}
+\newtheorem[style=definition]{Notation}
 %
 \let\proof\relax
-\newtheorem[style=proof]{proof}
+\let\endproof\relax
+\newtheorem[style=proof]{Proof}
 %
 \cs_new_protected:Nn \_@@_clone_theorem:nn
 {
   \NewDocumentEnvironment{#1}{}
   {
     \begin{#2}
-    }
-    {
+    }{
     \end{#2}
   }
   \NewDocumentEnvironment{#1*}{}
   {
     \begin{#2*}
-    }
-    {
+    }{
     \end{#2*}
   }
 }
-\_@@_clone_theorem:nn {theoreme} {theorem}
-\_@@_clone_theorem:nn {corollaire}{corollary}
-\_@@_clone_theorem:nn {lemme}{lemma}
-\_@@_clone_theorem:nn {axiome}{axiom}
-\_@@_clone_theorem:nn {remarque}{remark}
-\_@@_clone_theorem:nn {exemple}{example}
-\_@@_clone_theorem:nn {preuve}{proof}
+%
+\_@@_clone_theorem:nn {theorem}{Theorem}
+\_@@_clone_theorem:nn {corollary}{Corollary}
+\_@@_clone_theorem:nn {conjecture}{Conjecture}
+\_@@_clone_theorem:nn {proposition}{Proposition}
+\_@@_clone_theorem:nn {lemma}{Lemma}
+\_@@_clone_theorem:nn {axiom}{Axiom}
+\_@@_clone_theorem:nn {definition}{Definition}
+\_@@_clone_theorem:nn {remark}{Remark}
+\_@@_clone_theorem:nn {example}{Example}
+\_@@_clone_theorem:nn {notation}{Notation}
+\_@@_clone_theorem:nn {proof}{Proof}
 %    \end{macrocode}
 %
 % \subsection{(Reciprocal) Trigonometric and hyperbolic functions}
