@@ -2312,6 +2312,47 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% \section{Displaying the keywords}
+%
+% \begin{macro}{\keywords}
+% \begin{macro}{\g_@@_keywords_tl}
+%   The command for article's keywords is defined: the article's keywords is
+%   store in "\g_@@_keywords_tl" for later use.
+%    \begin{macrocode}
+\tl_new:N \g_@@_keywords_tl
+\NewDocumentCommand \keywords { m } {
+%    \end{macrocode}
+%
+% We increment the "\g_@@_articles_int" integer that counts the number of
+% articles in order to provide for each of them a unique bibliographic key.
+%    \begin{macrocode}
+  \tl_gclear:N \g_@@_keywords_tl
+  %
+  \tl_gset:Nn \g_@@_keywords_tl {#1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% We create the variable that displays the keywords.
+%    \begin{macrocode}
+\cs_new_protected:Npn \_@@_keywords:n #1
+ {
+  % does what the name suggests, set a sequence from the clist
+  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
+  % applies final arg to each element of second seq and stores result in first seq
+  \seq_set_map:NNn \l_tmpb_seq \l_tmpa_seq {
+    \exp_not:n {
+      % \textbf { ##1 } % It is possible to format each of the keywords
+      ##1
+    }
+  }
+  % \seq_use puts the items from the seq back in the input with "+" as a separator
+  \seq_use:Nn \l_tmpb_seq {,~}
+%<class-article>    \hypersetup{pdfkeywords=\seq_use:Nn \l_tmpb_seq}
+}
+%    \end{macrocode}
+%
 % \section{User level commands}
 %
 % Here, we gather all the user level (public) commands.
@@ -2925,6 +2966,10 @@ Running "make install" installs the files in the local TeX tree.
 {%
   \g_@@_display_dates_tl
 }
+\tl_set:Nn \l_@@_keywords_box_tl
+{%
+  \noindent\textbf{\GetTranslation{Keywords}\c_@@_colon_tl}~\_@@_keywords:n {\g_@@_keywords_tl}
+}
 \tl_set:Nn \l_@@_abstract_box_tl
 {%
   \mbox{}
@@ -2959,8 +3004,16 @@ Running "make install" installs the files in the local TeX tree.
   \l_@@_dates_box_tl
 \end{center}
 \l_@@_abstract_box_tl%
-  \tl_gclear:N \g_@@_title_tl \tl_gclear:N \g_@@_subtitle_tl \tl_gclear:N \g_@@_abstract_body_tl
-  \bigskip%
+\par%
+\vskip 1em%
+\l_@@_keywords_box_tl
+\par%
+\vskip 1em%
+%
+\tl_gclear:N \g_@@_title_tl
+\tl_gclear:N \g_@@_subtitle_tl
+\tl_gclear:N \g_@@_abstract_body_tl
+\bigskip%
   \normalsize%
 %    \end{macrocode}
 %
@@ -3894,6 +3947,11 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{volumeabbreviated}{vol.}
 \ProvideDictTranslation{Volumeabbreviated}{Vol.}
 %
+\ProvideDictTranslation{keyword}{keyword}
+\ProvideDictTranslation{keywords}{keywords}
+\ProvideDictTranslation{Keyword}{Keyword}
+\ProvideDictTranslation{Keywords}{Keywords}
+%
 \ProvideDictTranslation{received}{received}
 \ProvideDictTranslation{accepted}{accepted}
 \ProvideDictTranslation{online}{online}
@@ -3939,6 +3997,11 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{volumeabbreviated}{vol.}
 \ProvideDictTranslation{Volumeabbreviated}{Vol.}
 %
+\ProvideDictTranslation{keyword}{mot-clé}
+\ProvideDictTranslation{keywords}{mots-clés}
+\ProvideDictTranslation{Keyword}{Mot-clé}
+\ProvideDictTranslation{Keywords}{Mots-clés}
+%
 \ProvideDictTranslation{received}{reçu}
 \ProvideDictTranslation{accepted}{accepté}
 \ProvideDictTranslation{online}{en~ligne}
@@ -3983,6 +4046,11 @@ Running "make install" installs the files in the local TeX tree.
 %
 \ProvideDictTranslation{volumeabbreviated}{Bd}
 \ProvideDictTranslation{Volumeabbreviated}{Bd}
+%
+\ProvideDictTranslation{keyword}{Stichwort}
+\ProvideDictTranslation{keywords}{Stichworte}
+\ProvideDictTranslation{Keyword}{Stichwort}
+\ProvideDictTranslation{Keywords}{Stichworte}
 %
 \ProvideDictTranslation{received}{empfangen}
 \ProvideDictTranslation{accepted}{akzeptierte}
@@ -4030,6 +4098,11 @@ Running "make install" installs the files in the local TeX tree.
 %
 \ProvideDictTranslation{volumeabbreviated}{deel}
 \ProvideDictTranslation{Volumeabbreviated}{Deel}
+%
+\ProvideDictTranslation{keyword}{trefwoord}
+\ProvideDictTranslation{keywords}{trefwoorden}
+\ProvideDictTranslation{Keyword}{Trefwoord}
+\ProvideDictTranslation{Keywords}{Trefwoorden}
 %
 \ProvideDictTranslation{received}{Ontvangen}
 \ProvideDictTranslation{accepted}{aanvaard}
