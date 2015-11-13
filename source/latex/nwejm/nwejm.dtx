@@ -1622,7 +1622,7 @@ Running "make install" installs the files in the local TeX tree.
     \adjustbox{stack=l}{%
       \c_@@_journal_title_string_tl\\
       % \c_@@_issue_string_tl~\int_use:N \g_@@_issue_number_int
-      \GetTranslation{volumeabbreviated}~\int_use:N \g_@@_issue_number_int
+      \GetTranslation{Volumeabbreviated}~\int_use:N \g_@@_issue_number_int
     }
   }
   \hbox_set:Nn \l_@@_journal_logo_box
@@ -2301,19 +2301,11 @@ Running "make install" installs the files in the local TeX tree.
   %   \end{tabular}
   % \end{flushleft}
   \footnotesize%
-  \GetTranslation{received}\c_@@_colon_tl\space
+  \GetTranslation{Received}\c_@@_colon_tl\space
   \_@@_date:n{\g_@@_issue_received_tl}/%
-  \GetTranslation{accepted}\c_@@_colon_tl\space
+  \GetTranslation{Accepted}\c_@@_colon_tl\space
   \_@@_date:n{\g_@@_issue_accepted_tl}/%
-  \GetTranslation{online}\c_@@_colon_tl\space \_@@_date:n{\g_@@_issue_online_tl}
-  % \begin{description}
-  % \item[\GetTranslation{received}\c_@@_colon_tl]
-  %   \_@@_date:n{\g_@@_issue_received_tl}
-  % \item[\GetTranslation{accepted}\c_@@_colon_tl]
-  %   \_@@_date:n{\g_@@_issue_accepted_tl}
-  % \item[\GetTranslation{online}\c_@@_colon_tl]
-  %   \_@@_date:n{\g_@@_issue_online_tl}
-  % \end{description}
+  \GetTranslation{Online}\c_@@_colon_tl\space \_@@_date:n{\g_@@_issue_online_tl}
   \tl_gclear:N \g_@@_issue_received_tl
   \tl_gclear:N \g_@@_issue_accepted_tl
   \tl_gclear:N \g_@@_issue_online_tl
@@ -3873,23 +3865,38 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \ProvideDictionaryFor{English}{nwejm}
 %
-\ProvideDictTranslation{theorem}{Theorem}
-\ProvideDictTranslation{corollary}{Corollary}
-\ProvideDictTranslation{conjecture}{Conjecture}
-\ProvideDictTranslation{remark}{Remark}
-\ProvideDictTranslation{axiom}{Axiom}
-\ProvideDictTranslation{definition}{Definition}
-\ProvideDictTranslation{example}{Example}
-\ProvideDictTranslation{lemma}{Lemma}
-\ProvideDictTranslation{notation}{Notation}
-\ProvideDictTranslation{proposition}{Proposition}
-\ProvideDictTranslation{proof}{Proof}
+\ProvideDictTranslation{theorem}{theorem}
+\ProvideDictTranslation{corollary}{corollary}
+\ProvideDictTranslation{conjecture}{conjecture}
+\ProvideDictTranslation{remark}{remark}
+\ProvideDictTranslation{axiom}{axiom}
+\ProvideDictTranslation{definition}{definition}
+\ProvideDictTranslation{example}{example}
+\ProvideDictTranslation{lemma}{lemma}
+\ProvideDictTranslation{notation}{notation}
+\ProvideDictTranslation{proposition}{proposition}
+\ProvideDictTranslation{proof}{proof}
+\ProvideDictTranslation{Theorem}{Theorem}
+\ProvideDictTranslation{Corollary}{Corollary}
+\ProvideDictTranslation{Conjecture}{Conjecture}
+\ProvideDictTranslation{Remark}{Remark}
+\ProvideDictTranslation{Axiom}{Axiom}
+\ProvideDictTranslation{Definition}{Definition}
+\ProvideDictTranslation{Example}{Example}
+\ProvideDictTranslation{Lemma}{Lemma}
+\ProvideDictTranslation{Notation}{Notation}
+\ProvideDictTranslation{Proposition}{Proposition}
+\ProvideDictTranslation{Proof}{Proof}
 %
-\ProvideDictTranslation{volumeabbreviated}{Vol.}
+\ProvideDictTranslation{volumeabbreviated}{vol.}
+\ProvideDictTranslation{Volumeabbreviated}{Vol.}
 %
-\ProvideDictTranslation{received}{Received}
-\ProvideDictTranslation{accepted}{Accepted}
-\ProvideDictTranslation{online}{Online}
+\ProvideDictTranslation{received}{received}
+\ProvideDictTranslation{accepted}{accepted}
+\ProvideDictTranslation{online}{online}
+\ProvideDictTranslation{Received}{Received}
+\ProvideDictTranslation{Accepted}{Accepted}
+\ProvideDictTranslation{Online}{Online}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3903,23 +3910,38 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \ProvideDictionaryFor{French}{nwejm}
 %
-\ProvideDictTranslation{theorem}{Th\'{e}or\`{e}me}
-\ProvideDictTranslation{corollary}{Corollaire}
-\ProvideDictTranslation{conjecture}{Conjecture}
-\ProvideDictTranslation{remark}{Remarque}
-\ProvideDictTranslation{axiom}{Axiome}
-\ProvideDictTranslation{definition}{D\'{e}finition}
-\ProvideDictTranslation{example}{Exemple}
-\ProvideDictTranslation{lemma}{Lemme}
-\ProvideDictTranslation{notation}{Notation}
-\ProvideDictTranslation{proposition}{Proposition}
-\ProvideDictTranslation{proof}{Preuve}
+\ProvideDictTranslation{theorem}{th\'{e}or\`{e}me}
+\ProvideDictTranslation{corollary}{corollaire}
+\ProvideDictTranslation{conjecture}{conjecture}
+\ProvideDictTranslation{remark}{remarque}
+\ProvideDictTranslation{axiom}{axiome}
+\ProvideDictTranslation{definition}{d\'{e}finition}
+\ProvideDictTranslation{example}{exemple}
+\ProvideDictTranslation{lemma}{lemme}
+\ProvideDictTranslation{notation}{notation}
+\ProvideDictTranslation{proposition}{proposition}
+\ProvideDictTranslation{proof}{preuve}
+\ProvideDictTranslation{Theorem}{Th\'{e}or\`{e}me}
+\ProvideDictTranslation{Corollary}{Corollaire}
+\ProvideDictTranslation{Conjecture}{Conjecture}
+\ProvideDictTranslation{Remark}{Remarque}
+\ProvideDictTranslation{Axiom}{Axiome}
+\ProvideDictTranslation{Definition}{D\'{e}finition}
+\ProvideDictTranslation{Example}{Exemple}
+\ProvideDictTranslation{Lemma}{Lemme}
+\ProvideDictTranslation{Notation}{Notation}
+\ProvideDictTranslation{Proposition}{Proposition}
+\ProvideDictTranslation{Proof}{Preuve}
 %
-\ProvideDictTranslation{volumeabbreviated}{Vol.}
+\ProvideDictTranslation{volumeabbreviated}{vol.}
+\ProvideDictTranslation{Volumeabbreviated}{Vol.}
 %
-\ProvideDictTranslation{received}{Reçu}
-\ProvideDictTranslation{accepted}{Accepté}
-\ProvideDictTranslation{online}{En~ligne}
+\ProvideDictTranslation{received}{reçu}
+\ProvideDictTranslation{accepted}{accepté}
+\ProvideDictTranslation{online}{en~ligne}
+\ProvideDictTranslation{Received}{Reçu}
+\ProvideDictTranslation{Accepted}{Accepté}
+\ProvideDictTranslation{Online}{En~ligne}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3944,12 +3966,27 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{notation}{Bezeichnung}
 \ProvideDictTranslation{proposition}{Proposition}
 \ProvideDictTranslation{proof}{Beweis}
+\ProvideDictTranslation{Theorem}{Satz}
+\ProvideDictTranslation{Corollary}{Korollar}
+\ProvideDictTranslation{Conjecture}{Vermutung}
+\ProvideDictTranslation{Remark}{Bemerkung}
+\ProvideDictTranslation{Axiom}{Axiom}
+\ProvideDictTranslation{Definition}{Definition}
+\ProvideDictTranslation{Example}{Beispiel}
+\ProvideDictTranslation{Lemma}{Lemma}
+\ProvideDictTranslation{Notation}{Bezeichnung}
+\ProvideDictTranslation{Proposition}{Proposition}
+\ProvideDictTranslation{Proof}{Beweis}
 %
 \ProvideDictTranslation{volumeabbreviated}{Bd}
+\ProvideDictTranslation{Volumeabbreviated}{Bd}
 %
-\ProvideDictTranslation{received}{Empfangen}
-\ProvideDictTranslation{accepted}{Akzeptierte}
-\ProvideDictTranslation{online}{Online}
+\ProvideDictTranslation{received}{empfangen}
+\ProvideDictTranslation{accepted}{akzeptierte}
+\ProvideDictTranslation{online}{online}
+\ProvideDictTranslation{Received}{Empfangen}
+\ProvideDictTranslation{Accepted}{Akzeptierte}
+\ProvideDictTranslation{Online}{Online}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3975,12 +4012,28 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{notation}{Notatie}
 \ProvideDictTranslation{proposition}{Eigenschap}
 \ProvideDictTranslation{proof}{Bewijs}
+\ProvideDictTranslation{Theorem}{Stelling}
+\ProvideDictTranslation{Corollary}{Gevolg}
+\ProvideDictTranslation{Conjecture}{Vermoeden}
+\ProvideDictTranslation{Remark}{Opmerking}
+\ProvideDictTranslation{Axiom}{Axioma}
+\ProvideDictTranslation{Conjecture}{Conjecture}
+\ProvideDictTranslation{Definition}{Definitie}
+\ProvideDictTranslation{Example}{Voorbeeld}
+\ProvideDictTranslation{Lemma}{Lemma}
+\ProvideDictTranslation{Notation}{Notatie}
+\ProvideDictTranslation{Proposition}{Eigenschap}
+\ProvideDictTranslation{Proof}{Bewijs}
 %
-\ProvideDictTranslation{volumeabbreviated}{Deel}
+\ProvideDictTranslation{volumeabbreviated}{deel}
+\ProvideDictTranslation{Volumeabbreviated}{Deel}
 %
 \ProvideDictTranslation{received}{Ontvangen}
-\ProvideDictTranslation{accepted}{Aanvaard}
-\ProvideDictTranslation{online}{Online}
+\ProvideDictTranslation{accepted}{aanvaard}
+\ProvideDictTranslation{online}{online}
+\ProvideDictTranslation{Received}{Ontvangen}
+\ProvideDictTranslation{Accepted}{Aanvaard}
+\ProvideDictTranslation{Online}{Online}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
