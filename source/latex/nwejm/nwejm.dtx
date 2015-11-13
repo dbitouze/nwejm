@@ -1295,6 +1295,7 @@ Running "make install" installs the files in the local TeX tree.
     \clearpage%
     \bool_gset_false:N \g_@@_frontmatter_bool%
     \g_@@_mainmatter_switch_tl
+    \mainmatter
   }
 }%
 %    \end{macrocode}
@@ -1312,6 +1313,9 @@ Running "make install" installs the files in the local TeX tree.
 \AtBeginDocument{%
   \graphicspath{{\c_@@_issue_images_path_string_tl//}{../\c_@@_issue_images_path_string_tl//}}
   % \glsdisablehyper
+}
+\AfterEndPreamble{%
+  \frontmatter
 }
 %    \end{macrocode}
 %
