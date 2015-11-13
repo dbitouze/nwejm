@@ -1277,40 +1277,6 @@ Running "make install" installs the files in the local TeX tree.
 % \section{Displaying the table of contents}
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \_@@_before_frontmatter_stuff:
-{
-  \bool_gset_true:N \g_@@_frontmatter_bool%
-  \pagestyle{@@_frontmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_front_matter_geometry_tl}%
-}
-\cs_new_protected:Nn \_@@_after_frontmatter_stuff:
-{
-  \normalsize%
-  \clearpage%
-  \bool_gset_false:N \g_@@_frontmatter_bool%
-  \g_@@_mainmatter_switch_tl
-}
-%    \end{macrocode}
-%
-% We create an internal function that displays the table of contents.
-%    \begin{macrocode}
-\cs_set_eq:NN \_@@_orig_tableofcontents \tableofcontents
-\cs_new_protected:Nn \_@@_display_toc:
-{
-  \_@@_before_frontmatter_stuff: {}
-  \phantomsection
-  \hypertarget{@@_toc}{}
-  \bookmark[dest=@@_toc,level=part]{\contentsname}
-  \_@@_orig_tableofcontents
-  \_@@_after_frontmatter_stuff: {}
-}
-% \RenewDocumentCommand \tableofcontents {}
-% {
-%   \bool_if:NF {\g_@@_for_authors_bool} {
-%     \_@@_display_toc: {}
-%   }
-% }
-%
 \renewcommand\etocbeforetitlehook
 {%
   \bool_if:NF {\g_@@_for_authors_bool}{
@@ -1331,33 +1297,6 @@ Running "make install" installs the files in the local TeX tree.
     \g_@@_mainmatter_switch_tl
   }
 }%
-% \AtBeginDocument{%
-%   \xpretocmd{\tableofcontents}%
-%   {%
-%     \bool_if:NF {\g_@@_for_authors_bool}{
-%       \bool_gset_true:N \g_@@_frontmatter_bool%
-%       \pagestyle{@@_frontmatter_ps}%
-%       \exp_after:wN\newgeometry\exp_after:wN{\c_@@_front_matter_geometry_tl}%
-%       \phantomsection
-%       \hypertarget{@@_toc}{}
-%       \bookmark[dest=@@_toc,level=part]{\contentsname}
-%     }
-%   }%
-%   {}%
-%   {}
-% %
-%   \xapptocmd{\tableofcontents}%
-%   {%
-%     \bool_if:NF {\g_@@_for_authors_bool}{
-%       \normalsize%
-%       \clearpage%
-%       \bool_gset_false:N \g_@@_frontmatter_bool%
-%       \g_@@_mainmatter_switch_tl
-%     }
-%   }%
-%   {}%
-%   {}
-% }
 %    \end{macrocode}
 %
 % \section{First pages}
@@ -2127,7 +2066,6 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_display_frontcover_tl%
 \tl_gset:Nn \g_@@_display_frontcover_tl {%
   \bool_gset_true:N \g_@@_frontcover_bool
-  \pagenumbering{roman}%
   \pagestyle{@@_frontcover_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c_@@_frontcover_geometry_tl}%
   \noindent%
