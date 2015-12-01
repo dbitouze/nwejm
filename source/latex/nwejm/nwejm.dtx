@@ -1349,33 +1349,13 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \newpagestyle{@@_inside_frontcover_ps}[]{%
   \sethead%
-  [
-    % \tikz[remember~picture,overlay] {%
-    %   \g_@@_frontmatter_page_headrule_tl%
-    %   \g_@@_frontmatter_headtext_tl%
-    % }%
-  ]%
-  []%
-  []%
   {}%
-  {
-    % \tikz[remember~picture,overlay] {%
-    %   \g_@@_frontmatter_page_headrule_tl%
-    %   \g_@@_frontmatter_headtext_tl%
-    % }%
-  }%
+  {}%
   {}%
   %
   \setfoot%
-  []%
-  [%
-    % \uppercase{\c_@@_footer_string_tl}
-  ]%
-  []%
   {}%
-  {%
-    % \uppercase{\c_@@_footer_string_tl}%
-  }%
+  {}%
   {}%
 }%
 %    \end{macrocode}
@@ -1386,29 +1366,14 @@ Running "make install" installs the files in the local TeX tree.
 \newpagestyle{@@_frontmatter_ps}[]{%
   % \widenhead*{\c_@@_front_matter_extra_innermargin_dim}{\c_@@_front_matter_extra_outermargin_dim}
   \sethead%
-  [
-    % \tikz[remember~picture,overlay] {%
-    %   \g_@@_frontmatter_page_headrule_tl%
-    %   \g_@@_frontmatter_headtext_tl%
-    % }%
-  ]%
-  []%
-  []%
   {}%
-  {
-    % \tikz[remember~picture,overlay] {%
-    %   \g_@@_frontmatter_page_headrule_tl%
-    %   \g_@@_frontmatter_headtext_tl%
-    % }%
-  }%
+  {}%
   {}%
   %
   \setfoot%
   {}%
   {\thepage}%
-  {%
-    % \uppercase{\c_@@_footer_string_tl}%
-  }%
+  {}%
 }%
 %    \end{macrocode}
 %
@@ -1434,33 +1399,13 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \newpagestyle{@@_inside_backcover_ps}[]{%
   \sethead%
-  [
-    \tikz[remember~picture,overlay] {%
-      \g_@@_frontmatter_page_headrule_tl%
-      \g_@@_frontmatter_headtext_tl%
-    }%
-  ]%
-  []%
-  []%
   {}%
-  {
-    \tikz[remember~picture,overlay] {%
-      \g_@@_frontmatter_page_headrule_tl%
-      \g_@@_frontmatter_headtext_tl%
-    }%
-  }%
+  {}%
   {}%
   %
   \setfoot%
-  []%
-  [%
-    \uppercase{\c_@@_footer_string_tl}
-  ]%
-  []%
   {}%
-  {%
-    \uppercase{\c_@@_footer_string_tl}%
-  }%
+  {}%
   {}%
 }%
 %    \end{macrocode}
