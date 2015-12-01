@@ -1294,7 +1294,6 @@ Running "make install" installs the files in the local TeX tree.
     \clearpage%
     \bool_gset_false:N \g_@@_frontmatter_bool%
     \g_@@_mainmatter_switch_tl
-    \mainmatter
   }
 }%
 %    \end{macrocode}
@@ -2674,6 +2673,7 @@ Running "make install" installs the files in the local TeX tree.
 \tl_gset:Nn \g_@@_mainmatter_switch_tl {
   \bool_gset_false:N \g_@@_frontmatter_bool
   \bool_gset_true:N \g_@@_mainmatter_bool
+  \mainmatter
   % \SetParskip{\c_@@_mainmatter_parskip_skip}
   \pagestyle{@@_mainmatter_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
