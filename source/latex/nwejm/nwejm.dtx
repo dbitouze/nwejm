@@ -1281,11 +1281,9 @@ Running "make install" installs the files in the local TeX tree.
 {%
   \bool_if:NF {\g_@@_for_authors_bool}{
     \bool_gset_true:N \g_@@_frontmatter_bool%
-    \pagestyle{@@_frontmatter_ps}%
-    \exp_after:wN\newgeometry\exp_after:wN{\c_@@_front_matter_geometry_tl}%
     \phantomsection
     \hypertarget{@@_toc}{}
-    \bookmark[dest=@@_toc,level=part]{\contentsname}
+    \bookmark[dest=@@_toc,level=chapter]{\contentsname}
   }
 }%
 \renewcommand\etocaftertochook
