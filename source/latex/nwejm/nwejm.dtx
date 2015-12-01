@@ -1849,12 +1849,6 @@ Running "make install" installs the files in the local TeX tree.
   }
 %    \end{macrocode}
 %
-% We create a variant of this control sequence that passes the \emph{values} of the
-% variables involved (see \url{http://tex.stackexchange.com/a/214284/18401}).
-%    \begin{macrocode}
-\cs_generate_variant:Nn \_@@_authors:nnn { nVV }
-%    \end{macrocode}
-%
 % We create a function that displays the author(s) of an article with
 % a peticular layout.
 %    \begin{macrocode}
@@ -1948,7 +1942,7 @@ Running "make install" installs the files in the local TeX tree.
 \cs_new_protected:Nn \@@_display_people_by_role:n
 {
   \DTLforeach*[\DTLiseq{\l_@@_people_role_tl}{#1}]{people}{%
-    \l_@@_firstlastname=first-last-name%
+    \l_@@_firstlastname_tl=first-last-name%
     ,\l_@@_people_affiliation_tl=affiliation%
     ,\l_@@_people_country_tl=country%
     ,\l_@@_people_email_tl=email%
