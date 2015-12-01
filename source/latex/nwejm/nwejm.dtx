@@ -2071,6 +2071,8 @@ Running "make install" installs the files in the local TeX tree.
     \end{multicols}
   \clearpage%
   \bool_gset_false:N \g_@@_inside_frontcover_bool
+  \pagestyle{@@_frontmatter_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
 }
 %    \end{macrocode}
 %
