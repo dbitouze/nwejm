@@ -1070,7 +1070,7 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_headsep_front_matter_dim {
   \c_@@_headsep_inside_frontcover_dim
 }
-\dim_const:Nn \c_@@_headheight_dim  { \c_@@_topmargin_dim - \c_@@_headsep_dim }
+\dim_const:Nn \c_@@_headheight_dim  { 10mm }
 \dim_const:Nn \c_@@_botmargin_dim   { 30mm}
 \dim_const:Nn \c_@@_footskip_dim    { 10mm}
 %    \end{macrocode}
@@ -1196,10 +1196,10 @@ Running "make install" installs the files in the local TeX tree.
     ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
     ,layoutoffset=\c_@@_potential_layoutoffset_dim
     ,bindingoffset=\c_@@_potential_bindingoffset_dim
-    ,top=\c_@@_topmargin_inside_cover_dim
+    ,top=.5\c_@@_topmargin_inside_cover_dim
     ,headheight=\c_@@_headheight_dim
     ,headsep=\c_@@_headsep_inside_frontcover_dim
-    ,bottom=\c_@@_botmargin_dim
+    ,bottom=.5\c_@@_botmargin_dim
     ,footskip=\c_@@_footskip_dim
     % ,inner=1cm
     % ,outer=1cm
@@ -1235,6 +1235,7 @@ Running "make install" installs the files in the local TeX tree.
   ,textwidth=\c_@@_layoutwidth_dim*3/4
   ,textheight=\c_@@_layoutheight_dim*3/4
   ,marginratio={4\string :6,5\string :7}
+  ,headheight=\c_@@_headheight_dim
   ,footskip=\c_@@_footskip_dim
   %
   % ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
