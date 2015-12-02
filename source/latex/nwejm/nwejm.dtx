@@ -1859,33 +1859,6 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% \section{Database for the articles' authors}
-%
-% For this, and thanks to \Pkg{datatool}, we create a database of
-% \enquote{authors} of articles.
-%    \begin{macrocode}
-\DTLnewdb{_@@_authors}
-%    \end{macrocode}
-%
-% Then we create the internal "\_@@_authors" function that let us populate the
-% "_@@_authors" database. Each people will be identified by some identifiers:
-% \begin{itemize}
-% \item firstname and lastname, that should be at the biblatex name format
-% (\enquote{lastname, firstname}),
-% \item affiliation,
-% \item email.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\cs_new_protected:Nn \_@@_authors:nnn
-  {
-    \DTLnewrow{_@@_authors}%
-    \DTLnewdbentry{_@@_authors}{first-last-name}{#1}%
-    \DTLnewdbentry{_@@_authors}{affiliation}{#2}%
-    \DTLnewdbentry{_@@_authors}{email}{#3}%
-  }
-%    \end{macrocode}
-%
 %    \begin{macrocode}
 \cs_new_protected:Nn \_@@_email:n
   {
@@ -2970,7 +2943,6 @@ Running "make install" installs the files in the local TeX tree.
   \tl_gclear:N \g_@@_people_email_tl
   % \tl_gclear:N \g_@@_article_acknowledgements_tl
   \tl_clear:N \l_@@_people_first_last_names_tl%
-  \DTLgcleardb{_@@_authors}%
 }
 %    \end{macrocode}
 % \end{macro}
