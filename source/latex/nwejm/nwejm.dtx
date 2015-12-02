@@ -225,6 +225,10 @@ Running "make install" installs the files in the local TeX tree.
 % \Pkg{xparse} which is anyway needed to produce document-level commands.
 %    \begin{macrocode}
 \RequirePackage{xparse}
+\IfFileExists{l3sort.sty}{
+  \RequirePackage{l3sort}
+}{
+}
 \ExplSyntaxOn
 %    \end{macrocode}
 %
@@ -383,6 +387,11 @@ Running "make install" installs the files in the local TeX tree.
 %   \package{xr} and \package{xr-hyper} packages:
 %    \begin{macrocode}
 \RequirePackage{zref-xr}%
+%    \end{macrocode}
+%
+% \item A range of footnote options
+%    \begin{macrocode}
+\RequirePackage[multiple]{footmisc}%
 %    \end{macrocode}
 %
 % \item Alternative versions of "ragged"-type commands:
@@ -584,6 +593,8 @@ Running "make install" installs the files in the local TeX tree.
     ~`\int_use:N\c_@@_first_issue_number_int'.}
 \msg_new:nnnn{nwejm}{unknown-choice}{Choice~`#3'~invalid!}
   {Please~specify~#1=#2.}
+\msg_new:nnn{@@}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
+   with~ `#1'.~ This~ one~ will~ be~ ignored.}
 %    \end{macrocode}
 %
 % \section{Counters}
@@ -1730,20 +1741,60 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Authors options}
 %
+%    \begin{macrocode}
+\quark_new:N \q_@@
+\int_new:N \l_author_int
+\prop_new:N \g_authors_prop
+\prop_new:N \l_affiliations_tagged_prop
+\cs_generate_variant:Nn \prop_put_if_new:Nnn { NVn }
+\cs_generate_variant:Nn \prop_gput_if_new:Nnn { Nxn }
+\cs_generate_variant:Nn \prop_put_if_new:Nnn { NnV }
+%    \end{macrocode}
+%
+% Currently, \Package{expl3} doesn't provide any command that counts the number
+% of items of property lists. It should be implemented soonish and, meanwhile,
+% Bruno Le Floch provided the following macros (see
+% \url{https://github.com/latex3/latex3/issues/293}).
+%    \begin{macrocode}
+\cs_new:Npn \__@@_prop_count:nn #1#2 { + 1 }
+\cs_new:Npn \@@_prop_count:N #1
+{ \int_eval:n { 0 \prop_map_function:NN #1 \__@@_prop_count:nn } }
+%    \end{macrocode}
+%
 % \begin{macro}{affiliation}
-% \begin{macro}{email}
+% \begin{macro}{affiliationtagged}
 % The keys options are created.
 %    \begin{macrocode}
-\keys_define:nn { nwejm/authors }
+\NewDocumentCommand \@@_author_affiliation:ww { o u\q_@@ }
 {
-  affiliation .tl_gset:N = \g_@@_people_affiliation_tl,
+  \stepcounter{footnote}
+  \prop_put_if_new:NVn \l_tmpa_prop {\the\c@footnote} {#2}
+  \IfValueT{#1}{%
+    \prop_put_if_new:NnV \l_affiliations_tagged_prop {#1} {\the\c@footnote}
+  }
+}
+%
+\keys_define:nn { nwejm / authors }
+{
   email .tl_gset:N = \g_@@_people_email_tl,
+  % affiliation .tl_gset:N = \g_@@_people_affiliation_tl,
+  affiliation .code:n = {%
+    \@@_author_affiliation:ww #1 \q_@@
+  },
+  affiliationtagged .code:n = {%
+    \prop_get:NnNTF \l_affiliations_tagged_prop {#1} \l_tmpa_tl
+    {%
+      \prop_put_if_new:NVn \l_tmpa_prop {\l_tmpa_tl} {}
+    }{
+      \msg_error:nnn{@@}{unknown-tag}{#1}
+    }
+  },
 %    \end{macrocode}
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
   affiliation .value_required:,
-  email .value_required:,
+  affiliationtagged .value_required:,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -1849,31 +1900,6 @@ Running "make install" installs the files in the local TeX tree.
   }
 %    \end{macrocode}
 %
-% We create a function that displays the author(s) of an article with
-% a peticular layout.
-%    \begin{macrocode}
-\cs_new_protected:Nn \@@_display_author:nnn
-{
-  \DeclareNameAlias{labelname}{default}\citeauthor{#1}%
-  \footnote{%
-    \tl_if_empty:nF {#2}
-    {%
-      #2,%
-    }
-    \tl_if_empty:nF {#3}
-    {%
-      \href{mailto:#3}{\nolinkurl{#3}}%
-    }
-  }
-}
-%    \end{macrocode}
-%
-% We create a variant of this control sequence that passes the \emph{values} of the
-% variables involved (see \url{http://tex.stackexchange.com/a/214284/18401}).
-%    \begin{macrocode}
-\cs_generate_variant:Nn \@@_display_author:nnn { VVV }
-%    \end{macrocode}
-%
 % \section{Functions for specifiying the people involved in the journal}
 %
 % For this, and thanks to \Pkg{datatool}, we create a database of
@@ -1886,7 +1912,6 @@ Running "make install" installs the files in the local TeX tree.
 % "_@@_people" database. Each people will be identified by some identifiers:
 % speciality (optional), firstname, lastname, affiliation, email, role.
 %    \begin{macrocode}
-\tl_new:N \l_@@_crossref_tl
 \cs_new_protected:Nn \_@@_people:nnnnn
 {
   \DTLnewrow{people}%
@@ -1895,25 +1920,34 @@ Running "make install" installs the files in the local TeX tree.
   \DTLnewdbentry{people}{country}{#3}%
   \DTLnewdbentry{people}{email}{#4}%
   \DTLnewdbentry{people}{role}{#5}%
+  \_@@_populate_bib_file:nn {#1}{#5}
+}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  \int_if_exist:cF {g_@@_#5_int}
+\tl_new:N \l_@@_crossref_tl
+\cs_new_protected:Nn \_@@_populate_bib_file:nn
+{
+  \int_if_exist:cF {g_@@_#2_int}
   {
-    \int_new:c {g_@@_#5_int}
+    \int_new:c {g_@@_#2_int}
   }
-  \int_incr:c {g_@@_#5_int}
-  \tl_if_in:nnTF { #5 } { author } {
+  \int_incr:c {g_@@_#2_int}
+  \tl_if_in:nnTF { #2 } { author } {
     \tl_set:Nn \l_@@_crossref_tl {%
-      \g_@@_article_bib_key_tl
+      \c_@@_issue_bib_key_tl
+      -art-
+      \int_use:N \g_@@_articles_int
     }
   } {
     \tl_set:Nn \l_@@_crossref_tl {\c_@@_issue_bib_key_tl}
   }
   \tl_set:Nn \l_@@_people_first_last_name_tl {#1}
+  % \tl_show:N \g_@@_article_bib_key_tl
+  % \int_show:N \g_@@_articles_int
   \iow_now:Nx \g_@@_bib_out_iow {%
     @article{
-      \c_@@_issue_bib_key_tl -#5- \int_use:c {g_@@_#5_int},
+      \c_@@_issue_bib_key_tl -#2- \int_use:c {g_@@_#2_int},
       \iow_newline:
       author={\exp_not:V\l_@@_people_first_last_name_tl},
       \iow_newline:
@@ -2545,7 +2579,7 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\author}
 % The command for article's author (including its affiliation) is redefined.
 %    \begin{macrocode}
-\RenewDocumentCommand \author { o m } {
+\RenewDocumentCommand \author { O{} m } {
 %    \end{macrocode}
 %
 % We don't want the (next) authors to appear in the headers of the preceding
@@ -2554,17 +2588,24 @@ Running "make install" installs the files in the local TeX tree.
   \cleardoublepage
 %    \end{macrocode}
 %
+  \int_incr:N \l_author_int
+  \prop_gput_if_new:Nxn \g_authors_prop {author_\int_use:c {l_author_int}} {#2}
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm/authors } { #1 }
   }
-  \tl_gset:Nn \l_@@_people_first_last_name_tl {#2}
-  \_@@_people:nVnVx
-  {#2}
-  {\g_@@_people_affiliation_tl}
-  {}
-  {\g_@@_people_email_tl}
-  {author-art-\int_use:N \g_@@_articles_int}
+  \prop_set_eq:cN {l_author_ \int_use:c {l_author_int} _affiliations_prop} \l_tmpa_prop
+  \prop_clear:N \l_tmpa_prop
+  \_@@_populate_bib_file:nn {#2}{author-art-\int_use:N \g_@@_articles_int}
+  \tl_if_empty:NTF \l_@@_people_first_last_names_tl {%
+    \tl_put_right:Nx
+    \l_@@_people_first_last_names_tl
+    {#2}
+  }{
+    \tl_put_right:Nx
+    \l_@@_people_first_last_names_tl
+    {~and~#2}
+  }
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2641,6 +2682,9 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_authors_first_last_names_tl%
 \tl_new:N \g__@@_citeauthor_no_firstinits%
 \tl_new:N \g_@@_citeauthor_tl%
+\int_new:N \g_@@_author_s_number_current_article_int%
+\int_new:N \g_@@_number_of_authors_previous_article_int%
+\int_incr:N \g_@@_number_of_authors_previous_article_int
 %
 \cs_new_protected:Nn \_@@_citeauthor_no_firstinits:n {%
   \tl_gset:Nn \g_@@_citeauthor_tl {%
@@ -2685,6 +2729,32 @@ Running "make install" installs the files in the local TeX tree.
   \cs_set_eq:NN \finalnamedelim \_@@_orig_finalnamedelim
   \protected\def\mkbibnamelast#1{%
     \textsc{\textnohyphenation{#1}}}%
+}
+\cs_new_protected:Nn \@@_display_author:n
+{
+  \seq_clear:N \l_tmpa_seq
+  \prop_get:NnN \g_authors_prop {author_#1} \l_tmpa_tl
+  \prop_map_inline:cn {l_author_ #1 _affiliations_prop} {
+    \seq_put_right:Nx \l_tmpa_seq { ##1 }
+  }
+  \seq_sort:Nn \l_tmpa_seq
+  {
+    \int_compare:nNnTF { ##1 } > { ##2 }
+    { \sort_reversed: }
+    { \sort_ordered: }
+  }
+  \mbox{%
+    \_@@_citeauthor_no_firstinits:n {\c_@@_issue_bib_key_tl -author-art- \int_use:N \g_@@_articles_int-#1}
+  }
+  \seq_map_inline:Nn \l_tmpa_seq {
+    \prop_get:cnN {l_author_ #1 _affiliations_prop} {##1} \l_tmpb_tl
+    \footnotemark[##1]
+    \tl_if_empty:NF \l_tmpb_tl
+    {
+      \footnotetext[##1]{\l_tmpb_tl}
+    }
+  }
+  \hskip 1em plus .17fil
 }
 %    \end{macrocode}
 %
@@ -2746,31 +2816,6 @@ Running "make install" installs the files in the local TeX tree.
 % We will populate the bibiliographic file of the current issue with the current
 % article (title, author(s) and a fixed part giving by the issue number, journal
 % title and date).
-%
-% Then, we iterate through each row of the authors database in order to get
-% a token list containing the (list of the) author(s) of the current article
-% formated as required by \pkg{biblatex} (\enquote{Last1, First1 [and Last2,
-% First2 [and ...]]}).
-%    \begin{macrocode}
-\DTLforeach*[\DTLiseq{\l_@@_people_role_tl}{author-art-\int_use:N \g_@@_articles_int}]{people}{%
-  \l_@@_people_first_last_name_tl=first-last-name%
-  % ,\l_@@_people_affiliation_tl=affiliation%
-  % ,\l_@@_people_email_tl=email%
-  ,\l_@@_people_role_tl=role%
-}{%
-  \tl_if_in:NnT \l_@@_people_role_tl { author } {
-    \DTLiffirstrow{%
-      \tl_put_right:Nx
-      \l_@@_people_first_last_names_tl
-      {\exp_not:V\l_@@_people_first_last_name_tl}
-    }{
-      \tl_put_right:Nx
-      \l_@@_people_first_last_names_tl
-      {~and~\exp_not:V\l_@@_people_first_last_name_tl}
-    }
-  }
-}
-%    \end{macrocode}
 %
 % We now populate the bibiliographic file.
 %    \begin{macrocode}
@@ -2850,10 +2895,27 @@ Running "make install" installs the files in the local TeX tree.
   }
   {
     {
-      \_@@_maketitle_citeauthor:n {\g_@@_article_bib_key_tl}
+      \int_set:Nn \l_tmpa_int { \@@_prop_count:N \g_authors_prop}
+      \begin{quotation}
+        \centering
+        % \large%
+        \int_step_inline:nnnn {1}{1}{\l_tmpa_int} {
+          \@@_display_author:n {##1}
+        }
+      \end{quotation}
     }
+    \prop_gclear:N \g_authors_prop
   }
 }
+%    \end{macrocode}
+%
+% We clear the tagged affiliations (henece their scope is the current article).
+%    \begin{macrocode}
+\int_zero:N \l_author_int
+\prop_clear:N \l_affiliations_tagged_prop
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \tl_set:Nn \l_@@_dates_box_tl
 {%
   \g_@@_display_dates_tl
@@ -2894,7 +2956,9 @@ Running "make install" installs the files in the local TeX tree.
   \l_@@_title_box_tl
   \par%
   \skip_vertical:N 2em%
+  \hspace*{\stretch{3}}
   \l_@@_authors_box_tl
+  \hspace*{\stretch{3}}
   \par%
   \vskip 1.5em%
   \l_@@_dates_box_tl
