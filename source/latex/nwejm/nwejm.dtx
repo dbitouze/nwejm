@@ -2955,26 +2955,6 @@ Running "make install" installs the files in the local TeX tree.
 \AtEndPreamble{\file_input:n {\c_@@_configuration_file_string_tl}}
 %    \end{macrocode}
 %
-% \subsection{Lists}
-%
-% We now set the lists layout in order to benefit from \Pkg{enumitem}'s features
-% and preserve the layout from \pkg{frenchb}.
-%    \begin{macrocode}
-\setlist[1]{labelindent=\parindent}
-\setlist[itemize]{label=\textendash{}, nosep}
-  \ifcurrentbaselanguage{French}{%
-    \setlist{%
-      labelwidth=\widthof{\textendash},
-      itemsep=0.4ex plus 0.2ex minus 0.2ex,
-      parsep=0.4ex plus 0.2ex minus 0.2ex,
-      topsep=0.8ex plus 0.4ex minus 0.4ex,
-      partopsep=0.4ex plus 0.2ex minus 0.2ex,
-      leftmargin=!%
-    }
-  }{
-  }
-%    \end{macrocode}
-%
 % \subsection{Miscellaneous}
 %
 % We fix the \pkg{csquotes}' quotes for PDF strings.
