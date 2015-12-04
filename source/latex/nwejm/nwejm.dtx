@@ -2722,7 +2722,44 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \l_@@_bullet_and_rule_odd_tl
 \tl_new:N \l_@@_bullet_and_rule_even_tl
 \tl_new:N \l_@@_title_box_tl
+%    \end{macrocode}
 %
+% We enforce footnotes to have French layout within articles in French.
+%
+% TODO. For the moment the command ×\let\@footnotemark\@footnotemarkFB×,
+% supposed to add a thin space before the number or symbol calling a footnote,
+% seems to be uneffective.
+%    \begin{macrocode}
+\AfterEndPreamble{
+  \let\selectlanguage@ORI\selectlanguage
+  \renewcommand{\selectlanguage}[1]{
+    \tl_set:Nn \l_tmpa_tl {
+      #1
+    }
+    \tl_if_in:NnTF \l_tmpa_tl { french } {
+      \FBReduceListSpacingtrue
+      % \FBStandardItemizeEnvfalse
+      \FBStandardItemLabelsfalse
+      \FBStandardEnumerateEnvfalse
+      \FBIndentFirsttrue
+      \FBFrenchFootnotestrue
+      \FBAutoSpaceFootnotestrue
+      \FBGlobalLayoutFrenchtrue
+      \let\@footnotemark\@footnotemarkFB
+    }{
+      \FBGlobalLayoutFrenchfalse
+      \FBReduceListSpacingfalse
+      \FBStandardItemizeEnvtrue
+      \FBStandardItemLabelstrue
+      \FBStandardEnumerateEnvtrue
+      \FBIndentFirstfalse
+      \FBFrenchFootnotesfalse
+      \FBAutoSpaceFootnotesfalse
+      \let\@footnotemark\@footnotemarkORI
+    }
+    \selectlanguage@ORI{#1}
+  }
+}%
 %    \end{macrocode}
 %
 % \begin{macro}{\_@@_maketitle}
