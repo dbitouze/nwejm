@@ -2704,21 +2704,6 @@ Running "make install" installs the files in the local TeX tree.
   }
   \seq_map_inline:Nn \l_tmpa_seq {
     \prop_get:cnN {l_author_ #1 _affiliations_prop} {##1} \l_tmpb_tl
-%    \end{macrocode}
-%
-% We force the footnotes to have the French layout within articles in French.
-%
-% TODO. For the moment the command ×\let\@footnotemark\@footnotemarkFB×,
-% supposed to add a thin space before the number or symbol calling a footnote,
-% seems to be uneffective.
-%    \begin{macrocode}
-    \ifcurrentlanguage{french}{
-      \FBFrenchFootnotestrue
-      \let\@footnotemark\@footnotemarkFB
-    }{
-      \FBFrenchFootnotesfalse
-      \let\@footnotemark\@footnotemarkORI
-    }
     \footnotemark[##1]
     \tl_if_empty:NF \l_tmpb_tl
     {
@@ -3280,7 +3265,7 @@ Running "make install" installs the files in the local TeX tree.
 % (French) Numbers format:
 %    \begin{macrocode}
 \@ifpackageloaded{pgfplots}{%
-  \ifcurrentbaselanguage{French}{%
+  \ifcurrentbaselanguage{french}{%
     \pgfplotsset{%
       /pgf/number~format/.cd,
       use~comma,
