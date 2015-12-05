@@ -1288,7 +1288,7 @@ backref
 \renewcommand\etocbeforetitlehook
 {%
   \bool_if:NF {\g_@@_for_authors_bool}{
-    \bool_gset_true:N \g_@@_frontmatter_bool%
+    \g_@@_frontmatter_switch_tl
     \phantomsection
     \hypertarget{@@_toc}{}
     \bookmark[dest=@@_toc,level=chapter]{\contentsname}
@@ -1331,7 +1331,6 @@ backref
 % \end{itemize}
 %    \begin{macrocode}
 \AfterEndPreamble{%
-%<class> \frontmatter
 %<class-article>    \g_@@_mainmatter_switch_tl
 }
 %    \end{macrocode}
@@ -2717,10 +2716,22 @@ backref
 %    \end{macrocode}
 % \end{environment}
 %
-% \section{Definition of a private main matter switch}
+% \section{Definition of a private front and main matter switches}
 %
-% A private "\_@@_mainmatter_switch_tl" switch is defined in order to automatically insert
-% some settings.
+% A private "\_@@_frontmatter_switch_tl" switch is defined in order to
+% automatically insert some settings.
+%    \begin{macrocode}
+\tl_new:N \g_@@_frontmatter_switch_tl%
+\tl_gset:Nn \g_@@_frontmatter_switch_tl {
+  \bool_gset_true:N  \g_@@_frontmatter_bool
+  \frontmatter
+  \pagestyle{@@_frontmatter_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+}
+%    \end{macrocode}
+%
+% A private "\_@@_mainmatter_switch_tl" switch is defined in order to
+% automatically insert some settings.
 %    \begin{macrocode}
 \tl_new:N \g_@@_mainmatter_switch_tl%
 \tl_gset:Nn \g_@@_mainmatter_switch_tl {
