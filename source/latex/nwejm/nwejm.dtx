@@ -3262,10 +3262,38 @@ backref
 %
 % \subsection{Related to \Pkg{biblatex}}
 %
+% Réglage nécessaire sans quoi le titre courant \textquote{BIBLIOGRAPHIE}
+% apparaît en trop en entête et en pied de page
 %    \begin{macrocode}
-\defbibheading{bibassection}[\bibname]{\section*{#1}}%
-\renewcommand{\bibfont}{\normalfont\footnotesize}
+\AtEndPreamble{%
+\defbibheading{bibliography}[\refname]{%
+  \setsecnumdepth{none}
+  \section{#1}
+}%
 %    \end{macrocode}
+%
+% Références bibliographiques des citations formelles (cf. \Package{biblatex}):
+%    \begin{macrocode}
+      \SetCiteCommand{\autocite}%
+  }%
+%    \end{macrocode}
+%
+% \begin{macro}{\printbibliography}
+%    \begin{macrocode}
+\cs_set_eq:NN \_@@_printbibliography \printbibliography
+\RenewDocumentCommand \printbibliography { O{} } {
+%    \end{macrocode}
+% We force all the previous floats to be processed no later on the page
+% following the beginning of the bibliography.
+%    \begin{macrocode}
+% \afterpage{%
+  \FloatBarrier%
+% }%
+\_@@_printbibliography[heading=bibliography,resetnumbers,#1]
+  \setsecnumdepth{subsection}
+}
+%    \end{macrocode}
+% \end{macro}
 %
 % As bibiliographic resource, we add the file of the current issue.
 %    \begin{macrocode}
@@ -3318,7 +3346,94 @@ backref
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[article]{number}{\bibstring{number}#1}
-\DeclareLanguageMapping{french}{gzt}% use the new abbreviations
+\DeclareLanguageMapping{french}{nwejm}% use the new abbreviations
+%    \end{macrocode}
+%
+% We redefine the ×\blx@mkbibfootnote× macro in order the footnote mark of
+% bibliographic citations are in bold, just by inserting a patch of
+% ×\@makefnmark×.
+%    \begin{macrocode}
+\renewrobustcmd{\blx@mkbibfootnote}[2]{%
+  \iftoggle{blx@footnote}
+    {\blx@warning{Nested notes}%
+     \addspace\mkbibparens{#2}}
+    {\unspace
+     \ifnum\blx@notetype=\tw@
+       \expandafter\@firstoftwo
+     \else
+       \expandafter\@secondoftwo
+     \fi
+       {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
+       {%
+         \patchcmd\@makefnmark%
+         {\normalfont}%
+         {\normalfont\bfseries}%
+         {}{}%
+         \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}}}}
+%    \end{macrocode}
+%
+% We create the ×nwejm_cite× bib macro which emulates a mix between
+% ×authortitle× and ×authoryear× styles: it displays the label name (mainly
+% authors' names), then the year and finally the title.
+%    \begin{macrocode}
+\newbibmacro*{nwejm_cite}{%
+  \iffieldundef{shorthand}{%
+    \ifthenelse{%
+      \ifnameundef{labelname}%
+    }{%
+      \usebibmacro{cite:label}%
+      \setunit{\addcomma\space}%
+    }{%
+      \printnames{labelname}%
+      \ifthenelse{%
+        \iffieldundef{labelyear}%
+      }{%
+      }{%
+        \setunit{\addcomma\space}%
+        \usebibmacro{cite:labelyear+extrayear}%
+        \ifthenelse{%
+          \iffieldundef{labeltitle}%
+        }{%
+        }{%
+          \setunit{\addcomma\space}%
+          \usebibmacro{cite:title}%
+        }
+      }
+    }%
+  }{%
+    \usebibmacro{cite:shorthand}%
+  }%
+}
+%    \end{macrocode}
+%
+% Because this mix is based upon ×authoryear× style loaded at ×biblatex× load,
+% we need to define the bib macro ×cite:title× defined in ×authortitle× but not
+% in ×authoryear×.
+%    \begin{macrocode}
+\newbibmacro*{cite:title}{%
+  \printtext[bibhyperref]{%
+    \printfield[citetitle]{labeltitle}}}
+%    \end{macrocode}
+%
+% We now declare the new cite command ×\_@@_foot_cite× (and it multicite
+% counterpart) which is identical to ×\footcite× except it uses the ×nwejm_cite×
+% bib macro instead of the usual ×cite× one.
+%    \begin{macrocode}
+\DeclareCiteCommand{\_@@_foot_cite}[\mkbibfootnote]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+  \usebibmacro{nwejm_cite}}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+\DeclareMultiCiteCommand{\_@@_foot_cites}[\mkbibfootnote]{\_@@_foot_cite}
+{\addsemicolon\space}
+%    \end{macrocode}
+%
+% We now declare the ×_@@_× identifier that provides the definitions for the
+% ×\autocite× and ×\autocites× commands and we apply these definitions.
+%    \begin{macrocode}
+\DeclareAutoCiteCommand{_@@_}{\_@@_foot_cite}{\_@@_foot_cites}
+\ExecuteBibliographyOptions{autocite=_@@_}
 %    \end{macrocode}
 %
 % \subsection{Related to \Pkg{kpfonts}}
