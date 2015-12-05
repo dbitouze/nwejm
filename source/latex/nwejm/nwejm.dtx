@@ -2426,6 +2426,33 @@ backref
 %    \end{macrocode}
 % \end{macro}
 %
+% \subsection{Input variant}
+%
+% We create a variant of the "\input" macro to be use for the input of each
+% article: it starts a new \package{biblatex}'s "refsection" and reset to zero
+% some counters.
+%    \begin{macrocode}
+\NewDocumentCommand \inputarticle { O{./} m } {%
+  \newrefsection
+  \inputfrom{#1}{#2}
+  \setcounter{footnote}{0}
+  \setcounter{section}{0}
+  \setcounter{figure}{0}
+  \setcounter{table}{0}
+  \setcounter{equation}{0}
+  \setcounter{Theorem}{0}
+  \setcounter{Corollary}{0}
+  \setcounter{Conjecture}{0}
+  \setcounter{Proposition}{0}
+  \setcounter{Lemma}{0}
+  \setcounter{Axiom}{0}
+  \setcounter{Definition}{0}
+  \setcounter{Remark}{0}
+  \setcounter{Example}{0}
+  \setcounter{Notation}{0}
+}
+%    \end{macrocode}
+%
 % \section{(Re)Definition of document commands that identify the article}
 %
 % The names of the authors of the different articles will appear at several
