@@ -1319,8 +1319,20 @@ backref
   \graphicspath{{\c_@@_issue_images_path_string_tl//}{../\c_@@_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
+%    \end{macrocode}
+%
+% At the begin of document, we automatically switch to
+% \begin{itemize}
+% \item frontmatter\footnote{Mainly: page numbers in roman.} in the \enquote{issue}
+%   version of the class (the first pages are for the table of contents which
+%   was decided to be in frontmatter),
+% \item mainmatter\footnote{Page numbers in arabic, right page style, right
+%   geometry of the page.} in the \enquote{article} version of the class.
+% \end{itemize}
+%    \begin{macrocode}
 \AfterEndPreamble{%
-  \frontmatter
+%<class> \frontmatter
+%<class-article>    \g_@@_mainmatter_switch_tl
 }
 %    \end{macrocode}
 %
@@ -1570,9 +1582,8 @@ backref
   {
     \bfseries%
     \adjustbox{stack=l}{%
-      \c_@@_journal_title_string_tl\\
-      % \c_@@_issue_string_tl~\int_use:N \g_@@_issue_number_int
-      \GetTranslation{Volumeabbreviated}~\int_use:N \g_@@_issue_number_int
+      \c_@@_journal_title_string_tl
+%<class>      \\\GetTranslation{Volumeabbreviated}~\int_use:N \g_@@_issue_number_int
     }
   }
   \hbox_set:Nn \l_@@_journal_logo_box
