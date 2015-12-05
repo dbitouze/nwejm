@@ -3354,20 +3354,21 @@ backref
 %
 % \subsection{Related to \Pkg{biblatex}}
 %
-% Réglage nécessaire sans quoi le titre courant \textquote{BIBLIOGRAPHIE}
-% apparaît en trop en entête et en pied de page
+% Necessary setting (otherwise \textquote{REFERENCES} is displayed in both
+% header and footer on the page (and the following ones until the next article)
+% where the bibliography appears).
 %    \begin{macrocode}
 \AtEndPreamble{%
-\defbibheading{bibliography}[\refname]{%
-  \setsecnumdepth{none}
-  \section{#1}
-}%
+  \defbibheading{subbibliography}[\refname]{%
+    \setsecnumdepth{none}
+    \section{#1}
+  }%
 %    \end{macrocode}
 %
-% Références bibliographiques des citations formelles (cf. \Package{biblatex}):
+% For formal citations (cf. \Package{csquotes}):
 %    \begin{macrocode}
-      \SetCiteCommand{\autocite}%
-  }%
+  \SetCiteCommand{\autocite}%
+}%
 %    \end{macrocode}
 %
 % \begin{macro}{\printbibliography}
