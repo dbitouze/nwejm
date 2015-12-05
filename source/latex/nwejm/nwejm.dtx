@@ -2666,8 +2666,6 @@ backref
 \tl_new:N \g__@@_citeauthor_no_firstinits%
 \tl_new:N \g_@@_citeauthor_tl%
 \int_new:N \g_@@_author_s_number_current_article_int%
-\int_new:N \g_@@_number_of_authors_previous_article_int%
-\int_incr:N \g_@@_number_of_authors_previous_article_int
 %
 \cs_new_protected:Nn \_@@_citeauthor_no_firstinits:n {%
   \tl_gset:Nn \g_@@_citeauthor_tl {%
@@ -2762,27 +2760,6 @@ backref
 % what is before provides floats but  not acknowledgments).
 %    \begin{macrocode}
   \FloatBarrier%
-%    \end{macrocode}
-%
-% We reset to zero some counters at each new article.
-%    \begin{macrocode}
-\setcounter{section}{0}
-\setcounter{figure}{0}
-\setcounter{table}{0}
-\setcounter{footnote}{0}
-%
-\setcounter{equation}{0}
-%
-\setcounter{Theorem}{0}
-\setcounter{Corollary}{0}
-\setcounter{Conjecture}{0}
-\setcounter{Proposition}{0}
-\setcounter{Lemma}{0}
-\setcounter{Axiom}{0}
-\setcounter{Definition}{0}
-\setcounter{Remark}{0}
-\setcounter{Example}{0}
-\setcounter{Notation}{0}
 %    \end{macrocode}
 %
 % We store the unique bibliographic key of the current article in the
@@ -3313,29 +3290,31 @@ backref
 %
 %    \begin{macrocode}
 \renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}
+}
 \renewbibmacro*{journal}{%
   \iffieldundef{shortjournal}%
+  {%
+    \iffieldundef{journaltitle}
+    {}
     {%
-      \iffieldundef{journaltitle}
-        {}
-        {%
-          \printtext[journaltitle]%
-            {%
-              \printfield[titlecase]{journaltitle}%
-              \setunit{\subtitlepunct}%
-              \printfield[titlecase]{journalsubtitle}%
-             }%
-         }%
+      \printtext[journaltitle]%
+      {%
+        \printfield[titlecase]{journaltitle}%
+        \setunit{\subtitlepunct}%
+        \printfield[titlecase]{journalsubtitle}%
+      }%
     }%
-    {\printtext[journaltitle]{\printfield[titlecase]{shortjournal}}}%
+  }%
+  {\printtext[journaltitle]{\printfield[titlecase]{shortjournal}}}%
 }
 \renewbibmacro*{volume+number+eid}{%
   \printfield{volume}%
   \setunit{\addcomma\space}%
   \printfield{number}%
   \setunit{\addcomma\space}%
-  \printfield{eid}}
+  \printfield{eid}
+}
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[article]{number}{\bibstring{number}#1}
