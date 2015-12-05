@@ -1572,6 +1572,35 @@ backref
 }
 %    \end{macrocode}
 %
+% \subsection{Bibliography page style}
+%
+%    \begin{macrocode}
+\newpagestyle{@@_bibliography_ps}[]{%
+  % \widenhead{\c_zero_dim}{\c_zero_dim}
+  \sethead%
+  [
+  \slshape\g_@@_short_title_tl
+  ]%
+  [%
+  ]%
+  [
+  \AtNextCitekey{\defcounter{maxnames}{3}}\citeauthor{\g_@@_article_bib_key_tl}
+  ]%
+  {
+  \slshape\refname
+  }%
+  {%
+  }%
+  {
+  }%
+  %
+  \setfoot%
+  {}%
+  {\thepage}%
+  {}%
+}
+%    \end{macrocode}
+%
 % \subsection{Article's title page style}
 %
 %    \begin{macrocode}
@@ -3352,8 +3381,11 @@ backref
 % \afterpage{%
   \FloatBarrier%
 % }%
-\_@@_printbibliography[heading=bibliography,resetnumbers,#1]
+\thispagestyle{@@_bibliography_ps}
+\pagestyle{@@_bibliography_ps}
+\_@@_printbibliography[heading=subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
+\pagestyle{@@_mainmatter_ps}
 }
 %    \end{macrocode}
 % \end{macro}
