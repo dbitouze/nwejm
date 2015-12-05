@@ -234,6 +234,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Class loading}
 %
+%    \begin{macrocode}
 % As subsequent class, the \Cls{book} is loaded, with "openany", "english" and
 % "french" options.
 %    \begin{macrocode}
@@ -275,6 +276,10 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \bool_new:N \g_@@_for_authors_bool
 \bool_new:N \g_@@_cover_bool
+\bool_new:N \g_@@_coverpage_bool
+\bool_new:N \g_@@_inside_pages_bool
+%<class-article>\bool_gset_true:N \g_@@_for_authors_bool%
+%<class-article>\bool_gset_true:N \g_@@_inside_pages_bool%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -416,7 +421,14 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Programmable bibliographies and citations:
 %    \begin{macrocode}
-\RequirePackage[backend=biber,defernumbers=true,% firstinits,autolang=other
+\RequirePackage[%
+backend=biber,
+defernumbers=true,
+firstinits,
+uniquename=init,
+% autolang=other,
+style=authoryear,
+backref
 ]{biblatex}%
 %    \end{macrocode}
 %
@@ -2185,19 +2197,15 @@ Running "make install" installs the files in the local TeX tree.
 \NewDocumentCommand \keywords { m } {
   \seq_clear:N \l_@@_keywords_seq
   \tl_clear:N \l_@@_keywords_tl
-  %
-  % does what the name suggests, set a sequence from the clist
   \seq_set_from_clist:Nn \l_tmpa_seq {#1}
-  % applies final arg to each element of second seq and stores result in first seq
   \seq_set_map:NNn \l_@@_keywords_seq \l_tmpa_seq {
     \exp_not:n {
       % \textbf { ##1 } % It is possible to format each of the keywords
       ##1
     }
   }
-  % \seq_use puts the items from the seq back in the input with "+" as a separator
   \tl_set:Nn \l_@@_keywords_tl { \seq_use:Nn \l_@@_keywords_seq {,~} }
-%<class-article>    \hypersetup{pdfkeywords=\seq_use:Nn \l_tmpb_seq}
+%<class-article>    \hypersetup{pdfkeywords=\l_@@_keywords_tl}
 }
 %    \end{macrocode}
 % \end{macro}
