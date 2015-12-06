@@ -1571,35 +1571,6 @@ backref
 }
 %    \end{macrocode}
 %
-% \subsection{Bibliography page style}
-%
-%    \begin{macrocode}
-\newpagestyle{@@_bibliography_ps}[]{%
-  % \widenhead{\c_zero_dim}{\c_zero_dim}
-  \sethead%
-  [
-  \slshape\g_@@_short_title_tl
-  ]%
-  [%
-  ]%
-  [
-  \AtNextCitekey{\defcounter{maxnames}{3}}\citeauthor{\g_@@_article_bib_key_tl}
-  ]%
-  {
-  \slshape\refname
-  }%
-  {%
-  }%
-  {
-  }%
-  %
-  \setfoot%
-  {}%
-  {\thepage}%
-  {}%
-}
-%    \end{macrocode}
-%
 % \subsection{Article's title page style}
 %
 %    \begin{macrocode}
@@ -3371,7 +3342,6 @@ backref
 %    \begin{macrocode}
 \AtEndPreamble{%
   \defbibheading{subbibliography}[\refname]{%
-    \setsecnumdepth{none}
     \section{#1}
   }%
 %    \end{macrocode}
@@ -3393,11 +3363,11 @@ backref
 % \afterpage{%
   \FloatBarrier%
 % }%
-\thispagestyle{@@_bibliography_ps}
-\pagestyle{@@_bibliography_ps}
-\_@@_printbibliography[heading=subbibliography,resetnumbers,#1]
+  \setcounter{section}{-10}
+  \setsecnumdepth{none}
+  \_@@_printbibliography[heading=subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
-\pagestyle{@@_mainmatter_ps}
+  \setcounter{section}{0}
 }
 %    \end{macrocode}
 % \end{macro}
