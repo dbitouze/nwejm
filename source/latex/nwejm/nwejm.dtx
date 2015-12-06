@@ -3360,9 +3360,7 @@ backref
 % We force all the previous floats to be processed no later on the page
 % following the beginning of the bibliography.
 %    \begin{macrocode}
-% \afterpage{%
   \FloatBarrier%
-% }%
   \setcounter{section}{-10}
   \setsecnumdepth{none}
   \_@@_printbibliography[heading=subbibliography,resetnumbers,#1]
