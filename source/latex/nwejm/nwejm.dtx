@@ -3400,6 +3400,12 @@ backref
 % following the beginning of the bibliography.
 %    \begin{macrocode}
   \FloatBarrier%
+%    \end{macrocode}
+% We set the section counter to a negative number in order the header
+% "References" is not preceded by the section counter. And ×secnumdepth× is set
+% to ×none× in order the references section itself is not numbered. Afterwards,
+% we restore to the original behavior.
+%    \begin{macrocode}
   \setcounter{section}{-10}
   \setsecnumdepth{none}
   \_@@_printbibliography[heading=subbibliography,resetnumbers,#1]
