@@ -583,11 +583,24 @@ backref
 \RequirePackage[numbered]{bookmark}%
 %    \end{macrocode}
 %
+% \item Create glossaries and lists of acronyms:
+%    \begin{macrocode}
+\RequirePackage[nowarn]{glossaries}%
+%    \end{macrocode}
+%
 % \item Intelligent cross-referencing:
 %    \begin{macrocode}
 \RequirePackage{cleveref}%
 %    \end{macrocode}
 % \end{enumerate}
+%
+% Setings of the glossaries and acronyms.
+%    \begin{macrocode}
+\makeglossaries
+%
+\setglossarystyle{indexhypergroup}
+\setacronymstyle{long-sc-short}
+%    \end{macrocode}
 %
 % \section{Messages}
 %
