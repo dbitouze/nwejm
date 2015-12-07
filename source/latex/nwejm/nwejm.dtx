@@ -243,7 +243,6 @@ Running "make install" installs the files in the local TeX tree.
 \PassOptionsToPackage{table,cmyk}{xcolor}%
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-% \PassOptionsToPackage{french,ngerman,dutch,english}{translator}
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
@@ -3302,6 +3301,10 @@ backref
 \RenewDocumentCommand \arctan {} {
   \IfLanguageName {french}{\Arctan}{\_@@_orig_arctan}%
 }
+%    \end{macrocode}
+%
+% Various other operators.
+%    \begin{macrocode}
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\sh}{sh}
 \cs_set_eq:NN \_@@_orig_tanh \tanh
@@ -3329,6 +3332,11 @@ backref
     \ln
   }
 }
+%    \end{macrocode}
+%
+% \subsection{Various math utilities}
+%
+%    \begin{macrocode}
 \cs_set_eq:NN \_@@_orig_leq \leq
 \cs_set_eq:NN \_@@_orig_geq \geq
 \RenewDocumentCommand \le {} {%
@@ -3474,28 +3482,33 @@ backref
 %    \begin{macrocode}
 \renewrobustcmd{\blx@mkbibfootnote}[2]{%
   \iftoggle{blx@footnote}
-    {\blx@warning{Nested notes}%
-     \addspace\mkbibparens{#2}}
-    {\unspace
-     \ifnum\blx@notetype=\tw@
-       \expandafter\@firstoftwo
-     \else
-       \expandafter\@secondoftwo
-     \fi
-       {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
-       {%
-         \patchcmd\@makefnmark%
-         {\normalfont}%
-         {\normalfont\bfseries}%
-         {}{}%
-         \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}}}}
+  {\blx@warning{Nested notes}%
+    \addspace\mkbibparens{#2}}
+  {\unspace
+    \ifnum\blx@notetype=\tw@
+    \expandafter\@firstoftwo
+    \else
+    \expandafter\@secondoftwo
+    \fi
+    {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
+    {%
+      \patchcmd\@makefnmark%
+      {\normalfont}%
+      {\normalfont\bfseries}%
+      {}{}%
+      \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}
+      % \footnotemark[#1]
+      % \footnotetext[#1]{#2}
+    }
+  }
+}
 %    \end{macrocode}
 %
-% We create the ×nwejm_cite× bib macro which emulates a mix between
+% We create the ×_@@_cite× bib macro which emulates a mix between
 % ×authortitle× and ×authoryear× styles: it displays the label name (mainly
 % authors' names), then the year and finally the title.
 %    \begin{macrocode}
-\newbibmacro*{nwejm_cite}{%
+\newbibmacro*{_@@_cite}{%
   \iffieldundef{shorthand}{%
     \ifthenelse{%
       \ifnameundef{labelname}%
@@ -3535,13 +3548,13 @@ backref
 %    \end{macrocode}
 %
 % We now declare the new cite command ×\_@@_foot_cite× (and it multicite
-% counterpart) which is identical to ×\footcite× except it uses the ×nwejm_cite×
+% counterpart) which is identical to ×\footcite× except it uses the ×_@@_cite×
 % bib macro instead of the usual ×cite× one.
 %    \begin{macrocode}
 \DeclareCiteCommand{\_@@_foot_cite}[\mkbibfootnote]
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
-  \usebibmacro{nwejm_cite}}
+  \usebibmacro{_@@_cite}}
 {\multicitedelim}
 {\usebibmacro{postnote}}
 \DeclareMultiCiteCommand{\_@@_foot_cites}[\mkbibfootnote]{\_@@_foot_cite}
@@ -3551,8 +3564,8 @@ backref
 % We now declare the ×_@@_× identifier that provides the definitions for the
 % ×\autocite× and ×\autocites× commands and we apply these definitions.
 %    \begin{macrocode}
-\DeclareAutoCiteCommand{_@@_}{\_@@_foot_cite}{\_@@_foot_cites}
-\ExecuteBibliographyOptions{autocite=_@@_}
+\DeclareAutoCiteCommand{_@@_foot_cite}{\_@@_foot_cite}{\_@@_foot_cites}
+\ExecuteBibliographyOptions{autocite=_@@_foot_cite}
 %    \end{macrocode}
 %
 % \subsection{Related to \Pkg{kpfonts}}
