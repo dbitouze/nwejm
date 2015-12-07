@@ -3264,6 +3264,20 @@ backref
 \crefname{Lemma}{\GetTranslation{Lemma}}{\GetTranslation{Lemmas}}
 %    \end{macrocode}
 %
+% \subsection{Assertions enumerations}
+%
+% An environment for assertions' enumeration is provided in order to display
+% them homogeneously:
+%    \begin{macrocode}
+\newlist{assertions}{enumerate}{1}
+\setlist[assertions]{%
+  label=\normalfont(\textsf{\tl_head:f
+    {\GetTranslation{Assertion}}}$\c_math_subscript_token\mathsf{\arabic*}$),
+  ref=(\textsf{\tl_head:f
+    {\GetTranslation{Assertion}}}$_\mathsf{\arabic*}$)
+}
+%    \end{macrocode}
+%
 % \subsection{(Reciprocal) Trigonometric and hyperbolic functions}
 %
 % Reciprocal trigonometric functions, even written with usual "\arccos",
@@ -3987,6 +4001,9 @@ backref
 \ProvideDictTranslation{Received}{Received}
 \ProvideDictTranslation{Accepted}{Accepted}
 \ProvideDictTranslation{Online}{Online}
+%
+\ProvideDictTranslation{assertion}{assertion}
+\ProvideDictTranslation{Assertion}{Assertion}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4060,6 +4077,9 @@ backref
 \ProvideDictTranslation{Received}{Reçu}
 \ProvideDictTranslation{Accepted}{Accepté}
 \ProvideDictTranslation{Online}{En~ligne}
+%
+\ProvideDictTranslation{assertion}{assertion}
+\ProvideDictTranslation{Assertion}{Assertion}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4133,6 +4153,9 @@ backref
 \ProvideDictTranslation{Received}{Empfangen}
 \ProvideDictTranslation{Accepted}{Akzeptierte}
 \ProvideDictTranslation{Online}{Online}
+%
+\ProvideDictTranslation{assertion}{Behauptung}
+\ProvideDictTranslation{Assertion}{Behauptung}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4206,6 +4229,9 @@ backref
 \ProvideDictTranslation{Received}{Ontvangen}
 \ProvideDictTranslation{Accepted}{Aanvaard}
 \ProvideDictTranslation{Online}{Online}
+%
+\ProvideDictTranslation{assertion}{Bewering}
+\ProvideDictTranslation{Assertion}{Bewering}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
