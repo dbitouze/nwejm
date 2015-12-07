@@ -2899,12 +2899,16 @@ backref
   \null\vspace{\c_zero_dim}
   {
     \LARGE
-    \bfseries%
     \g_@@_title_tl
     \tl_if_empty:NF \g_@@_subtitle_tl {%
       \par%
       \g_@@_subtitle_tl
     }
+%    \end{macrocode}
+% A paragraph is added at the end of the title, otherwise the vertical interline
+% space is not consistent with the font size.
+%    \begin{macrocode}
+    \par%
   }
   \phantomsection
   \addcontentsline{toc}{chapter}{%
