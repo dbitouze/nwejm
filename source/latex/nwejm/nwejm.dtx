@@ -3458,15 +3458,14 @@ backref
 }
 \renewbibmacro*{volume+number+eid}{%
   \printfield{volume}%
-  \setunit{\addcomma\space}%
+  \setunit*{\addnbthinspace}%
   \printfield{number}%
   \setunit{\addcomma\space}%
   \printfield{eid}
 }
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
-\DeclareFieldFormat[article]{number}{\bibstring{number}#1}
-\DeclareLanguageMapping{french}{nwejm}% use the new abbreviations
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
 % We redefine the ×\blx@mkbibfootnote× macro in order the footnote mark of
