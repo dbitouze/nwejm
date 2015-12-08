@@ -1300,6 +1300,7 @@ backref
 %    \begin{macrocode}
 \renewcommand\etocbeforetitlehook
 {%
+  \DeclareNameAlias{labelname}{firstinits-last}
   \bool_if:NF {\g_@@_for_authors_bool}{
     \g_@@_frontmatter_switch_tl
     \phantomsection
@@ -1567,6 +1568,7 @@ backref
   [%
   ]%
   [
+  \DeclareNameAlias{labelname}{firstinits-last}
   \AtNextCitekey{\defcounter{maxnames}{3}}\citeauthor{\g_@@_article_bib_key_tl}
   ]%
   {
@@ -3436,7 +3438,6 @@ backref
   \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
   \usebibmacro{name:andothers}%
 }
-\DeclareNameAlias{labelname}{firstinits-last}
 %    \end{macrocode}
 %
 % We ensure the space between initial(s) and last name is unbreakable.
