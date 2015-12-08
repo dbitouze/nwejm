@@ -3557,7 +3557,10 @@ backref
 {\usebibmacro{prenote}}
 {\usebibmacro{citeindex}%
   \usebibmacro{_@@_cite}}
-{\multicitedelim}
+{%
+  \setlength{\parindent}{\footnotemargin}
+  \multicitedelim\newline\indent
+}
 {\usebibmacro{postnote}}
 \DeclareMultiCiteCommand{\_@@_foot_cites}[\mkbibfootnote]{\_@@_foot_cite}
 {\addsemicolon\space}
