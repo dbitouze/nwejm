@@ -2760,6 +2760,7 @@ backref
 \tl_new:N \l_@@_bullet_and_rule_odd_tl
 \tl_new:N \l_@@_bullet_and_rule_even_tl
 \tl_new:N \l_@@_title_box_tl
+\tl_new:N \g_@@_title_for_toc_tl
 %    \end{macrocode}
 %
 % \begin{macro}{\_@@_maketitle}
@@ -2820,49 +2821,6 @@ backref
   % \tl_clear:N \l_@@_people_first_last_names_tl
 }%
 %
-\tl_set:Nn \l_@@_title_box_tl
-{%
-  \null\vspace{\c_zero_dim}
-  {
-    \LARGE
-    \g_@@_title_tl
-    \tl_if_empty:NF \g_@@_subtitle_tl {%
-      \par%
-      \g_@@_subtitle_tl
-    }
-%    \end{macrocode}
-% A paragraph is added at the end of the title, otherwise the vertical interline
-% space is not consistent with the font size.
-%    \begin{macrocode}
-    \par%
-  }
-  \phantomsection
-  \addcontentsline{toc}{chapter}{%
-    \tl_if_empty:NTF \g_@@_short_title_tl {%
-      \g_@@_title_tl%
-    }{
-      \g_@@_short_title_tl%
-    }
-    \bool_if:nF { \tl_if_empty_p:N \g_@@_short_subtitle_tl }
-    {
-      \space\textendash{}\space\g_@@_short_subtitle_tl
-    }
-    \bool_if:nF { \tl_if_empty_p:N \l_@@_people_first_last_names_tl }
-    {
-      \textsl{
-        \cs_if_exist:cTF {texorpdfstring}
-        {
-          \texorpdfstring{%
-            \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
-          }{}
-        }{%
-          \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
-        }%
-      }
-    }
-  }
-%<class-article> \hypersetup{pdfauthor=\l_@@_people_first_last_names_tl}
-}
 \tl_set:Nn \l_@@_authors_box_tl
 {%
   \bool_if:nTF { \tl_if_empty_p:N \l_@@_people_first_last_names_tl }
@@ -2870,15 +2828,10 @@ backref
     \mbox{}
   }
   {
-    {
-      \int_set:Nn \l_tmpa_int { \@@_prop_count:N \g_authors_prop}
-      \begin{quotation}
-        \centering
-        % \large%
-        \int_step_inline:nnnn {1}{1}{\l_tmpa_int} {
-          \@@_display_author:n {##1}
-        }
-      \end{quotation}
+    \int_set:Nn \l_tmpa_int { \@@_prop_count:N \g_authors_prop}
+    \normalsize%
+    \int_step_inline:nnnn {1}{1}{\l_tmpa_int} {
+      \@@_display_author:n {##1}
     }
     \prop_gclear:N \g_authors_prop
   }
@@ -2922,30 +2875,70 @@ backref
 }%
 %    \end{macrocode}
 %
-% We don't want headers.
 %    \begin{macrocode}
-  \thispagestyle{@@_article_title_ps}%
+\tl_set:Nn \g_@@_title_for_toc_tl
+{
+  \tl_if_empty:NTF \g_@@_short_title_tl {%
+    \g_@@_title_tl%
+  }{
+    \g_@@_short_title_tl%
+  }
+  \bool_if:nF { \tl_if_empty_p:N \g_@@_short_subtitle_tl }
+  {
+    \space\textendash{}\space\g_@@_short_subtitle_tl
+  }
+  \bool_if:nF { \tl_if_empty_p:N \l_@@_people_first_last_names_tl }
+  {
+    \textsl{
+      \cs_if_exist:cTF {texorpdfstring}
+      {
+        \texorpdfstring{%
+          \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
+        }{}
+      }{%
+        \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
+      }%
+    }
+  }
+}
 %    \end{macrocode}
 %
+% The article's titles are produced thanks to the ×\chapter× otherwise, in an
+% article starting with several pages without any section, the corresponding
+% header contains the reference name of the previous article instead of being
+% empty. This chapter is unnumbered, otherwise the corresponding bookmark
+% is numbered, but not through the starred version of ×\chapter×, because we
+% need a title in the TOC.
 %    \begin{macrocode}
-\begin{center}
-  \l_@@_title_box_tl
-  \hspace*{\stretch{3}}
-  \l_@@_authors_box_tl
-  \hspace*{\stretch{3}}
-  \par%
-  \l_@@_dates_box_tl
+  \setsecnumdepth{none}
+  \chapter[\g_@@_title_for_toc_tl]{%
+    \g_@@_title_tl
+    \tl_if_empty:NF \g_@@_subtitle_tl {%
+      \\%
+      \g_@@_subtitle_tl
+    }\\[1ex]%
+    \l_@@_authors_box_tl%
+    \l_@@_dates_box_tl
+  }
+  \setsecnumdepth{subsection}
+%    \end{macrocode}
+%
+% We want header of the article's titles pages.
+%    \begin{macrocode}
+  \thispagestyle{@@_article_title_ps}%
+%
   \l_@@_abstract_box_tl%
-\end{center}
-\l_@@_keywords_box_tl
-\par%
-\vskip .5em%
-\l_@@_msc_box_tl
-\par%
-\vskip .5em%
+  \l_@@_keywords_box_tl
+  \par%
+  \vskip .5em%
+  \l_@@_msc_box_tl
+  \par%
+  \vskip .5em%
+%<class-article> \hypersetup{pdfauthor=\l_@@_people_first_last_names_tl}
 %
 \tl_gclear:N \g_@@_title_tl
 \tl_gclear:N \g_@@_subtitle_tl
+\tl_gclear:N \g_@@_title_for_toc_tl
 \tl_gclear:N \g_@@_abstract_body_tl
 \bigskip%
   \normalsize%
