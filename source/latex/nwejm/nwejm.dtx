@@ -363,11 +363,6 @@ Running "make install" installs the files in the local TeX tree.
 %<class>\RequirePackage{import}%
 %    \end{macrocode}
 %
-% \item Allow tables to flow over page boundaries:
-%    \begin{macrocode}
-\RequirePackage{longtable}%
-%    \end{macrocode}
-%
 % \item Put a grey textual watermark on document pages (loaded only if
 % "forauthors" \nwejm{}'s option is on):
 %    \begin{macrocode}
@@ -398,19 +393,9 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[multiple]{footmisc}%
 %    \end{macrocode}
 %
-% \item Alternative versions of "ragged"-type commands:
-%    \begin{macrocode}
-\RequirePackage{ragged2e}%
-%    \end{macrocode}
-%
 % \item Define commands that appear not to eat spaces:
 %    \begin{macrocode}
 \RequirePackage{xspace}%
-%    \end{macrocode}
-%
-% \item ...:
-%    \begin{macrocode}
-\RequirePackage{textcase}%
 %    \end{macrocode}
 %
 % \item Context sensitive quotation facilities:
@@ -443,11 +428,6 @@ backref
 \RequirePackage{booktabs}
 %    \end{macrocode}
 %
-% \item Construction for table cells that span more than one row of the table:
-%    \begin{macrocode}
-\RequirePackage{multirow}
-%    \end{macrocode}
-%
 % \item Intelligent page references:
 %    \begin{macrocode}
 \RequirePackage{varioref}
@@ -477,10 +457,10 @@ backref
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
 %    \end{macrocode}
 %
-% \item Hooks to do actions on every page or on the current page:
-%    \begin{macrocode}
-\RequirePackage{everypage}
-%    \end{macrocode}
+% % \item Hooks to do actions on every page or on the current page:
+% %    \begin{macrocode}
+% \RequirePackage{everypage}
+% %    \end{macrocode}
 %
 % \item Internationalisation of \LaTeXe{} packages
 %    \begin{macrocode}
@@ -495,21 +475,6 @@ backref
 % \item Multilingual support for Plain TeX or LaTeX:
 %    \begin{macrocode}
 \RequirePackage{babel}%
-%    \end{macrocode}
-%
-% \item METAFONT and macros for Euro sign:
-%    \begin{macrocode}
-\RequirePackage{eurosym}%
-%    \end{macrocode}
-%
-% Expandable checks for the current language:
-%    \begin{macrocode}
-\RequirePackage{iflang}[2007/11/11]%
-%    \end{macrocode}
-%
-% \item Tagging tables of contents:
-%    \begin{macrocode}
-%<class>\RequirePackage{tableof}%
 %    \end{macrocode}
 %
 % \item Section numbering (and table of contents control but this is canceled
@@ -536,11 +501,6 @@ backref
 % \item Customization of lists:
 %    \begin{macrocode}
 \RequirePackage[inline]{enumitem}%
-%    \end{macrocode}
-%
-% \item Execute command after the next page break:
-%    \begin{macrocode}
-\RequirePackage{afterpage}
 %    \end{macrocode}
 %
 % \item A couple of things involving environments:
