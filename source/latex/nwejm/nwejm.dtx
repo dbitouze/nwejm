@@ -277,8 +277,6 @@ Running "make install" installs the files in the local TeX tree.
 \bool_new:N \g_@@_cover_bool
 \bool_new:N \g_@@_coverpage_bool
 \bool_new:N \g_@@_inside_pages_bool
-%<class-article>\bool_gset_true:N \g_@@_for_authors_bool%
-%<class-article>\bool_gset_true:N \g_@@_inside_pages_bool%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -395,7 +393,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Define commands that appear not to eat spaces:
 %    \begin{macrocode}
-\RequirePackage{xspace}%
+%<class>\RequirePackage{xspace}%
 %    \end{macrocode}
 %
 % \item Context sensitive quotation facilities:
@@ -525,12 +523,12 @@ backref
 %
 % \item Tools to load and manipulate data:
 %    \begin{macrocode}
-\RequirePackage{datatool}%
+%<class>\RequirePackage{datatool}%
 %    \end{macrocode}
 %
 % \item Control float placement:
 %    \begin{macrocode}
-\RequirePackage{placeins}%
+%<class>\RequirePackage{placeins}%
 %    \end{macrocode}
 %
 % \item Hypertext marks:
@@ -617,43 +615,12 @@ backref
 %
 % We now declare some private string constants.
 %
-% \begin{macro}{\c_@@_journal_short_title_string_tl}
-% \begin{macro}{\c_@@_journal_title_string_tl}
-% \begin{macro}{\c_@@_editors_in_chief_string_tl}
-% \begin{macro}{\c_@@_editors_string_tl}
-% \begin{macro}{\c_@@_editorial_board_string_tl}
-% \begin{macro}{\c_@@_editorial_secretariat_string_tl}
-% \begin{macro}{\c_@@_phone_string_tl}
-% \begin{macro}{\c_@@_informations_string_tl}
-% \begin{macro}{\c_@@_publishingdirector_string_tl}
-% \begin{macro}{\c_@@_issn_string_tl}
-% \begin{macro}{\c_@@_isbn_string_tl}
-% \begin{macro}{\c_@@_latexclass_string_tl}
-% \begin{macro}{\c_@@_font_string_tl}
-% \begin{macro}{\c_@@_configuration_file_string_tl}
-% \begin{macro}{\c_@@_cover_string_tl}
-% \begin{macro}{\c_@@_artistic_director_string_tl}
-% \begin{macro}{\c_@@_editorial_string_tl}
-% \begin{macro}{\c_@@_toc_string_tl}
-% \begin{macro}{\c_@@_message_string_tl}
-% \begin{macro}{\c_@@_president_signatory_string_tl}
-% \begin{macro}{\c_@@_editorinchief_signatory_string_tl}
-% \begin{macro}{\c_@@_issue_bib_file_tl}
-% \begin{macro}{\c_@@_about_frontcover_string_tl}
-% \begin{macro}{\c_@@_credit_frontcover_string_tl}
-% \begin{macro}{\c_@@_authors_instructions_string_tl}
-% For the journal's short and long titles.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_journal_short_title_string_tl {\textsc{nwejm}}
-\tl_const:Nn \c_@@_journal_title_string_tl {
-  North-Western~European~Journal~of~Mathematics%
-}
+%</class|class-article>
 %    \end{macrocode}
 %
-% For the names of the underlying classes.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_nwejm_class_name_tl {nwejm}
-\tl_const:Nn \c_@@_nwejmarticle_class_name_tl {nwejmart}
+%<*class>
 %    \end{macrocode}
 %
 % For the editor in chief.
@@ -703,29 +670,12 @@ backref
 % For the front cover header text.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_frontcover_header_string_tl {
-  \space
-  \textendash{}
-  \space
-  \int_use:N\g_@@_issue_number_int%
+  \space\textendash\space\int_use:N\g_@@_issue_number_int%
 }
-%    \end{macrocode}
-% For the name of the directory containing the editorial and the president message.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_frontmatter_directory_string_tl {frontmatter}
 %    \end{macrocode}
 % For the name of the directory containing the 3rd and 4th cover pages.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_backmatter_directory_string_tl {backmatter}
-%    \end{macrocode}
-% For the path to the current issue's directory.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_issue_path_string_tl {\int_use:N \g_@@_issue_number_int}
-%    \end{macrocode}
-% For the name and path of the images directory.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_images_directory_string_tl {images}
-\tl_const:Nn \c_@@_issue_images_path_string_tl {% \c_@@_issue_path_string_tl/
-  \c_@@_images_directory_string_tl}
 %    \end{macrocode}
 % For the name of the file containing the text of the current issue's back cover.
 %    \begin{macrocode}
@@ -741,6 +691,23 @@ backref
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_authors_instructions_string_tl {Instructions~to~authors}
 %    \end{macrocode}
+% For the unspecified date.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_unspecified_date_string_tl {\textbf{??}}
+%    \end{macrocode}
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
+% For the name and path of the images directory.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_images_directory_string_tl {images}
+\tl_const:Nn \c_@@_issue_images_path_string_tl {\c_@@_images_directory_string_tl}
+%    \end{macrocode}
 % For the preliminary versions sent to authors for checking.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_preliminary_version_string_tl {%
@@ -749,37 +716,10 @@ backref
   \c_@@_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
 %    \end{macrocode}
-% For the unspecified date.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_unspecified_date_string_tl {\textbf{??}}
-%    \end{macrocode}
 % For the \textsc{msc}.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_msc_string_tl {\textsc{msc}}
 %    \end{macrocode}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
-% \end{macro}
 %
 % For the colon, possibily preceded by the relevant space (in French).
 %    \begin{macrocode}
@@ -807,6 +747,20 @@ backref
 % For the prefix of the bibliographic key of each article.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_issue_bib_key_tl {\int_use:N \g_@@_issue_number_int}
+%    \end{macrocode}
+%
+% For the journal's short and long titles.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_journal_short_title_string_tl {\textsc{nwejm}}
+\tl_const:Nn \c_@@_journal_title_string_tl {
+  North-Western~European~Journal~of~Mathematics%
+}
+%    \end{macrocode}
+%
+% For the names of the underlying classes.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_nwejm_class_name_tl {nwejm}
+\tl_const:Nn \c_@@_nwejmarticle_class_name_tl {nwejmart}
 %    \end{macrocode}
 %
 % \subsection{Booleans}
@@ -1098,6 +1052,14 @@ backref
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
 % We create a constant token list that contains the geometry of the front cover.
 %    \begin{macrocode}
 \bool_if:NTF {\g_@@_cover_bool} {
@@ -1207,20 +1169,63 @@ backref
 }%
 %    \end{macrocode}
 %
-% We create a constant token list that contains the geometry of the back cover.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_backcover_geometry_tl {%
-  ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
-  ,layoutoffset=\c_@@_potential_layoutoffset_dim
-  % ,bindingoffset=\c_@@_potential_bindingoffset_dim
-  ,top=\c_@@_topmargin_backcover_dim%
-  % ,top=\c_@@_topmargin_dim-15mm%
-  % ,headheight=\c_@@_headheight_dim
-  % ,headsep=\c_@@_headsep_dim-18mm
-  ,bottom=\c_@@_bottommargin_backcover_dim
-  % ,footskip=\c_@@_footskip_dim
-  ,inner=\c_@@_innermargin_backcover_dim
-  ,outer=\c_@@_outermargin_backcover_dim
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
+% \section{Miscellaneous patches}
+%
+% If we don't ask the cover page (only), the inside back cover and back cover
+% pages are automatically included at the end of the document, the former
+% containing some condensed instructions to authors. But, this cannot be done
+% within "\AtEndDocument" and "\preto\@enddocumenthook" should be used instead
+% (see \url{http://tex.stackexchange.com/q/240318/18401}).
+%    \begin{macrocode}
+\bool_if:NF {\g_@@_coverpage_bool} {
+  \bool_if:NF {\g_@@_inside_pages_bool} {
+    \preto\@enddocumenthook{
+      \clearpage
+%    \end{macrocode}
+%
+% The inside front cover and front cover pages are numbered \enquote{i} and
+% \enquote{ii} hence the inside back cover and back cover pages are numbered
+% \enquote{iii} and \enquote{iv}.
+%    \begin{macrocode}
+      \pagenumbering{roman}%
+      \addtocounter{page}{2}
+      \ifoddpage%
+      \hbox{}
+      \else
+      \fi
+      \newpage
+      \bool_gset_true:N \g_@@_backmatter_bool
+      \g_@@_display_inside_backcover_tl
+      \newpage
+      \g_@@_display_backcover_tl
+    }%
+  }%
+}%
+%    \end{macrocode}
+%
+% If we don't ask the cover page (only), the document total page numbers should
+% be a multiple of four and we add the necessary and sufficient number of blank
+% pages if it isn't the case (code borrowed from
+% \url{http://tex.stackexchange.com/a/83498/18401}).
+%    \begin{macrocode}
+\bool_if:NF {\g_@@_coverpage_bool} {
+  \bool_if:nF { \g_@@_for_authors_bool } {
+    \bool_if:nT { \g_@@_inside_pages_bool } {
+      \AtEndDocument{%
+        \prg_replicate:nn
+        { \int_mod:nn { 4 - \int_mod:nn { \getpagerefnumber{LastPage} } { 4 } } { 4 } }
+        { \thispagestyle{@@_blank_pages_ps}\null\clearpage }
+      }
+    }
+  }
 }
 %    \end{macrocode}
 %
@@ -1246,36 +1251,6 @@ backref
     \g_@@_mainmatter_switch_tl
   }
 }%
-%    \end{macrocode}
-%
-% \section{First pages}
-%
-% At begin of the document, we automatically :
-% \begin{itemize}
-% \item set the graphic path,
-% \item set the page grid if the corresponding option has been passed,
-% \item display of the front cover and the inside front cover.
-% \end{itemize}
-%
-%    \begin{macrocode}
-\AtBeginDocument{%
-  \graphicspath{{\c_@@_issue_images_path_string_tl//}{../\c_@@_issue_images_path_string_tl//}}
-  % \glsdisablehyper
-}
-%    \end{macrocode}
-%
-% At the begin of document, we automatically switch to
-% \begin{itemize}
-% \item frontmatter\footnote{Mainly: page numbers in roman.} in the \enquote{issue}
-%   version of the class (the first pages are for the table of contents which
-%   was decided to be in frontmatter),
-% \item mainmatter\footnote{Page numbers in arabic, right page style, right
-%   geometry of the page.} in the \enquote{article} version of the class.
-% \end{itemize}
-%    \begin{macrocode}
-\AfterEndPreamble{%
-%<class-article>    \g_@@_mainmatter_switch_tl
-}
 %    \end{macrocode}
 %
 % \section{Page styles}
@@ -1325,7 +1300,6 @@ backref
 %
 %    \begin{macrocode}
 \newpagestyle{@@_frontmatter_ps}[]{%
-  % \widenhead*{\c_@@_front_matter_extra_innermargin_dim}{\c_@@_front_matter_extra_outermargin_dim}
   \sethead%
   {}%
   {}%
@@ -1387,14 +1361,6 @@ backref
 }%
 %    \end{macrocode}
 %
-%    \begin{macrocode}
-%</class|class-article>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*class>
-%    \end{macrocode}
-%
 % We define crop marks.
 %    \begin{macrocode}
 % \bool_if:NT {\g_@@_for_printer_bool} {%
@@ -1416,58 +1382,6 @@ backref
 % }
 %    \end{macrocode}
 %
-% \section{Miscellaneous patches}
-%
-% If we don't ask the cover page (only), the inside back cover and back cover
-% pages are automatically included at the end of the document, the former
-% containing some condensed instructions to authors. But, this cannot be done
-% within "\AtEndDocument" and "\preto\@enddocumenthook" should be used instead
-% (see \url{http://tex.stackexchange.com/q/240318/18401}).
-%    \begin{macrocode}
-\bool_if:NF {\g_@@_coverpage_bool} {
-  \bool_if:NF {\g_@@_inside_pages_bool} {
-    \preto\@enddocumenthook{
-      \clearpage
-%    \end{macrocode}
-%
-% The inside front cover and front cover pages are numbered \enquote{i} and
-% \enquote{ii} hence the inside back cover and back cover pages are numbered
-% \enquote{iii} and \enquote{iv}.
-%    \begin{macrocode}
-      \pagenumbering{roman}%
-      \addtocounter{page}{2}
-      \ifoddpage%
-      \hbox{}
-      \else
-      \fi
-      \newpage
-      \bool_gset_true:N \g_@@_backmatter_bool
-      \g_@@_display_inside_backcover_tl
-      \newpage
-      \g_@@_display_backcover_tl
-    }%
-  }%
-}%
-%    \end{macrocode}
-%
-% If we don't ask the cover page (only), the document total page numbers should
-% be a multiple of four and we add the necessary and sufficient number of blank
-% pages if it isn't the case (code borrowed from
-% \url{http://tex.stackexchange.com/a/83498/18401}).
-%    \begin{macrocode}
-\bool_if:NF {\g_@@_coverpage_bool} {
-  \bool_if:nF { \g_@@_for_authors_bool } {
-    \bool_if:nT { \g_@@_inside_pages_bool } {
-      \AtEndDocument{%
-        \prg_replicate:nn
-        { \int_mod:nn { 4 - \int_mod:nn { \getpagerefnumber{LastPage} } { 4 } } { 4 } }
-        { \thispagestyle{@@_blank_pages_ps}\null\clearpage }
-      }
-    }
-  }
-}
-%    \end{macrocode}
-%
 %    \begin{macrocode}
 %</class>
 %    \end{macrocode}
@@ -1486,7 +1400,7 @@ backref
     \thesection.~%
   }{%
   }
-  \sectiontitle%
+  \sectiontitle
 }%
 \newpagestyle{@@_mainmatter_ps}[]{%
   \sethead%
@@ -1567,10 +1481,48 @@ backref
 }
 %    \end{macrocode}
 %
+% \section{First pages}
+%
+% At begin of the document, we automatically :
+% \begin{itemize}
+% \item set the graphic path,
+% \item set the page grid if the corresponding option has been passed,
+% \item display of the front cover and the inside front cover.
+% \end{itemize}
+%
+%    \begin{macrocode}
+\AtBeginDocument{%
+  \graphicspath{{\c_@@_issue_images_path_string_tl//}{../\c_@@_issue_images_path_string_tl//}}
+  % \glsdisablehyper
+}
+%    \end{macrocode}
+%
+% At the begin of document, we automatically switch to
+% \begin{itemize}
+% \item frontmatter\footnote{Mainly: page numbers in roman.} in the \enquote{issue}
+%   version of the class (the first pages are for the table of contents which
+%   was decided to be in frontmatter),
+% \item mainmatter\footnote{Page numbers in arabic, right page style, right
+%   geometry of the page.} in the \enquote{article} version of the class.
+% \end{itemize}
+%    \begin{macrocode}
+\AfterEndPreamble{%
+%<class-article>    \g_@@_mainmatter_switch_tl
+}
+%    \end{macrocode}
+%
 % \section{Options}
 %
 % In this section, options used by some of the document commands defined by the
 % class are treated.
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
 %
 % \subsection{Journal options}
 %
@@ -1639,6 +1591,14 @@ backref
 % \end{macro}
 % \end{macro}
 % \end{macro}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
 %
 % \subsection{Issues options}
 %
@@ -1858,30 +1818,7 @@ backref
   }
 %    \end{macrocode}
 %
-% \section{Functions for specifiying the people involved in the journal}
-%
-% For this, and thanks to \Pkg{datatool}, we create a database of
-% \enquote{people} involved in the journal.
-%    \begin{macrocode}
-\DTLnewdb{people}
-%    \end{macrocode}
-%
-% Then we create the internal "\_@@_people" function that let us populate the
-% "_@@_people" database. Each people will be identified by some identifiers:
-% speciality (optional), firstname, lastname, affiliation, email, role.
-%    \begin{macrocode}
-\cs_new_protected:Nn \_@@_people:nnnnn
-{
-  \DTLnewrow{people}%
-  \DTLnewdbentry{people}{first-last-name}{#1}%
-  \DTLnewdbentry{people}{affiliation}{#2}%
-  \DTLnewdbentry{people}{country}{#3}%
-  \DTLnewdbentry{people}{email}{#4}%
-  \DTLnewdbentry{people}{role}{#5}%
-  \_@@_populate_bib_file:nn {#1}{#5}
-}
-%    \end{macrocode}
-%
+% We create a control sequence that populates the bib file.
 %    \begin{macrocode}
 \tl_new:N \l_@@_crossref_tl
 \cs_new_protected:Nn \_@@_populate_bib_file:nn
@@ -1916,6 +1853,38 @@ backref
     }
     \iow_newline:
   }%
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
+% \section{Functions for specifiying the people involved in the journal}
+%
+% For this, and thanks to \Pkg{datatool}, we create a database of
+% \enquote{people} involved in the journal.
+%    \begin{macrocode}
+\DTLnewdb{people}
+%    \end{macrocode}
+%
+% Then we create the internal "\_@@_people" function that let us populate the
+% "_@@_people" database. Each people will be identified by some identifiers:
+% speciality (optional), firstname, lastname, affiliation, email, role.
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_people:nnnnn
+{
+  \DTLnewrow{people}%
+  \DTLnewdbentry{people}{first-last-name}{#1}%
+  \DTLnewdbentry{people}{affiliation}{#2}%
+  \DTLnewdbentry{people}{country}{#3}%
+  \DTLnewdbentry{people}{email}{#4}%
+  \DTLnewdbentry{people}{role}{#5}%
+  \_@@_populate_bib_file:nn {#1}{#5}
 }
 %    \end{macrocode}
 %
@@ -2134,6 +2103,14 @@ backref
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
 % \section{Displaying the dates}
 %
 % We create the variable that displays the dates.
@@ -2226,6 +2203,14 @@ backref
 % \section{User level commands}
 %
 % Here, we gather all the user level (public) commands.
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
 %
 % \subsection{Populating the people involved in the journal}
 %
@@ -2403,6 +2388,14 @@ backref
 }
 %    \end{macrocode}
 % \end{macro}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
 %
 % \subsection{Dates setup}
 %
@@ -2748,7 +2741,7 @@ backref
 %    \end{macrocode}
 %
 % \begin{macro}{\_@@_maketitle}
-%   The command that \enquote{makes} the title is redefined.
+%   The command that \emph{makes} the title is redefined.
 %    \begin{macrocode}
 \RenewDocumentCommand \maketitle { s } {
 %    \end{macrocode}
@@ -2757,7 +2750,7 @@ backref
 % (this is already done in "acknowledgments"environment but is repeated here if
 % what is before provides floats but  not acknowledgments).
 %    \begin{macrocode}
-  \FloatBarrier%
+%<class>      \FloatBarrier%
 %    \end{macrocode}
 %
 % We store the unique bibliographic key of the current article in the
@@ -2952,7 +2945,7 @@ backref
 % instead of begin of the document in order some settings needed in preamble are
 % taken in account.
 %    \begin{macrocode}
-\AtEndPreamble{\file_input:n {\c_@@_configuration_file_string_tl}}
+%<class>\AtEndPreamble{\file_input:n {\c_@@_configuration_file_string_tl}}
 %    \end{macrocode}
 %
 % \subsection{Miscellaneous}
@@ -3300,7 +3293,7 @@ backref
 % where the bibliography appears).
 %    \begin{macrocode}
 \AtEndPreamble{%
-  \defbibheading{subbibliography}[\refname]{%
+  \defbibheading{_@@_subbibliography}[\refname]{%
     \section{#1}
   }%
 %    \end{macrocode}
@@ -3319,7 +3312,7 @@ backref
 % We force all the previous floats to be processed no later on the page
 % following the beginning of the bibliography.
 %    \begin{macrocode}
-  \FloatBarrier%
+%<class>  \FloatBarrier%
 %    \end{macrocode}
 % We set the section counter to a negative number in order the header
 % "References" is not preceded by the section counter. And ×secnumdepth× is set
@@ -3328,7 +3321,7 @@ backref
 %    \begin{macrocode}
   \setcounter{section}{-10}
   \setsecnumdepth{none}
-  \_@@_printbibliography[heading=subbibliography,resetnumbers,#1]
+  \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
   \setcounter{section}{0}
 }
