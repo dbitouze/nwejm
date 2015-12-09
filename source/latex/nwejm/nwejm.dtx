@@ -703,7 +703,6 @@ backref
 % For the front cover header text.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_frontcover_header_string_tl {
-  % \l_@@_uppercased_date_format\displaydate{@@_date}
   \space
   \textendash{}
   \space
@@ -740,7 +739,7 @@ backref
 %    \end{macrocode}
 % For the authors instructions.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_authors_instructions_string_tl {Instructions~aux~auteurs}
+\tl_const:Nn \c_@@_authors_instructions_string_tl {Instructions~to~authors}
 %    \end{macrocode}
 % For the preliminary versions sent to authors for checking.
 %    \begin{macrocode}
@@ -752,7 +751,7 @@ backref
 %    \end{macrocode}
 % For the unspecified date.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_unspecified_date_string_tl {??}
+\tl_const:Nn \c_@@_unspecified_date_string_tl {\textbf{??}}
 %    \end{macrocode}
 % For the \textsc{msc}.
 %    \begin{macrocode}
@@ -800,7 +799,6 @@ backref
 %
 % For the name of the file containing the bibliography of the current issue.
 %    \begin{macrocode}
-% \tl_const:Nn \c_@@_issue_bib_file_string_tl {issue-\c_job_name_tl.bib}
 \tl_const:Nn \c_@@_issue_bib_file_suffix_string_tl {@@}
 \tl_const:Nn \c_@@_issue_bib_file_string_tl {\c_job_name_tl\c_@@_issue_bib_file_suffix_string_tl.bib}
 \tl_const:Nn \c_@@_issue_bib_path_string_tl {\c_@@_issue_bib_file_string_tl}
@@ -940,7 +938,6 @@ backref
 %
 % The \enquote{printer} binding dimension is now store in
 % "\c_@@_printer_bindingoffset_dim" following \vref{binding}.
-%
 %    \begin{macrocode}
 \int_compare:nNnTF {\g_@@_total_inside_pages_number_int}<{\c_@@_thresold_a_int}
 {
@@ -1078,14 +1075,6 @@ backref
 \dim_const:Nn \c_@@_outermargin_backcover_dim { \c_@@_innermargin_backcover_dim }
 \dim_const:Nn \c_@@_topmargin_backcover_dim { \c_@@_innermargin_backcover_dim }
 \dim_const:Nn \c_@@_bottommargin_backcover_dim { \c_@@_innermargin_backcover_dim }
-\dim_const:Nn \c_@@_frontcover_image_height_dim { 160mm}
-\dim_const:Nn \c_@@_frontmatter_headtext_xshift_dim { 19mm }%
-\dim_const:Nn \c_@@_frontmatter_headtext_o_xshift_dim {
-  -\c_@@_frontmatter_headtext_xshift_dim  -\c_@@_potential_layoutoffset_dim%
-}%
-\dim_const:Nn \c_@@_frontmatter_headtext_e_xshift_dim {
-  \c_@@_frontmatter_headtext_xshift_dim  +\c_@@_potential_layoutoffset_dim%
-}%
 \dim_const:Nn \c_@@_front_matter_extra_innermargin_dim    { \c_zero_dim }
 \dim_const:Nn \c_@@_front_matter_extra_outermargin_dim    { \c_zero_dim }
 \dim_const:Nn \c_@@_inside_cover_offset_dim { \c_zero_dim }%
@@ -1100,19 +1089,6 @@ backref
 % \end{macro}
 % \end{macro}
 % \end{macro}
-% \end{macro}
-%
-% \begin{macro}{\g_@@_abstract_box_width_dim}
-%    \begin{macrocode}
-\dim_new:N \g_@@_abstract_box_width_dim
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\c_@@_original_parindent_dim}
-%    \begin{macrocode}
-\dim_new:N \c_@@_original_parindent_dim
-\dim_set_eq:NN \c_@@_original_parindent_dim \parindent
-%    \end{macrocode}
 % \end{macro}
 %
 % We set the default geometry of the page.
@@ -1246,13 +1222,6 @@ backref
   ,inner=\c_@@_innermargin_backcover_dim
   ,outer=\c_@@_outermargin_backcover_dim
 }
-%    \end{macrocode}
-%
-% \subsection{Skips}
-%
-%    \begin{macrocode}
-\skip_const:Nn \c_@@_editorial_presidentmessage_parskip_skip { 12pt plus 2pt minus .8pt }%
-\skip_const:Nn \c_@@_mainmatter_parskip_skip { 2pt plus .5pt minus .2pt }%
 %    \end{macrocode}
 %
 % \section{Displaying the table of contents}
@@ -1520,7 +1489,6 @@ backref
   \sectiontitle%
 }%
 \newpagestyle{@@_mainmatter_ps}[]{%
-  % \widenhead{\c_zero_dim}{\c_zero_dim}
   \sethead%
   [
   \slshape\g_@@_short_title_tl
@@ -1737,14 +1705,7 @@ backref
 % \begin{macro}{received}
 % \begin{macro}{accepted}
 % \begin{macro}{online}
-% Some keys options for article's title are created:
-% \begin{itemize}
-% \item "shorttitle" for the possible alternative title to appear in the table
-%   of contents and in the headers,
-% \item "notintoc", a flag that, if true, prevents the title to appear in the
-%   table of contents.
-% \end{itemize}
-%
+% Some keys options for article's dates are created:
 %    \begin{macrocode}
 \keys_define:nn { nwejm/dates }
 {
@@ -1802,7 +1763,6 @@ backref
 \keys_define:nn { nwejm / authors }
 {
   email .tl_gset:N = \g_@@_people_email_tl,
-  % affiliation .tl_gset:N = \g_@@_people_affiliation_tl,
   affiliation .code:n = {%
     \@@_author_affiliation:ww #1 \q_@@
   },
@@ -3448,8 +3408,6 @@ backref
       {\normalfont\bfseries}%
       {}{}%
       \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}
-      % \footnotemark[#1]
-      % \footnotetext[#1]{#2}
     }
   }
 }
@@ -3507,6 +3465,11 @@ backref
 {\usebibmacro{citeindex}%
   \usebibmacro{_@@_cite}}
 {%
+%    \end{macrocode}
+%
+% Unique (auto)citations with multiple keys are displayed in footnotes but each
+% of the corresponding references is on its own line.
+%    \begin{macrocode}
   \setlength{\parindent}{\footnotemargin}
   \multicitedelim\newline\indent
 }
@@ -3553,8 +3516,8 @@ backref
 }
 %    \end{macrocode}
 %
-% In case of \hologo{pdfTeX} engine, the document is by default in sans serif
-% and makes use of the \pkg{lmodern} for the \enquote{ttfamily} font.
+% In case of \hologo{pdfTeX} engine, the document makes use of the \pkg{lmodern}
+% for the \enquote{ttfamily} font.
 %    \begin{macrocode}
 \pdftex_if_engine:T
   {
@@ -3779,121 +3742,11 @@ backref
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Printer text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\printertext{Impression supervfis\'ee par Jean-Jacques \textsc{Derycke}}
+\printertext{Impression supervis\'ee par Jean-Jacques \textsc{Derycke}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Authors instructions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{authorsinstructions}
-%   \begin{description}
-%   \item[Objectifs de la \gzt*{}.] Bulletin interne de la \smf{}, la \gzt{} est
-%     un support privilégié d'expression au sein de la communauté
-%     mathématique. À ce titre, elle informe de l'actualité des mathématiques, de
-%     leur enseignement, de leur histoire, de leur relations avec d'autres
-%     sciences (physique, informatique, biologie, etc.).
-%
-%     On y trouve donc des articles scientifiques de présentation, ainsi que des
-%     récensions de parutions mathématiques récentes. Elle contient aussi des
-%     informations sur tout ce qui concerne la vie professionnelle d'un
-%     mathématicien (recrutements, conditions de travail, publications
-%     scientifiques, etc.) et aussi des témoignages ou des tribunes libres.
-%
-%     La \gzt{} paraît à raison de quatre numéros par an avec, optionnellement, un
-%     numéro spécial consacré à un sujet particulier de mathématiques ou bien à un
-%     grand mathématicien.
-%
-%     Elle est envoyée gratuitement à chaque adhérent. Les numéros actuel et
-%     anciens sont disponibles en ligne
-%     (\url{http://smf4.emath.fr/Publications/Gazette/}).
-%
-%   \item[Soumission d'article.] Les articles doivent être envoyés au secrétariat,
-%     de préférence par courrier électronique (\email{gazette@dma.ens.fr}), pour
-%     être examinés par le comité de rédaction. Si un article est accepté, son
-%     fichier source doit alors être fourni, de préférence sous forme d'un fichier
-%     \TeX{} ou, à l'extrême rigueur, LibreOffice, OpenOffice ou
-%     Word\textregistered{} ; une saisie de manuscrits est cependant possible pour
-%     des textes courts.
-%
-%     Les fichiers \TeX{} doivent :
-%     \begin{itemize}
-%     \item de préférence recourir au format \LaTeXe{} : éviter les commandes des
-%       autres formats (tels que plain \TeX{}) ;
-%     \item être si possible \enquote{encodés} en \texttt{UTF-8} ;
-%     \item être le plus \enquote{pur} possible : éviter les macros
-%       \enquote{exotiques} ainsi que les insertions manuelles d'espacements
-%       horizontaux ou verticaux (\gztverb{\hspace}, \gztverb{\hskip},
-%       \gztverb{\vspace}, \gztverb{\vskip}, \gztverb{\enlargethispage}, etc.).
-%     \end{itemize}
-%     Les illustrations qui ne sont pas directement codées en \TeX{} doivent être
-%     fournies aux formats \texttt{.pdf} (à privilégier) ou, avec un bonne
-%     définition (300~\textsc{dpi} minimum), \texttt{.png} ou \texttt{.jpg}. Le
-%     format \texttt{.eps}, quoique indirectement supporté, est déconseillé.
-%
-%     Pour faciliter la composition de textes destinés à la \gzt{}, la \smf{}
-%     propose la classe \LaTeX{} \gztarticlecl{} fournie par les distributions
-%     \TeX{} courantes (\TeX{} Live et Mac\TeX{} \aside{à partir de leur version
-%       2015} ainsi que MiK\TeX{}), et sinon téléchargeable depuis la page
-%     \url{http://ctan.org/pkg/gzt}.  Sa documentation détaillée se trouve à la
-%     page \url{http://mirrors.ctan.org/macros/latex/contrib/gzt/doc/gzt.pdf}.  On
-%     prendra garde au fait que l'usage de cette classe nécessite une distribution
-%     \TeX{} à jour.
-%
-%     Pour plus de détails, consulter la page
-%     \url{http://smf.emath.fr/content/la-gazette-des-mathematiciens}.
-%     %
-%     % \item[Rubrique \enquote{Mathématiques}] La \gzt{} publie des articles de
-%     %   mathématiques et d'interactions ou applications des mathématiques,
-%     %   chargés
-%     %   de présenter un résultat, exposer une notion ou de commenter une
-%     %   actualité.
-%   %
-%     %   Ils s'adressent à un public étendu. Les textes privilégiés sont courts,
-%     %   pédagogiques et illustrés par des exemples.
-%   %
-%     %   La bibliographie ne vise pas à l'exhaustivité et se concentre sur les
-%     %   textes
-%     %   introductifs et de référence.
-%   %
-%     %   Les articles d'histoire des mathématiques ou contenant des vues
-%     %   historiques
-%     %   ou épistémologiques sont également bienvenus et doivent être conçus dans
-%     %   le
-%     %   même esprit.
-%   %
-%     % \item[Rubrique \enquote{Livres}] La rubrique \enquote{Livres} publie des
-%     %   recensions s'attachant à présenter des ouvrages de mathématiques et des
-%     %   ouvrages sur les mathématiques (leur histoire, leur philosophie, et plus
-%     %   généralement tout ce qui a trait aux mathématiques et aux
-%     %   mathématiciens).
-%   %
-%     %   Quelques recommendations :
-%     %   \begin{itemize}
-%     %   \item Commencez la recension en donnant quelques informations sur le
-%     %     livre
-%     %     (titre, nom l'auteur, collection à laquelle il appartient, nom de
-%     %     l'éditeur, ville de la maison d'édition, année de la publication,
-%     %     nombre
-%     %     de pages, \textsc{isbn} et prix en euros ou en dollars).
-%     %   \item Précisez à quel public (de quel niveau) s'adresse le livre.
-%     %   \item Vous êtes libre de dire ce que vous pensez (dans les limites de la
-%     %     politesse et de la correction). Le comité de rédaction se réserve la
-%     %     décision finale de publication après relecture de votre recension.
-%     %   \item Les recensions doivent être brèves (une ou deux pages, trois au
-%     %     maximum) et synthétiser l'apport original d'un ouvrage. Dans le cas
-%     %     des
-%     %     ouvrages de mathématiques, elles n'ont pas pour objectif de rendre
-%     %     compte
-%     %     d'une théorie et d'en donner un exposé ; la recension proprement dite
-%     %     peut
-%     %     toutefois être précédée, à titre d'introduction à l'analyse de
-%     %     l'ouvrage,
-%     %     d'un bref exposé panoramique et historique des idées générales du
-%     %     domaine.
-%     %   \item N'insérez pas de bibliographie.
-%     %   \item Signez de vos nom et prénom et indiquez les noms de
-%     %     l'établissement et
-%     %     de la ville où vous exercez.
-%     %   \end{itemize}
-%   \end{description}
 % \end{authorsinstructions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Font designer
