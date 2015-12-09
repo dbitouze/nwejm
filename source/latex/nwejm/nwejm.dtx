@@ -3278,6 +3278,27 @@ backref
 \NewDocumentCommand \K {} {\mathbb{K}}
 %    \end{macrocode}
 %
+% Now, a command for displaying the sets.
+%    \begin{macrocode}
+\tl_new:N \l_@@_given_tl
+\tl_set:Nn \l_@@_given_tl {
+  \nonscript\:\delimsize\slash
+  \allowbreak
+  \nonscript\:
+  \mathopen{}
+}%
+\DeclarePairedDelimiterX\_@@_set[1]\{\}{%
+  #1
+}
+\NewDocumentCommand \set { m O{} } {
+  \tl_if_empty:nTF {#2} {%
+    \_@@_set*{#1}
+  }{
+    \_@@_set*{#1\l_@@_given_tl #2}
+  }
+}
+%    \end{macrocode}
+%
 % \section{Packages settings, libraries loading, etc.}
 %
 % We gather here miscellaneous settings.
