@@ -2910,12 +2910,13 @@ backref
 %    \begin{macrocode}
   \setsecnumdepth{none}
   \chapter[\g_@@_title_for_toc_tl]{%
+    \LARGE%
     \g_@@_title_tl
     \tl_if_empty:NF \g_@@_subtitle_tl {%
       \\%
       \g_@@_subtitle_tl
-    }\\[1ex]%
-    \l_@@_authors_box_tl%
+    }\\[2ex]%
+    \l_@@_authors_box_tl\\%
     \l_@@_dates_box_tl
   }
   \setsecnumdepth{subsection}
@@ -2925,7 +2926,8 @@ backref
 %    \begin{macrocode}
   \thispagestyle{@@_article_title_ps}%
 %
-  \l_@@_abstract_box_tl%
+\l_@@_abstract_box_tl%
+\normalsize
   \l_@@_keywords_box_tl
   \par%
   \vskip .5em%
@@ -2938,8 +2940,6 @@ backref
 \tl_gclear:N \g_@@_subtitle_tl
 \tl_gclear:N \g_@@_title_for_toc_tl
 \tl_gclear:N \g_@@_abstract_body_tl
-\bigskip%
-  \normalsize%
 %    \end{macrocode}
 %
 % We clear the authors database from the possible previous article.
