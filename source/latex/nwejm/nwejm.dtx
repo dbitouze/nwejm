@@ -3245,13 +3245,13 @@ backref
 \cs_set_eq:NN \_@@_orig_arcsin \arcsin
 \cs_set_eq:NN \_@@_orig_arctan \arctan
 \RenewDocumentCommand \arccos {} {
-  \IfLanguageName {french}{\Arccos}{\_@@_orig_arccos}%
+  \ifcurrentbaselanguage{french}{\Arccos}{\_@@_orig_arccos}%
 }
 \RenewDocumentCommand \arcsin {} {
-  \IfLanguageName {french}{\Arcsin}{\_@@_orig_arcsin}%
+  \ifcurrentbaselanguage {french}{\Arcsin}{\_@@_orig_arcsin}%
 }
 \RenewDocumentCommand \arctan {} {
-  \IfLanguageName {french}{\Arctan}{\_@@_orig_arctan}%
+  \ifcurrentbaselanguage {french}{\Arctan}{\_@@_orig_arctan}%
 }
 %    \end{macrocode}
 %
@@ -3261,7 +3261,7 @@ backref
 \DeclareMathOperator{\sh}{sh}
 \cs_set_eq:NN \_@@_orig_tanh \tanh
 \RenewDocumentCommand \tanh {} {
-  \IfLanguageName {french}{\operatorname{th}}{\_@@_orig_tanh}%
+  \ifcurrentbaselanguage {french}{\operatorname{th}}{\_@@_orig_tanh}%
 }
 \DeclareMathOperator{\Id}{Id}
 \cs_set_eq:NN \_@@_orig_log \log
@@ -3292,16 +3292,16 @@ backref
 \cs_set_eq:NN \_@@_orig_leq \leq
 \cs_set_eq:NN \_@@_orig_geq \geq
 \RenewDocumentCommand \le {} {%
-  \IfLanguageName {french}{\leqslant}{\_@@_orig_leq}%
+  \ifcurrentbaselanguage {french}{\leqslant}{\_@@_orig_leq}%
 }
 \RenewDocumentCommand \leq {} {%
-  \IfLanguageName {french}{\leqslant}{\_@@_orig_leq}%
+  \ifcurrentbaselanguage {french}{\leqslant}{\_@@_orig_leq}%
 }
 \RenewDocumentCommand \ge {} {%
-  \IfLanguageName {french}{\geqslant}{\_@@_orig_geq}%
+  \ifcurrentbaselanguage {french}{\geqslant}{\_@@_orig_geq}%
 }
 \RenewDocumentCommand \geq {} {%
-  \IfLanguageName {french}{\geqslant}{\_@@_orig_geq}%
+  \ifcurrentbaselanguage {french}{\geqslant}{\_@@_orig_geq}%
 }
 \NewDocumentCommand \N {} {\mathbb{N}}
 \NewDocumentCommand \Z {} {\mathbb{Z}}
