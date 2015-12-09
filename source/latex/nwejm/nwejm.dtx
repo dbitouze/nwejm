@@ -1008,13 +1008,9 @@ backref
 \dim_const:Nn \c_@@_footskip_dim    { 10mm}
 %    \end{macrocode}
 %
-% Inner margins of the initial issue (\#~143) were too small. We make them
-% definitively bigger as of \SI{5}{\milli\meter} ("\c_@@_extra_margin_dim") and
-% make the outer margins smaller of the same dimension.
 %    \begin{macrocode}
-\dim_const:Nn \c_@@_extra_margin_dim { 5mm }
-\dim_const:Nn \c_@@_innermargin_dim { 15mm - \c_@@_potential_bindingoffset_dim + \c_@@_extra_margin_dim}
-\dim_const:Nn \c_@@_outermargin_dim { 30mm - \c_@@_extra_margin_dim }
+\dim_const:Nn \c_@@_innermargin_dim { 23mm }
+\dim_const:Nn \c_@@_outermargin_dim { 30mm }
 \dim_const:Nn \c_@@_inside_cover_box_width_dim { 150mm }%
 \dim_const:Nn \c_@@_innermargin_inside_cover_dim {
   (\c_@@_layoutwidth_dim - \c_@@_inside_cover_box_width_dim)/2
@@ -1145,6 +1141,31 @@ backref
 }%
 %    \end{macrocode}
 %
+% We create a constant token list that contains the geometry of the back cover.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_backcover_geometry_tl {%
+  ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
+  ,layoutoffset=\c_@@_potential_layoutoffset_dim
+  % ,bindingoffset=\c_@@_potential_bindingoffset_dim
+  ,top=\c_@@_topmargin_backcover_dim%
+  % ,top=\c_@@_topmargin_dim-15mm%
+  % ,headheight=\c_@@_headheight_dim
+  % ,headsep=\c_@@_headsep_dim-18mm
+  ,bottom=\c_@@_bottommargin_backcover_dim
+  % ,footskip=\c_@@_footskip_dim
+  ,inner=\c_@@_innermargin_backcover_dim
+  ,outer=\c_@@_outermargin_backcover_dim
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
 % We create a constant token list that contains the geometry of the main pages.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_main_geometry_tl {%
@@ -1152,7 +1173,8 @@ backref
   ,layoutoffset=\c_@@_potential_layoutoffset_dim
   ,textwidth=\c_@@_layoutwidth_dim*3/4
   ,textheight=\c_@@_layoutheight_dim*3/4
-  ,marginratio={4\string :6,5\string :7}
+  % ,marginratio={4\string :6,5\string :7}
+  ,inner=\c_@@_innermargin_dim
   ,headheight=\c_@@_headheight_dim
   ,footskip=\c_@@_footskip_dim
   %
