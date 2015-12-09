@@ -2903,12 +2903,10 @@ backref
 }
 %    \end{macrocode}
 %
-% The article's titles are produced thanks to the ×\chapter× otherwise, in an
-% article starting with several pages without any section, the corresponding
-% header contains the reference name of the previous article instead of being
-% empty. This chapter is unnumbered, otherwise the corresponding bookmark
-% is numbered, but not through the starred version of ×\chapter×, because we
-% need a title in the TOC.
+% The article's titles are produced thanks to the ×\chapter× which is
+% unnumbered (otherwise the corresponding bookmark is numbered), but not through
+% the starred version of ×\chapter× (because we need its -- alternative title in
+% the TOC).
 %    \begin{macrocode}
   \setsecnumdepth{none}
   \chapter[\g_@@_title_for_toc_tl]{%
