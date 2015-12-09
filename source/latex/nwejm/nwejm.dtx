@@ -1716,20 +1716,12 @@ backref
 % \subsection{Titles options}
 %
 % \begin{macro}{shorttitle}
-% \begin{macro}{notintoc}
-% Some keys options for article's title are created:
-% \begin{itemize}
-% \item "shorttitle" for the possible alternative title to appear in the table
-%   of contents and in the headers,
-% \item "notintoc", a flag that, if true, prevents the title to appear in the
-%   table of contents.
-% \end{itemize}
-%
+%   The "shorttitle" key option is dedicated to the possible alternative title
+%   to appear in the table of contents and in the headers,
 %    \begin{macrocode}
 \keys_define:nn { nwejm/title }
 {
   short .tl_gset:N = \g_@@_short_title_tl,
-  notintoc .bool_gset:N = \g_@@_title_not_in_toc_bool,
 %    \end{macrocode}
 %
 % The following options, when used, must receive a value.
@@ -2557,7 +2549,6 @@ backref
   \int_gincr:N \g_@@_articles_int
   \tl_gclear:N \g_@@_short_title_tl
   \tl_gclear:N \g_@@_short_subtitle_tl
-  \bool_gset_false:N \g_@@_title_not_in_toc_bool
   %
   \IfNoValueF {#1}
   {
@@ -2581,8 +2572,6 @@ backref
 %    \begin{macrocode}
 \tl_new:N \g_@@_subtitle_tl
 \NewDocumentCommand \subtitle { o m } {
-  \bool_gset_false:N \g_@@_subtitle_not_in_toc_bool
-  %
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm/subtitle } { #1 }
