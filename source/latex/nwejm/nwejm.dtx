@@ -232,26 +232,6 @@ Running "make install" installs the files in the local TeX tree.
 \ExplSyntaxOn
 %    \end{macrocode}
 %
-% \subsection{Class loading}
-%
-%    \begin{macrocode}
-% As subsequent class, the \Cls{book} is loaded, with "openany", "english" and
-% "french" options.
-%    \begin{macrocode}
-\PassOptionsToClass{openany,french,ngerman,dutch,english}{book}
-\LoadClass { book }
-\PassOptionsToPackage{table,cmyk}{xcolor}%
-\PassOptionsToPackage{export}{adjustbox}%
-\PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
-\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
-\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%</class|class-article>
-%    \end{macrocode}
-%
 % \subsection{Class options}
 %
 %    \begin{macrocode}
@@ -305,19 +285,53 @@ Running "make install" installs the files in the local TeX tree.
   },%
 }%
 \bool_gset_true:N \g_@@_no_inside_backcover_bool
-%
-\ProcessKeysOptions { nwejm }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 %</class>
 %    \end{macrocode}
 %
-% \section{Packages loading}
-%
 %    \begin{macrocode}
 %<*class|class-article>
 %    \end{macrocode}
+%
+%    \begin{macrocode}
+\keys_define:nn { nwejm }
+{
+  10pt .code:n = {%
+    \PassOptionsToClass{french,ngerman,dutch,english,10pt}{book}
+  },%
+  11pt .code:n = {%
+    \PassOptionsToClass{french,ngerman,dutch,english,11pt}{book}
+  },%
+  12pt .code:n = {%
+    \PassOptionsToClass{french,ngerman,dutch,english,12pt}{book}
+ },%
+}%
+%
+\ProcessKeysOptions { nwejm }
+%    \end{macrocode}
+%
+% \subsection{Class loading}
+%
+%    \begin{macrocode}
+% As subsequent class, the \Cls{book} is loaded, with "openany", "english" and
+% "french" options.
+%    \begin{macrocode}
+\LoadClass { book }
+\PassOptionsToPackage{table,cmyk}{xcolor}%
+\PassOptionsToPackage{export}{adjustbox}%
+\PassOptionsToPackage{fleqn}{mathtools}%
+\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
+\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+% \section{Packages loading}
 %
 % Many of the \nwejmcl{} features are provided by third party packages. In this
 % section, we load them and outline their features interesting from the \nwejmcl{}
