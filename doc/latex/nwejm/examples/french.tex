@@ -1,0 +1,25 @@
+\selectlanguage{french}
+%
+\title{Titre de l'article (french)}
+\author[affiliation={Affiliation 1}]{Last1, First1}
+\author[affiliation=[aff2]{Affiliation 2}]{Last2, First2}
+\author[affiliation={Affiliation 3},affiliation={Affiliation 3 bis}]{Last3, First3}
+\author[affiliation={Affiliation 4},affiliationtagged={aff2}]{Last4, First4}
+%
+\nocite{*}
+%
+\sample{%
+  \begin{enumerate}
+  \item It\footnote{Foo bar.} is well known\autocite{baez/article}
+    that... Moreover, it is well known\autocite{companion} that...
+  \item \textcite{baez/article} have proved... Moreover, \textcite{companion}
+    have proved...
+  \item This has been proved in \cite{baez/article}. Moreover, this has been
+    proved in \cite{companion}.
+  \end{enumerate}
+}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "issue"
+%%% End:

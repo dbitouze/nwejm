@@ -1,0 +1,1354 @@
+%%
+%% This is file `nwejmart.cls',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% nwejm.dtx  (with options: `class-article')
+%% -------:| -----------------------------------------------------------------
+%%   nwejm:| Class for the journal "North-Western European Journal of Mathematics"
+%%  Author:| Denis Bitouze
+%%  E-mail:| denis.bitouze@lmpa.univ-littoral.fr
+%% License:| Released under the LaTeX Project Public License v1.3c or later
+%%     See:| http://www.latex-project.org/lppl.txt
+%% 
+\RequirePackage{silence}%
+\WarningFilter{kpfonts}{With 'easyscsl' option}
+\RequirePackage{xpatch}%
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesExplClass
+  {nwejmart}
+  {2015/09/30}
+  {1.00}
+  {
+    Class for the journal^^J
+    "North-Western European Journal of Mathematics".
+~(Author version.)
+  }
+\RequirePackage{l3keys2e}
+\RequirePackage{xparse}
+\IfFileExists{l3sort.sty}{
+  \RequirePackage{l3sort}
+}{
+}
+\ExplSyntaxOn
+\keys_define:nn { nwejm }
+{
+  10pt .code:n = {%
+    \PassOptionsToClass{french,ngerman,dutch,english,10pt}{book}
+  },%
+  11pt .code:n = {%
+    \PassOptionsToClass{french,ngerman,dutch,english,11pt}{book}
+  },%
+  12pt .code:n = {%
+    \PassOptionsToClass{french,ngerman,dutch,english,12pt}{book}
+ },%
+}%
+\ProcessKeysOptions { nwejm }
+\LoadClass { book }
+\PassOptionsToPackage{table,cmyk}{xcolor}%
+\PassOptionsToPackage{export}{adjustbox}%
+\PassOptionsToPackage{fleqn}{mathtools}%
+\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
+\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+\RequirePackage[group=false]{standalone}%
+\pdftex_if_engine:TF
+  {
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[utf8]{inputenc}
+  }{
+    \RequirePackage{fontspec}
+  }
+\RequirePackage[pagestyles]{titlesec}%
+\RequirePackage{graphicx}%
+\RequirePackage{adjustbox}%
+\RequirePackage{zref-totpages}
+\RequirePackage{zref-xr}%
+\RequirePackage[multiple]{footmisc}%
+\RequirePackage[autostyle]{csquotes}%
+\RequirePackage[%
+backend=biber,
+defernumbers=true,
+dashed=false,
+firstinits,
+uniquename=init,
+style=authoryear,
+backref
+]{biblatex}%
+\RequirePackage{array}
+\RequirePackage{booktabs}
+\RequirePackage{varioref}
+\RequirePackage{mathtools}
+\RequirePackage{mathrsfs}
+\RequirePackage{esvect}
+\RequirePackage[easyscsl,noDcommand]{kpfonts}
+\RequirePackage{translations}%
+\RequirePackage{geometry}
+\RequirePackage{babel}%
+\RequirePackage{tocvsec2}
+\RequirePackage{etoc}%
+\RequirePackage[babel=true]{microtype}%
+\RequirePackage[useregional]{datetime2}%
+\RequirePackage[inline]{enumitem}%
+\RequirePackage{environ}
+\RequirePackage{amsthm}
+\RequirePackage{thmtools}
+\RequirePackage[hyperfootnotes=false,hidelinks,hypertexnames=false]{hyperref}%
+\RequirePackage[numbered]{bookmark}%
+\RequirePackage[nowarn]{glossaries}%
+\RequirePackage{cleveref}%
+\makeglossaries
+\setglossarystyle{indexhypergroup}
+\setacronymstyle{long-sc-short}
+\msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
+  {Please~specify~`#1=<number>',
+    ~otherwise~`<number>'~will~be~set~to
+    ~`\int_use:N\c__nwejm_first_issue_number_int'.}
+\msg_new:nnnn{nwejm}{unknown-choice}{Choice~`#3'~invalid!}
+  {Please~specify~#1=#2.}
+\msg_new:nnn{__nwejm}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
+   with~ `#1'.~ This~ one~ will~ be~ ignored.}
+\int_new:N \g__nwejm_articles_int
+\int_const:Nn \c__nwejm_first_issue_number_int { 1 }
+\int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
+\int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
+\int_const:Nn \c__nwejm_interval_in_months_int { 6 }
+\tl_const:Nn \c__nwejm_images_directory_string_tl {images}
+\tl_const:Nn \c__nwejm_issue_images_path_string_tl {\c__nwejm_images_directory_string_tl}
+\tl_const:Nn \c__nwejm_preliminary_version_string_tl {%
+  This~document~is~a~draft~that~lets~you~check~the~integrity~of~original~text~and
+  bibliography~of~your~article~to~appear~in~the~next~issue~of~the
+  \c__nwejm_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
+}
+\tl_const:Nn \c__nwejm_msc_string_tl {\textsc{msc}}
+\tl_const:Nn \c__nwejm_colon_tl {
+  \ifcurrentbaselanguage{french}{\FBcolonspace}{}:
+  % \ifundef{\Fcolonspace}{\FBcolonspace}{\Fcolonspace}:
+}
+\tl_const:Nn \c__nwejm_aside_string_tl {--}
+\tl_const:Nn \c__nwejm_draftwatermark_string_tl {draft}
+\tl_const:Nn \c__nwejm_issue_bib_file_suffix_string_tl {__nwejm}
+\tl_const:Nn \c__nwejm_issue_bib_file_string_tl {\c_job_name_tl\c__nwejm_issue_bib_file_suffix_string_tl.bib}
+\tl_const:Nn \c__nwejm_issue_bib_path_string_tl {\c__nwejm_issue_bib_file_string_tl}
+\tl_const:Nn \c__nwejm_issue_bib_key_tl {\int_use:N \g__nwejm_issue_number_int}
+\tl_const:Nn \c__nwejm_journal_short_title_string_tl {\textsc{nwejm}}
+\tl_const:Nn \c__nwejm_journal_title_string_tl {
+  North-Western~European~Journal~of~Mathematics%
+}
+\tl_const:Nn \c__nwejm_nwejm_class_name_tl {nwejm}
+\tl_const:Nn \c__nwejm_nwejmarticle_class_name_tl {nwejmart}
+\bool_new:N \g__nwejm_frontcover_bool
+\bool_new:N \g__nwejm_inside_frontcover_bool
+\bool_new:N \g__nwejm_inside_backcover_bool
+\bool_new:N \g__nwejm_frontmatter_bool
+\bool_new:N \g__nwejm_mainmatter_bool
+\bool_new:N \g__nwejm_backmatter_bool
+\bool_new:N \g__nwejm_backcover_bool
+\dim_const:Nn \c__nwejm_layoutheight_dim { 240mm}
+\dim_const:Nn \c__nwejm_layoutwidth_dim  { 170mm}
+\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 5mm}
+\bool_if:NTF {\g__nwejm_for_printer_bool} {
+  \dim_const:Nn \c__nwejm_potential_layoutoffset_dim { \c__nwejm_printer_layoutoffset_dim}
+}{
+  \dim_const:Nn \c__nwejm_potential_layoutoffset_dim {\c_zero_dim}
+}
+\int_const:Nn \c__nwejm_thresold_a_int {68}
+\int_const:Nn \c__nwejm_thresold_b_int {80}
+\int_const:Nn \c__nwejm_thresold_c_int {88}
+\int_const:Nn \c__nwejm_thresold_d_int {96}
+\int_const:Nn \c__nwejm_thresold_e_int {104}
+\int_const:Nn \c__nwejm_thresold_f_int {120}
+\dim_const:Nn \c__nwejm_bindingoffset_a_dim {3mm}
+\dim_const:Nn \c__nwejm_bindingoffset_b_dim {3.5mm}
+\dim_const:Nn \c__nwejm_bindingoffset_c_dim {3.9mm}
+\dim_const:Nn \c__nwejm_bindingoffset_d_dim {4.1mm}
+\dim_const:Nn \c__nwejm_bindingoffset_e_dim {4.5mm}
+\dim_const:Nn \c__nwejm_bindingoffset_f_dim {5mm}
+\zexternaldocument[self]{\jobname}%
+\int_new:N \g__nwejm_total_pages_number_int%
+\int_new:N \g__nwejm_total_inside_pages_number_int%
+\int_gset:Nn \g__nwejm_total_pages_number_int { \zref@extractdefault{selfLastPage}{abspage}{0} }
+\int_gset:Nn \g__nwejm_total_inside_pages_number_int { \g__nwejm_total_pages_number_int - 4 }
+\int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_a_int}
+{
+  \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c_zero_dim }
+}{
+  \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_b_int}
+  {
+    \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_a_dim }
+  }{
+    \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_c_int}
+    {
+      \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_b_dim }
+    }{
+      \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_d_int}
+      {
+        \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_c_dim }
+      }{
+        \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_e_int}
+        {
+          \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_d_dim }
+        }{
+          \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_f_int}
+          {
+            \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_e_dim }
+          }{
+            \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_f_dim }
+          }
+        }
+      }
+    }
+  }
+}
+\bool_if:NTF {\g__nwejm_cover_bool} {
+  \dim_const:Nn \c__nwejm_potential_bindingoffset_dim { \c__nwejm_printer_bindingoffset_dim }
+}{
+  \dim_const:Nn \c__nwejm_potential_bindingoffset_dim {\c_zero_dim}
+}
+\dim_const:Nn \c__nwejm_paperheight_dim { \c__nwejm_layoutheight_dim+2\c__nwejm_potential_layoutoffset_dim}
+\bool_if:NTF {\g__nwejm_cover_bool} {
+  \dim_const:Nn \c__nwejm_paperwidth_dim  {
+    \c__nwejm_layoutwidth_dim
+    +
+    \c__nwejm_potential_layoutoffset_dim
+    +\c__nwejm_potential_bindingoffset_dim
+  }
+}{
+  \dim_const:Nn \c__nwejm_paperwidth_dim  {
+    \c__nwejm_layoutwidth_dim
+    +
+    2
+    \c__nwejm_potential_layoutoffset_dim
+    +\c__nwejm_potential_bindingoffset_dim
+  }
+}
+\dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
+\dim_const:Nn \c__nwejm_topmargin_frontcover_dim {
+  \c__nwejm_topmargin_dim
+  + 30mm
+}
+\dim_const:Nn \c__nwejm_topmargin_inside_cover_dim   {
+  \c__nwejm_topmargin_dim
+  % +10mm
+}
+\dim_const:Nn \c__nwejm_topmargin_front_matter_dim   {
+  \c__nwejm_topmargin_inside_cover_dim
+}
+\dim_const:Nn \c__nwejm_headsep_dim     { 7.5mm}
+\dim_const:Nn \c__nwejm_headsep_frontcover_dim {
+  \c__nwejm_headsep_dim
+  +31mm
+  % -\c__nwejm_potential_layoutoffset_dim
+}
+\dim_const:Nn \c__nwejm_headsep_inside_frontcover_dim {
+  \c__nwejm_headsep_dim
+  +7mm
+}
+\dim_const:Nn \c__nwejm_headsep_front_matter_dim {
+  \c__nwejm_headsep_inside_frontcover_dim
+}
+\dim_const:Nn \c__nwejm_headheight_dim  { 10mm }
+\dim_const:Nn \c__nwejm_botmargin_dim   { 30mm}
+\dim_const:Nn \c__nwejm_footskip_dim    { 10mm}
+\dim_const:Nn \c__nwejm_innermargin_dim { 23mm }
+\dim_const:Nn \c__nwejm_outermargin_dim { 30mm }
+\dim_const:Nn \c__nwejm_inside_cover_box_width_dim { 150mm }%
+\dim_const:Nn \c__nwejm_innermargin_inside_cover_dim {
+  (\c__nwejm_layoutwidth_dim - \c__nwejm_inside_cover_box_width_dim)/2
+  - \c__nwejm_potential_bindingoffset_dim
+  % + \c__nwejm_adjustmargin_dim
+}
+\dim_const:Nn \c__nwejm_outermargin_inside_cover_dim {
+  (\c__nwejm_layoutwidth_dim - \c__nwejm_inside_cover_box_width_dim)/2
+  % - \c__nwejm_adjustmargin_dim
+}
+\dim_const:Nn \c__nwejm_innermargin_backcover_dim { 10mm }
+\dim_const:Nn \c__nwejm_outermargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
+\dim_const:Nn \c__nwejm_topmargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
+\dim_const:Nn \c__nwejm_bottommargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
+\dim_const:Nn \c__nwejm_front_matter_extra_innermargin_dim    { \c_zero_dim }
+\dim_const:Nn \c__nwejm_front_matter_extra_outermargin_dim    { \c_zero_dim }
+\dim_const:Nn \c__nwejm_inside_cover_offset_dim { \c_zero_dim }%
+\geometry{%
+  papersize={\c__nwejm_paperwidth_dim,\c__nwejm_paperheight_dim}
+}
+\tl_const:Nn \c__nwejm_main_geometry_tl {%
+  ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
+  ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
+  ,textwidth=\c__nwejm_layoutwidth_dim*3/4
+  ,textheight=\c__nwejm_layoutheight_dim*3/4
+  % ,marginratio={4\string :6,5\string :7}
+  ,inner=\c__nwejm_innermargin_dim
+  ,headheight=\c__nwejm_headheight_dim
+  ,footskip=\c__nwejm_footskip_dim
+  %
+  % ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
+  % ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
+  % % ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
+  % ,top=\c__nwejm_topmargin_dim%
+  % ,headheight=\c__nwejm_headheight_dim
+  % ,headsep=\c__nwejm_headsep_dim
+  % ,bottom=\c__nwejm_botmargin_dim
+  % ,footskip=\c__nwejm_footskip_dim
+  % ,inner=\c__nwejm_innermargin_dim
+  % ,outer=\c__nwejm_outermargin_dim
+}%
+\tl_new:N \l__nwejm_section_header_tl
+\tl_set:Nn \l__nwejm_section_header_tl {
+  \int_compare:nNnTF { \value{section} } > { 0 }
+  {%
+    \thesection.~%
+  }{%
+  }
+  \sectiontitle
+}%
+\newpagestyle{__nwejm_mainmatter_ps}[]{%
+  \sethead%
+  [
+  \slshape\g__nwejm_short_title_tl
+  ]%
+  [%
+  ]%
+  [
+  \DeclareNameAlias{labelname}{firstinits-last}
+  \AtNextCitekey{\defcounter{maxnames}{3}}\citeauthor{\g__nwejm_article_bib_key_tl}
+  ]%
+  {
+  \slshape\l__nwejm_section_header_tl
+  }%
+  {%
+  }%
+  {
+  }%
+  %
+  \setfoot%
+  {}%
+  {\thepage}%
+  {}%
+}
+  \box_new:N \l__nwejm_journal_logo_box
+  \box_new:N \l__nwejm_journal_name_box
+\AfterEndPreamble{%
+  \hbox_set:Nn \l__nwejm_journal_name_box
+  {
+    \bfseries%
+    \adjustbox{stack=l}{%
+      \c__nwejm_journal_title_string_tl
+    }
+  }
+  \hbox_set:Nn \l__nwejm_journal_logo_box
+  {
+    \includegraphics[width=1cm]{ grandMoulinNB }
+  }
+  \hbox_set_to_wd:Nnn \l__nwejm_journal_logo_box { 1cm }
+  {
+    \box_move_down:nn
+    {
+      \box_ht:N \l__nwejm_journal_logo_box / 2
+      -
+      \box_ht:N \l__nwejm_journal_name_box / 2
+    }
+    {
+      \box_use:N \l__nwejm_journal_logo_box
+    }
+  }
+  \box_set_ht:Nn \l__nwejm_journal_logo_box { 0pt }
+  \box_set_dp:Nn \l__nwejm_journal_logo_box { 0pt }
+}
+\newpagestyle{__nwejm_article_title_ps}[]{%
+  % \widenhead{\c_zero_dim}{\c_zero_dim}
+  \sethead%
+  {
+    \box_use:N \l__nwejm_journal_name_box
+  }%
+  {%
+  }%
+  {
+    \box_use:N \l__nwejm_journal_logo_box
+  }%
+  %
+  \setfoot%
+  {}%
+  {\thepage}%
+  {}%
+}
+\AtBeginDocument{%
+  \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
+  % \glsdisablehyper
+}
+\AfterEndPreamble{%
+    \g__nwejm_mainmatter_switch_tl
+}
+\int_new:N \g__nwejm_issue_number_int
+\int_new:N \g__nwejm_issue_month_int
+\int_new:N \g__nwejm_issue_year_int
+\tl_new:N \g__nwejm_frontcover_image_options_tl
+\keys_define:nn { nwejm/issuesetup }
+{
+  number .int_gset:N = \g__nwejm_issue_number_int,
+  volume .int_gset:N = \g__nwejm_issue_volume_int,
+  volume .value_required:,
+  volume .initial:n = 0,
+}
+\keys_define:nn { nwejm/title }
+{
+  short .tl_gset:N = \g__nwejm_short_title_tl,
+  short .value_required:,
+}
+\keys_define:nn { nwejm/dates }
+{
+  received .tl_gset:N = \g__nwejm_issue_received_tl,
+  accepted .tl_gset:N = \g__nwejm_issue_accepted_tl,
+  online   .tl_gset:N = \g__nwejm_issue_online_tl,
+  received .value_required:,
+  accepted .value_required:,
+  online   .value_required:,
+}
+\quark_new:N \q__nwejm
+\int_new:N \l_author_int
+\prop_new:N \g_authors_prop
+\prop_new:N \l_affiliations_tagged_prop
+\cs_generate_variant:Nn \prop_put_if_new:Nnn { NVn }
+\cs_generate_variant:Nn \prop_gput_if_new:Nnn { Nxn }
+\cs_generate_variant:Nn \prop_put_if_new:Nnn { NnV }
+\cs_new:Npn \__nwejm_prop_count:nn #1#2 { + 1 }
+\cs_new:Npn \__nwejm_prop_count:N #1
+{ \int_eval:n { 0 \prop_map_function:NN #1 \__nwejm_prop_count:nn } }
+\NewDocumentCommand \__nwejm_author_affiliation:ww { o u\q__nwejm }
+{
+  \stepcounter{footnote}
+  \prop_put_if_new:NVn \l_tmpa_prop {\the\c@footnote} {#2}
+  \IfValueT{#1}{%
+    \prop_put_if_new:NnV \l_affiliations_tagged_prop {#1} {\the\c@footnote}
+  }
+}
+\keys_define:nn { nwejm / authors }
+{
+  email .tl_gset:N = \g__nwejm_people_email_tl,
+  affiliation .code:n = {%
+    \__nwejm_author_affiliation:ww #1 \q__nwejm
+  },
+  affiliationtagged .code:n = {%
+    \prop_get:NnNTF \l_affiliations_tagged_prop {#1} \l_tmpa_tl
+    {%
+      \prop_put_if_new:NVn \l_tmpa_prop {\l_tmpa_tl} {}
+    }{
+      \msg_error:nnn{__nwejm}{unknown-tag}{#1}
+    }
+  },
+  affiliation .value_required:,
+  affiliationtagged .value_required:,
+}
+\tl_new:N \l_nwejm_newtheorem_style_tl
+\keys_define:nn { nwejm/newtheorem }
+{
+  title / french .tl_set:N = \l__nwejm_newtheorem_french_title_tl,
+  title / english .tl_set:N = \l__nwejm_newtheorem_english_title_tl,
+  title / german .tl_set:N = \l__nwejm_newtheorem_german_title_tl,
+  title / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_tl,
+  title / french .value_required:,
+  title / english .value_required:,
+  title / german .value_required:,
+  title / dutch .value_required:,
+  %
+  style .choice:,
+  style / theorem .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {theorem}},
+  style / definition .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {definition}},
+  style / proof .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {proof}},
+  style / unknown .code:n =
+  \msg_error:nnxxx { nwejm } { unknown-choice }
+  { style } % Name of choice key
+  { theorem~or~definition~or~proof } % Valid choices
+  { \exp_not:n {#1} } % Invalid choice given
+}
+\tl_new:N \g__nwejm_nwejm_short_string_tl
+\tl_new:N \g__nwejm_nwejm_string_tl
+\tl_gset:Nn \g__nwejm_nwejm_short_string_tl {
+  \cs_if_exist:cTF {texorpdfstring}
+  {
+    \texorpdfstring{\emph{\c__nwejm_journal_short_title_string_tl}}{\c__nwejm_journal_short_title_string_tl}
+  }{%
+    \emph{\c__nwejm_journal_short_title_string_tl}
+  }%
+}
+\tl_gset:Nn \g__nwejm_nwejm_string_tl {
+  \cs_if_exist:cTF {texorpdfstring}
+  {
+    \texorpdfstring{\emph{\c__nwejm_journal_title_string_tl}}{\c__nwejm_journal_title_string_tl}
+  }{%
+    \emph{\c__nwejm_journal_title_string_tl}
+  }%
+}
+\tl_new:N \l__nwejm_pdftitle_string_tl
+\tl_new:N \l__nwejm_pdfauthor_string_tl
+\tl_set:Nn \l__nwejm_pdftile_string_tl {
+  \c__nwejm_journal_title_string_tl\space--\space{}N^^c2^^b0\int_use:N\g__nwejm_issue_number_int
+}
+\tl_set:Nn \l__nwejm_pdfauthor_string_tl {
+  \g__nwejm_nwejm_string_tl
+}
+\cs_new_protected:Nn \__nwejm_email:n
+  {
+    \href{mailto:#1}{\nolinkurl{#1}}%
+  }
+\tl_new:N \l__nwejm_crossref_tl
+\cs_new_protected:Nn \__nwejm_populate_bib_file:nn
+{
+  \int_if_exist:cF {g__nwejm_#2_int}
+  {
+    \int_new:c {g__nwejm_#2_int}
+  }
+  \int_incr:c {g__nwejm_#2_int}
+  \tl_if_in:nnTF { #2 } { author } {
+    \tl_set:Nn \l__nwejm_crossref_tl {%
+      \c__nwejm_issue_bib_key_tl
+      -art-
+      \int_use:N \g__nwejm_articles_int
+    }
+  } {
+    \tl_set:Nn \l__nwejm_crossref_tl {\c__nwejm_issue_bib_key_tl}
+  }
+  \tl_set:Nn \l__nwejm_people_first_last_name_tl {#1}
+  % \tl_show:N \g__nwejm_article_bib_key_tl
+  % \int_show:N \g__nwejm_articles_int
+  \iow_now:Nx \g__nwejm_bib_out_iow {%
+    @article{
+      \c__nwejm_issue_bib_key_tl -#2- \int_use:c {g__nwejm_#2_int},
+      \iow_newline:
+      author={\exp_not:V\l__nwejm_people_first_last_name_tl},
+      \iow_newline:
+      options={skipbib},
+      \iow_newline:
+      crossref  = {\l__nwejm_crossref_tl}
+      \iow_newline:
+    }
+    \iow_newline:
+  }%
+}
+\cs_new_protected:Nn \__nwejm_date:n
+{
+  \tl_if_exist:NTF {#1}
+  {
+    \tl_if_empty:NTF {#1}
+    {
+      \c__nwejm_unspecified_date_string_tl
+    }{
+      \DTMdate{#1}%
+    }
+  }{
+    \c__nwejm_unspecified_date_string_tl
+  }
+}
+\tl_new:N \g__nwejm_display_dates_tl%
+\tl_gset:Nn \g__nwejm_display_dates_tl {%
+  \footnotesize%
+  \GetTranslation{Received}\c__nwejm_colon_tl\space
+  \__nwejm_date:n{\g__nwejm_issue_received_tl}/%
+  \GetTranslation{Accepted}\c__nwejm_colon_tl\space
+  \__nwejm_date:n{\g__nwejm_issue_accepted_tl}/%
+  \GetTranslation{Online}\c__nwejm_colon_tl\space \__nwejm_date:n{\g__nwejm_issue_online_tl}
+  \tl_gclear:N \g__nwejm_issue_received_tl
+  \tl_gclear:N \g__nwejm_issue_accepted_tl
+  \tl_gclear:N \g__nwejm_issue_online_tl
+}
+\seq_new:N \l__nwejm_keywords_seq
+\tl_new:N \l__nwejm_keywords_tl
+\NewDocumentCommand \keywords { m } {
+  \seq_clear:N \l__nwejm_keywords_seq
+  \tl_clear:N \l__nwejm_keywords_tl
+  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
+  \seq_set_map:NNn \l__nwejm_keywords_seq \l_tmpa_seq {
+    \exp_not:n {
+      % \textbf { ##1 } % It is possible to format each of the keywords
+      ##1
+    }
+  }
+  \tl_set:Nn \l__nwejm_keywords_tl { \seq_use:Nn \l__nwejm_keywords_seq {,~} }
+    \hypersetup{pdfkeywords=\l__nwejm_keywords_tl}
+}
+\seq_new:N \l__nwejm_msc_seq
+\tl_new:N \l__nwejm_msc_tl
+\NewDocumentCommand \msc { m } {
+  \seq_clear:N \l__nwejm_msc_seq
+  \tl_clear:N \l__nwejm_msc_tl
+  %
+  % does what the name suggests, set a sequence from the clist
+  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
+  % applies final arg to each element of second seq and stores result in first seq
+  \seq_set_map:NNn \l__nwejm_msc_seq \l_tmpa_seq {
+    % \exp_not:n {
+      % \textbf { ##1 } % It is possible to format each of the msc
+      ##1
+    % }
+  }
+  %
+  % \seq_use puts the items from the seq back in the input with ",~" as a separator
+  \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
+%%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
+}
+\NewDocumentCommand \dates { m } {
+  \keys_set:nn { nwejm/dates } { #1 }
+}
+\NewDocumentCommand \inputarticle { O{./} m } {%
+  \newrefsection
+  \inputfrom{#1}{#2}
+  \setcounter{footnote}{0}
+  \setcounter{section}{0}
+  \setcounter{figure}{0}
+  \setcounter{table}{0}
+  \setcounter{equation}{0}
+  \setcounter{Theorem}{0}
+  \setcounter{Corollary}{0}
+  \setcounter{Conjecture}{0}
+  \setcounter{Proposition}{0}
+  \setcounter{Lemma}{0}
+  \setcounter{Axiom}{0}
+  \setcounter{Definition}{0}
+  \setcounter{Remark}{0}
+  \setcounter{Example}{0}
+  \setcounter{Notation}{0}
+}
+\AtBeginDocument{%
+\tl_new:N \g__nwejm_bib_issue_date_tl
+\tl_gset:Nn
+\g__nwejm_bib_issue_date_tl {
+  \int_use:N \g__nwejm_issue_year_int -
+  \int_compare:nNnT {\g__nwejm_issue_month_int}<{10}
+  {
+    0
+  }
+  \int_use:N \g__nwejm_issue_month_int
+}
+  \iow_now:Nx \g__nwejm_bib_out_iow {%
+    @periodical{\c__nwejm_issue_bib_key_tl,\iow_newline:
+      issuetitle   = {\exp_not:f\c__nwejm_journal_title_string_tl},\iow_newline:
+      date         = {\g__nwejm_bib_issue_date_tl},\iow_newline:
+      number       = \int_use:N \g__nwejm_issue_number_int,\iow_newline:
+      % issn         = {\l__nwejm_journal_issn_tl},\iow_newline:
+      options      = {skipbib}\iow_newline:
+    }
+    \iow_newline:
+  }%
+}
+\tl_new:N \g__nwejm_title_tl
+\RenewDocumentCommand \title { o m } {
+  \cleardoublepage
+  \int_gincr:N \g__nwejm_articles_int
+  \tl_gclear:N \g__nwejm_short_title_tl
+  \tl_gclear:N \g__nwejm_short_subtitle_tl
+  %
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm/title } { #1 }
+  }
+  \tl_gset:Nn \g__nwejm_title_tl {#2}
+  \tl_if_empty:NT \g__nwejm_short_title_tl {%
+    \tl_gset_eq:NN \g__nwejm_short_title_tl \g__nwejm_title_tl
+  }
+    \hypersetup{pdftitle=\g__nwejm_short_title_tl}
+}
+\tl_new:N \g__nwejm_subtitle_tl
+\NewDocumentCommand \subtitle { o m } {
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm/subtitle } { #1 }
+  }
+  \tl_gset:Nn \g__nwejm_subtitle_tl {#2}
+  \tl_if_empty:NT \g__nwejm_short_subtitle_tl {%
+    \tl_gset_eq:NN \g__nwejm_short_subtitle_tl \g__nwejm_subtitle_tl
+  }
+}
+\RenewDocumentCommand \author { O{} m } {
+  \cleardoublepage
+  \int_incr:N \l_author_int
+  \prop_gput_if_new:Nxn \g_authors_prop {author_\int_use:c {l_author_int}} {#2}
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm/authors } { #1 }
+  }
+  \prop_set_eq:cN {l_author_ \int_use:c {l_author_int} _affiliations_prop} \l_tmpa_prop
+  \prop_clear:N \l_tmpa_prop
+  \__nwejm_populate_bib_file:nn {#2}{author-art-\int_use:N \g__nwejm_articles_int}
+  \tl_if_empty:NTF \l__nwejm_people_first_last_names_tl {%
+    \tl_put_right:Nx
+    \l__nwejm_people_first_last_names_tl
+    {#2}
+  }{
+    \tl_put_right:Nx
+    \l__nwejm_people_first_last_names_tl
+    {~and~#2}
+  }
+}
+\iow_new:N \g__nwejm_bib_out_iow
+\ior_new:N \g__nwejm_bib_out_ior
+\tl_new:N \g__nwejm_bib_out_tl
+\file_if_exist:nTF { \c__nwejm_issue_bib_path_string_tl }
+{
+  \ior_open:Nn \g__nwejm_bib_out_ior { \c__nwejm_issue_bib_path_string_tl }
+  \ior_str_map_inline:Nn \g__nwejm_bib_out_ior
+  { \tl_gput_right:Nn \g__nwejm_bib_out_tl {#1 \par } }
+  \ior_close:N \g__nwejm_bib_out_ior
+}{
+  \typeout{no file! rerun}
+}
+\iow_open:Nn \g__nwejm_bib_out_iow { \c__nwejm_issue_bib_path_string_tl }
+\tl_new:N \g__nwejm_abstract_body_tl
+\NewDocumentEnvironment{abstract}{}
+  {\CollectAbstract}
+  {\endCollectAbstract}
+\NewEnviron{CollectAbstract}
+  {
+    \tl_gset_eq:NN \g__nwejm_abstract_body_tl \BODY
+  }
+\tl_new:N \g__nwejm_frontmatter_switch_tl%
+\tl_gset:Nn \g__nwejm_frontmatter_switch_tl {
+  \bool_gset_true:N  \g__nwejm_frontmatter_bool
+  \frontmatter
+  \pagestyle{__nwejm_frontmatter_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
+}
+\tl_new:N \g__nwejm_mainmatter_switch_tl%
+\tl_gset:Nn \g__nwejm_mainmatter_switch_tl {
+  \bool_gset_false:N \g__nwejm_frontmatter_bool
+  \bool_gset_true:N \g__nwejm_mainmatter_bool
+  \mainmatter
+  % \SetParskip{\c__nwejm_mainmatter_parskip_skip}
+  \pagestyle{__nwejm_mainmatter_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
+}
+\tl_new:N \g__nwejm_article_acknowledgements_tl%
+\cs_new_protected:Nn \__nwejm_article_acknowledgements:n
+{
+  \tl_gset:Nn \g__nwejm_article_acknowledgements_tl { #1 }
+}
+\tl_new:N \g__nwejm_article_bib_key_tl%
+\tl_new:N \l__nwejm_people_first_last_names_tl
+\tl_new:N \g__nwejm_authors_first_last_names_tl%
+\tl_new:N \g__nwejm_citeauthor_no_firstinits%
+\tl_new:N \g__nwejm_citeauthor_tl%
+\int_new:N \g__nwejm_author_s_number_current_article_int%
+\cs_new_protected:Nn \__nwejm_citeauthor_no_firstinits:n {%
+  \tl_gset:Nn \g__nwejm_citeauthor_tl {%
+    \DeclareNameAlias{labelname}{default}%
+    \group_begin:
+    \togglefalse{blx@firstinits}%
+    \citeauthor{#1}
+    \group_end:
+  }%
+  \cs_if_exist:cTF {texorpdfstring}
+  {
+    \texorpdfstring{\g__nwejm_citeauthor_tl}{}
+  }{%
+    \g__nwejm_citeauthor_tl
+  }%
+}
+\cs_set_eq:NN \__nwejm_orig_multinamedelim \multinamedelim
+\cs_set_eq:NN \__nwejm_orig_finalnamedelim \finalnamedelim
+\cs_new_protected:Nn \__nwejm_maketitle_citeauthor:n
+{
+  \restorecommand\mkbibnamelast
+  \def\multinamedelim  {\hskip 1em \@plus.17fil}%
+  \cs_set_eq:NN \finalnamedelim \multinamedelim
+  \AtNextCitekey{\defcounter{maxnames}{100}}
+  \group_begin:
+  \DeclareNameAlias{labelname}{default}%
+  \togglefalse{blx@firstinits}%
+  \citeauthor{#1}
+  \group_end:
+  \cs_set_eq:NN \multinamedelim \__nwejm_orig_multinamedelim
+  \cs_set_eq:NN \finalnamedelim \__nwejm_orig_finalnamedelim
+  \protected\def\mkbibnamelast#1{%
+    \textsc{\textnohyphenation{#1}}}%
+}
+\cs_new_protected:Nn \__nwejm_display_author:n
+{
+  \seq_clear:N \l_tmpa_seq
+  \prop_get:NnN \g_authors_prop {author_#1} \l_tmpa_tl
+  \prop_map_inline:cn {l_author_ #1 _affiliations_prop} {
+    \seq_put_right:Nx \l_tmpa_seq { ##1 }
+  }
+  \seq_sort:Nn \l_tmpa_seq
+  {
+    \int_compare:nNnTF { ##1 } > { ##2 }
+    { \sort_reversed: }
+    { \sort_ordered: }
+  }
+  \mbox{%
+    \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -author-art- \int_use:N \g__nwejm_articles_int-#1}
+  }
+  \seq_map_inline:Nn \l_tmpa_seq {
+    \prop_get:cnN {l_author_ #1 _affiliations_prop} {##1} \l_tmpb_tl
+    \footnotemark[##1]
+    \tl_if_empty:NF \l_tmpb_tl
+    {
+      \footnotetext[##1]{\l_tmpb_tl}
+    }
+  }
+  \hskip 1em plus .17fil
+}
+\tl_new:N \l__nwejm_bullet_and_rule_tl
+\tl_new:N \l__nwejm_authors_box_tl
+\tl_new:N \l__nwejm_abstract_box_tl
+\tl_new:N \l__nwejm_bullet_and_rule_odd_tl
+\tl_new:N \l__nwejm_bullet_and_rule_even_tl
+\tl_new:N \l__nwejm_title_box_tl
+\tl_new:N \g__nwejm_title_for_toc_tl
+\RenewDocumentCommand \maketitle { s } {
+\tl_gset:Nn \g__nwejm_article_bib_key_tl {%
+  \c__nwejm_issue_bib_key_tl
+  -art-
+  \int_use:N \g__nwejm_articles_int
+}
+\tl_if_empty:NF \g__nwejm_title_tl {%
+  \iow_now:Nx \g__nwejm_bib_out_iow {%
+    @article{
+      \g__nwejm_article_bib_key_tl,
+      \iow_newline:
+      title={\exp_not:V\g__nwejm_title_tl},
+      \iow_newline:
+      \tl_if_empty:NF \g__nwejm_subtitle_tl {%
+        subtitle={\exp_not:V\g__nwejm_subtitle_tl},
+        \iow_newline:
+      }
+      \tl_if_eq:NNF { \g__nwejm_short_title_tl } { \g__nwejm_title_tl } {%
+        shorttitle={\exp_not:V\g__nwejm_short_title_tl},
+        \iow_newline:
+      }%
+      \tl_if_empty:NF \l__nwejm_people_first_last_names_tl
+      {
+        author={\exp_not:V\l__nwejm_people_first_last_names_tl},
+        \iow_newline:
+      }
+      options={skipbib},
+      \iow_newline:
+      crossref  = {\c__nwejm_issue_bib_key_tl}
+    }
+    \iow_newline:
+  }%
+  % \tl_clear:N \l__nwejm_people_first_last_names_tl
+}%
+\tl_set:Nn \l__nwejm_authors_box_tl
+{%
+  \bool_if:nTF { \tl_if_empty_p:N \l__nwejm_people_first_last_names_tl }
+  {
+    \mbox{}
+  }
+  {
+    \int_set:Nn \l_tmpa_int { \__nwejm_prop_count:N \g_authors_prop}
+    \normalsize%
+    \int_step_inline:nnnn {1}{1}{\l_tmpa_int} {
+      \__nwejm_display_author:n {##1}
+    }
+    \prop_gclear:N \g_authors_prop
+  }
+}
+\int_zero:N \l_author_int
+\prop_clear:N \l_affiliations_tagged_prop
+\tl_set:Nn \l__nwejm_dates_box_tl
+{%
+  \g__nwejm_display_dates_tl
+}
+\tl_set:Nn \l__nwejm_keywords_box_tl
+{%
+  \noindent\textbf{\GetTranslation{Keywords}\c__nwejm_colon_tl}~\l__nwejm_keywords_tl.
+}
+\tl_set:Nn \l__nwejm_msc_box_tl
+{%
+  \noindent\textbf{\c__nwejm_msc_string_tl}\c__nwejm_colon_tl\space\l__nwejm_msc_tl.
+}
+\tl_set:Nn \l__nwejm_abstract_box_tl
+{%
+  \mbox{}
+  \tl_if_exist:NTF \g__nwejm_abstract_body_tl
+  {%
+    \small
+    \begin{center}%
+      {\bfseries \abstractname\vspace{-.5em}\vspace{\z@}}%
+    \end{center}%
+    \begin{quotation}
+      \g__nwejm_abstract_body_tl
+    \end{quotation}
+  }
+  {%
+  }%
+}%
+\tl_set:Nn \g__nwejm_title_for_toc_tl
+{
+  \tl_if_empty:NTF \g__nwejm_short_title_tl {%
+    \g__nwejm_title_tl%
+  }{
+    \g__nwejm_short_title_tl%
+  }
+  \bool_if:nF { \tl_if_empty_p:N \g__nwejm_short_subtitle_tl }
+  {
+    \space\textendash{}\space\g__nwejm_short_subtitle_tl
+  }
+  \bool_if:nF { \tl_if_empty_p:N \l__nwejm_people_first_last_names_tl }
+  {
+    \textsl{
+      \cs_if_exist:cTF {texorpdfstring}
+      {
+        \texorpdfstring{%
+          \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
+        }{}
+      }{%
+        \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
+      }%
+    }
+  }
+}
+  \setsecnumdepth{none}
+  \chapter[\g__nwejm_title_for_toc_tl]{%
+    \LARGE%
+    \g__nwejm_title_tl
+    \tl_if_empty:NF \g__nwejm_subtitle_tl {%
+      \\%
+      \g__nwejm_subtitle_tl
+    }\\[2ex]%
+    \l__nwejm_authors_box_tl\\%
+    \l__nwejm_dates_box_tl
+  }
+  \setsecnumdepth{subsection}
+  \thispagestyle{__nwejm_article_title_ps}%
+\l__nwejm_abstract_box_tl%
+\normalsize
+  \l__nwejm_keywords_box_tl
+  \par%
+  \vskip .5em%
+  \l__nwejm_msc_box_tl
+  \par%
+  \vskip .5em%
+ \hypersetup{pdfauthor=\l__nwejm_people_first_last_names_tl}
+\tl_gclear:N \g__nwejm_title_tl
+\tl_gclear:N \g__nwejm_subtitle_tl
+\tl_gclear:N \g__nwejm_title_for_toc_tl
+\tl_gclear:N \g__nwejm_abstract_body_tl
+  \tl_gclear:N \g__nwejm_people_affiliation_tl
+  \tl_gclear:N \g__nwejm_people_email_tl
+  % \tl_gclear:N \g__nwejm_article_acknowledgements_tl
+  \tl_clear:N \l__nwejm_people_first_last_names_tl%
+}
+\DeclarePlainStyle{^^c2^^ab~}{~^^c2^^bb}{`}{'}
+\setcounter{topnumber}{3}
+\renewcommand{\topfraction}{0.8}
+\addtolength{\skip\footins}{.25\baselineskip}
+\setlength{\columnsep}{7mm}%
+\renewcommand{\thesection}{\arabic{section}}%
+\@ifpackageloaded{siunitx}{%
+  \sisetup{locale=FR}
+}
+\arrayrulecolor{__nwejm_arrayrule_color}%
+\RenewDocumentCommand \vec { m } {
+  \vv{#1}
+}
+\LoadDictionaryFor{french}{nwejm}
+\LoadDictionaryFor{english}{nwejm}
+\LoadDictionaryFor{dutch}{nwejm}
+\LoadDictionaryFor{german}{nwejm}
+\cs_new_protected:Nn \__nwejm_new_theorem:nnnnnn
+{
+  \AtBeginDocument{%
+    \IfTranslation{English}{#2}{%
+    }{%
+      \DeclareTranslation{English}{#2}{\MakeUppercase #3}%
+    }
+    \IfTranslation{French}{#2}{%
+    }{%
+      \DeclareTranslation{French}{#2}{\MakeUppercase #4}%
+    }
+    \IfTranslation{German}{#2}{%
+    }{%
+      \DeclareTranslation{German}{#2}{\MakeUppercase #5}%
+    }
+    \IfTranslation{Dutch}{#2}{%
+    }{%
+      \DeclareTranslation{Dutch}{#2}{\MakeUppercase #6}%
+    }
+  }
+  %
+  \declaretheorem[%
+  #1,%
+  name=\protect\GetTranslation{#2}
+  ]{#2}
+  \declaretheorem[%
+  #1,%
+  name=\protect\GetTranslation{#2},
+  numbered=no
+  ]{#2*}
+}
+\cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnn { nnVVVV }
+\declaretheoremstyle[spaceabove=3pt,notefont=\bfseries,bodyfont=\itshape]{theorem}
+\declaretheoremstyle[spaceabove=3pt,notefont=\bfseries,bodyfont=\normalfont]{definition}
+\declaretheoremstyle[spaceabove=3pt,bodyfont=\normalfont,qed=\ensuremath{\qedsymbol},headfont=\normalfont\itshape,numbered=no]{proof}
+\RenewDocumentCommand \newtheorem { O{} m }
+{
+  \tl_clear:N \l__nwejm_newtheorem_style_tl
+  \tl_clear:N \l__nwejm_newtheorem_french_title_tl
+  \tl_clear:N \l__nwejm_newtheorem_english_title_tl
+  \tl_clear:N \l__nwejm_newtheorem_german_title_tl
+  \tl_clear:N \l__nwejm_newtheorem_dutch_title_tl
+  %
+  \tl_set:Nn \l__nwejm_newtheorem_english_title_tl {
+    #2
+  }
+  \tl_set:Nf \l__nwejm_newtheorem_french_title_tl {
+    \l__nwejm_newtheorem_english_title_tl
+  }
+  \tl_set:Nf \l__nwejm_newtheorem_german_title_tl {
+    \l__nwejm_newtheorem_english_title_tl
+  }
+  \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl {
+    \l__nwejm_newtheorem_english_title_tl
+  }
+  \tl_set:Nn \l__nwejm_newtheorem_style_tl {
+    theorem
+  }
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm / newtheorem } { #1 }
+  }
+  %
+  \__nwejm_new_theorem:nnVVVV
+  {style=\l__nwejm_newtheorem_style_tl}
+  {#2}
+  {\l__nwejm_newtheorem_english_title_tl}
+  {\l__nwejm_newtheorem_french_title_tl}
+  {\l__nwejm_newtheorem_german_title_tl}
+  {\l__nwejm_newtheorem_dutch_title_tl}
+}
+\newtheorem{Theorem}
+\newtheorem{Corollary}
+\newtheorem{Conjecture}
+\newtheorem{Proposition}
+\newtheorem{Lemma}
+\newtheorem{Axiom}
+\newtheorem[style=definition]{Definition}
+\newtheorem[style=definition]{Remark}
+\newtheorem[style=definition]{Example}
+\newtheorem[style=definition]{Notation}
+\let\proof\relax
+\let\endproof\relax
+\newtheorem[style=proof]{Proof}
+\cs_new_protected:Nn \__nwejm_clone_theorem:nn
+{
+  \NewDocumentEnvironment{#1}{}
+  {
+    \begin{#2}
+    }{
+    \end{#2}
+  }
+  \NewDocumentEnvironment{#1*}{}
+  {
+    \begin{#2*}
+    }{
+    \end{#2*}
+  }
+}
+\__nwejm_clone_theorem:nn {theorem}{Theorem}
+\__nwejm_clone_theorem:nn {corollary}{Corollary}
+\__nwejm_clone_theorem:nn {conjecture}{Conjecture}
+\__nwejm_clone_theorem:nn {proposition}{Proposition}
+\__nwejm_clone_theorem:nn {lemma}{Lemma}
+\__nwejm_clone_theorem:nn {axiom}{Axiom}
+\__nwejm_clone_theorem:nn {definition}{Definition}
+\__nwejm_clone_theorem:nn {remark}{Remark}
+\__nwejm_clone_theorem:nn {example}{Example}
+\__nwejm_clone_theorem:nn {notation}{Notation}
+\__nwejm_clone_theorem:nn {proof}{Proof}
+\crefname{Theorem}{\GetTranslation{Theorem}}{\GetTranslation{Theorems}}
+\crefname{Corollary}{\GetTranslation{Corollary}}{\GetTranslation{Corollaries}}
+\crefname{Conjecture}{\GetTranslation{Conjecture}}{\GetTranslation{Conjecturs}}
+\crefname{Proposition}{\GetTranslation{Proposition}}{\GetTranslation{Propositions}}
+\crefname{Axiom}{\GetTranslation{Axiom}}{\GetTranslation{Axioms}}
+\crefname{Definition}{\GetTranslation{Definition}}{\GetTranslation{Definitions}}
+\crefname{Example}{\GetTranslation{Example}}{\GetTranslation{Examples}}
+\crefname{Notation}{\GetTranslation{Notation}}{\GetTranslation{Notations}}
+\crefname{Proof}{\GetTranslation{Proof}}{\GetTranslation{Proofs}}
+\crefname{Remark}{\GetTranslation{Remark}}{\GetTranslation{Remarks}}
+\crefname{Lemma}{\GetTranslation{Lemma}}{\GetTranslation{Lemmas}}
+\newlist{assertions}{enumerate}{1}
+\setlist[assertions]{%
+  label=\normalfont(\textsf{\tl_head:f
+    {\GetTranslation{Assertion}}}$\c_math_subscript_token\mathsf{\arabic*}$),
+  ref=(\textsf{\tl_head:f
+    {\GetTranslation{Assertion}}}$_\mathsf{\arabic*}$)
+}
+\DeclareMathOperator{\cotan}{cotan}
+\DeclareMathOperator{\Arccos}{Arccos}
+\DeclareMathOperator{\Arcsin}{Arcsin}
+\DeclareMathOperator{\Arctan}{Arctan}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\Argsh}{Argsh}
+\DeclareMathOperator{\Argth}{Argth}
+\cs_set_eq:NN \__nwejm_orig_arccos \arccos
+\cs_set_eq:NN \__nwejm_orig_arcsin \arcsin
+\cs_set_eq:NN \__nwejm_orig_arctan \arctan
+\RenewDocumentCommand \arccos {} {
+  \ifcurrentbaselanguage{french}{\Arccos}{\__nwejm_orig_arccos}%
+}
+\RenewDocumentCommand \arcsin {} {
+  \ifcurrentbaselanguage {french}{\Arcsin}{\__nwejm_orig_arcsin}%
+}
+\RenewDocumentCommand \arctan {} {
+  \ifcurrentbaselanguage {french}{\Arctan}{\__nwejm_orig_arctan}%
+}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\sh}{sh}
+\cs_set_eq:NN \__nwejm_orig_tanh \tanh
+\RenewDocumentCommand \tanh {} {
+  \ifcurrentbaselanguage {french}{\operatorname{th}}{\__nwejm_orig_tanh}%
+}
+\DeclareMathOperator{\Id}{Id}
+\cs_set_eq:NN \__nwejm_orig_log \log
+\cs_set_eq:NN \__nwejm_orig_lg \lg
+\RenewDocumentCommand \log { s } {
+    \IfBooleanTF {#1}
+  {
+    \__nwejm_orig_log
+  }
+  {
+    \ln
+  }
+}
+\RenewDocumentCommand \lg { s } {
+    \IfBooleanTF {#1}
+  {
+    \__nwejm_orig_lg
+  }
+  {
+    \ln
+  }
+}
+\cs_set_eq:NN \__nwejm_orig_leq \leq
+\cs_set_eq:NN \__nwejm_orig_geq \geq
+\RenewDocumentCommand \le {} {%
+  \ifcurrentbaselanguage {french}{\leqslant}{\__nwejm_orig_leq}%
+}
+\RenewDocumentCommand \leq {} {%
+  \ifcurrentbaselanguage {french}{\leqslant}{\__nwejm_orig_leq}%
+}
+\RenewDocumentCommand \ge {} {%
+  \ifcurrentbaselanguage {french}{\geqslant}{\__nwejm_orig_geq}%
+}
+\RenewDocumentCommand \geq {} {%
+  \ifcurrentbaselanguage {french}{\geqslant}{\__nwejm_orig_geq}%
+}
+\NewDocumentCommand \N {} {\mathbb{N}}
+\NewDocumentCommand \Z {} {\mathbb{Z}}
+\NewDocumentCommand \D {} {\mathbb{D}}
+\NewDocumentCommand \Q {} {\mathbb{Q}}
+\NewDocumentCommand \R {} {\mathbb{R}}
+\NewDocumentCommand \C {} {\mathbb{C}}
+\NewDocumentCommand \K {} {\mathbb{K}}
+\tl_new:N \l__nwejm_given_tl
+\tl_set:Nn \l__nwejm_given_tl {
+  \nonscript\:\delimsize\slash
+  \allowbreak
+  \nonscript\:
+  \mathopen{}
+}%
+\DeclarePairedDelimiterX\__nwejm_set[1]\{\}{%
+  #1
+}
+\NewDocumentCommand \set { m O{} } {
+  \tl_if_empty:nTF {#2} {%
+    \__nwejm_set*{#1}
+  }{
+    \__nwejm_set*{#1\l__nwejm_given_tl #2}
+  }
+}
+\@ifpackageloaded{pgfplots}{%
+  \ifcurrentbaselanguage{french}{%
+    \pgfplotsset{%
+      /pgf/number~format/.cd,
+      use~comma,
+      1000~sep={\,},
+      min~exponent~for~1000~sep=4
+    }%
+  }{
+  }
+}
+\AtEndPreamble{%
+  \defbibheading{__nwejm_subbibliography}[\refname]{%
+    \section{#1}
+  }%
+  \SetCiteCommand{\autocite}%
+}%
+\cs_set_eq:NN \__nwejm_printbibliography \printbibliography
+\RenewDocumentCommand \printbibliography { O{} } {
+  \setcounter{section}{-10}
+  \setsecnumdepth{none}
+  \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
+  \setsecnumdepth{subsection}
+  \setcounter{section}{0}
+}
+\exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
+\DeclareNameFormat{firstinits-last}{%
+  \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
+  \usebibmacro{name:andothers}%
+}
+\renewcommand*\bibnamedelimc{\addnbspace}
+\renewcommand*\bibnamedelimd{\addnbspace}
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}
+}
+\renewbibmacro*{journal}{%
+  \iffieldundef{shortjournal}%
+  {%
+    \iffieldundef{journaltitle}
+    {}
+    {%
+      \printtext[journaltitle]%
+      {%
+        \printfield[titlecase]{journaltitle}%
+        \setunit{\subtitlepunct}%
+        \printfield[titlecase]{journalsubtitle}%
+      }%
+    }%
+  }%
+  {\printtext[journaltitle]{\printfield[titlecase]{shortjournal}}}%
+}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbthinspace}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}
+}
+\DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+\renewrobustcmd{\blx@mkbibfootnote}[2]{%
+  \iftoggle{blx@footnote}
+  {\blx@warning{Nested notes}%
+    \addspace\mkbibparens{#2}}
+  {\unspace
+    \ifnum\blx@notetype=\tw@
+    \expandafter\@firstoftwo
+    \else
+    \expandafter\@secondoftwo
+    \fi
+    {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
+    {%
+      \patchcmd\@makefnmark%
+      {\normalfont}%
+      {\normalfont\bfseries}%
+      {}{}%
+      \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}
+    }
+  }
+}
+\newbibmacro*{__nwejm_cite}{%
+  \iffieldundef{shorthand}{%
+    \ifthenelse{%
+      \ifnameundef{labelname}%
+    }{%
+      \usebibmacro{cite:label}%
+      \setunit{\addcomma\space}%
+    }{%
+      \printnames{labelname}%
+      \ifthenelse{%
+        \iffieldundef{labelyear}%
+      }{%
+      }{%
+        \setunit{\addcomma\space}%
+        \usebibmacro{cite:labelyear+extrayear}%
+        \ifthenelse{%
+          \iffieldundef{labeltitle}%
+        }{%
+        }{%
+          \setunit{\addcomma\space}%
+          \usebibmacro{cite:title}%
+        }
+      }
+    }%
+  }{%
+    \usebibmacro{cite:shorthand}%
+  }%
+}
+\newbibmacro*{cite:title}{%
+  \printtext[bibhyperref]{%
+    \printfield[citetitle]{labeltitle}}}
+\DeclareCiteCommand{\__nwejm_foot_cite}[\mkbibfootnote]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+  \usebibmacro{__nwejm_cite}}
+{%
+  \setlength{\parindent}{\footnotemargin}
+  \multicitedelim\newline\indent
+}
+{\usebibmacro{postnote}}
+\DeclareMultiCiteCommand{\__nwejm_foot_cites}[\mkbibfootnote]{\__nwejm_foot_cite}
+{\addsemicolon\space}
+\DeclareAutoCiteCommand{__nwejm_foot_cite}{\__nwejm_foot_cite}{\__nwejm_foot_cites}
+\ExecuteBibliographyOptions{autocite=__nwejm_foot_cite}
+\ifkp@easyscsl
+\DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
+  \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
+    \fontshape\itdefault}\selectfont}
+\fi
+\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
+\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+\@ifpackageloaded{draftwatermark}{%
+  \SetWatermarkColor{gray!10}%
+  \SetWatermarkFontSize{30mm}%
+  \SetWatermarkText{\MakeUppercase{\c__nwejm_draftwatermark_string_tl}}%
+}{%
+}
+\pdftex_if_engine:T
+  {
+    \renewcommand{\ttdefault}{lmtt}
+  }
+\tl_new:N \g__nwejm_font_designer_text_tl%
+\cs_new_protected:Nn \__nwejm_font_designer_text:n
+{
+  \tl_gset:Nn \g__nwejm_font_designer_text_tl { #1 }
+}
+\NewDocumentCommand \fontdesignertext {m}
+{
+  \__nwejm_font_designer_text:n {#1}%
+}
+\tl_new:N \g__nwejm_printer_text_tl%
+\cs_new_protected:Nn \__nwejm_printer_text:n
+{
+  \tl_gset:Nn \g__nwejm_printer_text_tl { #1 }
+}
+\NewDocumentCommand \printertext {m}
+{
+  \__nwejm_printer_text:n {#1}%
+}
+\NewDocumentCommand \nwejm { s } {
+  \IfBooleanTF {#1}
+  {
+    \g__nwejm_nwejm_string_tl
+  }
+  {
+    \g__nwejm_nwejm_short_string_tl
+  }
+  \xspace
+}
+  \titleformat{\chapter}[block]
+  {\normalfont\centering}{}{0pt}{\Huge}
+  \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+\ExplSyntaxOff
+%% 
+%% Copyright (C) 2015 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License (LPPL), either
+%% version 1.3c of this license or (at your option) any later
+%% version.  The latest version of this license is in the file:
+%% 
+%% http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%% Denis Bitouze.
+%% 
+%% This work consists of the file nwejm.dtx and a Makefile.
+%% Running "make" generates the derived files README, nwejm.pdf and nwejm.cls.
+%% Running "make inst" installs the files in the user's TeX tree.
+%% Running "make install" installs the files in the local TeX tree.
+%% 
+%%
+%% End of file `nwejmart.cls'.
