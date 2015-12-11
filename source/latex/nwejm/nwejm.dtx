@@ -1125,10 +1125,10 @@ backref
     ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
     ,layoutoffset=\c_@@_potential_layoutoffset_dim
     ,bindingoffset=\c_@@_potential_bindingoffset_dim
-    ,top=.5\c_@@_topmargin_inside_cover_dim
+    ,top=\c_@@_topmargin_inside_cover_dim
     ,headheight=\c_@@_headheight_dim
     ,headsep=\c_@@_headsep_inside_frontcover_dim
-    ,bottom=.5\c_@@_botmargin_dim
+    ,bottom=\c_@@_botmargin_dim
     ,footskip=\c_@@_footskip_dim
     % ,inner=1cm
     % ,outer=1cm
@@ -1951,10 +1951,10 @@ backref
       \_@@_citeauthor_no_firstinits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
       ]
       \l_@@_people_affiliation_tl%
-      \space%
-      (\l_@@_people_country_tl)%
-      ,\space%
-      \_@@_email:n {\l_@@_people_email_tl}
+        \space%
+        (\l_@@_people_country_tl)%
+      % ,\space%
+      % \_@@_email:n {\l_@@_people_email_tl}
       \DTLiflastrow{%
       }{%
         % \medskip%
@@ -2034,9 +2034,9 @@ backref
   \pagestyle{@@_inside_frontcover_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c_@@_inside_cover_geometry_tl}%
   \footnotesize%
-    \begin{multicols}{2}
+    \begin{multicols*}{2}
       \setlength{\columnsep}{1mm}
-      \begin{description}[leftmargin=3em]
+      \begin{description}[leftmargin=2em]
       \item[\textsc{\c_@@_editorinchief_string_tl}] \
         \begin{description}[leftmargin=1em]
           \@@_display_people_by_role:n {editorinchief}
@@ -2060,7 +2060,7 @@ backref
           \@@_display_people_by_role:n {managingeditor}
         \end{description}
       \end{description}
-    \end{multicols}
+    \end{multicols*}
   \clearpage%
   \bool_gset_false:N \g_@@_inside_frontcover_bool
   \pagestyle{@@_frontmatter_ps}%
