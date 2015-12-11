@@ -483,7 +483,7 @@ backref
 \tl_new:N \l__nwejm_pdftitle_string_tl
 \tl_new:N \l__nwejm_pdfauthor_string_tl
 \tl_set:Nn \l__nwejm_pdftile_string_tl {
-  \c__nwejm_journal_title_string_tl\space--\space{}N^^c2^^b0\int_use:N\g__nwejm_issue_number_int
+  \c__nwejm_journal_title_string_tl\space--\space{}N°\int_use:N\g__nwejm_issue_number_int
 }
 \tl_set:Nn \l__nwejm_pdfauthor_string_tl {
   \g__nwejm_nwejm_string_tl
@@ -929,7 +929,7 @@ backref
   % \tl_gclear:N \g__nwejm_article_acknowledgements_tl
   \tl_clear:N \l__nwejm_people_first_last_names_tl%
 }
-\DeclarePlainStyle{^^c2^^ab~}{~^^c2^^bb}{`}{'}
+\DeclarePlainStyle{«~}{~»}{`}{'}
 \setcounter{topnumber}{3}
 \renewcommand{\topfraction}{0.8}
 \addtolength{\skip\footins}{.25\baselineskip}
@@ -1328,9 +1328,11 @@ backref
   }
   \xspace
 }
+\AfterEndPreamble{%
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{\Huge}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+}
 \ExplSyntaxOff
 %% 
 %% Copyright (C) 2015 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>

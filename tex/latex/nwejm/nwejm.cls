@@ -378,10 +378,10 @@ backref
     ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
     ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
     ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
-    ,top=.5\c__nwejm_topmargin_inside_cover_dim
+    ,top=\c__nwejm_topmargin_inside_cover_dim
     ,headheight=\c__nwejm_headheight_dim
     ,headsep=\c__nwejm_headsep_inside_frontcover_dim
-    ,bottom=.5\c__nwejm_botmargin_dim
+    ,bottom=\c__nwejm_botmargin_dim
     ,footskip=\c__nwejm_footskip_dim
     % ,inner=1cm
     % ,outer=1cm
@@ -773,7 +773,7 @@ backref
 \tl_new:N \l__nwejm_pdftitle_string_tl
 \tl_new:N \l__nwejm_pdfauthor_string_tl
 \tl_set:Nn \l__nwejm_pdftile_string_tl {
-  \c__nwejm_journal_title_string_tl\space--\space{}N^^c2^^b0\int_use:N\g__nwejm_issue_number_int
+  \c__nwejm_journal_title_string_tl\space--\space{}N°\int_use:N\g__nwejm_issue_number_int
 }
 \tl_set:Nn \l__nwejm_pdfauthor_string_tl {
   \g__nwejm_nwejm_string_tl
@@ -842,10 +842,10 @@ backref
       \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
       ]
       \l__nwejm_people_affiliation_tl%
-      \space%
-      (\l__nwejm_people_country_tl)%
-      ,\space%
-      \__nwejm_email:n {\l__nwejm_people_email_tl}
+        \space%
+        (\l__nwejm_people_country_tl)%
+      % ,\space%
+      % \__nwejm_email:n {\l__nwejm_people_email_tl}
       \DTLiflastrow{%
       }{%
         % \medskip%
@@ -913,9 +913,9 @@ backref
   \pagestyle{__nwejm_inside_frontcover_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_inside_cover_geometry_tl}%
   \footnotesize%
-    \begin{multicols}{2}
+    \begin{multicols*}{2}
       \setlength{\columnsep}{1mm}
-      \begin{description}[leftmargin=3em]
+      \begin{description}[leftmargin=2em]
       \item[\textsc{\c__nwejm_editorinchief_string_tl}] \
         \begin{description}[leftmargin=1em]
           \__nwejm_display_people_by_role:n {editorinchief}
@@ -939,7 +939,7 @@ backref
           \__nwejm_display_people_by_role:n {managingeditor}
         \end{description}
       \end{description}
-    \end{multicols}
+    \end{multicols*}
   \clearpage%
   \bool_gset_false:N \g__nwejm_inside_frontcover_bool
   \pagestyle{__nwejm_frontmatter_ps}%
@@ -1065,7 +1065,7 @@ backref
   \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
-%%   \enquote{R^^c3^^a9dacteur(s) en chef}.
+%%   \enquote{Rédacteur(s) en chef}.
 \NewDocumentCommand \editorinchief {mmmm}
 {
   \__nwejm_people:nnnnn {#1}{#2}{#3}{#4}{editorinchief}
@@ -1494,7 +1494,7 @@ backref
   \tl_clear:N \l__nwejm_people_first_last_names_tl%
 }
 \AtEndPreamble{\file_input:n {\c__nwejm_configuration_file_string_tl}}
-\DeclarePlainStyle{^^c2^^ab~}{~^^c2^^bb}{`}{'}
+\DeclarePlainStyle{«~}{~»}{`}{'}
 \setcounter{topnumber}{3}
 \renewcommand{\topfraction}{0.8}
 \addtolength{\skip\footins}{.25\baselineskip}
@@ -1926,9 +1926,11 @@ backref
     \tableofcontents
   }
 }
+\AfterEndPreamble{%
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{\Huge}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+}
 \ExplSyntaxOff
 %% 
 %% Copyright (C) 2015 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
