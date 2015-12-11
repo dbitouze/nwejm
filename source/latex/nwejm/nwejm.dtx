@@ -3660,9 +3660,11 @@ backref
 % Because articles' title are displayed thanks to the ×\chapter× command, we
 % have to format its layout.
 %    \begin{macrocode}
+\AfterEndPreamble{%
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{\Huge}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+}
 %    \end{macrocode}
 %
 % We now leave the \LaTeX3{} programming environment.
