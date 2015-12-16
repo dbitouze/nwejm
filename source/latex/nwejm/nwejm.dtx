@@ -3219,12 +3219,18 @@ backref
 \DeclareMathOperator{\Arccos}{Arccos}
 \DeclareMathOperator{\Arcsin}{Arcsin}
 \DeclareMathOperator{\Arctan}{Arctan}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
 \DeclareMathOperator{\Argch}{Argch}
 \DeclareMathOperator{\Argsh}{Argsh}
 \DeclareMathOperator{\Argth}{Argth}
 \cs_set_eq:NN \_@@_orig_arccos \arccos
 \cs_set_eq:NN \_@@_orig_arcsin \arcsin
 \cs_set_eq:NN \_@@_orig_arctan \arctan
+\cs_set_eq:NN \_@@_orig_arccosh \arccosh
+\cs_set_eq:NN \_@@_orig_arcsinh \arcsinh
+\cs_set_eq:NN \_@@_orig_arctanh \arctanh
 \RenewDocumentCommand \arccos {} {
   \ifcurrentbaselanguage{french}{\Arccos}{\_@@_orig_arccos}%
 }
@@ -3233,6 +3239,15 @@ backref
 }
 \RenewDocumentCommand \arctan {} {
   \ifcurrentbaselanguage {french}{\Arctan}{\_@@_orig_arctan}%
+}
+\RenewDocumentCommand \arccosh {} {
+  \ifcurrentbaselanguage{french}{\Argch}{\_@@_orig_arccosh}%
+}
+\RenewDocumentCommand \arcsinh {} {
+  \ifcurrentbaselanguage {french}{\Argsh}{\_@@_orig_arcsinh}%
+}
+\RenewDocumentCommand \arctanh {} {
+  \ifcurrentbaselanguage {french}{\Argth}{\_@@_orig_arctanh}%
 }
 %    \end{macrocode}
 %
