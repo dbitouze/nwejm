@@ -66,6 +66,7 @@
 \RequirePackage{zref-totpages}
 \RequirePackage{zref-xr}%
 \RequirePackage[multiple]{footmisc}%
+\RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage[%
 backend=biber,
@@ -84,6 +85,7 @@ backref
 \RequirePackage{esvect}
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
 \RequirePackage{translations}%
+\RequirePackage{fmtcount}%
 \RequirePackage{geometry}
 \RequirePackage{babel}%
 \RequirePackage{tocvsec2}
@@ -939,6 +941,89 @@ backref
   \sisetup{locale=FR}
 }
 \arrayrulecolor{__nwejm_arrayrule_color}%
+\int_new:N \l__nwejm_abs_int
+\cs_new_protected:Nn \__nwejm_ordinalnum_suffix:n
+{
+  \int_set:Nn \l__nwejm_abs_int {\int_abs:n {#1}}
+  \ifcurrentbaselanguage{english}{
+    \int_use:N \l__nwejm_abs_int
+    \int_set:Nn \l_tmpa_int {\int_mod:nn {\l__nwejm_abs_int} {\c_one_hundred}}
+    \int_case:nnF
+    { \l_tmpa_int }
+    {
+      { \c_eleven }   { \fmtord{th} }
+      { \c_twelve }   { \fmtord{th} }
+      { \c_thirteen } { \fmtord{th} }
+    }{
+      \int_set:Nn \l_tmpb_int {\int_mod:nn {\l__nwejm_abs_int} {\c_ten}}
+      \int_case:nnF
+      { \l_tmpb_int }
+      {
+        { \c_zero }   { \fmtord{th} }
+        { \c_one }   { \fmtord{st} }
+        { \c_two }   { \fmtord{nd} }
+        { \c_three } { \fmtord{rd} }
+      }{
+        \fmtord{th}
+      }
+    }
+  }{
+    \ifcurrentbaselanguage{dutch}{
+      \int_use:N \l__nwejm_abs_int
+      e
+    }{
+      \textsc{\int_to_roman:n {\int_abs:n {#1}}}
+      \ifcurrentbaselanguage{french}{
+        \int_compare:nNnTF { \l__nwejm_abs_int } = { 1 }{\fmtord{er}}{\fmtord{e}}
+      }{
+        \ifcurrentbaselanguage{german}{
+          .
+        }{
+        }
+      }
+    }
+  }
+}
+\cs_new_protected:Nn \__nwejm_century_suffix:n
+{
+  \space{}
+  \GetTranslation{century}%
+  \int_compare:nNnT { #1 } < { 0 }{
+    \space
+    \GetTranslation{before-christ}
+  }{
+  }
+}
+\NewDocumentCommand \century { s m } {%
+  \__nwejm_ordinalnum_suffix:n {#2}%
+  \IfBooleanTF {#1}
+  {
+    \int_compare:nNnT { #2 } < { 0 }{
+      \__nwejm_century_suffix:n {#2}%
+    }
+  }{
+    \__nwejm_century_suffix:n {#2}%
+  }
+  \int_compare:nNnT { #2 } < { 0 }{
+    \ifcurrentbaselanguage{english}{%
+    }{
+      \@ifnextchar.%
+      {
+      }{
+        .\xspace
+      }%
+    }
+  }
+}
+\NewDocumentCommand \aside { s m } {%
+  \IfBooleanTF {#1}
+  {
+    \c__nwejm_aside_string_tl{}~#2
+  }
+  {
+    \c__nwejm_aside_string_tl{}~#2~\c__nwejm_aside_string_tl
+  }
+}
 \RenewDocumentCommand \vec { m } {
   \vv{#1}
 }

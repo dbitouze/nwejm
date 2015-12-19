@@ -408,7 +408,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Define commands that appear not to eat spaces:
 %    \begin{macrocode}
-%<class>\RequirePackage{xspace}%
+\RequirePackage{xspace}%
 %    \end{macrocode}
 %
 % \item Context sensitive quotation facilities:
@@ -478,6 +478,11 @@ backref
 % \item Internationalisation of \LaTeXe{} packages
 %    \begin{macrocode}
 \RequirePackage{translations}%
+%    \end{macrocode}
+%
+% \item Display the value of a \LaTeX{} counter in a variety of formats
+%    \begin{macrocode}
+\RequirePackage{fmtcount}%
 %    \end{macrocode}
 %
 % \item Flexible and easy interface to page dimensions:
@@ -3016,9 +3021,115 @@ backref
 \arrayrulecolor{@@_arrayrule_color}%
 %    \end{macrocode}
 %
+% \section{Miscellaneous private commands specific to the journal}
+%
+% We create miscellaneous private commands specific to the journal.
+%
+% Command for centuries.
+%    \begin{macrocode}
+\int_new:N \l_@@_abs_int
+%
+\cs_new_protected:Nn \_@@_ordinalnum_suffix:n
+{
+  \int_set:Nn \l_@@_abs_int {\int_abs:n {#1}}
+  \ifcurrentbaselanguage{english}{
+    \int_use:N \l_@@_abs_int
+    \int_set:Nn \l_tmpa_int {\int_mod:nn {\l_@@_abs_int} {\c_one_hundred}}
+    \int_case:nnF
+    { \l_tmpa_int }
+    {
+      { \c_eleven }   { \fmtord{th} }
+      { \c_twelve }   { \fmtord{th} }
+      { \c_thirteen } { \fmtord{th} }
+    }{
+      \int_set:Nn \l_tmpb_int {\int_mod:nn {\l_@@_abs_int} {\c_ten}}
+      \int_case:nnF
+      { \l_tmpb_int }
+      {
+        { \c_zero }   { \fmtord{th} }
+        { \c_one }   { \fmtord{st} }
+        { \c_two }   { \fmtord{nd} }
+        { \c_three } { \fmtord{rd} }
+      }{
+        \fmtord{th}
+      }
+    }
+  }{
+    \ifcurrentbaselanguage{dutch}{
+      \int_use:N \l_@@_abs_int
+      e
+    }{
+      \textsc{\int_to_roman:n {\int_abs:n {#1}}}
+      \ifcurrentbaselanguage{french}{
+        \int_compare:nNnTF { \l_@@_abs_int } = { 1 }{\fmtord{er}}{\fmtord{e}}
+      }{
+        \ifcurrentbaselanguage{german}{
+          .
+        }{
+        }
+      }
+    }
+  }
+}
+%
+\cs_new_protected:Nn \_@@_century_suffix:n
+{
+  \space{}
+  \GetTranslation{century}%
+  \int_compare:nNnT { #1 } < { 0 }{
+    \space
+    \GetTranslation{before-christ}
+  }{
+  }
+}
+%    \end{macrocode}
+%
 % \section{Miscellaneous (re)definitions}
 %
 % We gather here miscellaneous redefinitions.
+%
+% \begin{macro}{\century}
+%   In case of \enquote{before-christ} translation usually ending with a period
+%   (in case of abbreviation), we add a period just after it, but only if the
+%   character following the "\century" macro is not a period itself.
+%    \begin{macrocode}
+\NewDocumentCommand \century { s m } {%
+  \_@@_ordinalnum_suffix:n {#2}%
+  \IfBooleanTF {#1}
+  {
+    \int_compare:nNnT { #2 } < { 0 }{
+      \_@@_century_suffix:n {#2}%
+    }
+  }{
+    \_@@_century_suffix:n {#2}%
+  }
+  \int_compare:nNnT { #2 } < { 0 }{
+    \ifcurrentbaselanguage{english}{%
+    }{
+      \@ifnextchar.%
+      {
+      }{
+        .\xspace
+      }%
+    }
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\aside}
+%    \begin{macrocode}
+\NewDocumentCommand \aside { s m } {%
+  \IfBooleanTF {#1}
+  {
+    \c_@@_aside_string_tl{}~#2
+  }
+  {
+    \c_@@_aside_string_tl{}~#2~\c_@@_aside_string_tl
+  }
+}
+%    \end{macrocode}
+% \end{macro}
 %
 % \subsection{Vectors}
 %
@@ -3897,6 +4008,9 @@ backref
 %
 \ProvideDictTranslation{assertion}{assertion}
 \ProvideDictTranslation{Assertion}{Assertion}
+%
+\ProvideDictTranslation{century}{century}
+\ProvideDictTranslation{before-christ}{BC}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3973,6 +4087,9 @@ backref
 %
 \ProvideDictTranslation{assertion}{assertion}
 \ProvideDictTranslation{Assertion}{Assertion}
+%
+\ProvideDictTranslation{century}{si\`ecle}
+\ProvideDictTranslation{before-christ}{av.~J.-C}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4049,6 +4166,9 @@ backref
 %
 \ProvideDictTranslation{assertion}{Behauptung}
 \ProvideDictTranslation{Assertion}{Behauptung}
+%
+\ProvideDictTranslation{century}{Jahrhundert}
+\ProvideDictTranslation{before-christ}{v.~Chr}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4125,6 +4245,9 @@ backref
 %
 \ProvideDictTranslation{assertion}{Bewering}
 \ProvideDictTranslation{Assertion}{Bewering}
+%
+\ProvideDictTranslation{century}{eeuw}
+\ProvideDictTranslation{before-christ}{v.Chr}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
