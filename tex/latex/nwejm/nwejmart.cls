@@ -38,14 +38,19 @@
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
-    \PassOptionsToClass{french,ngerman,dutch,english,10pt}{book}
+    \PassOptionsToClass{10pt}{book}
   },%
   11pt .code:n = {%
-    \PassOptionsToClass{french,ngerman,dutch,english,11pt}{book}
+    \PassOptionsToClass{11pt}{book}
   },%
   12pt .code:n = {%
-    \PassOptionsToClass{french,ngerman,dutch,english,12pt}{book}
- },%
+    \PassOptionsToClass{12pt}{book}
+  },%
+  english  .code:n = {                                           },%
+  french   .code:n = {\AfterEndPreamble{\selectlanguage{french} }},%
+  german   .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
+  ngerman  .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
+  dutch    .code:n = {\AfterEndPreamble{\selectlanguage{dutch}  }},%
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
@@ -316,7 +321,7 @@ backref
   ]%
   [
   \DeclareNameAlias{labelname}{firstinits-last}
-  \AtNextCitekey{\defcounter{maxnames}{3}}\citeauthor{\g__nwejm_article_bib_key_tl}
+  \AtNextCitekey{\defcounter{maxnames}{2}}\citeauthor{\g__nwejm_article_bib_key_tl}
   ]%
   {
   \slshape\l__nwejm_section_header_tl
