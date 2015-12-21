@@ -1,55 +1,74 @@
-\documentclass[11pt]{nwejmart}
+\documentclass{nwejmart}
 \usepackage{lipsum}
 %
 \addbibresource{biblatex-examples.bib}
+%
+\newacronym{nwejm}{nwejm}{North-Western European Journal of Mathematics}
 %
 \newcommand{\formula}{%
   \begin{equation*}
     e^{i\pi}+1=0
   \end{equation*}
 }
-\newcommand{\sample}[1]{%
-  \dates{received=2014-10-14,accepted=2014-12-19,online=2015-09-05}
-  %
-  \begin{abstract}
-    \lipsum[1]
-  \end{abstract}
-  %
-  \keywords{foo,bar,baz}
-  %
-  \msc{11B13,11B30,11P70}
-  %
-  \maketitle
-  #1
-  \lipsum[2-15]
-  %
-  \begin{theorem}
-    \formula
-  \end{theorem}
-  \begin{remark}
-    \formula
-  \end{remark}
-  \begin{corollary}
-    \formula
-  \end{corollary}
-  \begin{proof}
-    \formula
-  \end{proof}
-  %
-  \setsecnumdepth{none}
-  \section{Section}
-  \resetsecnumdepth
-  %
-  \lipsum[3-25]
-  \section{First section}
-  \lipsum[2-15]
-  \section{Second section}
-  \lipsum[16-38]
-  \printbibliography
-}
 \begin{document}
+\title{Article's Title}
+\author[affiliation={Affiliation 1}]{Last1, First1}
+\author[affiliation=[aff2]{Affiliation 2}]{Last2, First2}
+\author[affiliation={Affiliation 3},affiliation={Affiliation 3 bis}]{Last3, First3}
+\author[affiliation={Affiliation 4},affiliationtagged={aff2}]{Last4, First4}
 %
-\input{french}
+\dates{received=2014-10-14,accepted=2014-12-19,online=2015-09-05}
+%
+\begin{abstract}
+  \lipsum[1]
+\end{abstract}
+%
+\keywords{foo,bar,baz}
+%
+\msc{11B13,11B30,11P70}
+%
+\maketitle
+%
+\section{Introduction}
+%
+\subsection{Citations tests}
+%
+\begin{enumerate}
+\item It\footnote{Foo bar.} is well known\autocite{baez/article}
+  that... Moreover, it is well known\autocite{companion} that...
+\item \textcite{baez/article} have proved... Moreover, \textcite{companion}
+  have proved...
+\item This has been proved in \cite{baez/article}. Moreover, this has been
+  proved in \cite{companion}.
+\end{enumerate}
+%
+\subsection{Acronyms tests}
+%
+\begin{enumerate}
+\item The present article is published in the \gls{nwejm}.
+\item Moreover, the present article is published in the \gls{nwejm}.
+\end{enumerate}
+%
+\subsection{Theorems tests}
+%
+\begin{theorem}
+  \formula
+\end{theorem}
+\begin{remark}
+  \formula
+\end{remark}
+\begin{corollary}
+  \formula
+\end{corollary}
+\begin{proof}
+  \formula
+\end{proof}
+%
+\section{First section}
+\lipsum[2-15]
+\section{Second section}
+\lipsum[16-38]
+\printbibliography
 %
 \end{document}
 
