@@ -12,8 +12,11 @@
 %% License:| Released under the LaTeX Project Public License v1.3c or later
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
-\RequirePackage{silence}%
-\WarningFilter{kpfonts}{With 'easyscsl' option}
+\IfFileExists{silence.sty}{%
+  \RequirePackage{silence}%
+  \WarningFilter{kpfonts}{With 'easyscsl' option}
+}{%
+}
 \RequirePackage{xpatch}%
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
@@ -97,7 +100,6 @@ backref
 \RequirePackage{amsthm}
 \RequirePackage{thmtools}
 \RequirePackage[hyperfootnotes=false,hidelinks,hypertexnames=false]{hyperref}%
-\RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \makeglossaries
@@ -796,7 +798,7 @@ backref
 \tl_new:N \l__nwejm_bullet_and_rule_even_tl
 \tl_new:N \l__nwejm_title_box_tl
 \tl_new:N \g__nwejm_title_for_toc_tl
-\RenewDocumentCommand \maketitle { s } {
+\RenewDocumentCommand \maketitle { } {
 \tl_gset:Nn \g__nwejm_article_bib_key_tl {%
   \c__nwejm_issue_bib_key_tl
   -art-
@@ -940,7 +942,6 @@ backref
 \@ifpackageloaded{siunitx}{%
   \sisetup{locale=FR}
 }
-\arrayrulecolor{__nwejm_arrayrule_color}%
 \int_new:N \l__nwejm_abs_int
 \cs_new_protected:Nn \__nwejm_ordinalnum_suffix:n
 {

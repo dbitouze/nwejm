@@ -57,5 +57,7 @@
 \ProvideDictTranslation{Online}{Online}
 \ProvideDictTranslation{assertion}{assertion}
 \ProvideDictTranslation{Assertion}{Assertion}
+\ProvideDictTranslation{assertions}{assertions}
+\ProvideDictTranslation{Assertions}{Assertions}
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
