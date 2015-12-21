@@ -175,8 +175,11 @@ Running "make install" installs the files in the local TeX tree.
 %
 % Selective filtering of error messages and warnings:
 %    \begin{macrocode}
-\RequirePackage{silence}%
-\WarningFilter{kpfonts}{With 'easyscsl' option}
+\IfFileExists{silence.sty}{%
+  \RequirePackage{silence}%
+  \WarningFilter{kpfonts}{With 'easyscsl' option}
+}{%
+}
 %    \end{macrocode}
 %
 % Extending \pkg{etoolbox}'s patching commands:
