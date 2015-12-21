@@ -311,6 +311,11 @@ Running "make install" installs the files in the local TeX tree.
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
+%<class-article>  english  .code:n = {                                           },%
+%<class-article>  french   .code:n = {\AfterEndPreamble{\selectlanguage{french} }},%
+%<class-article>  german   .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
+%<class-article>  ngerman  .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
+%<class-article>  dutch    .code:n = {\AfterEndPreamble{\selectlanguage{dutch}  }},%
 }%
 %
 \ProcessKeysOptions { nwejm }
