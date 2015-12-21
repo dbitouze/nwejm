@@ -1236,11 +1236,11 @@ backref
   \prop_clear:N \l_tmpa_prop
   \__nwejm_populate_bib_file:nn {#2}{author-art-\int_use:N \g__nwejm_articles_int}
   \tl_if_empty:NTF \l__nwejm_people_first_last_names_tl {%
-    \tl_put_right:Nx
+    \tl_put_right:Nn
     \l__nwejm_people_first_last_names_tl
     {#2}
   }{
-    \tl_put_right:Nx
+    \tl_put_right:Nn
     \l__nwejm_people_first_last_names_tl
     {~and~#2}
   }
