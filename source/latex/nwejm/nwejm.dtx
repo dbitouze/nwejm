@@ -350,6 +350,11 @@ Running "make install" installs the files in the local TeX tree.
 % and its layout) and one of packages useful for the end user.}
 %
 % \begin{enumerate}
+% \item Detecting and warning about obsolete \LaTeX{} commands:
+%    \begin{macrocode}
+\RequirePackage[l2tabu,orthodox]{nag}
+%    \end{macrocode}
+%
 % \item Compile \TeX{} pictures stand-alone or as part of a document:
 %    \begin{macrocode}
 \RequirePackage[group=false]{standalone}%
