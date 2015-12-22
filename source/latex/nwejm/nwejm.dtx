@@ -725,16 +725,24 @@ backref
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_authors_instructions_string_tl {Instructions~to~authors}
 %    \end{macrocode}
-% For the unspecified date.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_unspecified_date_string_tl {\textbf{??}}
-%    \end{macrocode}
+%
 %    \begin{macrocode}
 %</class>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 %<*class|class-article>
+%    \end{macrocode}
+%
+% For the dates keywords.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_date_received_tl {Received}
+\tl_const:Nn \c_@@_date_accepted_tl {Accepted}
+\tl_const:Nn \c_@@_date_online_tl {Online}
+%    \end{macrocode}
+% For the dates separators.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_dates_separator_tl {/}
 %    \end{macrocode}
 %
 % For the name and path of the images directory.
@@ -831,6 +839,10 @@ backref
 % \end{macro}
 % \end{macro}
 % \end{macro}
+%
+%    \begin{macrocode}
+\bool_new:N \g_@@_date_specified_bool
+%    \end{macrocode}
 %
 % \subsection{Dimensions}
 %
@@ -1725,9 +1737,18 @@ backref
 %    \begin{macrocode}
 \keys_define:nn { nwejm/dates }
 {
-  received .tl_gset:N = \g_@@_issue_received_tl,
-  accepted .tl_gset:N = \g_@@_issue_accepted_tl,
-  online   .tl_gset:N = \g_@@_issue_online_tl,
+  received   .code:n = {
+    \tl_gset:Nn \g_@@_reception_date_tl {#1}
+    \bool_gset_true:N \g_@@_date_specified_bool
+  },
+  accepted   .code:n = {
+    \tl_gset:Nn \g_@@_acception_date_tl {#1}
+    \bool_gset_true:N \g_@@_date_specified_bool
+  },
+  online   .code:n = {
+    \tl_gset:Nn \g_@@_online_date_tl {#1}
+    \bool_gset_true:N \g_@@_date_specified_bool
+  },
 %    \end{macrocode}
 %
 % The following options, when used, must receive a value.
@@ -2171,31 +2192,28 @@ backref
 %
 % We create the variable that displays the dates.
 %    \begin{macrocode}
-\cs_new_protected:Nn \_@@_date:n
+\cs_new_protected:Nn \_@@_date:nn
 {
-  \tl_if_exist:NTF {#1}
+  \tl_if_exist:NT {#2}
   {
-    \tl_if_empty:NTF {#1}
+    \tl_if_empty:NF {#2}
     {
-      \c_@@_unspecified_date_string_tl
-    }{
-      \DTMdate{#1}%
+      \tl_if_eq:NNF {\c_@@_date_received_tl} {#1} { \c_@@_dates_separator_tl }
+      \exp_args:No \GetTranslation{#1}
+      \c_@@_colon_tl\space
+      \DTMdate{#2}%
     }
-  }{
-    \c_@@_unspecified_date_string_tl
   }
 }
 \tl_new:N \g_@@_display_dates_tl%
 \tl_gset:Nn \g_@@_display_dates_tl {%
   \footnotesize%
-  \GetTranslation{Received}\c_@@_colon_tl\space
-  \_@@_date:n{\g_@@_issue_received_tl}/%
-  \GetTranslation{Accepted}\c_@@_colon_tl\space
-  \_@@_date:n{\g_@@_issue_accepted_tl}/%
-  \GetTranslation{Online}\c_@@_colon_tl\space \_@@_date:n{\g_@@_issue_online_tl}
-  \tl_gclear:N \g_@@_issue_received_tl
-  \tl_gclear:N \g_@@_issue_accepted_tl
-  \tl_gclear:N \g_@@_issue_online_tl
+  \_@@_date:nn {\c_@@_date_received_tl}{\g_@@_reception_date_tl}
+  \_@@_date:nn {\c_@@_date_accepted_tl}{\g_@@_acception_date_tl}
+  \_@@_date:nn {\c_@@_date_online_tl}  {\g_@@_online_date_tl}
+  \tl_gclear:N \g_@@_reception_date_tl
+  \tl_gclear:N \g_@@_acception_date_tl
+  \tl_gclear:N \g_@@_online_date_tl
 }
 %    \end{macrocode}
 %
@@ -2950,10 +2968,16 @@ backref
       \\%
       \g_@@_subtitle_tl
     }\\[2ex]%
-    \l_@@_authors_box_tl\\%
-    \l_@@_dates_box_tl
+    \l_@@_authors_box_tl%
+    \bool_if:NT {\g_@@_date_specified_bool}
+    {
+      \\[2ex]
+      \l_@@_dates_box_tl
+    }
+    \\[-4ex]
   }
-  \setsecnumdepth{subsection}
+    \bool_gset_false:N \g_@@_date_specified_bool
+    \setsecnumdepth{subsection}
 %    \end{macrocode}
 %
 % We want header of the article's titles pages.
