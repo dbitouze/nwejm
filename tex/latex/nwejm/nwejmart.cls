@@ -15,6 +15,7 @@
 \IfFileExists{silence.sty}{%
   \RequirePackage{silence}%
   \WarningFilter{kpfonts}{With 'easyscsl' option}
+  \WarningFilter{etoc}{package tocvsec2 detected}
 }{%
 }
 \RequirePackage{xpatch}%
@@ -60,6 +61,7 @@
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+\RequirePackage[l2tabu,orthodox]{nag}
 \RequirePackage[group=false]{standalone}%
 \pdftex_if_engine:TF
   {
@@ -123,6 +125,10 @@ backref
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
 \int_const:Nn \c__nwejm_interval_in_months_int { 6 }
+\tl_const:Nn \c__nwejm_date_received_tl {Received}
+\tl_const:Nn \c__nwejm_date_accepted_tl {Accepted}
+\tl_const:Nn \c__nwejm_date_online_tl {Online}
+\tl_const:Nn \c__nwejm_dates_separator_tl {/}
 \tl_const:Nn \c__nwejm_images_directory_string_tl {images}
 \tl_const:Nn \c__nwejm_issue_images_path_string_tl {\c__nwejm_images_directory_string_tl}
 \tl_const:Nn \c__nwejm_preliminary_version_string_tl {%
@@ -154,6 +160,7 @@ backref
 \bool_new:N \g__nwejm_mainmatter_bool
 \bool_new:N \g__nwejm_backmatter_bool
 \bool_new:N \g__nwejm_backcover_bool
+\bool_new:N \g__nwejm_date_specified_bool
 \dim_const:Nn \c__nwejm_layoutheight_dim { 240mm}
 \dim_const:Nn \c__nwejm_layoutwidth_dim  { 170mm}
 \dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 5mm}
@@ -407,9 +414,18 @@ backref
 }
 \keys_define:nn { nwejm/dates }
 {
-  received .tl_gset:N = \g__nwejm_issue_received_tl,
-  accepted .tl_gset:N = \g__nwejm_issue_accepted_tl,
-  online   .tl_gset:N = \g__nwejm_issue_online_tl,
+  received   .code:n = {
+    \tl_gset:Nn \g__nwejm_reception_date_tl {#1}
+    \bool_gset_true:N \g__nwejm_date_specified_bool
+  },
+  accepted   .code:n = {
+    \tl_gset:Nn \g__nwejm_acception_date_tl {#1}
+    \bool_gset_true:N \g__nwejm_date_specified_bool
+  },
+  online   .code:n = {
+    \tl_gset:Nn \g__nwejm_online_date_tl {#1}
+    \bool_gset_true:N \g__nwejm_date_specified_bool
+  },
   received .value_required:,
   accepted .value_required:,
   online   .value_required:,
@@ -535,31 +551,28 @@ backref
     \iow_newline:
   }%
 }
-\cs_new_protected:Nn \__nwejm_date:n
+\cs_new_protected:Nn \__nwejm_date:nn
 {
-  \tl_if_exist:NTF {#1}
+  \tl_if_exist:NT {#2}
   {
-    \tl_if_empty:NTF {#1}
+    \tl_if_empty:NF {#2}
     {
-      \c__nwejm_unspecified_date_string_tl
-    }{
-      \DTMdate{#1}%
+      \tl_if_eq:NNF {\c__nwejm_date_received_tl} {#1} { \c__nwejm_dates_separator_tl }
+      \exp_args:No \GetTranslation{#1}
+      \c__nwejm_colon_tl\space
+      \DTMdate{#2}%
     }
-  }{
-    \c__nwejm_unspecified_date_string_tl
   }
 }
 \tl_new:N \g__nwejm_display_dates_tl%
 \tl_gset:Nn \g__nwejm_display_dates_tl {%
   \footnotesize%
-  \GetTranslation{Received}\c__nwejm_colon_tl\space
-  \__nwejm_date:n{\g__nwejm_issue_received_tl}/%
-  \GetTranslation{Accepted}\c__nwejm_colon_tl\space
-  \__nwejm_date:n{\g__nwejm_issue_accepted_tl}/%
-  \GetTranslation{Online}\c__nwejm_colon_tl\space \__nwejm_date:n{\g__nwejm_issue_online_tl}
-  \tl_gclear:N \g__nwejm_issue_received_tl
-  \tl_gclear:N \g__nwejm_issue_accepted_tl
-  \tl_gclear:N \g__nwejm_issue_online_tl
+  \__nwejm_date:nn {\c__nwejm_date_received_tl}{\g__nwejm_reception_date_tl}
+  \__nwejm_date:nn {\c__nwejm_date_accepted_tl}{\g__nwejm_acception_date_tl}
+  \__nwejm_date:nn {\c__nwejm_date_online_tl}  {\g__nwejm_online_date_tl}
+  \tl_gclear:N \g__nwejm_reception_date_tl
+  \tl_gclear:N \g__nwejm_acception_date_tl
+  \tl_gclear:N \g__nwejm_online_date_tl
 }
 \seq_new:N \l__nwejm_keywords_seq
 \tl_new:N \l__nwejm_keywords_tl
@@ -730,6 +743,9 @@ backref
 \cs_new_protected:Nn \__nwejm_article_acknowledgements:n
 {
   \tl_gset:Nn \g__nwejm_article_acknowledgements_tl { #1 }
+}
+\NewDocumentCommand \acknowledgements { m } {
+  \__nwejm_article_acknowledgements:n {#1}
 }
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
@@ -915,10 +931,16 @@ backref
       \\%
       \g__nwejm_subtitle_tl
     }\\[2ex]%
-    \l__nwejm_authors_box_tl\\%
-    \l__nwejm_dates_box_tl
+    \l__nwejm_authors_box_tl%
+    \bool_if:NT {\g__nwejm_date_specified_bool}
+    {
+      \\[2ex]
+      \l__nwejm_dates_box_tl
+    }
+    \\[-4ex]
   }
-  \setsecnumdepth{subsection}
+    \bool_gset_false:N \g__nwejm_date_specified_bool
+    \setsecnumdepth{subsection}
   \thispagestyle{__nwejm_article_title_ps}%
 \l__nwejm_abstract_box_tl%
 \normalsize
@@ -935,7 +957,6 @@ backref
 \tl_gclear:N \g__nwejm_abstract_body_tl
   \tl_gclear:N \g__nwejm_people_affiliation_tl
   \tl_gclear:N \g__nwejm_people_email_tl
-  % \tl_gclear:N \g__nwejm_article_acknowledgements_tl
   \tl_clear:N \l__nwejm_people_first_last_names_tl%
 }
 \DeclarePlainStyle{«~}{~»}{`}{'}
@@ -1285,6 +1306,12 @@ backref
 \RenewDocumentCommand \printbibliography { O{} } {
   \setcounter{section}{-10}
   \setsecnumdepth{none}
+  \tl_if_exist:NT {\g__nwejm_article_acknowledgements_tl}
+  {
+    \section{\GetTranslation{Acknowledgements}}
+    \g__nwejm_article_acknowledgements_tl
+    \tl_gclear:N \g__nwejm_article_acknowledgements_tl
+  }
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
   \setcounter{section}{0}
@@ -1436,7 +1463,7 @@ backref
 }
 \AfterEndPreamble{%
   \titleformat{\chapter}[block]
-  {\normalfont\centering}{}{0pt}{\Huge}
+  {\normalfont\centering}{}{0pt}{}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
 }
 \ExplSyntaxOff
