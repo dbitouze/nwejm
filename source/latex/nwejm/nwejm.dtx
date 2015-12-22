@@ -2714,6 +2714,9 @@ backref
 {
   \tl_gset:Nn \g_@@_article_acknowledgements_tl { #1 }
 }
+\NewDocumentCommand \acknowledgements { m } {
+  \@@_article_acknowledgements:n {#1}
+}
 %    \end{macrocode}
 %
 % \section{Definition of the title command}
@@ -3004,7 +3007,6 @@ backref
 %    \begin{macrocode}
   \tl_gclear:N \g_@@_people_affiliation_tl
   \tl_gclear:N \g_@@_people_email_tl
-  % \tl_gclear:N \g_@@_article_acknowledgements_tl
   \tl_clear:N \l_@@_people_first_last_names_tl%
 }
 %    \end{macrocode}
@@ -3529,6 +3531,12 @@ backref
 %    \begin{macrocode}
   \setcounter{section}{-10}
   \setsecnumdepth{none}
+  \tl_if_exist:NT {\g_@@_article_acknowledgements_tl}
+  {
+    \section{\GetTranslation{Acknowledgements}}
+    \g_@@_article_acknowledgements_tl
+    \tl_gclear:N \g_@@_article_acknowledgements_tl
+  }
   \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
   \setcounter{section}{0}
@@ -4046,6 +4054,8 @@ backref
 %
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
+%
+\ProvideDictTranslation{Acknowledgements}{Acknowledgements}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4127,6 +4137,8 @@ backref
 %
 \ProvideDictTranslation{century}{si\`ecle}
 \ProvideDictTranslation{before-christ}{av.~J.-C}
+%
+\ProvideDictTranslation{Acknowledgements}{Remerciements}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4208,6 +4220,8 @@ backref
 %
 \ProvideDictTranslation{century}{Jahrhundert}
 \ProvideDictTranslation{before-christ}{v.~Chr}
+%
+\ProvideDictTranslation{Acknowledgements}{Vielen Dank}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4289,6 +4303,8 @@ backref
 %
 \ProvideDictTranslation{century}{eeuw}
 \ProvideDictTranslation{before-christ}{v.Chr}
+%
+\ProvideDictTranslation{Acknowledgements}{Dankwoord}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
