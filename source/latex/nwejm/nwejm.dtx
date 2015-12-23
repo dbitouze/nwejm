@@ -174,16 +174,6 @@ Running "make install" installs the files in the local TeX tree.
 %<*class|class-article>
 %    \end{macrocode}
 %
-% Selective filtering of error messages and warnings:
-%    \begin{macrocode}
-% \IfFileExists{silence.sty}{%
-%   \RequirePackage{silence}%
-%   \WarningFilter{kpfonts}{With 'easyscsl' option}
-%   \WarningFilter{etoc}{package tocvsec2 detected}
-% }{%
-% }
-%    \end{macrocode}
-%
 % This \nwejmcl{} will make use of the \pkg{expl3} programming interface
 % (\LaTeX3). In order to load this package, it is enough to load the
 % \Pkg{xparse} which is anyway needed to produce document-level commands.
@@ -218,9 +208,7 @@ Running "make install" installs the files in the local TeX tree.
   {2015/09/30}
   {1.00}
   {
-    Class for the journal^^J
-    "North-Western European Journal of Mathematics".
-%<class-article>~(Author version.)
+    Class for the journal "North-Western European Journal of Mathematics".
   }
 %    \end{macrocode}
 %
