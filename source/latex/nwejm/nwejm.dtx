@@ -2734,16 +2734,16 @@ backref
 }
 %    \end{macrocode}
 %
-% \section{Definition of the acknowledgements}
+% \section{Definition of the acknowledgments}
 %
 %    \begin{macrocode}
-\tl_new:N \g_@@_article_acknowledgements_tl%
-\cs_new_protected:Nn \@@_article_acknowledgements:n
+\tl_new:N \g_@@_article_acknowledgments_tl%
+\cs_new_protected:Nn \@@_article_acknowledgments:n
 {
-  \tl_gset:Nn \g_@@_article_acknowledgements_tl { #1 }
+  \tl_gset:Nn \g_@@_article_acknowledgments_tl { #1 }
 }
-\NewDocumentCommand \acknowledgements { m } {
-  \@@_article_acknowledgements:n {#1}
+\NewDocumentCommand \acknowledgments { m } {
+  \@@_article_acknowledgments:n {#1}
 }
 %    \end{macrocode}
 %
@@ -3559,11 +3559,11 @@ backref
 %    \begin{macrocode}
   \setcounter{section}{-10}
   \setsecnumdepth{none}
-  \tl_if_exist:NT {\g_@@_article_acknowledgements_tl}
+  \tl_if_exist:NT {\g_@@_article_acknowledgments_tl}
   {
-    \section{\GetTranslation{Acknowledgements}}
-    \g_@@_article_acknowledgements_tl
-    \tl_gclear:N \g_@@_article_acknowledgements_tl
+    \section{\GetTranslation{Acknowledgments}}
+    \g_@@_article_acknowledgments_tl
+    \tl_gclear:N \g_@@_article_acknowledgments_tl
   }
   \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
@@ -4083,7 +4083,7 @@ backref
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
 %
-\ProvideDictTranslation{Acknowledgements}{Acknowledgements}
+\ProvideDictTranslation{Acknowledgments}{Acknowledgments}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4166,7 +4166,7 @@ backref
 \ProvideDictTranslation{century}{si\`ecle}
 \ProvideDictTranslation{before-christ}{av.~J.-C}
 %
-\ProvideDictTranslation{Acknowledgements}{Remerciements}
+\ProvideDictTranslation{Acknowledgments}{Remerciements}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4249,7 +4249,7 @@ backref
 \ProvideDictTranslation{century}{Jahrhundert}
 \ProvideDictTranslation{before-christ}{v.~Chr}
 %
-\ProvideDictTranslation{Acknowledgements}{Vielen Dank}
+\ProvideDictTranslation{Acknowledgments}{Bestätigungen}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4332,7 +4332,7 @@ backref
 \ProvideDictTranslation{century}{eeuw}
 \ProvideDictTranslation{before-christ}{v.Chr}
 %
-\ProvideDictTranslation{Acknowledgements}{Dankwoord}
+\ProvideDictTranslation{Acknowledgments}{Dankwoord}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
