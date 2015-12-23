@@ -183,9 +183,11 @@ Running "make install" installs the files in the local TeX tree.
 % }
 %    \end{macrocode}
 %
-% Extending \pkg{etoolbox}'s patching commands:
+% This \nwejmcl{} will make use of the \pkg{expl3} programming interface
+% (\LaTeX3). In order to load this package, it is enough to load the
+% \Pkg{xparse} which is anyway needed to produce document-level commands.
 %    \begin{macrocode}
-\RequirePackage{xpatch}%
+\RequirePackage{xparse}
 %    \end{macrocode}
 %
 % In order to avoid "__nwejm" in the name of each internal (i.e. private) function
@@ -229,7 +231,6 @@ Running "make install" installs the files in the local TeX tree.
 % (\LaTeX3). In order to load this package, it is enough to load the
 % \Pkg{xparse} which is anyway needed to produce document-level commands.
 %    \begin{macrocode}
-\RequirePackage{xparse}
 \IfFileExists{l3sort.sty}{
   \RequirePackage{l3sort}
 }{
@@ -357,7 +358,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Compile \TeX{} pictures stand-alone or as part of a document:
 %    \begin{macrocode}
-\RequirePackage[group=false]{standalone}%
+%<class>\RequirePackage[group=false]{standalone}%
 %    \end{macrocode}
 %
 % \item In case of \hologo{pdfTeX} engine, we enforce \pkg{fontenc} to be loaded
@@ -406,13 +407,13 @@ Running "make install" installs the files in the local TeX tree.
 % \item A new reference scheme for \LaTeX{}, giving the total number of pages in
 %   the document:
 %    \begin{macrocode}
-\RequirePackage{zref-totpages}
+%<class>\RequirePackage{zref-totpages}
 %    \end{macrocode}
 %
 % \item A new reference scheme for \LaTeX{}, providing the facilities of the
 %   \package{xr} and \package{xr-hyper} packages:
 %    \begin{macrocode}
-\RequirePackage{zref-xr}%
+%<class>\RequirePackage{zref-xr}%
 %    \end{macrocode}
 %
 % \item A range of footnote options
@@ -517,7 +518,7 @@ backref
 %
 % \item Completely customisable TOCs:
 %    \begin{macrocode}
-\RequirePackage{etoc}%
+%<class>\RequirePackage{etoc}%
 %    \end{macrocode}
 %
 % \item Subliminal refinements towards typographical perfection:
