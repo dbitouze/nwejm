@@ -12,13 +12,7 @@
 %% License:| Released under the LaTeX Project Public License v1.3c or later
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
-\IfFileExists{silence.sty}{%
-  \RequirePackage{silence}%
-  \WarningFilter{kpfonts}{With 'easyscsl' option}
-  \WarningFilter{etoc}{package tocvsec2 detected}
-}{%
-}
-\RequirePackage{xpatch}%
+\RequirePackage{xparse}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
@@ -29,7 +23,6 @@
     "North-Western European Journal of Mathematics".
   }
 \RequirePackage{l3keys2e}
-\RequirePackage{xparse}
 \IfFileExists{l3sort.sty}{
   \RequirePackage{l3sort}
 }{
@@ -137,13 +130,17 @@ backref
 \RequirePackage{thmtools}
 \RequirePackage{datatool}%
 \RequirePackage{placeins}%
-\RequirePackage[hyperfootnotes=false,hidelinks,hypertexnames=false]{hyperref}%
+\RequirePackage{hyperref}%
+\AtBeginDocument{%
+  \hypersetup{hidelinks,hypertexnames=false}%
+}%
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
+\glsdisablehyper
 \msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
   {Please~specify~`#1=<number>',
     ~otherwise~`<number>'~will~be~set~to
@@ -654,7 +651,7 @@ backref
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
-\AfterEndPreamble{%
+\AtBeginDocument{%
 }
 \tl_new:N \l__nwejm_journal_publisher_tl
 \tl_new:N \l__nwejm_journal_address_tl
@@ -1297,13 +1294,13 @@ backref
   \pagestyle{__nwejm_mainmatter_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }
-\tl_new:N \g__nwejm_article_acknowledgements_tl%
-\cs_new_protected:Nn \__nwejm_article_acknowledgements:n
+\tl_new:N \g__nwejm_article_acknowledgments_tl%
+\cs_new_protected:Nn \__nwejm_article_acknowledgments:n
 {
-  \tl_gset:Nn \g__nwejm_article_acknowledgements_tl { #1 }
+  \tl_gset:Nn \g__nwejm_article_acknowledgments_tl { #1 }
 }
-\NewDocumentCommand \acknowledgements { m } {
-  \__nwejm_article_acknowledgements:n {#1}
+\NewDocumentCommand \acknowledgments { m } {
+  \__nwejm_article_acknowledgments:n {#1}
 }
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
@@ -1866,11 +1863,11 @@ backref
   \FloatBarrier%
   \setcounter{section}{-10}
   \setsecnumdepth{none}
-  \tl_if_exist:NT {\g__nwejm_article_acknowledgements_tl}
+  \tl_if_exist:NT {\g__nwejm_article_acknowledgments_tl}
   {
-    \section{\GetTranslation{Acknowledgements}}
-    \g__nwejm_article_acknowledgements_tl
-    \tl_gclear:N \g__nwejm_article_acknowledgements_tl
+    \section{\GetTranslation{Acknowledgments}}
+    \g__nwejm_article_acknowledgments_tl
+    \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}

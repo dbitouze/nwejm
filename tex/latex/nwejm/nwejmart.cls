@@ -12,13 +12,7 @@
 %% License:| Released under the LaTeX Project Public License v1.3c or later
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
-\IfFileExists{silence.sty}{%
-  \RequirePackage{silence}%
-  \WarningFilter{kpfonts}{With 'easyscsl' option}
-  \WarningFilter{etoc}{package tocvsec2 detected}
-}{%
-}
-\RequirePackage{xpatch}%
+\RequirePackage{xparse}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejmart}
@@ -30,12 +24,12 @@
 ~(Author version.)
   }
 \RequirePackage{l3keys2e}
-\RequirePackage{xparse}
 \IfFileExists{l3sort.sty}{
   \RequirePackage{l3sort}
 }{
 }
 \ExplSyntaxOn
+\PassOptionsToPackage{english}{babel}
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -47,22 +41,20 @@
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
-  english  .code:n = {                                           },%
-  french   .code:n = {\AfterEndPreamble{\selectlanguage{french} }},%
-  german   .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
-  ngerman  .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
-  dutch    .code:n = {\AfterEndPreamble{\selectlanguage{dutch}  }},%
+  english  .code:n = {\PassOptionsToPackage{english}{babel}},%
+  french   .code:n = {\PassOptionsToPackage{french}{babel}},%
+  german   .code:n = {\PassOptionsToPackage{ngerman}{babel}},%
+  ngerman  .code:n = {\PassOptionsToPackage{ngerman}{babel}},%
+  dutch    .code:n = {\PassOptionsToPackage{dutch}{babel}},%
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
 \PassOptionsToPackage{table,cmyk}{xcolor}%
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 \RequirePackage[l2tabu,orthodox]{nag}
-\RequirePackage[group=false]{standalone}%
 \pdftex_if_engine:TF
   {
     \RequirePackage[T1]{fontenc}
@@ -73,8 +65,6 @@
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
-\RequirePackage{zref-totpages}
-\RequirePackage{zref-xr}%
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
@@ -93,25 +83,28 @@ backref
 \RequirePackage{mathtools}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
+\RequirePackage[noDcommand]{kpfonts}
 \RequirePackage{translations}%
 \RequirePackage{fmtcount}%
 \RequirePackage{geometry}
 \RequirePackage{babel}%
 \RequirePackage{tocvsec2}
-\RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
 \RequirePackage{amsthm}
 \RequirePackage{thmtools}
-\RequirePackage[hyperfootnotes=false,hidelinks,hypertexnames=false]{hyperref}%
+\RequirePackage{hyperref}%
+\AtBeginDocument{%
+  \hypersetup{hidelinks,hypertexnames=false}%
+}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
+\glsdisablehyper
 \msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
   {Please~specify~`#1=<number>',
     ~otherwise~`<number>'~will~be~set~to
@@ -168,54 +161,6 @@ backref
   \dim_const:Nn \c__nwejm_potential_layoutoffset_dim { \c__nwejm_printer_layoutoffset_dim}
 }{
   \dim_const:Nn \c__nwejm_potential_layoutoffset_dim {\c_zero_dim}
-}
-\int_const:Nn \c__nwejm_thresold_a_int {68}
-\int_const:Nn \c__nwejm_thresold_b_int {80}
-\int_const:Nn \c__nwejm_thresold_c_int {88}
-\int_const:Nn \c__nwejm_thresold_d_int {96}
-\int_const:Nn \c__nwejm_thresold_e_int {104}
-\int_const:Nn \c__nwejm_thresold_f_int {120}
-\dim_const:Nn \c__nwejm_bindingoffset_a_dim {3mm}
-\dim_const:Nn \c__nwejm_bindingoffset_b_dim {3.5mm}
-\dim_const:Nn \c__nwejm_bindingoffset_c_dim {3.9mm}
-\dim_const:Nn \c__nwejm_bindingoffset_d_dim {4.1mm}
-\dim_const:Nn \c__nwejm_bindingoffset_e_dim {4.5mm}
-\dim_const:Nn \c__nwejm_bindingoffset_f_dim {5mm}
-\zexternaldocument[self]{\jobname}%
-\int_new:N \g__nwejm_total_pages_number_int%
-\int_new:N \g__nwejm_total_inside_pages_number_int%
-\int_gset:Nn \g__nwejm_total_pages_number_int { \zref@extractdefault{selfLastPage}{abspage}{0} }
-\int_gset:Nn \g__nwejm_total_inside_pages_number_int { \g__nwejm_total_pages_number_int - 4 }
-\int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_a_int}
-{
-  \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c_zero_dim }
-}{
-  \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_b_int}
-  {
-    \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_a_dim }
-  }{
-    \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_c_int}
-    {
-      \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_b_dim }
-    }{
-      \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_d_int}
-      {
-        \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_c_dim }
-      }{
-        \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_e_int}
-        {
-          \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_d_dim }
-        }{
-          \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_f_int}
-          {
-            \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_e_dim }
-          }{
-            \dim_const:Nn \c__nwejm_printer_bindingoffset_dim { \c__nwejm_bindingoffset_f_dim }
-          }
-        }
-      }
-    }
-  }
 }
 \bool_if:NTF {\g__nwejm_cover_bool} {
   \dim_const:Nn \c__nwejm_potential_bindingoffset_dim { \c__nwejm_printer_bindingoffset_dim }
@@ -393,7 +338,7 @@ backref
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
-\AfterEndPreamble{%
+\AtBeginDocument{%
     \g__nwejm_mainmatter_switch_tl
 }
 \int_new:N \g__nwejm_issue_number_int
@@ -739,13 +684,13 @@ backref
   \pagestyle{__nwejm_mainmatter_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }
-\tl_new:N \g__nwejm_article_acknowledgements_tl%
-\cs_new_protected:Nn \__nwejm_article_acknowledgements:n
+\tl_new:N \g__nwejm_article_acknowledgments_tl%
+\cs_new_protected:Nn \__nwejm_article_acknowledgments:n
 {
-  \tl_gset:Nn \g__nwejm_article_acknowledgements_tl { #1 }
+  \tl_gset:Nn \g__nwejm_article_acknowledgments_tl { #1 }
 }
-\NewDocumentCommand \acknowledgements { m } {
-  \__nwejm_article_acknowledgements:n {#1}
+\NewDocumentCommand \acknowledgments { m } {
+  \__nwejm_article_acknowledgments:n {#1}
 }
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
@@ -1306,11 +1251,11 @@ backref
 \RenewDocumentCommand \printbibliography { O{} } {
   \setcounter{section}{-10}
   \setsecnumdepth{none}
-  \tl_if_exist:NT {\g__nwejm_article_acknowledgements_tl}
+  \tl_if_exist:NT {\g__nwejm_article_acknowledgments_tl}
   {
-    \section{\GetTranslation{Acknowledgements}}
-    \g__nwejm_article_acknowledgements_tl
-    \tl_gclear:N \g__nwejm_article_acknowledgements_tl
+    \section{\GetTranslation{Acknowledgments}}
+    \g__nwejm_article_acknowledgments_tl
+    \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
   \setsecnumdepth{subsection}
