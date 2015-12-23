@@ -19,8 +19,7 @@
   {2015/09/30}
   {1.00}
   {
-    Class for the journal^^J
-    "North-Western European Journal of Mathematics".
+    Class for the journal "North-Western European Journal of Mathematics".
   }
 \RequirePackage{l3keys2e}
 \IfFileExists{l3sort.sty}{
@@ -28,6 +27,8 @@
 }{
 }
 \ExplSyntaxOn
+\RequirePackage{translations}%
+\RequirePackage{fmtcount}%
 \dim_const:Nn \c__nwejm_pagegrid_dim { 1mm}
 \bool_new:N \g__nwejm_for_authors_bool
 \bool_new:N \g__nwejm_cover_bool
@@ -69,14 +70,15 @@
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
-}%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
-\PassOptionsToPackage{table,cmyk}{xcolor}%
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
-\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
+\LoadDictionaryFor{french}{nwejm}
+\LoadDictionaryFor{english}{nwejm}
+\LoadDictionaryFor{dutch}{nwejm}
+\LoadDictionaryFor{german}{nwejm}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 \RequirePackage[l2tabu,orthodox]{nag}
 \RequirePackage[group=false]{standalone}%
@@ -110,13 +112,10 @@ backref
 ]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage{varioref}
 \RequirePackage{mathtools}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
-\RequirePackage{translations}%
-\RequirePackage{fmtcount}%
 \RequirePackage{geometry}
 \RequirePackage{babel}%
 \RequirePackage{tocvsec2}
@@ -688,11 +687,6 @@ backref
   volume .value_required:,
   volume .initial:n = 0,
 }
-\keys_define:nn { nwejm/title }
-{
-  short .tl_gset:N = \g__nwejm_short_title_tl,
-  short .value_required:,
-}
 \keys_define:nn { nwejm/dates }
 {
   received   .code:n = {
@@ -1218,7 +1212,7 @@ backref
   %
   \IfNoValueF {#1}
   {
-    \keys_set:nn { nwejm/title } { #1 }
+    \tl_gset:Nn \g__nwejm_short_title_tl {#1}
   }
   \tl_gset:Nn \g__nwejm_title_tl {#2}
   \tl_if_empty:NT \g__nwejm_short_title_tl {%
@@ -1610,10 +1604,6 @@ backref
 \RenewDocumentCommand \vec { m } {
   \vv{#1}
 }
-\LoadDictionaryFor{french}{nwejm}
-\LoadDictionaryFor{english}{nwejm}
-\LoadDictionaryFor{dutch}{nwejm}
-\LoadDictionaryFor{german}{nwejm}
 \cs_new_protected:Nn \__nwejm_new_theorem:nnnnnn
 {
   \AtBeginDocument{%

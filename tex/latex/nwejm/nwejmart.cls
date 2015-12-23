@@ -19,9 +19,7 @@
   {2015/09/30}
   {1.00}
   {
-    Class for the journal^^J
-    "North-Western European Journal of Mathematics".
-~(Author version.)
+    Class for the journal "North-Western European Journal of Mathematics".
   }
 \RequirePackage{l3keys2e}
 \IfFileExists{l3sort.sty}{
@@ -29,7 +27,8 @@
 }{
 }
 \ExplSyntaxOn
-\PassOptionsToPackage{english}{babel}
+\RequirePackage{translations}%
+\RequirePackage{fmtcount}%
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -41,18 +40,54 @@
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
-  english  .code:n = {\PassOptionsToPackage{english}{babel}},%
-  french   .code:n = {\PassOptionsToPackage{french}{babel}},%
-  german   .code:n = {\PassOptionsToPackage{ngerman}{babel}},%
-  ngerman  .code:n = {\PassOptionsToPackage{ngerman}{babel}},%
-  dutch    .code:n = {\PassOptionsToPackage{dutch}{babel}},%
+  language .choice:,
+  language /
+  english  .code:n = {
+    \PassOptionsToPackage{main=english}{babel}
+    \LoadDictionaryFor{english}{nwejm}
+    \RequirePackage[english]{varioref}
+    \AfterEndPreamble{\selectlanguage{english}}
+  },%
+  language /
+  french   .code:n = {
+    \PassOptionsToPackage{main=french}{babel}
+    \LoadDictionaryFor{french}{nwejm}
+    \RequirePackage[french]{varioref}
+    \FCloadlang{french}
+    \AfterEndPreamble{\selectlanguage{french}}
+  },%
+  language /
+  german   .code:n = {
+    \PassOptionsToPackage{main=ngerman}{babel}
+    \LoadDictionaryFor{ngerman}{nwejm}
+    \RequirePackage[ngerman]{varioref}
+    \FCloadlang{ngerman}
+    \AfterEndPreamble{\selectlanguage{ngerman}}
+  },%
+  language /
+  ngerman  .code:n = {
+    \PassOptionsToPackage{main=ngerman}{babel}
+    \LoadDictionaryFor{ngerman}{nwejm}
+    \RequirePackage[ngerman]{varioref}
+    \FCloadlang{ngerman}
+    \AfterEndPreamble{\selectlanguage{ngerman}}
+  },%
+  language /
+  dutch    .code:n = {
+    \PassOptionsToPackage{main=dutch}{babel}
+    \LoadDictionaryFor{dutch}{nwejm}
+    \RequirePackage[dutch]{varioref}
+    \FCloadlang{dutch}
+    \AfterEndPreamble{\selectlanguage{dutch}}
+  },%
+  language .default:n = {english},
+  language .initial:n = {english}
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
-\PassOptionsToPackage{table,cmyk}{xcolor}%
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
+\PassOptionsToPackage{english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
@@ -79,13 +114,10 @@ backref
 ]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage{varioref}
 \RequirePackage{mathtools}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
 \RequirePackage[noDcommand]{kpfonts}
-\RequirePackage{translations}%
-\RequirePackage{fmtcount}%
 \RequirePackage{geometry}
 \RequirePackage{babel}%
 \RequirePackage{tocvsec2}
@@ -352,11 +384,6 @@ backref
   volume .value_required:,
   volume .initial:n = 0,
 }
-\keys_define:nn { nwejm/title }
-{
-  short .tl_gset:N = \g__nwejm_short_title_tl,
-  short .value_required:,
-}
 \keys_define:nn { nwejm/dates }
 {
   received   .code:n = {
@@ -607,7 +634,7 @@ backref
   %
   \IfNoValueF {#1}
   {
-    \keys_set:nn { nwejm/title } { #1 }
+    \tl_gset:Nn \g__nwejm_short_title_tl {#1}
   }
   \tl_gset:Nn \g__nwejm_title_tl {#2}
   \tl_if_empty:NT \g__nwejm_short_title_tl {%
@@ -999,10 +1026,6 @@ backref
 \RenewDocumentCommand \vec { m } {
   \vv{#1}
 }
-\LoadDictionaryFor{french}{nwejm}
-\LoadDictionaryFor{english}{nwejm}
-\LoadDictionaryFor{dutch}{nwejm}
-\LoadDictionaryFor{german}{nwejm}
 \cs_new_protected:Nn \__nwejm_new_theorem:nnnnnn
 {
   \AtBeginDocument{%
