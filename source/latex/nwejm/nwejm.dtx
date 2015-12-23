@@ -894,6 +894,14 @@ backref
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
 % We define a \enquote{printer} binding dimension
 % "\c_@@_printer_bindingoffset_dim", fixed by the printer to have different
 % values depending on some total pages thresholds. If the binding dimension is
@@ -982,6 +990,14 @@ backref
     }
   }
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
 %    \end{macrocode}
 %
 % The binding offset is applied iff the front cover is required ("frontcover"
@@ -1586,7 +1602,7 @@ backref
 %   geometry of the page.} in the \enquote{article} version of the class.
 % \end{itemize}
 %    \begin{macrocode}
-\AfterEndPreamble{%
+\AtBeginDocument{%
 %<class-article>    \g_@@_mainmatter_switch_tl
 }
 %    \end{macrocode}
