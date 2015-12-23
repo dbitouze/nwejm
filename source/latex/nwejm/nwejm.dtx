@@ -302,6 +302,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+%<class-article>\PassOptionsToPackage{english}{babel}
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -313,11 +314,11 @@ Running "make install" installs the files in the local TeX tree.
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
-%<class-article>  english  .code:n = {                                           },%
-%<class-article>  french   .code:n = {\AfterEndPreamble{\selectlanguage{french} }},%
-%<class-article>  german   .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
-%<class-article>  ngerman  .code:n = {\AfterEndPreamble{\selectlanguage{ngerman}}},%
-%<class-article>  dutch    .code:n = {\AfterEndPreamble{\selectlanguage{dutch}  }},%
+%<class-article>  english  .code:n = {\PassOptionsToPackage{english}{babel}},%
+%<class-article>  french   .code:n = {\PassOptionsToPackage{french}{babel}},%
+%<class-article>  german   .code:n = {\PassOptionsToPackage{ngerman}{babel}},%
+%<class-article>  ngerman  .code:n = {\PassOptionsToPackage{ngerman}{babel}},%
+%<class-article>  dutch    .code:n = {\PassOptionsToPackage{dutch}{babel}},%
 }%
 %
 \ProcessKeysOptions { nwejm }
@@ -333,7 +334,7 @@ Running "make install" installs the files in the local TeX tree.
 \PassOptionsToPackage{table,cmyk}{xcolor}%
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+%<class>\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 %    \end{macrocode}
