@@ -1776,6 +1776,7 @@ backref
 \RenewDocumentCommand \arctanh {} {
   \ifcurrentbaselanguage {french}{\Argth}{\__nwejm_orig_arctanh}%
 }
+\DeclareMathOperator{\det}{det}
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\sh}{sh}
 \cs_set_eq:NN \__nwejm_orig_tanh \tanh
