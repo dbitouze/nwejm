@@ -1807,26 +1807,7 @@ backref
 % \end{macro}
 % \end{macro}
 %
-% \subsection{Titles options}
-%
-% \begin{macro}{shorttitle}
-%   The "shorttitle" key option is dedicated to the possible alternative title
-%   to appear in the table of contents and in the headers,
-%    \begin{macrocode}
-\keys_define:nn { nwejm/title }
-{
-  short .tl_gset:N = \g_@@_short_title_tl,
-%    \end{macrocode}
-%
-% The following options, when used, must receive a value.
-%    \begin{macrocode}
-  short .value_required:,
-}
-%    \end{macrocode}
-% \end{macro}
-% \end{macro}
-%
-% \subsection{Titles options}
+% \subsection{Dates options}
 %
 % \begin{macro}{received}
 % \begin{macro}{accepted}
@@ -2677,7 +2658,7 @@ backref
   %
   \IfNoValueF {#1}
   {
-    \keys_set:nn { nwejm/title } { #1 }
+    \tl_gset:Nn \g_@@_short_title_tl {#1}
   }
   \tl_gset:Nn \g_@@_title_tl {#2}
   \tl_if_empty:NT \g_@@_short_title_tl {%
