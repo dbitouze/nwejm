@@ -13,6 +13,12 @@
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
 \RequirePackage{xparse}
+\RequirePackage{l3keys2e}
+\IfFileExists{l3sort.sty}{
+  \RequirePackage{l3sort}
+}{
+}
+\RequirePackage{etoolbox}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
@@ -21,14 +27,17 @@
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
-\RequirePackage{l3keys2e}
-\IfFileExists{l3sort.sty}{
-  \RequirePackage{l3sort}
-}{
-}
 \ExplSyntaxOn
-\RequirePackage{translations}%
-\RequirePackage{fmtcount}%
+\msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
+  {Please~specify~`#1=<number>',
+    ~otherwise~`<number>'~will~be~set~to
+    ~`\int_use:N\c__nwejm_first_issue_number_int'.}
+\msg_new:nnnn{nwejmart}{unknown-choice}{Choice~`#3'~invalid!}
+  {Please~specify~#1=#2.}
+\msg_new:nnn{nwejmart}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
+   with~ `#1'.~ This~ one~ will~ be~ ignored.}
+\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~ a~ valid~ language~
+   name~ (only~ `english',~ `french',~ `ngerman',~ `german',~ `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}
 \dim_const:Nn \c__nwejm_pagegrid_dim { 1mm}
 \bool_new:N \g__nwejm_for_authors_bool
 \bool_new:N \g__nwejm_cover_bool
@@ -59,6 +68,7 @@
   },%
 }%
 \bool_gset_true:N \g__nwejm_no_inside_backcover_bool
+\tl_new:N \g__nwejm_language_tl
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -70,15 +80,52 @@
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
+}%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
-\LoadDictionaryFor{french}{nwejm}
-\LoadDictionaryFor{english}{nwejm}
-\LoadDictionaryFor{dutch}{nwejm}
-\LoadDictionaryFor{german}{nwejm}
+\cs_new_protected:Nn \__nwejm_language:n
+{
+  \PassOptionsToPackage{main=#1}{babel}
+  \PassOptionsToPackage{#1}{varioref}
+  \AtEndPreamble{%
+    \LoadDictionaryFor{#1}{nwejm}
+    \FCloadlang{#1}
+  }
+  \AfterEndPreamble{%
+    \selectlanguage{#1}
+  }
+}
+\str_case_x:nnF
+{ \g__nwejm_language_tl }
+{
+  { english }   {
+    \__nwejm_language:n {english}
+  }
+  { french }   {
+    \__nwejm_language:n {french}
+  }
+  { ngerman }   {
+    \__nwejm_language:n {ngerman}
+  }
+  { german }   {
+    \__nwejm_language:n {ngerman}
+  }
+  { dutch }   {
+    \__nwejm_language:n {dutch}
+  }
+}{
+  \__nwejm_language:n {english}
+}
+      \AtEndPreamble{
+      \LoadDictionaryFor{french}{nwejm}
+      \LoadDictionaryFor{english}{nwejm}
+      \LoadDictionaryFor{dutch}{nwejm}
+      \LoadDictionaryFor{german}{nwejm}
+    }
+    \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 \RequirePackage[l2tabu,orthodox]{nag}
 \RequirePackage[group=false]{standalone}%
@@ -117,6 +164,9 @@ backref
 \RequirePackage{esvect}
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
 \RequirePackage{geometry}
+\RequirePackage{translations}%
+\RequirePackage{fmtcount}%
+\RequirePackage{varioref}
 \RequirePackage{babel}%
 \RequirePackage{tocvsec2}
 \RequirePackage{etoc}%
@@ -133,6 +183,7 @@ backref
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
 }%
+\RequirePackage[all]{hypcap}
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
@@ -140,14 +191,6 @@ backref
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
 \glsdisablehyper
-\msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
-  {Please~specify~`#1=<number>',
-    ~otherwise~`<number>'~will~be~set~to
-    ~`\int_use:N\c__nwejm_first_issue_number_int'.}
-\msg_new:nnnn{nwejm}{unknown-choice}{Choice~`#3'~invalid!}
-  {Please~specify~#1=#2.}
-\msg_new:nnn{__nwejm}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
-   with~ `#1'.~ This~ one~ will~ be~ ignored.}
 \int_new:N \g__nwejm_articles_int
 \int_const:Nn \c__nwejm_first_issue_number_int { 1 }
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
@@ -1162,9 +1205,57 @@ backref
 \NewDocumentCommand \dates { m } {
   \keys_set:nn { nwejm/dates } { #1 }
 }
-\NewDocumentCommand \inputarticle { O{./} m } {%
+\addto\extrasfrench{%
+  \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
+  \def\reftextfacebefore{page~\reftextvario{ci-contre}%
+    {pr\’ec\’edente}}%
+  \def\reftextafter
+  {page~suivante}%
+  \def\reftextbefore
+  {page~pr\’ec\’edente}%
+  \def\reftextcurrent
+  {de~la~pr\’esente~page}%
+  \def\reftextfaraway#1{page~\pageref{#1}}%
+  \def\reftextpagerange#1#2{pages~\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~\‘a~\ref{#2}}%
+}
+\addto\extrasngerman{%
+  \def\reftextfaceafter {auf~der~n\"achsten~Seite}%
+  \def\reftextfacebefore{auf~der~vorherigen~Seite}%
+  \let\reftextafter     \reftextfaceafter
+  \let\reftextbefore    \reftextfacebefore
+  \def\reftextcurrent   {auf~dieser~Seite}%
+  \def\reftextfaraway#1{auf~Seite~\pageref{#1}}%
+  \def\reftextpagerange#1#2{auf~den~Seiten~\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~bis~\ref{#2}}%
+}
+\addto\extrasdutch{%
+  \def\refpagename{pagina}%
+  \def\reftextfaceafter {op~de~\reftextvario{rechter~\refpagename}%
+    {\refpagename\ hiernaast}}%
+  \def\reftextfacebefore{op~de~\reftextvario{linker~\refpagename}%
+    {\refpagename\ hiernaast}}%
+  \def\reftextafter     {op~de~\reftextvario{volgende~\refpagename}%
+    {\refpagename\ hierna}}%
+  \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
+    {\refpagename\ hiervoor}}%
+  \def\reftextcurrent   {op~deze~\refpagename}%
+  \def\reftextfaraway#1{op~\refpagename~\pageref{#1}}
+}
+\addto\extrasenglish{%
+  \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
+  \def\reftextfacebefore{on~the~\reftextvario{facing}{preceding}~page}%
+  \def\reftextafter     {on~the~\reftextvario{following}{next}~page}%
+  \def\reftextbefore    {on~the~\reftextvario{preceding}{previous}~page}%
+  \def\reftextcurrent   {on~\reftextvario{this}{the~current}~page}%
+  \def\reftextfaraway#1{on~page~\pageref{#1}}%
+  \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
+}
+\NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
-  \inputfrom{#1}{#2}
+  \selectlanguage{#1}
+  \inputfrom{./}{#2}
   \setcounter{footnote}{0}
   \setcounter{section}{0}
   \setcounter{figure}{0}

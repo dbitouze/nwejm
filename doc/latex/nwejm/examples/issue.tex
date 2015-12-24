@@ -8,57 +8,13 @@
 %
 \addbibresource{biblatex-examples.bib}
 %
-\newcommand{\formula}{%
-  \begin{equation*}
-    e^{i\pi}+1=0
-  \end{equation*}
-}
-\newcommand{\sample}[1]{%
-  \dates{received=2014-10-14,accepted=2014-12-19,online=2015-09-05}
-  %
-  \begin{abstract}
-    \lipsum[1]
-  \end{abstract}
-  %
-  \keywords{foo,bar,baz}
-  %
-  \msc{11B13,11B30,11P70}
-  %
-  \maketitle
-  #1
-  \lipsum[2-15]
-  %
-  \begin{theorem}
-    \formula
-  \end{theorem}
-  \begin{remark}
-    \formula
-  \end{remark}
-  \begin{corollary}
-    \formula
-  \end{corollary}
-  \begin{proof}
-    \formula
-  \end{proof}
-  %
-  \setsecnumdepth{none}
-  \section{Section}
-  \resetsecnumdepth
-  %
-  \lipsum[3-25]
-  \section{First section}
-  \lipsum[2-15]
-  \section{Second section}
-  \lipsum[16-38]
-  \printbibliography
-}
+\input{sample}
+%
 \begin{document}
-%
-\inputarticle{french}
+\inputarticle[french]{french}
 \inputarticle{english}
-\inputarticle{ngerman}
-\inputarticle{dutch}
-%
+\inputarticle[ngerman]{ngerman}
+\inputarticle[dutch]{dutch}
 \end{document}
 
 %%% Local Variables:
