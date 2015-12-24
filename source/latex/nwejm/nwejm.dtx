@@ -174,15 +174,36 @@ Running "make install" installs the files in the local TeX tree.
 %<*class|class-article>
 %    \end{macrocode}
 %
-% This \nwejmcl{} will make use of the \pkg{expl3} programming interface
-% (\LaTeX3). In order to load this package, it is enough to load the
-% \Pkg{xparse} which is anyway needed to produce document-level commands.
+% We start by loading some packages that are required to define the \nwejmcl{}
+% (and its options). Since the latter will make use of the \pkg{expl3}
+% programming interface (\LaTeX3). In order to load this package, it is enough
+% to load the \Pkg{xparse} which is anyway needed to produce document-level
+% commands.
+%
+% \begin{itemize}
+% \item A generic document command parser:
 %    \begin{macrocode}
 \RequirePackage{xparse}
 %    \end{macrocode}
+% \item \LaTeXe{} option processing using \LaTeX3 keys:
+%    \begin{macrocode}
+\RequirePackage{l3keys2e}
+%    \end{macrocode}
+% \item Sorting lists (since \Pkg{l3sort} is about to move from `experimental'
+% to `stable' status, the \File{l3sort.sty} will be removed soonish):
+%    \begin{macrocode}
+\IfFileExists{l3sort.sty}{
+  \RequirePackage{l3sort}
+}{
+}
+% \item e-\TeX{} tools for \LaTeX:
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+%    \end{macrocode}
+% \end{itemize}
 %
-% In order to avoid "__nwejm" in the name of each internal (i.e. private) function
-% and variable, we make use of the "@@" place holder provided by the
+% In order to avoid ×_nwejm× in the name of each internal (i.e. private)
+% function and variable, we make use of the ×@@× place holder provided by the
 % \Pkg{l3docstrip}.
 %    \begin{macrocode}
 %<@@=nwejm>
@@ -212,36 +233,26 @@ Running "make install" installs the files in the local TeX tree.
   }
 %    \end{macrocode}
 %
-%    \begin{macrocode}
-\RequirePackage{l3keys2e}
-%    \end{macrocode}
-%
-% This \nwejmcl{} will make use of the \pkg{expl3} programming interface
-% (\LaTeX3). In order to load this package, it is enough to load the
-% \Pkg{xparse} which is anyway needed to produce document-level commands.
-%    \begin{macrocode}
-\IfFileExists{l3sort.sty}{
-  \RequirePackage{l3sort}
-}{
-}
 \ExplSyntaxOn
 %    \end{macrocode}
 %
+% \section{Messages}
+%
+% In this section, some messages are declared for future use.
+%    \begin{macrocode}
+\msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
+  {Please~specify~`#1=<number>',
+    ~otherwise~`<number>'~will~be~set~to
+    ~`\int_use:N\c_@@_first_issue_number_int'.}
+\msg_new:nnnn{nwejmart}{unknown-choice}{Choice~`#3'~invalid!}
+  {Please~specify~#1=#2.}
+\msg_new:nnn{nwejmart}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
+   with~ `#1'.~ This~ one~ will~ be~ ignored.}
+\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~ a~ valid~ language~
+   name~ (only~ `english',~ `french',~ `ngerman',~ `german',~ `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}
+%    \end{macrocode}
+%
 % \subsection{Class options}
-%
-% We load some packages we need for the class options:
-% \begin{itemize}
-% \item Internationalisation of \LaTeXe{} packages:
-%    \begin{macrocode}
-\RequirePackage{translations}%
-%    \end{macrocode}
-%
-% \item Display the value of a \LaTeX{} counter in a variety of formats
-%    \begin{macrocode}
-\RequirePackage{fmtcount}%
-%    \end{macrocode}
-%
-% \end{itemize}
 %
 %    \begin{macrocode}
 %<*class>
@@ -525,11 +536,6 @@ backref
 \RequirePackage{booktabs}
 %    \end{macrocode}
 %
-% \item Intelligent page references:
-%    \begin{macrocode}
-% \RequirePackage{varioref}
-%    \end{macrocode}
-%
 % \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
 %   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
 %   loads \pkg{amsmath}, hence it's not necessary to load the
@@ -563,6 +569,21 @@ backref
 % \item Flexible and easy interface to page dimensions:
 %    \begin{macrocode}
 \RequirePackage{geometry}
+%    \end{macrocode}
+%
+% \item Internationalisation of \LaTeXe{} packages:
+%    \begin{macrocode}
+\RequirePackage{translations}%
+%    \end{macrocode}
+%
+% \item Display the value of a \LaTeX{} counter in a variety of formats
+%    \begin{macrocode}
+\RequirePackage{fmtcount}%
+%    \end{macrocode}
+%
+% \item Intelligent page references:
+%    \begin{macrocode}
+\RequirePackage{varioref}
 %    \end{macrocode}
 %
 % \item Multilingual support for Plain TeX or LaTeX:
@@ -662,20 +683,6 @@ backref
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
 \glsdisablehyper
-%    \end{macrocode}
-%
-% \section{Messages}
-%
-% In this section, some messages are declared for future use.
-%    \begin{macrocode}
-\msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
-  {Please~specify~`#1=<number>',
-    ~otherwise~`<number>'~will~be~set~to
-    ~`\int_use:N\c_@@_first_issue_number_int'.}
-\msg_new:nnnn{nwejm}{unknown-choice}{Choice~`#3'~invalid!}
-  {Please~specify~#1=#2.}
-\msg_new:nnn{@@}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
-   with~ `#1'.~ This~ one~ will~ be~ ignored.}
 %    \end{macrocode}
 %
 % \section{Counters}
