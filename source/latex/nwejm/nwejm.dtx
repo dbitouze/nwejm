@@ -316,6 +316,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\tl_new:N \g_@@_language_tl
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -338,48 +339,22 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  language .choice:,
-  language /
   english  .code:n = {
-    \PassOptionsToPackage{main=english}{babel}
-    \LoadDictionaryFor{english}{nwejm}
-    \RequirePackage[english]{varioref}
-    \AfterEndPreamble{\selectlanguage{english}}
+    \tl_gset:Nn \g_@@_language_tl {english}
   },%
-  language /
   french   .code:n = {
-    \PassOptionsToPackage{main=french}{babel}
-    \LoadDictionaryFor{french}{nwejm}
-    \RequirePackage[french]{varioref}
-    \FCloadlang{french}
-    \AfterEndPreamble{\selectlanguage{french}}
+    \tl_gset:Nn \g_@@_language_tl {french}
   },%
-  language /
   german   .code:n = {
-    \PassOptionsToPackage{main=ngerman}{babel}
-    \LoadDictionaryFor{ngerman}{nwejm}
-    \RequirePackage[ngerman]{varioref}
-    \FCloadlang{ngerman}
-    \AfterEndPreamble{\selectlanguage{ngerman}}
+    \tl_gset:Nn \g_@@_language_tl {ngerman}
   },%
-  language /
   ngerman  .code:n = {
-    \PassOptionsToPackage{main=ngerman}{babel}
-    \LoadDictionaryFor{ngerman}{nwejm}
-    \RequirePackage[ngerman]{varioref}
-    \FCloadlang{ngerman}
-    \AfterEndPreamble{\selectlanguage{ngerman}}
+    \tl_gset:Nn \g_@@_language_tl {ngerman}
   },%
-  language /
   dutch    .code:n = {
-    \PassOptionsToPackage{main=dutch}{babel}
-    \LoadDictionaryFor{dutch}{nwejm}
-    \RequirePackage[dutch]{varioref}
-    \FCloadlang{dutch}
-    \AfterEndPreamble{\selectlanguage{dutch}}
+    \tl_gset:Nn \g_@@_language_tl {dutch}
   },%
-  language .default:n = {english},
-  language .initial:n = {english}
+  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} }
 }%
 %    \end{macrocode}
 %
@@ -398,14 +373,49 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Class loading}
 %
 %    \begin{macrocode}
-% As subsequent class, the \Cls{book} is loaded, with "openany", "english" and
-% "french" options.
+% As subsequent class, the \Cls{book} is loaded.
 %    \begin{macrocode}
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-%<class-article>\PassOptionsToPackage{english}{babel}
 %<class>\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+%    \end{macrocode}
+%
+% We now deal with the language option passed at ×\documentclass× level.
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_language:n
+{
+  \PassOptionsToPackage{main=#1}{babel}
+  \PassOptionsToPackage{#1}{varioref}
+  \AtEndPreamble{%
+    \LoadDictionaryFor{#1}{nwejm}
+    \FCloadlang{#1}
+  }
+  \AfterEndPreamble{%
+    \selectlanguage{#1}
+  }
+}
+\str_case_x:nnF
+{ \g_@@_language_tl }
+{
+  { english }   {
+    \_@@_language:n {english}
+  }
+  { french }   {
+    \_@@_language:n {french}
+  }
+  { ngerman }   {
+    \_@@_language:n {ngerman}
+  }
+  { german }   {
+    \_@@_language:n {ngerman}
+  }
+  { dutch }   {
+    \_@@_language:n {dutch}
+  }
+}{
+  \_@@_language:n {english}
+}
 %    \end{macrocode}
 %
 % We load the dictionaries containing the translations needed for theorems and
