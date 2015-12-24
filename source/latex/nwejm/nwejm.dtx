@@ -2572,6 +2572,59 @@ backref
 %    \end{macrocode}
 % \end{macro}
 %
+% We have to save the extra definitions of the \Pkg{varioref} which currently is
+% multilingual aware.
+%    \begin{macrocode}
+\addto\extrasfrench{%
+  \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
+  \def\reftextfacebefore{page~\reftextvario{ci-contre}%
+    {pr\’ec\’edente}}%
+  \def\reftextafter
+  {page~suivante}%
+  \def\reftextbefore
+  {page~pr\’ec\’edente}%
+  \def\reftextcurrent
+  {de~la~pr\’esente~page}%
+  \def\reftextfaraway#1{page~\pageref{#1}}%
+  \def\reftextpagerange#1#2{pages~\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~\‘a~\ref{#2}}%
+}
+\addto\extrasngerman{%
+  \def\reftextfaceafter {auf~der~n\"achsten~Seite}%
+  \def\reftextfacebefore{auf~der~vorherigen~Seite}%
+  \let\reftextafter     \reftextfaceafter
+  \let\reftextbefore    \reftextfacebefore
+  \def\reftextcurrent   {auf~dieser~Seite}%
+  \def\reftextfaraway#1{auf~Seite~\pageref{#1}}%
+  \def\reftextpagerange#1#2{auf~den~Seiten~\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~bis~\ref{#2}}%
+}
+\addto\extrasdutch{%
+  \def\refpagename{pagina}%
+  \def\reftextfaceafter {op~de~\reftextvario{rechter~\refpagename}%
+    {\refpagename\ hiernaast}}%
+  \def\reftextfacebefore{op~de~\reftextvario{linker~\refpagename}%
+    {\refpagename\ hiernaast}}%
+  \def\reftextafter     {op~de~\reftextvario{volgende~\refpagename}%
+    {\refpagename\ hierna}}%
+  \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
+    {\refpagename\ hiervoor}}%
+  \def\reftextcurrent   {op~deze~\refpagename}%
+  \def\reftextfaraway#1{op~\refpagename~\pageref{#1}}
+}
+\addto\extrasenglish{%
+  \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
+  \def\reftextfacebefore{on~the~\reftextvario{facing}{preceding}~page}%
+  \def\reftextafter     {on~the~\reftextvario{following}{next}~page}%
+  \def\reftextbefore    {on~the~\reftextvario{preceding}{previous}~page}%
+  \def\reftextcurrent   {on~\reftextvario{this}{the~current}~page}%
+  \def\reftextfaraway#1{on~page~\pageref{#1}}%
+  \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Input variant}
 %
 % We create a variant of the "\input" macro to be use for the input of each
