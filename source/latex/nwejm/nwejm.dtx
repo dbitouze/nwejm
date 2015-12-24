@@ -355,7 +355,6 @@ Running "make install" installs the files in the local TeX tree.
     \tl_gset:Nn \g_@@_language_tl {dutch}
   },%
   unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} }
-}%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -364,6 +363,10 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %<*class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+}%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -421,10 +424,13 @@ Running "make install" installs the files in the local TeX tree.
 % We load the dictionaries containing the translations needed for theorems and
 % the like.
 %    \begin{macrocode}
-%<class>\LoadDictionaryFor{french}{nwejm}
-%<class>\LoadDictionaryFor{english}{nwejm}
-%<class>\LoadDictionaryFor{dutch}{nwejm}
-%<class>\LoadDictionaryFor{german}{nwejm}
+%<class>      \AtEndPreamble{
+%<class>      \LoadDictionaryFor{french}{nwejm}
+%<class>      \LoadDictionaryFor{english}{nwejm}
+%<class>      \LoadDictionaryFor{dutch}{nwejm}
+%<class>      \LoadDictionaryFor{german}{nwejm}
+%<class>    }
+%<class>    \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 %    \end{macrocode}
 %
