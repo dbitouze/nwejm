@@ -2631,9 +2631,10 @@ backref
 % article: it starts a new \package{biblatex}'s "refsection" and reset to zero
 % some counters.
 %    \begin{macrocode}
-\NewDocumentCommand \inputarticle { O{./} m } {%
+\NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
-  \inputfrom{#1}{#2}
+  \selectlanguage{#1}
+  \inputfrom{./}{#2}
   \setcounter{footnote}{0}
   \setcounter{section}{0}
   \setcounter{figure}{0}
