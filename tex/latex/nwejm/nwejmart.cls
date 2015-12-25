@@ -71,12 +71,15 @@
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
+\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 \cs_new_protected:Nn \__nwejm_language:n
 {
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
-  \AtEndPreamble{%
+  \AtBeginDocument{
     \LoadDictionaryFor{#1}{nwejm}
+  }
+  \AtEndPreamble{%
     \FCloadlang{#1}
   }
   \AfterEndPreamble{%
@@ -104,7 +107,6 @@
 }{
   \__nwejm_language:n {english}
 }
-\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
   {
@@ -595,53 +597,6 @@ backref
 }
 \NewDocumentCommand \dates { m } {
   \keys_set:nn { nwejm/dates } { #1 }
-}
-\addto\extrasfrench{%
-  \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
-  \def\reftextfacebefore{page~\reftextvario{ci-contre}%
-    {pr\’ec\’edente}}%
-  \def\reftextafter
-  {page~suivante}%
-  \def\reftextbefore
-  {page~pr\’ec\’edente}%
-  \def\reftextcurrent
-  {de~la~pr\’esente~page}%
-  \def\reftextfaraway#1{page~\pageref{#1}}%
-  \def\reftextpagerange#1#2{pages~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~\‘a~\ref{#2}}%
-}
-\addto\extrasngerman{%
-  \def\reftextfaceafter {auf~der~n\"achsten~Seite}%
-  \def\reftextfacebefore{auf~der~vorherigen~Seite}%
-  \let\reftextafter     \reftextfaceafter
-  \let\reftextbefore    \reftextfacebefore
-  \def\reftextcurrent   {auf~dieser~Seite}%
-  \def\reftextfaraway#1{auf~Seite~\pageref{#1}}%
-  \def\reftextpagerange#1#2{auf~den~Seiten~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~bis~\ref{#2}}%
-}
-\addto\extrasdutch{%
-  \def\refpagename{pagina}%
-  \def\reftextfaceafter {op~de~\reftextvario{rechter~\refpagename}%
-    {\refpagename\ hiernaast}}%
-  \def\reftextfacebefore{op~de~\reftextvario{linker~\refpagename}%
-    {\refpagename\ hiernaast}}%
-  \def\reftextafter     {op~de~\reftextvario{volgende~\refpagename}%
-    {\refpagename\ hierna}}%
-  \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
-    {\refpagename\ hiervoor}}%
-  \def\reftextcurrent   {op~deze~\refpagename}%
-  \def\reftextfaraway#1{op~\refpagename~\pageref{#1}}
-}
-\addto\extrasenglish{%
-  \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
-  \def\reftextfacebefore{on~the~\reftextvario{facing}{preceding}~page}%
-  \def\reftextafter     {on~the~\reftextvario{following}{next}~page}%
-  \def\reftextbefore    {on~the~\reftextvario{preceding}{previous}~page}%
-  \def\reftextcurrent   {on~\reftextvario{this}{the~current}~page}%
-  \def\reftextfaraway#1{on~page~\pageref{#1}}%
-  \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
 }
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection

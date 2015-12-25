@@ -85,48 +85,15 @@
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
-\cs_new_protected:Nn \__nwejm_language:n
-{
-  \PassOptionsToPackage{main=#1}{babel}
-  \PassOptionsToPackage{#1}{varioref}
-  \AtEndPreamble{%
-    \LoadDictionaryFor{#1}{nwejm}
-    \FCloadlang{#1}
-  }
-  \AfterEndPreamble{%
-    \selectlanguage{#1}
-  }
-}
-\str_case_x:nnF
-{ \g__nwejm_language_tl }
-{
-  { english }   {
-    \__nwejm_language:n {english}
-  }
-  { french }   {
-    \__nwejm_language:n {french}
-  }
-  { ngerman }   {
-    \__nwejm_language:n {ngerman}
-  }
-  { german }   {
-    \__nwejm_language:n {ngerman}
-  }
-  { dutch }   {
-    \__nwejm_language:n {dutch}
-  }
-}{
-  \__nwejm_language:n {english}
-}
-      \AtEndPreamble{
-      \LoadDictionaryFor{french}{nwejm}
-      \LoadDictionaryFor{english}{nwejm}
-      \LoadDictionaryFor{dutch}{nwejm}
-      \LoadDictionaryFor{german}{nwejm}
-    }
-    \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+\AtBeginDocument{
+  \LoadDictionaryFor{french}{nwejm}
+  \LoadDictionaryFor{english}{nwejm}
+  \LoadDictionaryFor{dutch}{nwejm}
+  \LoadDictionaryFor{german}{nwejm}
+}
+\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \RequirePackage[l2tabu,orthodox]{nag}
 \RequirePackage[group=false]{standalone}%
 \pdftex_if_engine:TF
@@ -1202,9 +1169,6 @@ backref
 \NewDocumentCommand \journalsetup { m } {
   \keys_set:nn { nwejm/journalsetup } { #1 }
 }
-\NewDocumentCommand \dates { m } {
-  \keys_set:nn { nwejm/dates } { #1 }
-}
 \addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
   \def\reftextfacebefore{page~\reftextvario{ci-contre}%
@@ -1251,6 +1215,9 @@ backref
   \def\reftextfaraway#1{on~page~\pageref{#1}}%
   \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
   \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
+}
+\NewDocumentCommand \dates { m } {
+  \keys_set:nn { nwejm/dates } { #1 }
 }
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
