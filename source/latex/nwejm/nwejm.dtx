@@ -2574,25 +2574,6 @@ backref
 %    \end{macrocode}
 % \end{macro}
 %
-%    \begin{macrocode}
-%</class>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*class|class-article>
-%    \end{macrocode}
-%
-% \subsection{Dates setup}
-%
-% \begin{macro}{\dates}
-%   We define the command that lets the user specify the issue setup.
-%    \begin{macrocode}
-\NewDocumentCommand \dates { m } {
-  \keys_set:nn { nwejm/dates } { #1 }
-}
-%    \end{macrocode}
-% \end{macro}
-%
 % We have to save the extra definitions of the \Pkg{varioref} which currently is
 % multilingual aware.
 %    \begin{macrocode}
@@ -2642,6 +2623,25 @@ backref
   \def\reftextfaraway#1{on~page~\pageref{#1}}%
   \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
   \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
+% \subsection{Dates setup}
+%
+% \begin{macro}{\dates}
+%   We define the command that lets the user specify the issue setup.
+%    \begin{macrocode}
+\NewDocumentCommand \dates { m } {
+  \keys_set:nn { nwejm/dates } { #1 }
 }
 %    \end{macrocode}
 % \end{macro}
