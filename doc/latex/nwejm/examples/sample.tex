@@ -1,0 +1,53 @@
+\newcounter{sampleinuse}
+\newcommand{\formula}{%
+  \begin{equation*}
+    e^{i\pi}+1=0
+  \end{equation*}
+}
+\newcommand{\sample}[1]{%
+  \stepcounter{sampleinuse}
+  \dates{received=2014-10-14,accepted=2014-12-19,online=2015-09-05}
+  %
+  \begin{abstract}
+    \lipsum[1]
+  \end{abstract}
+  %
+  \keywords{foo,bar,baz}
+  %
+  \msc{11B13,11B30,11P70}
+  %
+  \maketitle
+  Cf. \vref{th-\thesampleinuse} \& \vref{sec-\thesampleinuse} \& \vref{eq-\thesampleinuse}.
+  #1
+  %
+  \begin{theorem}
+    \formula
+  \end{theorem}
+  \begin{remark}
+    \formula
+  \end{remark}
+  \begin{corollary}\label{th-\thesampleinuse}
+    \formula
+  \end{corollary}
+  \begin{proof}
+    \formula
+  \end{proof}
+  %
+  \lipsum[2-15]
+  %
+  \begin{equation}
+    \label{eq-\thesampleinuse}
+    a=a
+  \end{equation}
+  %
+  \setsecnumdepth{none}
+  \section{Section}
+  \resetsecnumdepth
+  %
+  \lipsum[3-25]
+  \section{First section}\label{sec-\thesampleinuse}
+  \lipsum[2-15]
+  \section{Second section}
+  \lipsum[16-38]
+  \printbibliography
+}
