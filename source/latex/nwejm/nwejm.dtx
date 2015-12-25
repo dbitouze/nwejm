@@ -381,7 +381,15 @@ Running "make install" installs the files in the local TeX tree.
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-%<class>\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class-article>
 %    \end{macrocode}
 %
 % We now deal with the language option passed at ×\documentclass× level.
@@ -390,8 +398,10 @@ Running "make install" installs the files in the local TeX tree.
 {
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
-  \AtEndPreamble{%
+  \AtBeginDocument{
     \LoadDictionaryFor{#1}{nwejm}
+  }
+  \AtEndPreamble{%
     \FCloadlang{#1}
   }
   \AfterEndPreamble{%
@@ -421,21 +431,32 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% We load the dictionaries containing the translations needed for theorems and
-% the like.
 %    \begin{macrocode}
-%<class>      \AtEndPreamble{
-%<class>      \LoadDictionaryFor{french}{nwejm}
-%<class>      \LoadDictionaryFor{english}{nwejm}
-%<class>      \LoadDictionaryFor{dutch}{nwejm}
-%<class>      \LoadDictionaryFor{german}{nwejm}
-%<class>    }
-%<class>    \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
-\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+%</class-article>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%</class|class-article>
+%<*class>
+%    \end{macrocode}
+%
+% We load the dictionaries containing the translations needed for theorems and
+% the like.
+%    \begin{macrocode}
+\AtBeginDocument{
+  \LoadDictionaryFor{french}{nwejm}
+  \LoadDictionaryFor{english}{nwejm}
+  \LoadDictionaryFor{dutch}{nwejm}
+  \LoadDictionaryFor{german}{nwejm}
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\PassOptionsToPackage{french,ngerman,dutch,english}{babel}
+\PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class>
 %    \end{macrocode}
 %
 % \section{Packages loading}
