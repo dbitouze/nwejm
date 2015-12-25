@@ -1204,7 +1204,7 @@ backref
   \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
     {\refpagename\ hiervoor}}%
   \def\reftextcurrent   {op~deze~\refpagename}%
-  \def\reftextfaraway#1{op~\refpagename~\pageref{#1}}
+  \def\reftextfaraway#1{op~\refpagename\space\pageref{#1}}
 }
 \addto\extrasenglish{%
   \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
