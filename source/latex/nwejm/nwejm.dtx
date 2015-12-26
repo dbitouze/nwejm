@@ -3721,7 +3721,7 @@ backref
 %    \end{macrocode}
 % We automatically insert the acknowledgments (if any) before the bibliography.
 %    \begin{macrocode}
-  \tl_if_exist:NT {\g_@@_article_acknowledgments_tl}
+  \tl_if_empty:NF {\g_@@_article_acknowledgments_tl}
   {
     \section*{\GetTranslation{Acknowledgments}}
     \g_@@_article_acknowledgments_tl
