@@ -2499,7 +2499,7 @@ backref
 %    \begin{macrocode}
   \int_compare:nNnT {\g_@@_issue_number_int}<{1}
   {
-    \int_set:Nn \g_@@_issue_number_int { \c_@@_first_issue_number_int }
+    \int_gset:Nn \g_@@_issue_number_int { \c_@@_first_issue_number_int }
     \msg_warning:nnn{nwejm}{issue-number-needed}{number}
   }
 %    \end{macrocode}
@@ -3710,6 +3710,7 @@ backref
 %
 % \begin{macro}{\printbibliography}
 %    \begin{macrocode}
+\int_new:N \l_@@_section_int
 \cs_set_eq:NN \_@@_printbibliography \printbibliography
 \RenewDocumentCommand \printbibliography { O{} } {
 %    \end{macrocode}
@@ -3732,9 +3733,11 @@ backref
 % to ×none× in order the references section itself is not numbered. Afterwards,
 % we restore to the original behavior.
 %    \begin{macrocode}
+  \int_set:Nn \l_@@_section_int {\thesection}
+  \edef\fixed{\thesection}
   \setcounter{section}{-1}
   \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
-  \setcounter{section}{0}
+  \setcounter{section}{\int_use:N \l_@@_section_int}
 }
 %    \end{macrocode}
 % \end{macro}
