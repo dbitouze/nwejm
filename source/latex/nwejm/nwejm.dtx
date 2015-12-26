@@ -1593,10 +1593,9 @@ backref
 %    \begin{macrocode}
 \tl_new:N \l_@@_section_header_tl
 \tl_set:Nn \l_@@_section_header_tl {
-  \int_compare:nNnTF { \value{section} } > { 0 }
+  \int_compare:nNnT { \value{section} } > { 0 }
   {%
     \thesection.~%
-  }{%
   }
   \sectiontitle
 }%
