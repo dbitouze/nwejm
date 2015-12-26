@@ -3698,7 +3698,7 @@ backref
 %    \begin{macrocode}
 \AtEndPreamble{%
   \defbibheading{_@@_subbibliography}[\refname]{%
-    \section{#1}
+    \section*{#1}
   }%
 %    \end{macrocode}
 %
@@ -3718,21 +3718,22 @@ backref
 %    \begin{macrocode}
 %<class>  \FloatBarrier%
 %    \end{macrocode}
+% We automatically insert the acknowledgments (if any) before the bibliography.
+%    \begin{macrocode}
+  \tl_if_exist:NT {\g_@@_article_acknowledgments_tl}
+  {
+    \section*{\GetTranslation{Acknowledgments}}
+    \g_@@_article_acknowledgments_tl
+    \tl_gclear:N \g_@@_article_acknowledgments_tl
+  }
+%    \end{macrocode}
 % We set the section counter to a negative number in order the header
 % "References" is not preceded by the section counter. And ×secnumdepth× is set
 % to ×none× in order the references section itself is not numbered. Afterwards,
 % we restore to the original behavior.
 %    \begin{macrocode}
-  \setcounter{section}{-10}
-  \setsecnumdepth{none}
-  \tl_if_exist:NT {\g_@@_article_acknowledgments_tl}
-  {
-    \section{\GetTranslation{Acknowledgments}}
-    \g_@@_article_acknowledgments_tl
-    \tl_gclear:N \g_@@_article_acknowledgments_tl
-  }
+  \setcounter{section}{-1}
   \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
-  \setsecnumdepth{subsection}
   \setcounter{section}{0}
 }
 %    \end{macrocode}
