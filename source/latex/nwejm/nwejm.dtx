@@ -3250,13 +3250,13 @@ backref
     \_@@_section {#2}
   }
   \RenewDocumentCommand \subsection { s m } {%
-    \IfBooleanTF {#1}
+    \IfBooleanT {#1}
     {
       \setsecnumdepth{none}%
     }
-    {
-      \resetsecnumdepth*%
-    }
+    % {
+    %   \resetsecnumdepth*%
+    % }
     \_@@_subsection {#2}
   }
 }
