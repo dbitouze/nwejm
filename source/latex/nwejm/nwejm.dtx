@@ -3734,7 +3734,6 @@ backref
 % we restore to the original behavior.
 %    \begin{macrocode}
   \int_set:Nn \l_@@_section_int {\thesection}
-  \edef\fixed{\thesection}
   \setcounter{section}{-1}
   \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
   \setcounter{section}{\int_use:N \l_@@_section_int}
