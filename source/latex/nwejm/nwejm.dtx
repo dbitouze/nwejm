@@ -1593,9 +1593,9 @@ backref
 %    \begin{macrocode}
 \tl_new:N \l_@@_section_header_tl
 \tl_set:Nn \l_@@_section_header_tl {
-  \int_compare:nNnT { \value{section} } > { 0 }
-  {%
+  \ifthesection{%
     \thesection.~%
+  }{
   }
   \sectiontitle
 }%
@@ -3254,9 +3254,6 @@ backref
     {
       \setsecnumdepth{none}%
     }
-    % {
-    %   \resetsecnumdepth*%
-    % }
     \_@@_subsection {#2}
   }
 }
