@@ -95,7 +95,7 @@
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \RequirePackage[l2tabu,orthodox]{nag}
-\RequirePackage[group=false]{standalone}%
+\RequirePackage[group=false,subpreambles,sort]{standalone}%
 \pdftex_if_engine:TF
   {
     \RequirePackage[T1]{fontenc}
@@ -578,8 +578,7 @@ backref
 }%
 \tl_new:N \l__nwejm_section_header_tl
 \tl_set:Nn \l__nwejm_section_header_tl {
-  \int_compare:nNnTF { \value{section} } > { 0 }
-  {%
+  \ifthesection{%
     \thesection.~%
   }{%
   }
@@ -1133,7 +1132,7 @@ backref
 \hypersetup{pdfauthor=\l__nwejm_pdfauthor_string_tl}
   \int_compare:nNnT {\g__nwejm_issue_number_int}<{1}
   {
-    \int_set:Nn \g__nwejm_issue_number_int { \c__nwejm_first_issue_number_int }
+    \int_gset:Nn \g__nwejm_issue_number_int { \c__nwejm_first_issue_number_int }
     \msg_warning:nnn{nwejm}{issue-number-needed}{number}
   }
   \int_compare:nNnT {\g__nwejm_issue_month_int * \g__nwejm_issue_year_int}<{1}
@@ -1238,6 +1237,7 @@ backref
   \setcounter{Remark}{0}
   \setcounter{Example}{0}
   \setcounter{Notation}{0}
+  \glsresetall
 }
 \AtBeginDocument{%
 \tl_new:N \g__nwejm_bib_issue_date_tl
@@ -1574,7 +1574,37 @@ backref
 \setlength{\columnsep}{7mm}%
 \renewcommand{\thesection}{\arabic{section}}%
 \@ifpackageloaded{siunitx}{%
-  \sisetup{locale=FR}
+  \addto\extrasenglish{\sisetup{locale = UK}}
+  \addto\extrasfrench{\sisetup{locale = FR}}
+  \addto\extrasgerman{\sisetup{locale = DE}}
+  \addto\extrasdutch{%
+    \sisetup{%
+      exponent-product      = \ensuremath { \times } ,
+      inter-unit-product    = \,                     ,
+      output-decimal-marker = { , }
+    }%
+  }
+}
+\cs_set_eq:NN \__nwejm_section \section
+\cs_set_eq:NN \__nwejm_subsection \subsection
+\AfterPreamble{%
+  \RenewDocumentCommand \section { s m } {%
+    \IfBooleanTF {#1}
+    {
+      \setsecnumdepth{none}%
+    }
+    {
+      \resetsecnumdepth*%
+    }
+    \__nwejm_section {#2}
+  }
+  \RenewDocumentCommand \subsection { s m } {%
+    \IfBooleanT {#1}
+    {
+      \setsecnumdepth{none}%
+    }
+    \__nwejm_subsection {#2}
+  }
 }
 \int_new:N \l__nwejm_abs_int
 \cs_new_protected:Nn \__nwejm_ordinalnum_suffix:n
@@ -1902,24 +1932,24 @@ backref
 }
 \AtEndPreamble{%
   \defbibheading{__nwejm_subbibliography}[\refname]{%
-    \section{#1}
+    \section*{#1}
   }%
   \SetCiteCommand{\autocite}%
 }%
+\int_new:N \l__nwejm_section_int
 \cs_set_eq:NN \__nwejm_printbibliography \printbibliography
 \RenewDocumentCommand \printbibliography { O{} } {
   \FloatBarrier%
-  \setcounter{section}{-10}
-  \setsecnumdepth{none}
-  \tl_if_exist:NT {\g__nwejm_article_acknowledgments_tl}
+  \tl_if_empty:NF {\g__nwejm_article_acknowledgments_tl}
   {
-    \section{\GetTranslation{Acknowledgments}}
+    \section*{\GetTranslation{Acknowledgments}}
     \g__nwejm_article_acknowledgments_tl
     \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
+  \int_set:Nn \l__nwejm_section_int {\thesection}
+  \setcounter{section}{-1}
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
-  \setsecnumdepth{subsection}
-  \setcounter{section}{0}
+  \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
 \DeclareNameFormat{firstinits-last}{%
