@@ -1595,7 +1595,7 @@ backref
 \tl_set:Nn \l_@@_section_header_tl {
   \ifthesection{%
     \thesection.~%
-  }{
+  }{%
   }
   \sectiontitle
 }%
@@ -3222,7 +3222,16 @@ backref
 % In case \Pkg{siunitx} is loaded, we make it follow the French rules.
 %    \begin{macrocode}
 \@ifpackageloaded{siunitx}{%
-  \sisetup{locale=FR}
+  \addto\extrasenglish{\sisetup{locale = UK}}
+  \addto\extrasfrench{\sisetup{locale = FR}}
+  \addto\extrasgerman{\sisetup{locale = DE}}
+  \addto\extrasdutch{%
+    \sisetup{%
+      exponent-product      = \ensuremath { \times } ,
+      inter-unit-product    = \,                     ,
+      output-decimal-marker = { , }
+    }%
+  }
 }
 %    \end{macrocode}
 %
