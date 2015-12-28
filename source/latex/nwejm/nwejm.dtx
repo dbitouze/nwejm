@@ -3659,6 +3659,11 @@ backref
 \NewDocumentCommand \K {} {\mathbb{K}}
 %    \end{macrocode}
 %
+% We replace the ugly default ×\emptyset× by the much nicer ×\varnothing×.
+%    \begin{macrocode}
+\cs_set_eq:NN \emptyset \varnothing
+%    \end{macrocode}
+%
 % Now, a command for displaying the sets.
 %    \begin{macrocode}
 \tl_new:N \l_@@_given_tl
