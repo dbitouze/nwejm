@@ -77,18 +77,6 @@
 %   (if any)
 \section*{Introduction}
 %
-\subsection{Miscellaneaous}
-%
-% Use:
-% - the \century command to display centuries, even negative ones,
-% - the \aside command for interpolated clauses.
-\begin{itemize}
-\item It has been proved in \century{19} \aside{more than 100 years ago}
-  that...
-\item Moreover, this has been proved in \century{-3} \aside*{more than 2000
-    years ago}.
-\end{itemize}
-%
 \subsection{Citations tests}
 %
 % Use mainly the \autocite command (from `biblatex' package) to cite
@@ -110,6 +98,34 @@
 %   same page).
 Cf. \vref{thm:bolzano-weierstrass} \& \vref{rmk:euler} \&
 \vref{eq:euler} \& \vref{sec:first-numbered}.
+%
+\subsection{Miscellaneaous}
+%
+% Use:
+% - the \century command to display centuries, even negative ones,
+% - the \aside command for interpolated clauses.
+\begin{itemize}
+\item It has been proved in the \century{19} \aside{more than 100 years ago}
+  that...
+\item This has been conceptualized in the \century{-3} \aside*{more than 2000
+    years ago}.
+\end{itemize}
+%
+\subsection{Acronyms tests}
+%
+% As said above, use \gls{⟨label⟩} to display the acronym labelled ⟨label⟩. Note
+% that, automatically:
+% - the first occurrence of this command displays the /complete/ form of the
+%   acronym (long form followed by the short one in parentheses),
+% - the subsequent occurrences of this command display only the short form of the
+%   acronym,
+% - if an occurrence should be displayed as the short form of an acronym,
+%   regardless it is the first one or not, the command \acrshort{⟨label⟩} is to
+%   be used.
+\begin{enumerate}
+\item The present article is published in the \gls{nwejm}.
+\item Moreover, the present article is published in the \gls{nwejm}.
+\end{enumerate}
 %
 \subsection{Theorems tests}
 %
@@ -146,22 +162,6 @@ Cf. \vref{thm:bolzano-weierstrass} \& \vref{rmk:euler} \&
 \end{equation}
 %
 \lipsum[8-15]
-%
-\subsection{Acronyms tests}
-%
-% As said above, use \gls{⟨label⟩} to display the acronym labelled ⟨label⟩. Note
-% that, automatically:
-% - the first occurrence of this command displays the /complete/ form of the
-%   acronym (long form followed by the short one in parentheses),
-% - the subsequent occurrences of this command display only the short form of the
-%   acronym,
-% - if an occurrence should be displayed as the short form of an acronym,
-%   regardless it is the first one or not, the command \acrshort{⟨label⟩} is to
-%   be used.
-\begin{enumerate}
-\item The present article is published in the \gls{nwejm}.
-\item Moreover, the present article is published in the \gls{nwejm}.
-\end{enumerate}
 %
 \section{First (numbered) section}\label{sec:first-numbered}
 \lipsum[2]
