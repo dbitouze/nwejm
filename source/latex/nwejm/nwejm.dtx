@@ -1636,7 +1636,9 @@ backref
     \bfseries%
     \adjustbox{stack=l}{%
       \c_@@_journal_title_string_tl
-%<class>      \\\GetTranslation{Volumeabbreviated}~\int_use:N \g_@@_issue_number_int
+      \\\GetTranslation{Volumeabbreviated}\space
+%<class>\int_use:N \g_@@_issue_number_int
+%<class-article>\dots
     }
   }
   \hbox_set:Nn \l_@@_journal_logo_box
