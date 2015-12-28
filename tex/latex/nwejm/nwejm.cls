@@ -1903,6 +1903,7 @@ backref
 \NewDocumentCommand \R {} {\mathbb{R}}
 \NewDocumentCommand \C {} {\mathbb{C}}
 \NewDocumentCommand \K {} {\mathbb{K}}
+\cs_set_eq:NN \emptyset \varnothing
 \tl_new:N \l__nwejm_given_tl
 \tl_set:Nn \l__nwejm_given_tl {
   \nonscript\:\delimsize\slash
