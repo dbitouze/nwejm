@@ -342,6 +342,8 @@ backref
     \bfseries%
     \adjustbox{stack=l}{%
       \c__nwejm_journal_title_string_tl
+      \\\GetTranslation{Volumeabbreviated}\space
+\dots
     }
   }
   \hbox_set:Nn \l__nwejm_journal_logo_box
@@ -1182,17 +1184,17 @@ backref
 \__nwejm_clone_theorem:nn {example}{Example}
 \__nwejm_clone_theorem:nn {notation}{Notation}
 \__nwejm_clone_theorem:nn {proof}{Proof}
-\crefname{Theorem}{\GetTranslation{Theorem}}{\GetTranslation{Theorems}}
-\crefname{Corollary}{\GetTranslation{Corollary}}{\GetTranslation{Corollaries}}
-\crefname{Conjecture}{\GetTranslation{Conjecture}}{\GetTranslation{Conjecturs}}
-\crefname{Proposition}{\GetTranslation{Proposition}}{\GetTranslation{Propositions}}
-\crefname{Axiom}{\GetTranslation{Axiom}}{\GetTranslation{Axioms}}
-\crefname{Definition}{\GetTranslation{Definition}}{\GetTranslation{Definitions}}
-\crefname{Example}{\GetTranslation{Example}}{\GetTranslation{Examples}}
-\crefname{Notation}{\GetTranslation{Notation}}{\GetTranslation{Notations}}
-\crefname{Proof}{\GetTranslation{Proof}}{\GetTranslation{Proofs}}
-\crefname{Remark}{\GetTranslation{Remark}}{\GetTranslation{Remarks}}
-\crefname{Lemma}{\GetTranslation{Lemma}}{\GetTranslation{Lemmas}}
+\crefname{Theorem}{\GetTranslation{theorem}}{\gettranslation{theorems}}
+\crefname{Corollary}{\GetTranslation{corollary}}{\gettranslation{corollaries}}
+\crefname{Conjecture}{\GetTranslation{conjecture}}{\gettranslation{conjectures}}
+\crefname{Proposition}{\GetTranslation{proposition}}{\gettranslation{propositions}}
+\crefname{Axiom}{\GetTranslation{axiom}}{\gettranslation{axioms}}
+\crefname{Definition}{\GetTranslation{definition}}{\gettranslation{definitions}}
+\crefname{Example}{\GetTranslation{example}}{\gettranslation{examples}}
+\crefname{Notation}{\GetTranslation{notation}}{\gettranslation{notations}}
+\crefname{Proof}{\GetTranslation{proof}}{\gettranslation{proofs}}
+\crefname{Remark}{\GetTranslation{remark}}{\gettranslation{remarks}}
+\crefname{Lemma}{\GetTranslation{lemma}}{\gettranslation{lemmas}}
 \newlist{assertions}{enumerate}{1}
 \setlist[assertions]{%
   label=\normalfont(\textsf{\tl_head:f
