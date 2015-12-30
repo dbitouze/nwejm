@@ -3091,11 +3091,11 @@ backref
 }
 \tl_set:Nn \l_@@_abstract_box_tl
 {%
+  \mbox{}
+  \par%
+  \vskip .5em%
   \tl_if_empty:NTF \g_@@_abstract_body_tl
   {%
-    \mbox{}
-    \par%
-    \vskip .5em%
     \msg_warning:nn{nwejmart}{No~abstract}
   }%
   {%
