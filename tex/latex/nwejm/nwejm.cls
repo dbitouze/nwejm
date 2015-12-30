@@ -1498,11 +1498,11 @@ backref
 }
 \tl_set:Nn \l__nwejm_abstract_box_tl
 {%
+  \mbox{}
+  \par%
+  \vskip .5em%
   \tl_if_empty:NTF \g__nwejm_abstract_body_tl
   {%
-    \mbox{}
-    \par%
-    \vskip .5em%
     \msg_warning:nn{nwejmart}{No~abstract}
   }%
   {%
