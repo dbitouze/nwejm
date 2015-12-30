@@ -3144,6 +3144,8 @@ backref
 % the TOC).
 %    \begin{macrocode}
   \setsecnumdepth{none}
+%<class-article> \bookmarksetup{depth=-2}
+
   \chapter[\g_@@_title_for_toc_tl]{%
     \LARGE%
     \g_@@_title_tl
@@ -3159,8 +3161,9 @@ backref
     }
     \\[-4ex]
   }
-    \bool_gset_false:N \g_@@_date_specified_bool
-    \setsecnumdepth{subsection}
+  \bool_gset_false:N \g_@@_date_specified_bool
+  \bookmarksetup{depth=subsection}
+  \setsecnumdepth{subsection}
 %    \end{macrocode}
 %
 % We want header of the article's titles pages.
