@@ -2005,6 +2005,14 @@ backref
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
 \DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+\DeclareLabeldate{%
+  \field{date}
+  \field{eventdate}
+  \field{origdate}
+  \field{urldate}
+  \field{pubstate}
+  \literal{nodate}
+}
 \renewrobustcmd{\blx@mkbibfootnote}[2]{%
   \iftoggle{blx@footnote}
   {\blx@warning{Nested notes}%
