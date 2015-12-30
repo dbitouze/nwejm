@@ -3825,6 +3825,19 @@ backref
 \DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
 %    \end{macrocode}
 %
+% We redefine the label date in order the pubstate is used in case no date is
+% provided (e.g. for references to appear).
+%    \begin{macrocode}
+\DeclareLabeldate{%
+  \field{date}
+  \field{eventdate}
+  \field{origdate}
+  \field{urldate}
+  \field{pubstate}
+  \literal{nodate}
+}
+%    \end{macrocode}
+%
 % We redefine the ×\blx@mkbibfootnote× macro in order the footnote mark of
 % bibliographic citations are in bold, just by inserting a patch of
 % ×\@makefnmark×.
