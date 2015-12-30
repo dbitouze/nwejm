@@ -922,6 +922,8 @@ backref
   }
 }
   \setsecnumdepth{none}
+ \bookmarksetup{depth=-2}
+
   \chapter[\g__nwejm_title_for_toc_tl]{%
     \LARGE%
     \g__nwejm_title_tl
@@ -937,8 +939,9 @@ backref
     }
     \\[-4ex]
   }
-    \bool_gset_false:N \g__nwejm_date_specified_bool
-    \setsecnumdepth{subsection}
+  \bool_gset_false:N \g__nwejm_date_specified_bool
+  \bookmarksetup{depth=subsection}
+  \setsecnumdepth{subsection}
   \thispagestyle{__nwejm_article_title_ps}%
 \l__nwejm_abstract_box_tl%
 \normalsize
