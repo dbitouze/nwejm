@@ -29,15 +29,21 @@
   }
 \ExplSyntaxOn
 \msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
-  {Please~specify~`#1=<number>',
-    ~otherwise~`<number>'~will~be~set~to
-    ~`\int_use:N\c__nwejm_first_issue_number_int'.}
+{Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
+  ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
 \msg_new:nnnn{nwejmart}{unknown-choice}{Choice~`#3'~invalid!}
-  {Please~specify~#1=#2.}
+{Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
-   with~ `#1'.~ This~ one~ will~ be~ ignored.}
-\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~ a~ valid~ language~
-   name~ (only~ `english',~ `french',~ `ngerman',~ `german',~ `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}
+  with~ `#1'.~ This~ one~ will~ be~ ignored.}%
+\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~
+  a~ valid~ language~ name~ (only~ `english',~ `french',~ `ngerman',~ `german',~
+  `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}%
+\msg_new:nnn{nwejmart}{No~keyword}{You~ haven't~ specify~ any~ keyword~ for~
+  this~ article!}%
+\msg_new:nnn{nwejmart}{No~MSC}{You~ haven't~ specify~ any~ Mathematical~
+  Subject~ Classification~ (MSC)~ for~ this~ article!}%
+\msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
+  this~ article!}%
 \dim_const:Nn \c__nwejm_pagegrid_dim { 1mm}
 \bool_new:N \g__nwejm_for_authors_bool
 \bool_new:N \g__nwejm_cover_bool
@@ -616,8 +622,7 @@ backref
     \bfseries%
     \adjustbox{stack=l}{%
       \c__nwejm_journal_title_string_tl
-      \\\GetTranslation{Volumeabbreviated}\space
-\int_use:N \g__nwejm_issue_number_int
+      \\\GetTranslation{Volumeabbreviated}\space\int_use:N \g__nwejm_issue_number_int
     }
   }
   \hbox_set:Nn \l__nwejm_journal_logo_box
@@ -1493,8 +1498,13 @@ backref
 }
 \tl_set:Nn \l__nwejm_abstract_box_tl
 {%
-  \mbox{}
-  \tl_if_exist:NTF \g__nwejm_abstract_body_tl
+  \tl_if_empty:NTF \g__nwejm_abstract_body_tl
+  {%
+    \mbox{}
+    \par%
+    \vskip .5em%
+    \msg_warning:nn{nwejmart}{No~abstract}
+  }%
   {%
     \small
     \begin{center}%
@@ -1504,8 +1514,6 @@ backref
       \g__nwejm_abstract_body_tl
     \end{quotation}
   }
-  {%
-  }%
 }%
 \tl_set:Nn \g__nwejm_title_for_toc_tl
 {
@@ -1553,12 +1561,20 @@ backref
   \thispagestyle{__nwejm_article_title_ps}%
 \l__nwejm_abstract_box_tl%
 \normalsize
+\tl_if_empty:NTF \l__nwejm_keywords_tl {
+  \msg_warning:nn{nwejmart}{No~keyword}
+}{
   \l__nwejm_keywords_box_tl
   \par%
   \vskip .5em%
+}
+\tl_if_empty:NTF \l__nwejm_msc_tl {
+  \msg_warning:nn{nwejmart}{No~MSC}
+}{
   \l__nwejm_msc_box_tl
   \par%
   \vskip .5em%
+}
 \tl_gclear:N \g__nwejm_title_tl
 \tl_gclear:N \g__nwejm_subtitle_tl
 \tl_gclear:N \g__nwejm_title_for_toc_tl
