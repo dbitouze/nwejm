@@ -241,15 +241,21 @@ Running "make install" installs the files in the local TeX tree.
 % In this section, some messages are declared for future use.
 %    \begin{macrocode}
 \msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
-  {Please~specify~`#1=<number>',
-    ~otherwise~`<number>'~will~be~set~to
-    ~`\int_use:N\c_@@_first_issue_number_int'.}
+{Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
+  ~`\int_use:N\c_@@_first_issue_number_int'.}%
 \msg_new:nnnn{nwejmart}{unknown-choice}{Choice~`#3'~invalid!}
-  {Please~specify~#1=#2.}
+{Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
-   with~ `#1'.~ This~ one~ will~ be~ ignored.}
-\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~ a~ valid~ language~
-   name~ (only~ `english',~ `french',~ `ngerman',~ `german',~ `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}
+  with~ `#1'.~ This~ one~ will~ be~ ignored.}%
+\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~
+  a~ valid~ language~ name~ (only~ `english',~ `french',~ `ngerman',~ `german',~
+  `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}%
+\msg_new:nnn{nwejmart}{No~keyword}{You~ haven't~ specify~ any~ keyword~ for~
+  this~ article!}%
+\msg_new:nnn{nwejmart}{No~MSC}{You~ haven't~ specify~ any~ Mathematical~
+  Subject~ Classification~ (MSC)~ for~ this~ article!}%
+\msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
+  this~ article!}%
 %    \end{macrocode}
 %
 % \subsection{Class options}
@@ -3086,8 +3092,13 @@ backref
 }
 \tl_set:Nn \l_@@_abstract_box_tl
 {%
-  \mbox{}
-  \tl_if_exist:NTF \g_@@_abstract_body_tl
+  \tl_if_empty:NTF \g_@@_abstract_body_tl
+  {%
+    \mbox{}
+    \par%
+    \vskip .5em%
+    \msg_warning:nn{nwejmart}{No~abstract}
+  }%
   {%
     \small
     \begin{center}%
@@ -3097,8 +3108,6 @@ backref
       \g_@@_abstract_body_tl
     \end{quotation}
   }
-  {%
-  }%
 }%
 %    \end{macrocode}
 %
@@ -3161,12 +3170,20 @@ backref
 %
 \l_@@_abstract_box_tl%
 \normalsize
+\tl_if_empty:NTF \l_@@_keywords_tl {
+  \msg_warning:nn{nwejmart}{No~keyword}
+}{
   \l_@@_keywords_box_tl
   \par%
   \vskip .5em%
+}
+\tl_if_empty:NTF \l_@@_msc_tl {
+  \msg_warning:nn{nwejmart}{No~MSC}
+}{
   \l_@@_msc_box_tl
   \par%
   \vskip .5em%
+}
 %<class-article> \hypersetup{pdfauthor=\l_@@_people_first_last_names_tl}
 %
 \tl_gclear:N \g_@@_title_tl
