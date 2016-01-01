@@ -1821,17 +1821,17 @@ backref
 \__nwejm_clone_theorem:nn {example}{Example}
 \__nwejm_clone_theorem:nn {notation}{Notation}
 \__nwejm_clone_theorem:nn {proof}{Proof}
-\crefname{Theorem}{\GetTranslation{theorem}}{\gettranslation{theorems}}
-\crefname{Corollary}{\GetTranslation{corollary}}{\gettranslation{corollaries}}
-\crefname{Conjecture}{\GetTranslation{conjecture}}{\gettranslation{conjectures}}
-\crefname{Proposition}{\GetTranslation{proposition}}{\gettranslation{propositions}}
-\crefname{Axiom}{\GetTranslation{axiom}}{\gettranslation{axioms}}
-\crefname{Definition}{\GetTranslation{definition}}{\gettranslation{definitions}}
-\crefname{Example}{\GetTranslation{example}}{\gettranslation{examples}}
-\crefname{Notation}{\GetTranslation{notation}}{\gettranslation{notations}}
-\crefname{Proof}{\GetTranslation{proof}}{\gettranslation{proofs}}
-\crefname{Remark}{\GetTranslation{remark}}{\gettranslation{remarks}}
-\crefname{Lemma}{\GetTranslation{lemma}}{\gettranslation{lemmas}}
+\crefname{Theorem}{\GetTranslation{theorem}}{\GetTranslation{theorems}}
+\crefname{Corollary}{\GetTranslation{corollary}}{\GetTranslation{corollaries}}
+\crefname{Conjecture}{\GetTranslation{conjecture}}{\GetTranslation{conjectures}}
+\crefname{Proposition}{\GetTranslation{proposition}}{\GetTranslation{propositions}}
+\crefname{Axiom}{\GetTranslation{axiom}}{\GetTranslation{axioms}}
+\crefname{Definition}{\GetTranslation{definition}}{\GetTranslation{definitions}}
+\crefname{Example}{\GetTranslation{example}}{\GetTranslation{examples}}
+\crefname{Notation}{\GetTranslation{notation}}{\GetTranslation{notations}}
+\crefname{Proof}{\GetTranslation{proof}}{\GetTranslation{proofs}}
+\crefname{Remark}{\GetTranslation{remark}}{\GetTranslation{remarks}}
+\crefname{Lemma}{\GetTranslation{lemma}}{\GetTranslation{lemmas}}
 \newlist{assertions}{enumerate}{1}
 \setlist[assertions]{%
   label=\normalfont(\textsf{\tl_head:f
@@ -2163,7 +2163,7 @@ backref
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
+%% Copyright (C) 2015, 2016 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
