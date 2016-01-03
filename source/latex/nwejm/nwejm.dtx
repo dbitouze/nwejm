@@ -2762,7 +2762,6 @@ backref
   \tl_if_empty:NT \g_@@_short_title_tl {%
     \tl_gset_eq:NN \g_@@_short_title_tl \g_@@_title_tl
   }
-%<class-article>    \hypersetup{pdftitle=\g_@@_short_title_tl}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2778,7 +2777,7 @@ backref
 \NewDocumentCommand \subtitle { o m } {
   \IfNoValueF {#1}
   {
-    \keys_set:nn { nwejm/subtitle } { #1 }
+    \tl_gset:Nn \g_@@_short_subtitle_tl {#1}
   }
   \tl_gset:Nn \g_@@_subtitle_tl {#2}
   \tl_if_empty:NT \g_@@_short_subtitle_tl {%
@@ -3111,7 +3110,7 @@ backref
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\tl_set:Nn \g_@@_title_for_toc_tl
+\tl_set:Nn \g_@@_partial_title_for_toc_tl
 {
   \tl_if_empty:NTF \g_@@_short_title_tl {%
     \g_@@_title_tl%
@@ -3122,6 +3121,19 @@ backref
   {
     \space\textendash{}\space\g_@@_short_subtitle_tl
   }
+}
+%    \end{macrocode}
+%
+% For the article's class, the article's title and (if any) subtitle are added
+% to the ×pdftitle× PDF's metadata.
+%    \begin{macrocode}
+%<class-article>    \hypersetup{pdftitle=\g_@@_partial_title_for_toc_tl}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\tl_set:Nn \g_@@_title_for_toc_tl
+{
+  \g_@@_partial_title_for_toc_tl
   \bool_if:nF { \tl_if_empty_p:N \l_@@_people_first_last_names_tl }
   {
     \textsl{
@@ -3150,7 +3162,8 @@ backref
     \LARGE%
     \g_@@_title_tl
     \tl_if_empty:NF \g_@@_subtitle_tl {%
-      \\%
+      \\[1ex]%
+      \Large%
       \g_@@_subtitle_tl
     }\\[2ex]%
     \l_@@_authors_box_tl%
