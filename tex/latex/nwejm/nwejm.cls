@@ -213,7 +213,7 @@ backref
 \tl_const:Nn \c__nwejm_issue_bib_key_tl {\int_use:N \g__nwejm_issue_number_int}
 \tl_const:Nn \c__nwejm_journal_short_title_string_tl {\textsc{nwejm}}
 \tl_const:Nn \c__nwejm_journal_title_string_tl {
-  North-Western~European~Journal~of~Mathematics
+  North-Western~European~Journal~of~Mathematics%
 }
 \tl_const:Nn \c__nwejm_nwejm_class_name_tl {nwejm}
 \tl_const:Nn \c__nwejm_nwejmarticle_class_name_tl {nwejmart}

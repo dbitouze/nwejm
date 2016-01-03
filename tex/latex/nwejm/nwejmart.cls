@@ -459,12 +459,14 @@ backref
   affiliationtagged .value_required:,
 }
 \tl_new:N \l_nwejm_newtheorem_style_tl
-\keys_define:nn { nwejm/newtheorem }
+\keys_define:nn { nwejm / newtheorem }
 {
+  title .tl_set:N = \l__nwejm_newtheorem_title_tl,
   title / french .tl_set:N = \l__nwejm_newtheorem_french_title_tl,
   title / english .tl_set:N = \l__nwejm_newtheorem_english_title_tl,
   title / german .tl_set:N = \l__nwejm_newtheorem_german_title_tl,
   title / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_tl,
+  title .value_required:,
   title / french .value_required:,
   title / english .value_required:,
   title / german .value_required:,
@@ -1103,7 +1105,7 @@ backref
     \c__nwejm_aside_string_tl{}~#2~\c__nwejm_aside_string_tl
   }
 }
-\NewDocumentCommand \ie { s m } {%
+\NewDocumentCommand \ie { s } {%
   \IfBooleanTF {#1}
   {
     \GetTranslation{idest}
@@ -1117,7 +1119,7 @@ backref
     }%
   }
 }
-\NewDocumentCommand \Ie { s m } {%
+\NewDocumentCommand \Ie { s } {%
   \IfBooleanTF {#1}
   {
     \GetTranslation{Idest}
@@ -1172,6 +1174,7 @@ backref
 \RenewDocumentCommand \newtheorem { O{} m }
 {
   \tl_clear:N \l__nwejm_newtheorem_style_tl
+  \tl_clear:N \l__nwejm_newtheorem_title_tl
   \tl_clear:N \l__nwejm_newtheorem_french_title_tl
   \tl_clear:N \l__nwejm_newtheorem_english_title_tl
   \tl_clear:N \l__nwejm_newtheorem_german_title_tl
@@ -1195,6 +1198,24 @@ backref
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm / newtheorem } { #1 }
+    \tl_if_empty:NF \l__nwejm_newtheorem_title_tl {%
+      \tl_set:Nf \l__nwejm_newtheorem_english_title_tl
+      {
+        \l__nwejm_newtheorem_title_tl
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_french_title_tl
+      {
+        \l__nwejm_newtheorem_title_tl
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_german_title_tl
+      {
+        \l__nwejm_newtheorem_title_tl
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl
+      {
+        \l__nwejm_newtheorem_title_tl
+      }
+    }
   }
   %
   \__nwejm_new_theorem:nnVVVV
