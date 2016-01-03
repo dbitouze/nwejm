@@ -1723,7 +1723,7 @@ backref
     \c__nwejm_aside_string_tl{}~#2~\c__nwejm_aside_string_tl
   }
 }
-\NewDocumentCommand \ie { s m } {%
+\NewDocumentCommand \ie { s } {%
   \IfBooleanTF {#1}
   {
     \GetTranslation{idest}
@@ -1737,7 +1737,7 @@ backref
     }%
   }
 }
-\NewDocumentCommand \Ie { s m } {%
+\NewDocumentCommand \Ie { s } {%
   \IfBooleanTF {#1}
   {
     \GetTranslation{Idest}
