@@ -62,3 +62,7 @@
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
 \ProvideDictTranslation{Acknowledgments}{Acknowledgments}
+\ProvideDictTranslation{idest}{id~est}
+\ProvideDictTranslation{ie}{i.e}
+\ProvideDictTranslation{Idest}{Id~est}
+\ProvideDictTranslation{Ie}{I.e}

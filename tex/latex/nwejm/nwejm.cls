@@ -1606,8 +1606,9 @@ backref
 }
 \cs_set_eq:NN \__nwejm_section \section
 \cs_set_eq:NN \__nwejm_subsection \subsection
+\cs_set_eq:NN \__nwejm_subsubsection \subsubsection
 \AfterPreamble{%
-  \RenewDocumentCommand \section { s m } {%
+  \RenewDocumentCommand \section { s o m } {%
     \IfBooleanTF {#1}
     {
       \setsecnumdepth{none}%
@@ -1615,14 +1616,21 @@ backref
     {
       \resetsecnumdepth*%
     }
-    \__nwejm_section {#2}
+    \IfNoValueTF{#2}{\__nwejm_section{#3}}{\__nwejm_section[#2]{#3}}
   }
-  \RenewDocumentCommand \subsection { s m } {%
+  \RenewDocumentCommand \subsection { s o m } {%
     \IfBooleanT {#1}
     {
       \setsecnumdepth{none}%
     }
-    \__nwejm_subsection {#2}
+    \IfNoValueTF{#2}{\__nwejm_subsection{#3}}{\__nwejm_subsection[#2]{#3}}
+  }
+  \RenewDocumentCommand \subsubsection { s o m } {%
+    \IfBooleanT {#1}
+    {
+      \setsecnumdepth{none}%
+    }
+    \IfNoValueTF{#2}{\__nwejm_subsubsection{#3}}{\__nwejm_subsubsection[#2]{#3}}
   }
 }
 \int_new:N \l__nwejm_abs_int
@@ -1706,6 +1714,34 @@ backref
   }
   {
     \c__nwejm_aside_string_tl{}~#2~\c__nwejm_aside_string_tl
+  }
+}
+\NewDocumentCommand \ie { s m } {%
+  \IfBooleanTF {#1}
+  {
+    \GetTranslation{idest}
+  }
+  {
+    \GetTranslation{ie}
+    \@ifnextchar.%
+    {
+    }{
+      .\xspace
+    }%
+  }
+}
+\NewDocumentCommand \Ie { s m } {%
+  \IfBooleanTF {#1}
+  {
+    \GetTranslation{Idest}
+  }
+  {
+    \GetTranslation{Ie}
+    \@ifnextchar.%
+    {
+    }{
+      .\xspace
+    }%
   }
 }
 \RenewDocumentCommand \vec { m } {
