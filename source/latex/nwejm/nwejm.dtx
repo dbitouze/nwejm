@@ -3407,6 +3407,39 @@ backref
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\aside}
+%    \begin{macrocode}
+\NewDocumentCommand \ie { s m } {%
+  \IfBooleanTF {#1}
+  {
+    \GetTranslation{idest}
+  }
+  {
+    \GetTranslation{ie}
+    \@ifnextchar.%
+    {
+    }{
+      .\xspace
+    }%
+  }
+}
+\NewDocumentCommand \Ie { s m } {%
+  \IfBooleanTF {#1}
+  {
+    \GetTranslation{Idest}
+  }
+  {
+    \GetTranslation{Ie}
+    \@ifnextchar.%
+    {
+    }{
+      .\xspace
+    }%
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Vectors}
 %
 % Vectors, even written with "\vec", are typeset with \pkg{esvect}'s "\vv":
@@ -4309,6 +4342,11 @@ backref
 \ProvideDictTranslation{before-christ}{BC}
 %
 \ProvideDictTranslation{Acknowledgments}{Acknowledgments}
+%
+\ProvideDictTranslation{idest}{id~est}
+\ProvideDictTranslation{ie}{i.e}
+\ProvideDictTranslation{Idest}{Id~est}
+\ProvideDictTranslation{Ie}{I.e}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4392,6 +4430,11 @@ backref
 \ProvideDictTranslation{before-christ}{av.~J.-C}
 %
 \ProvideDictTranslation{Acknowledgments}{Remerciements}
+%
+\ProvideDictTranslation{idest}{c'est-à-dire}
+\ProvideDictTranslation{ie}{c.-à-d}
+\ProvideDictTranslation{Idest}{C'est-à-dire}
+\ProvideDictTranslation{Ie}{C.-à-d}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4475,6 +4518,11 @@ backref
 \ProvideDictTranslation{before-christ}{v.~Chr}
 %
 \ProvideDictTranslation{Acknowledgments}{Bestätigungen}
+%
+\ProvideDictTranslation{idest}{das~heißt}
+\ProvideDictTranslation{ie}{d.~h}
+\ProvideDictTranslation{Idest}{Das~heißt}
+\ProvideDictTranslation{Ie}{D~h}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4558,6 +4606,11 @@ backref
 \ProvideDictTranslation{before-christ}{v.Chr}
 %
 \ProvideDictTranslation{Acknowledgments}{Dankwoord}
+%
+\ProvideDictTranslation{idest}{dat~wil~zeggen}
+\ProvideDictTranslation{ie}{d.w.z}
+\ProvideDictTranslation{Idest}{Dat~wil~zeggen}
+\ProvideDictTranslation{Ie}{D.w.z}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
