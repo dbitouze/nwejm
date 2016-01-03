@@ -1287,7 +1287,7 @@ backref
 \NewDocumentCommand \subtitle { o m } {
   \IfNoValueF {#1}
   {
-    \keys_set:nn { nwejm/subtitle } { #1 }
+    \tl_gset:Nn \g__nwejm_short_subtitle_tl {#1}
   }
   \tl_gset:Nn \g__nwejm_subtitle_tl {#2}
   \tl_if_empty:NT \g__nwejm_short_subtitle_tl {%
@@ -1515,7 +1515,7 @@ backref
     \end{quotation}
   }
 }%
-\tl_set:Nn \g__nwejm_title_for_toc_tl
+\tl_set:Nn \g__nwejm_partial_title_for_toc_tl
 {
   \tl_if_empty:NTF \g__nwejm_short_title_tl {%
     \g__nwejm_title_tl%
@@ -1526,6 +1526,10 @@ backref
   {
     \space\textendash{}\space\g__nwejm_short_subtitle_tl
   }
+}
+\tl_set:Nn \g__nwejm_title_for_toc_tl
+{
+  \g__nwejm_partial_title_for_toc_tl
   \bool_if:nF { \tl_if_empty_p:N \l__nwejm_people_first_last_names_tl }
   {
     \textsl{
@@ -1546,7 +1550,8 @@ backref
     \LARGE%
     \g__nwejm_title_tl
     \tl_if_empty:NF \g__nwejm_subtitle_tl {%
-      \\%
+      \\[1ex]%
+      \Large%
       \g__nwejm_subtitle_tl
     }\\[2ex]%
     \l__nwejm_authors_box_tl%
