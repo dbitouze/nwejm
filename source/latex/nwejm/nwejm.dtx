@@ -3268,8 +3268,9 @@ backref
 %    \begin{macrocode}
 \cs_set_eq:NN \_@@_section \section
 \cs_set_eq:NN \_@@_subsection \subsection
+\cs_set_eq:NN \_@@_subsubsection \subsubsection
 \AfterPreamble{%
-  \RenewDocumentCommand \section { s m } {%
+  \RenewDocumentCommand \section { s o m } {%
     \IfBooleanTF {#1}
     {
       \setsecnumdepth{none}%
@@ -3277,14 +3278,21 @@ backref
     {
       \resetsecnumdepth*%
     }
-    \_@@_section {#2}
+    \IfNoValueTF{#2}{\_@@_section{#3}}{\_@@_section[#2]{#3}}
   }
-  \RenewDocumentCommand \subsection { s m } {%
+  \RenewDocumentCommand \subsection { s o m } {%
     \IfBooleanT {#1}
     {
       \setsecnumdepth{none}%
     }
-    \_@@_subsection {#2}
+    \IfNoValueTF{#2}{\_@@_subsection{#3}}{\_@@_subsection[#2]{#3}}
+  }
+  \RenewDocumentCommand \subsubsection { s o m } {%
+    \IfBooleanT {#1}
+    {
+      \setsecnumdepth{none}%
+    }
+    \IfNoValueTF{#2}{\_@@_subsubsection{#3}}{\_@@_subsubsection[#2]{#3}}
   }
 }
 %    \end{macrocode}
