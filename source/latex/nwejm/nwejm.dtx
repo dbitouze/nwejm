@@ -1943,12 +1943,14 @@ backref
 %
 %    \begin{macrocode}
 \tl_new:N \l_nwejm_newtheorem_style_tl
-\keys_define:nn { nwejm/newtheorem }
+\keys_define:nn { nwejm / newtheorem }
 {
+  title .tl_set:N = \l_@@_newtheorem_title_tl,
   title / french .tl_set:N = \l_@@_newtheorem_french_title_tl,
   title / english .tl_set:N = \l_@@_newtheorem_english_title_tl,
   title / german .tl_set:N = \l_@@_newtheorem_german_title_tl,
   title / dutch .tl_set:N = \l_@@_newtheorem_dutch_title_tl,
+  title .value_required:,
   title / french .value_required:,
   title / english .value_required:,
   title / german .value_required:,
@@ -3419,9 +3421,10 @@ backref
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\aside}
+% \begin{macro}{\ie}
+% \begin{macro}{\Ie}
 %    \begin{macrocode}
-\NewDocumentCommand \ie { s m } {%
+\NewDocumentCommand \ie { s } {%
   \IfBooleanTF {#1}
   {
     \GetTranslation{idest}
@@ -3435,7 +3438,7 @@ backref
     }%
   }
 }
-\NewDocumentCommand \Ie { s m } {%
+\NewDocumentCommand \Ie { s } {%
   \IfBooleanTF {#1}
   {
     \GetTranslation{Idest}
@@ -3450,6 +3453,7 @@ backref
   }
 }
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 % \subsection{Vectors}
@@ -3525,6 +3529,7 @@ backref
 \RenewDocumentCommand \newtheorem { O{} m }
 {
   \tl_clear:N \l_@@_newtheorem_style_tl
+  \tl_clear:N \l_@@_newtheorem_title_tl
   \tl_clear:N \l_@@_newtheorem_french_title_tl
   \tl_clear:N \l_@@_newtheorem_english_title_tl
   \tl_clear:N \l_@@_newtheorem_german_title_tl
@@ -3548,6 +3553,24 @@ backref
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm / newtheorem } { #1 }
+    \tl_if_empty:NF \l_@@_newtheorem_title_tl {%
+      \tl_set:Nf \l_@@_newtheorem_english_title_tl
+      {
+        \l_@@_newtheorem_title_tl
+      }
+      \tl_set:Nf \l_@@_newtheorem_french_title_tl
+      {
+        \l_@@_newtheorem_title_tl
+      }
+      \tl_set:Nf \l_@@_newtheorem_german_title_tl
+      {
+        \l_@@_newtheorem_title_tl
+      }
+      \tl_set:Nf \l_@@_newtheorem_dutch_title_tl
+      {
+        \l_@@_newtheorem_title_tl
+      }
+    }
   }
   %
   \_@@_new_theorem:nnVVVV
