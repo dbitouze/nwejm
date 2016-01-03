@@ -39,7 +39,7 @@
 % \subtitle{Article's Subtitle}
 %
 % Author(s) of the article:
-% - one \author command by author,
+% - one \author command per author,
 % - mandatory argument entered as `⟨Last Name⟩, ⟨First Name⟩'.
 % Use the key-value `affiliation={⟨affiliation⟩}' optional argument to specify
 % one or more affiliations. An affiliation can be tagged
@@ -62,12 +62,12 @@
 % command,as a comma separated list.
 \msc{11B13,11B30,11P70}
 %
-%
-% Acknowledgments, if any, are entered thanks to \acknowledgments command,as
-% a comma separated list.
-\acknowledgments{Thanks to mum, daddy and all my buddies.}
-%
 \maketitle
+%
+% Acknowledgments, if any, are entered thanks to \acknowledgments command (and
+% will be displayed just before the bibliography, thanks to the
+% \printbibliography command).
+\acknowledgments{Thanks to mum, daddy and all my buddies.}
 %
 % Unnumbered sections, if needed, are entered as usually with the starred
 % version of the \section command. Note that:
