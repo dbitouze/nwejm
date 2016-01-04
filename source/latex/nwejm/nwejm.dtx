@@ -4035,6 +4035,18 @@ backref
 \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 %    \end{macrocode}
 %
+% \subsection{Related to \Pkg{hyperref}}
+%
+% We perform a workaround replacement macro for short form of acronyms in
+% headings title in order to let them smoothly appear in the bookmarks.
+%    \begin{macrocode}
+\expandafter\def\expandafter\pdfstringdefPreHook
+\expandafter{%
+  \pdfstringdefPreHook
+  \renewcommand{\acrshort}[1]{\tl_upper_case:n {\glsentryshort{##1}}}%
+}
+%    \end{macrocode}
+%
 % \subsection{Related to \Pkg{draftwatermark}}
 %
 %    \begin{macrocode}
