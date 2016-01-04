@@ -1610,6 +1610,7 @@ backref
       output-decimal-marker = { , }
     }%
   }
+  \sisetup{detect-all}
 }
 \cs_set_eq:NN \__nwejm_section \section
 \cs_set_eq:NN \__nwejm_subsection \subsection
@@ -2148,6 +2149,11 @@ backref
 \fi
 \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
 \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+\expandafter\def\expandafter\pdfstringdefPreHook
+\expandafter{%
+  \pdfstringdefPreHook
+  \renewcommand{\acrshort}[1]{\tl_upper_case:n {\glsentryshort{##1}}}%
+}
 \@ifpackageloaded{draftwatermark}{%
   \SetWatermarkColor{gray!10}%
   \SetWatermarkFontSize{30mm}%
