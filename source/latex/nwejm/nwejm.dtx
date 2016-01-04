@@ -3634,6 +3634,19 @@ Running "make install" installs the files in the local TeX tree.
 \crefname{Lemma}{\GetTranslation{lemma}}{\GetTranslation{lemmas}}
 %    \end{macrocode}
 %
+% \subsection{References}
+%
+% The reference commands ×\ref× and ×\eqref× are mapped onto ×\vref×:
+%    \begin{macrocode}
+  \RenewDocumentCommand \ref { m } {
+    \vref{#1}%
+  }
+  \RenewDocumentCommand \eqref { m } {
+    \vref{#1}%
+  }
+}
+%    \end{macrocode}
+%
 % \subsection{Assertions enumerations}
 %
 % An environment for assertions' enumeration is provided in order to display
