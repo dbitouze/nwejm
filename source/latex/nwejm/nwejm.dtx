@@ -256,6 +256,8 @@ Running "make install" installs the files in the local TeX tree.
   Subject~ Classification~ (MSC)~ for~ this~ article!}%
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
+\msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
+  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
 %    \end{macrocode}
 %
 % \subsection{Class options}
@@ -707,6 +709,11 @@ Running "make install" installs the files in the local TeX tree.
 % \item Intelligent cross-referencing:
 %    \begin{macrocode}
 \RequirePackage{cleveref}%
+%    \end{macrocode}
+%
+% \item Automatic equation references:
+%    \begin{macrocode}
+\RequirePackage{autonum}
 %    \end{macrocode}
 % \end{enumerate}
 %
@@ -3788,6 +3795,28 @@ Running "make install" installs the files in the local TeX tree.
 % \section{Packages settings, libraries loading, etc.}
 %
 % We gather here miscellaneous settings.
+%
+% \subsection{Related to \Pkg{autonum}}
+%
+% We add \pkg{autonum} support for ×\vref× referencing command:
+%    \begin{macrocode}
+\AfterEndPreamble{
+  \autonum@generatePatchedReferenceCSL{vref}
+%    \end{macrocode}
+%
+% The \Pkg{autonum} delete the definitions of the starred versions of the
+% ×equation×, ×align×, ×gather×, ×multline×, ×flalign× environments and that
+% may be troubling for the user. Hence we redefine them to be the same as their
+% unstarred counterparts:
+%    \begin{macrocode}
+  \clist_set:Nn \l_tmpa_clist {equation,align,gather,multline,flalign}
+  \clist_map_inline:Nn \l_tmpa_clist {
+    \cs_set_eq:cc {#1*} {#1}
+    \cs_set_eq:cc {end#1*} {end#1}
+  }
+  % \msg_warning:nnn{nwejmart}{Starred~AMS~environments}{#1}
+}
+%    \end{macrocode}
 %
 % \subsection{Related to \Pkg{pgfplots}}
 %
