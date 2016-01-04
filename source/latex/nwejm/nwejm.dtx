@@ -1916,7 +1916,7 @@ Running "make install" installs the files in the local TeX tree.
     {%
       \prop_put_if_new:NVn \l_tmpa_prop {\l_tmpa_tl} {}
     }{
-      \msg_error:nnn{@@}{unknown-tag}{#1}
+      \msg_error:nnn{@@}{Unknown~tag}{#1}
     }
   },
 %    \end{macrocode}
@@ -1952,7 +1952,7 @@ Running "make install" installs the files in the local TeX tree.
   style / definition .code:n = {\tl_set:Nn \l_@@_newtheorem_style_tl {definition}},
   style / proof .code:n = {\tl_set:Nn \l_@@_newtheorem_style_tl {proof}},
   style / unknown .code:n =
-  \msg_error:nnxxx { nwejm } { unknown-choice }
+  \msg_error:nnxxx { nwejm } { Unknown~choice }
   { style } % Name of choice key
   { theorem~or~definition~or~proof } % Valid choices
   { \exp_not:n {#1} } % Invalid choice given
@@ -2499,7 +2499,7 @@ Running "make install" installs the files in the local TeX tree.
   \int_compare:nNnT {\g_@@_issue_number_int}<{1}
   {
     \int_gset:Nn \g_@@_issue_number_int { \c_@@_first_issue_number_int }
-    \msg_warning:nnn{nwejm}{issue-number-needed}{number}
+    \msg_warning:nnn{nwejm}{Issue~number~needed}{number}
   }
 %    \end{macrocode}
 %
