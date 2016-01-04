@@ -28,12 +28,12 @@
     Class for the journal "North-Western European Journal of Mathematics".
   }
 \ExplSyntaxOn
-\msg_new:nnnn{nwejm}{issue-number-needed}{Option~`#1'~needed!}
+\msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
-\msg_new:nnnn{nwejmart}{unknown-choice}{Choice~`#3'~invalid!}
+\msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
-\msg_new:nnn{nwejmart}{unknown-tag}{There~ isn't~ any~ affiliation~ tagged~
+\msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
   with~ `#1'.~ This~ one~ will~ be~ ignored.}%
 \msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~
   a~ valid~ language~ name~ (only~ `english',~ `french',~ `ngerman',~ `german',~
@@ -44,6 +44,8 @@
   Subject~ Classification~ (MSC)~ for~ this~ article!}%
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
+\msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
+  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
 \dim_const:Nn \c__nwejm_pagegrid_dim { 1mm}
 \bool_new:N \g__nwejm_for_authors_bool
 \bool_new:N \g__nwejm_cover_bool
@@ -121,15 +123,7 @@
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
-\RequirePackage[%
-backend=biber,
-defernumbers=true,
-dashed=false,
-firstinits,
-uniquename=init,
-style=authoryear,
-backref
-]{biblatex}%
+\RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
@@ -160,6 +154,7 @@ backref
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
+\RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -749,7 +744,7 @@ backref
     {%
       \prop_put_if_new:NVn \l_tmpa_prop {\l_tmpa_tl} {}
     }{
-      \msg_error:nnn{__nwejm}{unknown-tag}{#1}
+      \msg_error:nnn{__nwejm}{Unknown~tag}{#1}
     }
   },
   affiliation .value_required:,
@@ -774,7 +769,7 @@ backref
   style / definition .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {definition}},
   style / proof .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {proof}},
   style / unknown .code:n =
-  \msg_error:nnxxx { nwejm } { unknown-choice }
+  \msg_error:nnxxx { nwejm } { Unknown~choice }
   { style } % Name of choice key
   { theorem~or~definition~or~proof } % Valid choices
   { \exp_not:n {#1} } % Invalid choice given
@@ -1141,7 +1136,7 @@ backref
   \int_compare:nNnT {\g__nwejm_issue_number_int}<{1}
   {
     \int_gset:Nn \g__nwejm_issue_number_int { \c__nwejm_first_issue_number_int }
-    \msg_warning:nnn{nwejm}{issue-number-needed}{number}
+    \msg_warning:nnn{nwejm}{Issue~number~needed}{number}
   }
   \int_compare:nNnT {\g__nwejm_issue_month_int * \g__nwejm_issue_year_int}<{1}
   {
@@ -1895,6 +1890,13 @@ backref
 \crefname{Proof}{\GetTranslation{proof}}{\GetTranslation{proofs}}
 \crefname{Remark}{\GetTranslation{remark}}{\GetTranslation{remarks}}
 \crefname{Lemma}{\GetTranslation{lemma}}{\GetTranslation{lemmas}}
+  \RenewDocumentCommand \ref { m } {
+    \vref{#1}%
+  }
+  \RenewDocumentCommand \eqref { m } {
+    \vref{#1}%
+  }
+}
 \newlist{assertions}{enumerate}{1}
 \setlist[assertions]{%
   label=\normalfont(\textsf{\tl_head:f
@@ -2001,6 +2003,15 @@ backref
   }{
     \__nwejm_set*{#1\l__nwejm_given_tl #2}
   }
+}
+\AfterEndPreamble{
+  \autonum@generatePatchedReferenceCSL{vref}
+  \clist_set:Nn \l_tmpa_clist {equation,align,gather,multline,flalign}
+  \clist_map_inline:Nn \l_tmpa_clist {
+    \cs_set_eq:cc {#1*} {#1}
+    \cs_set_eq:cc {end#1*} {end#1}
+  }
+  % \msg_warning:nnn{nwejmart}{Starred~AMS~environments}{#1}
 }
 \@ifpackageloaded{pgfplots}{%
   \ifcurrentbaselanguage{french}{%
