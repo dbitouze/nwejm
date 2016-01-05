@@ -156,6 +156,7 @@
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
+\let\globcount\newcount
 \RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
@@ -1272,13 +1273,6 @@
 \crefname{Proof}{\GetTranslation{proof}}{\GetTranslation{proofs}}
 \crefname{Remark}{\GetTranslation{remark}}{\GetTranslation{remarks}}
 \crefname{Lemma}{\GetTranslation{lemma}}{\GetTranslation{lemmas}}
-  \RenewDocumentCommand \ref { m } {
-    \vref{#1}%
-  }
-  \RenewDocumentCommand \eqref { m } {
-    \vref{#1}%
-  }
-}
 \newlist{assertions}{enumerate}{1}
 \setlist[assertions]{%
   label=\normalfont(\textsf{\tl_head:f
@@ -1320,9 +1314,21 @@
 \RenewDocumentCommand \arctanh {} {
   \ifcurrentbaselanguage {french}{\Argth}{\__nwejm_orig_arctanh}%
 }
+\cs_set_eq:NN \__nwejm_orig_cot \cot
+\RenewDocumentCommand \cot {} {
+  \ifcurrentbaselanguage {french}{\cotan}{\__nwejm_orig_cot}%
+}
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\sh}{sh}
+\cs_set_eq:NN \__nwejm_orig_cosh \cosh
+\cs_set_eq:NN \__nwejm_orig_sinh \sinh
 \cs_set_eq:NN \__nwejm_orig_tanh \tanh
+\RenewDocumentCommand \cosh {} {
+  \ifcurrentbaselanguage {french}{\ch}{\__nwejm_orig_cosh}%
+}
+\RenewDocumentCommand \sinh {} {
+  \ifcurrentbaselanguage {french}{\sh}{\__nwejm_orig_sinh}%
+}
 \RenewDocumentCommand \tanh {} {
   \ifcurrentbaselanguage {french}{\operatorname{th}}{\__nwejm_orig_tanh}%
 }
