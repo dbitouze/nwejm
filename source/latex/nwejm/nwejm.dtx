@@ -3712,9 +3712,21 @@ Running "make install" installs the files in the local TeX tree.
 %
 % Various other operators.
 %    \begin{macrocode}
+\cs_set_eq:NN \_@@_orig_cot \cot
+\RenewDocumentCommand \cot {} {
+  \ifcurrentbaselanguage {french}{\cotan}{\_@@_orig_cot}%
+}
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\sh}{sh}
+\cs_set_eq:NN \_@@_orig_cosh \cosh
+\cs_set_eq:NN \_@@_orig_sinh \sinh
 \cs_set_eq:NN \_@@_orig_tanh \tanh
+\RenewDocumentCommand \cosh {} {
+  \ifcurrentbaselanguage {french}{\ch}{\_@@_orig_cosh}%
+}
+\RenewDocumentCommand \sinh {} {
+  \ifcurrentbaselanguage {french}{\sh}{\_@@_orig_sinh}%
+}
 \RenewDocumentCommand \tanh {} {
   \ifcurrentbaselanguage {french}{\operatorname{th}}{\_@@_orig_tanh}%
 }
