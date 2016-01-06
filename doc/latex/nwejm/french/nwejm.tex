@@ -1,0 +1,78 @@
+\documentclass[french]{nwejmart}
+\usepackage{etoc}
+\usepackage{denisbdoc}
+\usepackage{draftwatermark}
+\usepackage{embedfile}
+%
+\indexsetup{level=\section*,toclevel=section,noclearpage}
+\makeindex[columns=2]
+\tcbset{index format=off}
+%
+\lstMakeShortInline[style=dbtex]|
+\tcbset{listing options={escapechar=+}}
+%
+% \ExplSyntaxOn
+\makeatletter
+\renewcommand{\thetcb@cnt@dbremark}{\thesection.\arabic{tcb@cnt@dbremark}}%
+\renewcommand{\thetcb@cnt@dbwarning}{\thesection.\arabic{tcb@cnt@dbwarning}}%
+\renewcommand{\thetcb@cnt@dbexample}{\thesection.\arabic{tcb@cnt@dbexample}}%
+\renewcommand{\thetcb@cnt@dbfaq}{\thesection.\arabic{tcb@cnt@dbfaq}}%
+% \clist_set:Nn \l_tmpa_clist {dbremark}
+% \clist_map_inline:Nn \l_tmpa_clist {
+%   \renewcommand{\thetcb@cnt@##1}{\thesection.\arabic{tcb@cnt@##1}}%
+% }
+\makeatother
+% \ExplSyntaxOff
+%
+\SetWatermarkColor{gray!10}%
+\SetWatermarkFontSize{20mm}%
+\SetWatermarkText{\MakeUppercase{travail en cours}}%
+%
+\addbibresource{nwejm.bib}
+%
+\newacronym{nwejm}{nwejm}{North-Western European Journal of Mathematics}
+\newacronym{bap}{bap}{bounded approximation property}
+\newacronym{msc}{msc}{Mathematical Subject Classification}
+%
+\newtheorem{article}
+\newtheorem[title=Fait,style=definition]{fact}
+%
+\begin{document}
+\title[Documentation de la classe \LaTeX{} du \texorpdfstring{\nwejm{}}{NWEJM}]{Documentation de la classe \LaTeX{} du \nwejm*{} destinée aux auteurs}
+%
+\author[%
+affiliation={%
+  Université du Littoral Côte d'Opale, Laboratoire de mathématiques pures et
+  appliquées (\nolinkurl{denis.bitouze@lmpa.univ-littoral.fr})%
+},%
+]{Bitouzé, Denis}
+%
+\maketitle
+%
+\etocarticlestylenomarks
+\localtableofcontents
+%
+\input{fixed-footnotes}
+\input{nwejmart}
+%
+\section{Annexes}
+\input{packages-un-loaded}
+\input{notations}
+%
+\printbibliography
+%
+% \tcblistof{dbwarninglist}{Table des
+%   avertissements\addcontentsline{toc}{section}{Table des avertissements}}%
+% \tcblistof{dbremarklist}{Table des remarques\addcontentsline{toc}{section}{Table
+%     des remarques}}%
+% \tcblistof[\chapter*]{dbexamplelist}{Table des exemples\addcontentsline{toc}{chapter}{Table des exemples}}%
+% \tcblistof[\chapter*]{dbfaqlist}{Table des
+% questions\addcontentsline{toc}{chapter}{Table des questions}
+%
+\printindex
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

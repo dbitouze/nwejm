@@ -1,0 +1,92 @@
+\subsection{Packages chargés (ou pas) par la
+  classe}\label{sec-packages-charges-ou-pas}
+
+\subsubsection{Packages chargés par la classe}\label{sec:packages-charges-par}
+
+On a vu que, pour plusieurs de ses fonctionnalités, la \nwejmauthorcl{} s'appuie
+sur des packages qu'elle charge automatiquement. Ceux dont les fonctionnalités
+peuvent être utiles aux auteurs d'articles du \nwejm{} sont répertoriés dans la
+liste suivante qui indique leur fonction et le cas échéant la ou les options
+avec lesquelles ils sont chargés.
+
+En sus des outils propres à la \nwejmauthorcl, tous ceux fournis par ces
+différents packages sont donc à disposition des auteurs de la \nwejm{}.
+
+\begin{description}
+\item[\package{nag} :] signalement\footnote{Sous forme de \emph{warnings}.} de
+  packages, commandes et environnements obsolètes :
+  \begin{description}
+  \item[options par défaut :] \docAuxKey{l2tabu}, \docAuxKey{orthodox} ;
+  \end{description}
+\item[\package{kpfonts} :] police principale du document :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{noDcommand} ;
+  \end{description}
+\item[\package{graphicx} :] inclusion d'images ;
+\item[\package{adjustbox} :] ajustement de la position de boîtes, par exemple
+  d'images ;
+\item[\package{xspace} :] définition de commandes qui ne \enquote{mangent} pas
+  l'espace qui suit ;
+\item[\package{array} :] extension (et corrections de bogues) des
+  environnements de tableaux ;
+\item[\package{booktabs} :] tableaux d'allure professionnelle ;
+\item[\package{csquotes} :] citations d'extraits informelles et
+  formelles\footnote{Avec citation des sources,
+    cf. \vref{sec-guillemets-citations}.} :
+    \begin{description}
+    \item[option par défaut :] \docAuxKey{autostyle} ;
+    \item[réglage par défaut] |\SetCiteCommand{\autocite}| ;
+  \end{description}
+\item[\package{biblatex} :] gestion puissante de la bibliographie ;
+\item[\package{datetime2} :] formats de dates et de (zones de) temps :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{useregional} ;
+  \end{description}
+\item[\package{hyperref} :] support pour les liens
+  hypertextes\footnote{Cf. \vref{sec-url}.} :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{hidelinks},
+    \docAuxKey{hypertexnames}(|=false|) ;
+  \end{description}
+\item[\package{glossaries} :] création de glossaires et (listes d')acronymes :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{nowarn} ;
+  \end{description}
+\item[\package{varioref} et \package{cleveref} :] références croisées
+  intelligentes\footnote{Cf. \vref{sec-references-croisees}.}.
+\end{description}
+
+\subsubsection{Packages non  chargés par la classe}\label{sec:packages-non-charges}
+
+La liste suivante, loin d'être exhaustive, répertorie des packages non chargés
+par la \nwejmauthorcl{} mais pouvant se révéler utiles aux auteurs.  En outre,
+lorsqu'ils sont chargés manuellement par l'utilisateur, certains d'entre eux se
+voient fixés par la \nwejmauthorcl{} des options ou réglages dont les plus
+notables sont précisés.
+
+\begin{description}
+\item[\package{tikz-cd} :] création simple de diagrammes commutatifs de très
+  haute qualité\footnote{Et offrant une syntaxe plus naturelle que le
+    \Package*{xymatrix}.} ;
+\item[\package{pgfplots} :] création simple de graphiques (de dimensions~$2$
+  ou~$3$) de très haute qualité pour représenter des fonctions ou des données
+  expérimentales ;
+\item[\package{siunitx} :] gestion des nombres, angles et unités, et alignement
+  vertical sur le séparateur décimal dans les tableaux :
+  \begin{description}
+  \item[option par défaut :]\
+    \begin{itemize}
+    \item \docAuxKey{detect-all} ;
+    \item \docAuxKey{locale}|=|\docValue{FR} ou \docValue{UK} ou \docValue{DE}
+      selon la langue de l'article ;
+    \end{itemize}
+  \end{description}
+\item[\package{listings} :] insertion de listings informatiques ;
+\item[\package{todonotes} :] insertion de \enquote{TODO}\footnote{Rappels de
+    points qu'il ne faut pas oublier d'ajouter, de compléter, de réviser, etc.}.
+\end{description}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "nwejm.tex"
+%%% End:
