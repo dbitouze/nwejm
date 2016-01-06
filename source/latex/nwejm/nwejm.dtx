@@ -3976,6 +3976,12 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \tl_if_empty:NF {\g_@@_article_acknowledgments_tl}
   {
+%    \end{macrocode}
+% For the German case, ×\tl_mixed_case:n× cannot be applied because of
+% a diacritic in the \enquote{plural-acknowledgment} translation. Here, it is
+% okay because the German names are already mixed case but this is not safe:
+% XXX-TODO!
+%    \begin{macrocode}
     \ifcurrentbaselanguage{ngerman}{%
       \section*{\GetTranslation{plural-acknowledgment}}
     }{
