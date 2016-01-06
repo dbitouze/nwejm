@@ -2668,7 +2668,11 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
-  \selectlanguage{#1}
+  \tl_if_eq:nnTF { #1 } { german } {%
+    \selectlanguage{ngerman}
+  }{
+    \selectlanguage{#1}
+  }%
   \inputfrom{./}{#2}
   \setcounter{footnote}{0}
   \setcounter{section}{0}
