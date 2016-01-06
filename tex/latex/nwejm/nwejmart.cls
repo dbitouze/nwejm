@@ -167,9 +167,9 @@
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
 \int_const:Nn \c__nwejm_interval_in_months_int { 6 }
-\tl_const:Nn \c__nwejm_date_received_tl {Received}
-\tl_const:Nn \c__nwejm_date_accepted_tl {Accepted}
-\tl_const:Nn \c__nwejm_date_online_tl {Online}
+\tl_const:Nn \c__nwejm_date_received_tl {received}
+\tl_const:Nn \c__nwejm_date_accepted_tl {accepted}
+\tl_const:Nn \c__nwejm_date_online_tl {online}
 \tl_const:Nn \c__nwejm_dates_separator_tl {/}
 \tl_const:Nn \c__nwejm_images_directory_string_tl {images}
 \tl_const:Nn \c__nwejm_issue_images_path_string_tl {\c__nwejm_images_directory_string_tl}
@@ -315,7 +315,12 @@
 \newpagestyle{__nwejm_mainmatter_ps}[]{%
   \sethead%
   [
-  \slshape\g__nwejm_short_title_tl
+  \tl_if_exist:NT {\g__nwejm_short_title_tl}
+  {
+    \tl_if_empty:NF \g__nwejm_short_title_tl {%
+      \slshape\g__nwejm_short_title_tl
+    }
+  }
   ]%
   [%
   ]%
@@ -549,7 +554,7 @@
     \tl_if_empty:NF {#2}
     {
       \tl_if_eq:NNF {\c__nwejm_date_received_tl} {#1} { \c__nwejm_dates_separator_tl }
-      \exp_args:No \GetTranslation{#1}
+      \tl_mixed_case:n { \exp_args:No \GetTranslation{#1} }
       \c__nwejm_colon_tl\space
       \DTMdate{#2}%
     }
@@ -605,24 +610,29 @@
 }
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
-  \selectlanguage{#1}
+  \tl_if_eq:nnTF { #1 } { german } {%
+    \selectlanguage{ngerman}
+  }{
+    \selectlanguage{#1}
+  }%
   \inputfrom{./}{#2}
   \setcounter{footnote}{0}
   \setcounter{section}{0}
   \setcounter{figure}{0}
   \setcounter{table}{0}
   \setcounter{equation}{0}
-  \setcounter{Theorem}{0}
-  \setcounter{Corollary}{0}
-  \setcounter{Conjecture}{0}
-  \setcounter{Proposition}{0}
-  \setcounter{Lemma}{0}
-  \setcounter{Axiom}{0}
-  \setcounter{Definition}{0}
-  \setcounter{Remark}{0}
-  \setcounter{Example}{0}
-  \setcounter{Notation}{0}
+  \setcounter{theorem}{0}
+  \setcounter{corollary}{0}
+  \setcounter{conjecture}{0}
+  \setcounter{proposition}{0}
+  \setcounter{lemma}{0}
+  \setcounter{axiom}{0}
+  \setcounter{definition}{0}
+  \setcounter{remark}{0}
+  \setcounter{example}{0}
+  \setcounter{notation}{0}
   \glsresetall
+  \selectlanguage{english}
 }
 \AtBeginDocument{%
 \tl_new:N \g__nwejm_bib_issue_date_tl
@@ -868,7 +878,15 @@
 }
 \tl_set:Nn \l__nwejm_keywords_box_tl
 {%
-  \noindent\textbf{\GetTranslation{Keywords}\c__nwejm_colon_tl}~\l__nwejm_keywords_tl.
+  \noindent
+  {
+    \bfseries
+    \tl_mixed_case:n{
+      \GetTranslation{plural-keyword}
+      \c__nwejm_colon_tl
+    }
+  }
+  \space\l__nwejm_keywords_tl.
 }
 \tl_set:Nn \l__nwejm_msc_box_tl
 {%
@@ -980,6 +998,7 @@
 \@ifpackageloaded{siunitx}{%
   \addto\extrasenglish{\sisetup{locale = UK}}
   \addto\extrasfrench{\sisetup{locale = FR}}
+  \addto\extrasngerman{\sisetup{locale = DE}}
   \addto\extrasgerman{\sisetup{locale = DE}}
   \addto\extrasdutch{%
     \sisetup{%
@@ -1057,6 +1076,10 @@
         \ifcurrentbaselanguage{german}{
           .
         }{
+          \ifcurrentbaselanguage{ngerman}{
+            .
+          }{
+          }
         }
       }
     }
@@ -1138,29 +1161,28 @@
   \AtBeginDocument{%
     \IfTranslation{English}{#2}{%
     }{%
-      \DeclareTranslation{English}{#2}{\MakeUppercase #3}%
+      \DeclareTranslation{English}{#2}{\tl_mixed_case:n{#3}}%
     }
     \IfTranslation{French}{#2}{%
     }{%
-      \DeclareTranslation{French}{#2}{\MakeUppercase #4}%
+      \DeclareTranslation{French}{#2}{\tl_mixed_case:n{#4}}%
     }
     \IfTranslation{German}{#2}{%
     }{%
-      \DeclareTranslation{German}{#2}{\MakeUppercase #5}%
+      \DeclareTranslation{German}{#2}{\tl_mixed_case:n{#5}}%
     }
     \IfTranslation{Dutch}{#2}{%
     }{%
-      \DeclareTranslation{Dutch}{#2}{\MakeUppercase #6}%
+      \DeclareTranslation{Dutch}{#2}{\tl_mixed_case:n{#6}}%
     }
   }
-  %
   \declaretheorem[%
   #1,%
-  name=\protect\GetTranslation{#2}
+  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }
   ]{#2}
   \declaretheorem[%
   #1,%
-  name=\protect\GetTranslation{#2},
+  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} },
   numbered=no
   ]{#2*}
 }
@@ -1223,19 +1245,19 @@
   {\l__nwejm_newtheorem_german_title_tl}
   {\l__nwejm_newtheorem_dutch_title_tl}
 }
-\newtheorem{Theorem}
-\newtheorem{Corollary}
-\newtheorem{Conjecture}
-\newtheorem{Proposition}
-\newtheorem{Lemma}
-\newtheorem{Axiom}
-\newtheorem[style=definition]{Definition}
-\newtheorem[style=definition]{Remark}
-\newtheorem[style=definition]{Example}
-\newtheorem[style=definition]{Notation}
+\newtheorem{theorem}
+\newtheorem{corollary}
+\newtheorem{conjecture}
+\newtheorem{proposition}
+\newtheorem{lemma}
+\newtheorem{axiom}
+\newtheorem[style=definition]{definition}
+\newtheorem[style=definition]{remark}
+\newtheorem[style=definition]{example}
+\newtheorem[style=definition]{notation}
 \let\proof\relax
 \let\endproof\relax
-\newtheorem[style=proof]{Proof}
+\newtheorem[style=proof]{proof}
 \cs_new_protected:Nn \__nwejm_clone_theorem:nn
 {
   \NewDocumentEnvironment{#1}{}
@@ -1251,34 +1273,91 @@
     \end{#2*}
   }
 }
-\__nwejm_clone_theorem:nn {theorem}{Theorem}
-\__nwejm_clone_theorem:nn {corollary}{Corollary}
-\__nwejm_clone_theorem:nn {conjecture}{Conjecture}
-\__nwejm_clone_theorem:nn {proposition}{Proposition}
-\__nwejm_clone_theorem:nn {lemma}{Lemma}
-\__nwejm_clone_theorem:nn {axiom}{Axiom}
-\__nwejm_clone_theorem:nn {definition}{Definition}
-\__nwejm_clone_theorem:nn {remark}{Remark}
-\__nwejm_clone_theorem:nn {example}{Example}
-\__nwejm_clone_theorem:nn {notation}{Notation}
-\__nwejm_clone_theorem:nn {proof}{Proof}
-\crefname{Theorem}{\GetTranslation{theorem}}{\GetTranslation{theorems}}
-\crefname{Corollary}{\GetTranslation{corollary}}{\GetTranslation{corollaries}}
-\crefname{Conjecture}{\GetTranslation{conjecture}}{\GetTranslation{conjectures}}
-\crefname{Proposition}{\GetTranslation{proposition}}{\GetTranslation{propositions}}
-\crefname{Axiom}{\GetTranslation{axiom}}{\GetTranslation{axioms}}
-\crefname{Definition}{\GetTranslation{definition}}{\GetTranslation{definitions}}
-\crefname{Example}{\GetTranslation{example}}{\GetTranslation{examples}}
-\crefname{Notation}{\GetTranslation{notation}}{\GetTranslation{notations}}
-\crefname{Proof}{\GetTranslation{proof}}{\GetTranslation{proofs}}
-\crefname{Remark}{\GetTranslation{remark}}{\GetTranslation{remarks}}
-\crefname{Lemma}{\GetTranslation{lemma}}{\GetTranslation{lemmas}}
-\newlist{assertions}{enumerate}{1}
-\setlist[assertions]{%
-  label=\normalfont(\textsf{\tl_head:f
-    {\GetTranslation{Assertion}}}$\c_math_subscript_token\mathsf{\arabic*}$),
-  ref=(\textsf{\tl_head:f
-    {\GetTranslation{Assertion}}}$_\mathsf{\arabic*}$)
+\__nwejm_clone_theorem:nn {Theorem}{theorem}
+\__nwejm_clone_theorem:nn {Corollary}{corollary}
+\__nwejm_clone_theorem:nn {Conjecture}{conjecture}
+\__nwejm_clone_theorem:nn {Proposition}{proposition}
+\__nwejm_clone_theorem:nn {Lemma}{lemma}
+\__nwejm_clone_theorem:nn {Axiom}{axiom}
+\__nwejm_clone_theorem:nn {Definition}{definition}
+\__nwejm_clone_theorem:nn {Remark}{remark}
+\__nwejm_clone_theorem:nn {Example}{example}
+\__nwejm_clone_theorem:nn {Notation}{notation}
+\__nwejm_clone_theorem:nn {Proof}{proof}
+\clist_set:Nn \l_tmpa_clist {%
+  theorem,
+  corollary,
+  conjecture,
+  proposition,
+  lemma,
+  axiom,
+  definition,
+  remark,
+  example,
+  notation,
+  proof%
+}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \crefname{#1}{
+    \ifcurrentbaselanguage{english}{
+      \tl_mixed_case:n { \GetTranslation{#1} }
+    }{
+      \GetTranslation{#1}
+    }%
+  }{%
+    \ifcurrentbaselanguage{english}{
+      \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    }{
+      \GetTranslation{plural-#1}
+    }%
+  }
+}
+\clist_set:Nn \l_tmpa_clist {%
+  hypothesis,
+  assertion%
+}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \newlist{#1}{enumerate}{1}
+  \setlist[#1]{%
+    label=
+    \normalfont
+    (
+    \textsf{
+      \tl_upper_case:n {\tl_head:f {\GetTranslation{#1}}}
+    }
+    $\c_math_subscript_token\mathsf{\arabic*}$),
+    ref=(
+    \textsf{
+      \tl_upper_case:n {\tl_head:f {\GetTranslation{#1}}}
+    }
+    $_\mathsf{\arabic*}$
+    )
+  }
+  \crefname{#1i}{
+    \ifcurrentbaselanguage{english}{
+      \tl_mixed_case:n {\GetTranslation{#1}}
+    }{
+      \GetTranslation{#1}
+    }%
+  }{%
+    \ifcurrentbaselanguage{english}{
+      \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    }{
+      \GetTranslation{plural-#1}
+    }%
+  }
+}
+\NewDocumentEnvironment{hypotheses}{}
+{
+  \begin{hypothesis}
+  }{
+  \end{hypothesis}
+}
+\NewDocumentEnvironment{assertions}{}
+{
+  \begin{assertion}
+  }{
+  \end{assertion}
 }
 \DeclareMathOperator{\cotan}{cotan}
 \DeclareMathOperator{\Arccos}{Arccos}
@@ -1423,7 +1502,11 @@
 \RenewDocumentCommand \printbibliography { O{} } {
   \tl_if_empty:NF {\g__nwejm_article_acknowledgments_tl}
   {
-    \section*{\GetTranslation{Acknowledgments}}
+    \ifcurrentbaselanguage{ngerman}{%
+      \section*{\GetTranslation{plural-acknowledgment}}
+    }{
+      \section*{\tl_mixed_case:n{\GetTranslation{plural-acknowledgment}}}
+    }
     \g__nwejm_article_acknowledgments_tl
     \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
