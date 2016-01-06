@@ -54,6 +54,19 @@ ls-R
 *.el
 *~
 *.zip
+*__nwejm.bib
+*.sta
+*.synctex.gz
+*.glsdefs
+*.atfi
+*.drv
+*.ins
+*.listing
+
+tex/latex/nwejm/nwejm.cfg
+tex/latex/nwejm/nwejm.dbx
+
+doc/latex/nwejm/examples/makefile
 
 **/auto/*
 
