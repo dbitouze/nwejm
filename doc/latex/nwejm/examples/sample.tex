@@ -25,7 +25,7 @@
   #1
   %
   \subsection{Cross-references tests}
-  Cf. \vref{thm:bolzano-weierstrass-\languagename} \& \vref{rmk:euler-\languagename} \&
+  Cf. \vref{thm:bolzano-weierstrass-\languagename,rmk:euler-\languagename} \&
   \vref{eq:euler-\languagename} \& \vref{sec:first-numbered-\languagename}.
   %
   \subsection{Miscellaneaous}
@@ -60,14 +60,26 @@
   \end{definition}
   \begin{remark}[Euler's identity]\label{rmk:euler-\languagename}
     One of the most beautiful mathematical equation:
-    \begin{equation*}
+    \begin{equation}
       e^{i\pi}+1=0
-    \end{equation*}
+    \end{equation}
   \end{remark}
   \begin{lemma*}[Zorn]
     Suppose a partially ordered set $P$ has the property that every chain has an
     upper bound in $P$. Then the set $P$ contains at least one maximal element.
   \end{lemma*}
+  \begin{axiom}\label{my-axiom-\languagename}
+    The following assertions are considered as true.
+    \begin{assertions}
+    \item\label{rare-expensive-\languagename} Anything that is scarce also is
+      expensive.
+    \item\label{cheap-horse-\languagename} A cheap horse is scarce.
+    \end{assertions}
+  \end{axiom}
+  According to \vref{rare-expensive-\languagename,cheap-horse-\languagename}
+  from \vref{my-axiom-\languagename}, a cheap horse is expensive.
+  %
+  \subsection{Dummy text and nice equation}
   %
   \lipsum[2-6]
   %
