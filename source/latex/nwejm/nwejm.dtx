@@ -855,9 +855,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % For the dates keywords.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_date_received_tl {Received}
-\tl_const:Nn \c_@@_date_accepted_tl {Accepted}
-\tl_const:Nn \c_@@_date_online_tl {Online}
+\tl_const:Nn \c_@@_date_received_tl {received}
+\tl_const:Nn \c_@@_date_accepted_tl {accepted}
+\tl_const:Nn \c_@@_date_online_tl {online}
 %    \end{macrocode}
 % For the dates separators.
 %    \begin{macrocode}
@@ -1641,7 +1641,7 @@ Running "make install" installs the files in the local TeX tree.
     \bfseries%
     \adjustbox{stack=l}{%
       \c_@@_journal_title_string_tl
-%<class>      \\\GetTranslation{Volumeabbreviated}\space\int_use:N \g_@@_issue_number_int
+%<class>      \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\space\int_use:N \g_@@_issue_number_int
 %<class-article>\mbox{}
     }
   }
@@ -2317,7 +2317,7 @@ Running "make install" installs the files in the local TeX tree.
     \tl_if_empty:NF {#2}
     {
       \tl_if_eq:NNF {\c_@@_date_received_tl} {#1} { \c_@@_dates_separator_tl }
-      \exp_args:No \GetTranslation{#1}
+      \tl_mixed_case:n { \exp_args:No \GetTranslation{#1} }
       \c_@@_colon_tl\space
       \DTMdate{#2}%
     }
@@ -2670,16 +2670,16 @@ Running "make install" installs the files in the local TeX tree.
   \setcounter{figure}{0}
   \setcounter{table}{0}
   \setcounter{equation}{0}
-  \setcounter{Theorem}{0}
-  \setcounter{Corollary}{0}
-  \setcounter{Conjecture}{0}
-  \setcounter{Proposition}{0}
-  \setcounter{Lemma}{0}
-  \setcounter{Axiom}{0}
-  \setcounter{Definition}{0}
-  \setcounter{Remark}{0}
-  \setcounter{Example}{0}
-  \setcounter{Notation}{0}
+  \setcounter{theorem}{0}
+  \setcounter{corollary}{0}
+  \setcounter{conjecture}{0}
+  \setcounter{proposition}{0}
+  \setcounter{lemma}{0}
+  \setcounter{axiom}{0}
+  \setcounter{definition}{0}
+  \setcounter{remark}{0}
+  \setcounter{example}{0}
+  \setcounter{notation}{0}
 %    \end{macrocode}
 % We reset all acronyms entries.
 %    \begin{macrocode}
@@ -3080,9 +3080,18 @@ Running "make install" installs the files in the local TeX tree.
 {%
   \g_@@_display_dates_tl
 }
+%
 \tl_set:Nn \l_@@_keywords_box_tl
 {%
-  \noindent\textbf{\GetTranslation{Keywords}\c_@@_colon_tl}~\l_@@_keywords_tl.
+  \noindent
+  {
+    \bfseries
+    \tl_mixed_case:n{
+      \GetTranslation{plural-keyword}
+      \c_@@_colon_tl
+    }
+  }
+  \space\l_@@_keywords_tl.
 }
 \tl_set:Nn \l_@@_msc_box_tl
 {%
@@ -3490,29 +3499,28 @@ Running "make install" installs the files in the local TeX tree.
   \AtBeginDocument{%
     \IfTranslation{English}{#2}{%
     }{%
-      \DeclareTranslation{English}{#2}{\MakeUppercase #3}%
+      \DeclareTranslation{English}{#2}{\tl_mixed_case:n{#3}}%
     }
     \IfTranslation{French}{#2}{%
     }{%
-      \DeclareTranslation{French}{#2}{\MakeUppercase #4}%
+      \DeclareTranslation{French}{#2}{\tl_mixed_case:n{#4}}%
     }
     \IfTranslation{German}{#2}{%
     }{%
-      \DeclareTranslation{German}{#2}{\MakeUppercase #5}%
+      \DeclareTranslation{German}{#2}{\tl_mixed_case:n{#5}}%
     }
     \IfTranslation{Dutch}{#2}{%
     }{%
-      \DeclareTranslation{Dutch}{#2}{\MakeUppercase #6}%
+      \DeclareTranslation{Dutch}{#2}{\tl_mixed_case:n{#6}}%
     }
   }
-  %
   \declaretheorem[%
   #1,%
-  name=\protect\GetTranslation{#2}
+  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }
   ]{#2}
   \declaretheorem[%
   #1,%
-  name=\protect\GetTranslation{#2},
+  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} },
   numbered=no
   ]{#2*}
 }
@@ -3585,21 +3593,21 @@ Running "make install" installs the files in the local TeX tree.
 %
 % Finally, we define some usual theorems:
 %    \begin{macrocode}
-\newtheorem{Theorem}
-\newtheorem{Corollary}
-\newtheorem{Conjecture}
-\newtheorem{Proposition}
-\newtheorem{Lemma}
-\newtheorem{Axiom}
+\newtheorem{theorem}
+\newtheorem{corollary}
+\newtheorem{conjecture}
+\newtheorem{proposition}
+\newtheorem{lemma}
+\newtheorem{axiom}
 %
-\newtheorem[style=definition]{Definition}
-\newtheorem[style=definition]{Remark}
-\newtheorem[style=definition]{Example}
-\newtheorem[style=definition]{Notation}
+\newtheorem[style=definition]{definition}
+\newtheorem[style=definition]{remark}
+\newtheorem[style=definition]{example}
+\newtheorem[style=definition]{notation}
 %
 \let\proof\relax
 \let\endproof\relax
-\newtheorem[style=proof]{Proof}
+\newtheorem[style=proof]{proof}
 %
 \cs_new_protected:Nn \_@@_clone_theorem:nn
 {
@@ -3617,29 +3625,48 @@ Running "make install" installs the files in the local TeX tree.
   }
 }
 %
-\_@@_clone_theorem:nn {theorem}{Theorem}
-\_@@_clone_theorem:nn {corollary}{Corollary}
-\_@@_clone_theorem:nn {conjecture}{Conjecture}
-\_@@_clone_theorem:nn {proposition}{Proposition}
-\_@@_clone_theorem:nn {lemma}{Lemma}
-\_@@_clone_theorem:nn {axiom}{Axiom}
-\_@@_clone_theorem:nn {definition}{Definition}
-\_@@_clone_theorem:nn {remark}{Remark}
-\_@@_clone_theorem:nn {example}{Example}
-\_@@_clone_theorem:nn {notation}{Notation}
-\_@@_clone_theorem:nn {proof}{Proof}
+\_@@_clone_theorem:nn {Theorem}{theorem}
+\_@@_clone_theorem:nn {Corollary}{corollary}
+\_@@_clone_theorem:nn {Conjecture}{conjecture}
+\_@@_clone_theorem:nn {Proposition}{proposition}
+\_@@_clone_theorem:nn {Lemma}{lemma}
+\_@@_clone_theorem:nn {Axiom}{axiom}
+\_@@_clone_theorem:nn {Definition}{definition}
+\_@@_clone_theorem:nn {Remark}{remark}
+\_@@_clone_theorem:nn {Example}{example}
+\_@@_clone_theorem:nn {Notation}{notation}
+\_@@_clone_theorem:nn {Proof}{proof}
 %
-\crefname{Theorem}{\GetTranslation{theorem}}{\GetTranslation{theorems}}
-\crefname{Corollary}{\GetTranslation{corollary}}{\GetTranslation{corollaries}}
-\crefname{Conjecture}{\GetTranslation{conjecture}}{\GetTranslation{conjectures}}
-\crefname{Proposition}{\GetTranslation{proposition}}{\GetTranslation{propositions}}
-\crefname{Axiom}{\GetTranslation{axiom}}{\GetTranslation{axioms}}
-\crefname{Definition}{\GetTranslation{definition}}{\GetTranslation{definitions}}
-\crefname{Example}{\GetTranslation{example}}{\GetTranslation{examples}}
-\crefname{Notation}{\GetTranslation{notation}}{\GetTranslation{notations}}
-\crefname{Proof}{\GetTranslation{proof}}{\GetTranslation{proofs}}
-\crefname{Remark}{\GetTranslation{remark}}{\GetTranslation{remarks}}
-\crefname{Lemma}{\GetTranslation{lemma}}{\GetTranslation{lemmas}}
+\clist_set:Nn \l_tmpa_clist {%
+  theorem,
+  corollary,
+  conjecture,
+  proposition,
+  lemma,
+  axiom,
+  definition,
+  remark,
+  example,
+  notation,
+  proof%
+}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \crefname{#1}{
+    \ifcurrentbaselanguage{french}{
+        \GetTranslation{#1}
+    }{
+      \tl_mixed_case:n {
+        \GetTranslation{#1}
+      }
+    }%
+  }{%
+    \ifcurrentbaselanguage{french}{
+      \GetTranslation{plural-#1}
+    }{
+      \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    }%
+  }
+}
 %    \end{macrocode}
 %
 % \subsection{Assertions enumerations}
@@ -3868,7 +3895,11 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \tl_if_empty:NF {\g_@@_article_acknowledgments_tl}
   {
-    \section*{\GetTranslation{Acknowledgments}}
+    \ifcurrentbaselanguage{ngerman}{%
+      \section*{\GetTranslation{plural-acknowledgment}}
+    }{
+      \section*{\tl_mixed_case:n{\GetTranslation{plural-acknowledgment}}}
+    }
     \g_@@_article_acknowledgments_tl
     \tl_gclear:N \g_@@_article_acknowledgments_tl
   }
@@ -4364,65 +4395,36 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{notation}{notation}
 \ProvideDictTranslation{proposition}{proposition}
 \ProvideDictTranslation{proof}{proof}
-\ProvideDictTranslation{Theorem}{Theorem}
-\ProvideDictTranslation{Corollary}{Corollary}
-\ProvideDictTranslation{Conjecture}{Conjecture}
-\ProvideDictTranslation{Remark}{Remark}
-\ProvideDictTranslation{Axiom}{Axiom}
-\ProvideDictTranslation{Definition}{Definition}
-\ProvideDictTranslation{Example}{Example}
-\ProvideDictTranslation{Lemma}{Lemma}
-\ProvideDictTranslation{Notation}{Notation}
-\ProvideDictTranslation{Proposition}{Proposition}
-\ProvideDictTranslation{Proof}{Proof}
+\ProvideDictTranslation{plural-theorem}{theorems}
+\ProvideDictTranslation{plural-corollary}{corollaries}
+\ProvideDictTranslation{plural-conjecture}{conjectures}
+\ProvideDictTranslation{plural-remark}{remarks}
+\ProvideDictTranslation{plural-axiom}{axioms}
+\ProvideDictTranslation{plural-definition}{definitions}
+\ProvideDictTranslation{plural-example}{examples}
+\ProvideDictTranslation{plural-lemma}{lemmas}
+\ProvideDictTranslation{plural-notation}{notations}
+\ProvideDictTranslation{plural-proposition}{propositions}
+\ProvideDictTranslation{plural-proof}{proofs}
 %
-\ProvideDictTranslation{theorems}{theorems}
-\ProvideDictTranslation{corollaries}{corollaries}
-\ProvideDictTranslation{conjectures}{conjectures}
-\ProvideDictTranslation{remarks}{remarks}
-\ProvideDictTranslation{axioms}{axioms}
-\ProvideDictTranslation{definitions}{definitions}
-\ProvideDictTranslation{examples}{examples}
-\ProvideDictTranslation{lemmas}{lemmas}
-\ProvideDictTranslation{notations}{notations}
-\ProvideDictTranslation{propositions}{propositions}
-\ProvideDictTranslation{proofs}{proofs}
-\ProvideDictTranslation{Theorems}{Theorems}
-\ProvideDictTranslation{Corollaries}{Corollaries}
-\ProvideDictTranslation{Conjectures}{Conjectures}
-\ProvideDictTranslation{Remarks}{Remarks}
-\ProvideDictTranslation{Axioms}{Axioms}
-\ProvideDictTranslation{Definitions}{Definitions}
-\ProvideDictTranslation{Examples}{Examples}
-\ProvideDictTranslation{Lemmas}{Lemmas}
-\ProvideDictTranslation{Notations}{Notations}
-\ProvideDictTranslation{Propositions}{Propositions}
-\ProvideDictTranslation{Proofs}{Proofs}
+\ProvideDictTranslation{volume-abbreviated}{vol.}
 %
-\ProvideDictTranslation{volumeabbreviated}{vol.}
-\ProvideDictTranslation{Volumeabbreviated}{Vol.}
-%
-\ProvideDictTranslation{keyword}{keyword}
-\ProvideDictTranslation{keywords}{keywords}
-\ProvideDictTranslation{Keyword}{Keyword}
-\ProvideDictTranslation{Keywords}{Keywords}
+\ProvideDictTranslation{plural-keyword}{keywords}
 %
 \ProvideDictTranslation{received}{received}
 \ProvideDictTranslation{accepted}{accepted}
 \ProvideDictTranslation{online}{online}
-\ProvideDictTranslation{Received}{Received}
-\ProvideDictTranslation{Accepted}{Accepted}
-\ProvideDictTranslation{Online}{Online}
+%
+\ProvideDictTranslation{hypothesis}{hypothesis}
+\ProvideDictTranslation{plural-hypothesis}{hypotheses}
 %
 \ProvideDictTranslation{assertion}{assertion}
-\ProvideDictTranslation{Assertion}{Assertion}
-\ProvideDictTranslation{assertions}{assertions}
-\ProvideDictTranslation{Assertions}{Assertions}
+\ProvideDictTranslation{plural-assertion}{assertions}
 %
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
 %
-\ProvideDictTranslation{Acknowledgments}{Acknowledgments}
+\ProvideDictTranslation{plural-acknowledgment}{Acknowledgments}
 %
 \ProvideDictTranslation{idest}{id~est}
 \ProvideDictTranslation{ie}{i.e}
@@ -4452,70 +4454,41 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{notation}{notation}
 \ProvideDictTranslation{proposition}{proposition}
 \ProvideDictTranslation{proof}{preuve}
-\ProvideDictTranslation{Theorem}{Th\'{e}or\`{e}me}
-\ProvideDictTranslation{Corollary}{Corollaire}
-\ProvideDictTranslation{Conjecture}{Conjecture}
-\ProvideDictTranslation{Remark}{Remarque}
-\ProvideDictTranslation{Axiom}{Axiome}
-\ProvideDictTranslation{Definition}{D\'{e}finition}
-\ProvideDictTranslation{Example}{Exemple}
-\ProvideDictTranslation{Lemma}{Lemme}
-\ProvideDictTranslation{Notation}{Notation}
-\ProvideDictTranslation{Proposition}{Proposition}
-\ProvideDictTranslation{Proof}{Preuve}
+\ProvideDictTranslation{plural-theorem}{th\'{e}or\`{e}mes}
+\ProvideDictTranslation{plural-corollary}{corollaires}
+\ProvideDictTranslation{plural-conjecture}{conjectures}
+\ProvideDictTranslation{plural-remark}{remarques}
+\ProvideDictTranslation{plural-axiom}{axiomes}
+\ProvideDictTranslation{plural-definition}{d\'{e}finitions}
+\ProvideDictTranslation{plural-example}{exemples}
+\ProvideDictTranslation{plural-lemma}{lemmes}
+\ProvideDictTranslation{plural-notation}{notations}
+\ProvideDictTranslation{plural-proposition}{propositions}
+\ProvideDictTranslation{plural-proof}{preuves}
 %
-\ProvideDictTranslation{theorems}{th\'{e}or\`{e}mes}
-\ProvideDictTranslation{corollaries}{corollaires}
-\ProvideDictTranslation{conjectures}{conjectures}
-\ProvideDictTranslation{remarks}{remarques}
-\ProvideDictTranslation{axioms}{axiomes}
-\ProvideDictTranslation{definitions}{d\'{e}finitions}
-\ProvideDictTranslation{examples}{exemples}
-\ProvideDictTranslation{lemmas}{lemmes}
-\ProvideDictTranslation{notations}{notations}
-\ProvideDictTranslation{propositions}{propositions}
-\ProvideDictTranslation{proofs}{preuves}
-\ProvideDictTranslation{Theorems}{Th\'{e}or\`{e}mes}
-\ProvideDictTranslation{Corollaries}{Corollaires}
-\ProvideDictTranslation{Conjectures}{Conjectures}
-\ProvideDictTranslation{Remarks}{Remarques}
-\ProvideDictTranslation{Axioms}{Axiomes}
-\ProvideDictTranslation{Definitions}{D\'{e}finitions}
-\ProvideDictTranslation{Examples}{Exemples}
-\ProvideDictTranslation{Lemmas}{Lemmes}
-\ProvideDictTranslation{Notations}{Notations}
-\ProvideDictTranslation{Propositions}{Propositions}
-\ProvideDictTranslation{Proofs}{Preuves}
+\ProvideDictTranslation{volume-abbreviated}{vol.}
 %
-\ProvideDictTranslation{volumeabbreviated}{vol.}
-\ProvideDictTranslation{Volumeabbreviated}{Vol.}
+\ProvideDictTranslation{plural-keyword}{mots-cl\'{e}s}
 %
-\ProvideDictTranslation{keyword}{mot-clé}
-\ProvideDictTranslation{keywords}{mots-clés}
-\ProvideDictTranslation{Keyword}{Mot-clé}
-\ProvideDictTranslation{Keywords}{Mots-clés}
+\ProvideDictTranslation{received}{re\c cu}
+\ProvideDictTranslation{accepted}{accept\'{e}}
+\ProvideDictTranslation{online}{en\space ligne}
 %
-\ProvideDictTranslation{received}{reçu}
-\ProvideDictTranslation{accepted}{accepté}
-\ProvideDictTranslation{online}{en~ligne}
-\ProvideDictTranslation{Received}{Reçu}
-\ProvideDictTranslation{Accepted}{Accepté}
-\ProvideDictTranslation{Online}{En~ligne}
+\ProvideDictTranslation{hypothesis}{hypoth\`{e}se}
+\ProvideDictTranslation{plural-hypothesis}{hypoth\`{e}ses}
 %
 \ProvideDictTranslation{assertion}{assertion}
-\ProvideDictTranslation{Assertion}{Assertion}
-\ProvideDictTranslation{assertions}{assertions}
-\ProvideDictTranslation{Assertions}{Assertions}
+\ProvideDictTranslation{plural-assertion}{assertions}
 %
-\ProvideDictTranslation{century}{si\`ecle}
+\ProvideDictTranslation{century}{si\`{e}cle}
 \ProvideDictTranslation{before-christ}{av.~J.-C}
 %
-\ProvideDictTranslation{Acknowledgments}{Remerciements}
+\ProvideDictTranslation{plural-acknowledgment}{Remerciements}
 %
-\ProvideDictTranslation{idest}{c'est-à-dire}
-\ProvideDictTranslation{ie}{c.-à-d}
-\ProvideDictTranslation{Idest}{C'est-à-dire}
-\ProvideDictTranslation{Ie}{C.-à-d}
+\ProvideDictTranslation{idest}{c'est-\`{a}-dire}
+\ProvideDictTranslation{ie}{c.-\`{a}-d}
+\ProvideDictTranslation{Idest}{C'est-\`{a}-dire}
+\ProvideDictTranslation{Ie}{C.-\`{a}-d}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4540,65 +4513,36 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{notation}{Bezeichnung}
 \ProvideDictTranslation{proposition}{Proposition}
 \ProvideDictTranslation{proof}{Beweis}
-\ProvideDictTranslation{Theorem}{Satz}
-\ProvideDictTranslation{Corollary}{Korollar}
-\ProvideDictTranslation{Conjecture}{Vermutung}
-\ProvideDictTranslation{Remark}{Bemerkung}
-\ProvideDictTranslation{Axiom}{Axiom}
-\ProvideDictTranslation{Definition}{Definition}
-\ProvideDictTranslation{Example}{Beispiel}
-\ProvideDictTranslation{Lemma}{Lemma}
-\ProvideDictTranslation{Notation}{Bezeichnung}
-\ProvideDictTranslation{Proposition}{Proposition}
-\ProvideDictTranslation{Proof}{Beweis}
-%
-\ProvideDictTranslation{theorems}{S{\"a}tze}
-\ProvideDictTranslation{corollaries}{Korollare}
-\ProvideDictTranslation{conjectures}{Vermutungen}
-\ProvideDictTranslation{remarks}{Bemerkungen}
-\ProvideDictTranslation{axioms}{Axiome}
-\ProvideDictTranslation{definitions}{Definitionen}
-\ProvideDictTranslation{examples}{Beispiele}
-\ProvideDictTranslation{lemmas}{Lemmata}
-\ProvideDictTranslation{notations}{Bezeichnungen}
-\ProvideDictTranslation{propositions}{Propositionen}
+\ProvideDictTranslation{plural-theorem}{S\"{a}tze}
+\ProvideDictTranslation{plural-corollary}{Korollare}
+\ProvideDictTranslation{plural-conjecture}{Vermutungen}
+\ProvideDictTranslation{plural-remark}{Bemerkungen}
+\ProvideDictTranslation{plural-axiom}{Axiome}
+\ProvideDictTranslation{plural-definition}{Definitionen}
+\ProvideDictTranslation{plural-example}{Beispiele}
+\ProvideDictTranslation{plural-lemma}{Lemmata}
+\ProvideDictTranslation{plural-notation}{Bezeichnungen}
+\ProvideDictTranslation{plural-proposition}{Propositionen}
 \ProvideDictTranslation{proofs}{Beweise}
-\ProvideDictTranslation{Theorems}{S{\"a}tze}
-\ProvideDictTranslation{Corollaries}{Korollare}
-\ProvideDictTranslation{Conjectures}{Vermutungen}
-\ProvideDictTranslation{Remarks}{Bemerkungen}
-\ProvideDictTranslation{Axioms}{Axiome}
-\ProvideDictTranslation{Definitions}{Definitionen}
-\ProvideDictTranslation{Examples}{Beispiele}
-\ProvideDictTranslation{Lemmas}{Lemmata}
-\ProvideDictTranslation{Notations}{Bezeichnungen}
-\ProvideDictTranslation{Propositions}{Propositionen}
-\ProvideDictTranslation{Proofs}{Beweise}
 %
-\ProvideDictTranslation{volumeabbreviated}{Bd}
-\ProvideDictTranslation{Volumeabbreviated}{Bd}
+\ProvideDictTranslation{volume-abbreviated}{Bd}
 %
-\ProvideDictTranslation{keyword}{Stichwort}
-\ProvideDictTranslation{keywords}{Stichworte}
-\ProvideDictTranslation{Keyword}{Stichwort}
-\ProvideDictTranslation{Keywords}{Stichworte}
+\ProvideDictTranslation{plural-keyword}{Stichworte}
 %
 \ProvideDictTranslation{received}{empfangen}
 \ProvideDictTranslation{accepted}{akzeptierte}
 \ProvideDictTranslation{online}{online}
-\ProvideDictTranslation{Received}{Empfangen}
-\ProvideDictTranslation{Accepted}{Akzeptierte}
-\ProvideDictTranslation{Online}{Online}
+%
+\ProvideDictTranslation{hypothesis}{Hypothese}
+\ProvideDictTranslation{plural-hypothesis}{Hypothesen}
 %
 \ProvideDictTranslation{assertion}{Behauptung}
-\ProvideDictTranslation{Assertion}{Behauptung}
-\ProvideDictTranslation{assertions}{Behauptungen}
-\ProvideDictTranslation{Assertions}{Behauptungen}
+\ProvideDictTranslation{plural-assertion}{Behauptungen}
 %
 \ProvideDictTranslation{century}{Jahrhundert}
 \ProvideDictTranslation{before-christ}{v.~Chr}
 %
-\ProvideDictTranslation{Acknowledgments}{Bestätigungen}
+\ProvideDictTranslation{plural-acknowledgment}{Best\"{a}tigungen}
 %
 \ProvideDictTranslation{idest}{das~heißt}
 \ProvideDictTranslation{ie}{d.~h}
@@ -4628,65 +4572,36 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{notation}{notatie}
 \ProvideDictTranslation{proposition}{eigenschap}
 \ProvideDictTranslation{proof}{bewijs}
-\ProvideDictTranslation{Theorem}{Stelling}
-\ProvideDictTranslation{Corollary}{Gevolg}
-\ProvideDictTranslation{Conjecture}{Vermoeden}
-\ProvideDictTranslation{Remark}{Opmerking}
-\ProvideDictTranslation{Axiom}{Axioma}
-\ProvideDictTranslation{Definition}{Definitie}
-\ProvideDictTranslation{Example}{Voorbeeld}
-\ProvideDictTranslation{Lemma}{Lemma}
-\ProvideDictTranslation{Notation}{Notatie}
-\ProvideDictTranslation{Proposition}{Eigenschap}
-\ProvideDictTranslation{Proof}{Bewijs}
+\ProvideDictTranslation{plural-theorem}{stellingen}
+\ProvideDictTranslation{plural-corollary}{gevolgen}
+\ProvideDictTranslation{plural-conjecture}{vermoedens}
+\ProvideDictTranslation{plural-remark}{opmerkingen}
+\ProvideDictTranslation{plural-axiom}{axioma's}
+\ProvideDictTranslation{plural-definition}{definities}
+\ProvideDictTranslation{plural-example}{voorbeelden}
+\ProvideDictTranslation{plural-lemma}{lemma's}
+\ProvideDictTranslation{plural-notation}{notaties}
+\ProvideDictTranslation{plural-proposition}{eigenschappen}
+\ProvideDictTranslation{plural-proof}{bewijzen}
 %
-\ProvideDictTranslation{theorems}{stellingen}
-\ProvideDictTranslation{corollaries}{gevolgen}
-\ProvideDictTranslation{conjectures}{vermoedens}
-\ProvideDictTranslation{remarks}{opmerkingen}
-\ProvideDictTranslation{axioms}{axioma's}
-\ProvideDictTranslation{definitions}{definities}
-\ProvideDictTranslation{examples}{voorbeelden}
-\ProvideDictTranslation{lemmas}{lemma's}
-\ProvideDictTranslation{notations}{notaties}
-\ProvideDictTranslation{propositions}{eigenschappen}
-\ProvideDictTranslation{proofs}{bewijzen}
-\ProvideDictTranslation{Theorems}{Stellingen}
-\ProvideDictTranslation{Corollaries}{Gevolgen}
-\ProvideDictTranslation{Conjectures}{Vermoedens}
-\ProvideDictTranslation{Remarks}{Opmerkingen}
-\ProvideDictTranslation{Axioms}{Axioma's}
-\ProvideDictTranslation{Definitions}{Definities}
-\ProvideDictTranslation{Examples}{Voorbeelden}
-\ProvideDictTranslation{Lemmas}{Lemma's}
-\ProvideDictTranslation{Notations}{Notaties}
-\ProvideDictTranslation{Propositions}{Eigenschappen}
-\ProvideDictTranslation{Proofs}{Bewijzen}
+\ProvideDictTranslation{volume-abbreviated}{deel}
 %
-\ProvideDictTranslation{volumeabbreviated}{deel}
-\ProvideDictTranslation{Volumeabbreviated}{Deel}
-%
-\ProvideDictTranslation{keyword}{trefwoord}
-\ProvideDictTranslation{keywords}{trefwoorden}
-\ProvideDictTranslation{Keyword}{Trefwoord}
-\ProvideDictTranslation{Keywords}{Trefwoorden}
+\ProvideDictTranslation{plural-keyword}{trefwoorden}
 %
 \ProvideDictTranslation{received}{ontvangen}
 \ProvideDictTranslation{accepted}{aanvaard}
 \ProvideDictTranslation{online}{online}
-\ProvideDictTranslation{Received}{Ontvangen}
-\ProvideDictTranslation{Accepted}{Aanvaard}
-\ProvideDictTranslation{Online}{Online}
+%
+\ProvideDictTranslation{hypothesis}{hypothese}
+\ProvideDictTranslation{plural-hypothesis}{hypotheses}
 %
 \ProvideDictTranslation{assertion}{aanname}
-\ProvideDictTranslation{Assertion}{Aanname}
-\ProvideDictTranslation{assertions}{aannames}
-\ProvideDictTranslation{Assertions}{Aannames}
+\ProvideDictTranslation{plural-assertion}{aannames}
 %
 \ProvideDictTranslation{century}{eeuw}
 \ProvideDictTranslation{before-christ}{v.Chr}
 %
-\ProvideDictTranslation{Acknowledgments}{Dankwoord}
+\ProvideDictTranslation{plural-acknowledgment}{Dankwoord}
 %
 \ProvideDictTranslation{idest}{dat~wil~zeggen}
 \ProvideDictTranslation{ie}{d.w.z}
