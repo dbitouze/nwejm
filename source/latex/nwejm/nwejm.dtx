@@ -3667,18 +3667,16 @@ Running "make install" installs the files in the local TeX tree.
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    \ifcurrentbaselanguage{french}{
-        \GetTranslation{#1}
+    \ifcurrentbaselanguage{english}{
+      \tl_mixed_case:n { \GetTranslation{#1} }
     }{
-      \tl_mixed_case:n {
-        \GetTranslation{#1}
-      }
+      \GetTranslation{#1}
     }%
   }{%
-    \ifcurrentbaselanguage{french}{
-      \GetTranslation{plural-#1}
-    }{
+    \ifcurrentbaselanguage{english}{
       \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    }{
+      \GetTranslation{plural-#1}
     }%
   }
 }
@@ -3711,16 +3709,16 @@ Running "make install" installs the files in the local TeX tree.
     )
   }
   \crefname{#1i}{
-    \ifcurrentbaselanguage{french}{
-      \GetTranslation{#1}
-    }{
+    \ifcurrentbaselanguage{english}{
       \tl_mixed_case:n {\GetTranslation{#1}}
+    }{
+      \GetTranslation{#1}
     }%
   }{%
-    \ifcurrentbaselanguage{french}{
-      \GetTranslation{plural-#1}
-    }{
+    \ifcurrentbaselanguage{english}{
       \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    }{
+      \GetTranslation{plural-#1}
     }%
   }
 }
