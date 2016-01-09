@@ -154,7 +154,6 @@
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
-\let\globcount\newcount
 \RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}

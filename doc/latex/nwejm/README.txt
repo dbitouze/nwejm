@@ -7,4 +7,5 @@ License:| Released under the LaTeX Project Public License v1.3c or later
     See:| http://www.latex-project.org/lppl.txt
 
 Short description:
-Some text about the class: probably the same as the abstract.
+LaTeX class for the new math journal "North-Western European Journal of
+Mathematics"
