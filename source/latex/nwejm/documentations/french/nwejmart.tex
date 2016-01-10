@@ -650,8 +650,8 @@ pas, la commande \refCom{newtheorem} permet d'en créer de nouveaux.
       l'initiale est en majuscule.} ;
   \item le style est \docValue{theorem}.
   \end{itemize}
-  Cette commande crée également l'environnement \meta{nom}* produisant des
-  occurrences \emph{non} numérotées de ce \enquote{théorème}.
+  Cette commande crée également l'environnement étoilé \meta{nom}|*| produisant
+  des occurrences \emph{non} numérotées de ce \enquote{théorème}.
 
   Si les valeurs par défaut du titre récurrent (\meta{Nom}) ou du style
   (\docValue{theorem}) ne conviennent pas, il suffit spécifier celles souhaitées
@@ -707,10 +707,11 @@ Un cheval bon marché est rare.
 \label{sec:list-dhyp-ou}
 
 Dans les articles en mathématiques, il est fréquent que les auteurs aient
-à lister des assertions ou des hypothèses et à faire référence à celles-ci. Pour
-ce faire, la \nwejmauthorcl{} fournit les deux environnements
-\refEnv{assertions} et \refEnv{hypotheses} qui s'emploient comme l'environnement
-de listes numérotées \docAuxEnvironment{enumerate} habituel.
+à lister des assertions ou des hypothèses et à s'y référer. Pour ce faire, la
+\nwejmauthorcl{} fournit deux environnements qui s'emploient comme l'habituel
+environnement \docAuxEnvironment{enumerate} de listes ordonnées (numérotées) :
+\refEnv{assertions} et \refEnv{hypotheses}, dans lesquels chaque assertion ou
+hypothèse est introduite par la commande \docAuxCommand{item}.
 
 \begin{docEnvironment}[doclang/environment content=assertions]{assertions}{}
   Cet environnement compose une liste d'assertions.
@@ -757,8 +758,8 @@ dans la \nwejm{}.
 \end{docCommand}
 
 \begin{docCommand}{century(*)}{\marg{numéro}}
-  Cette commande affiche l'ordinal de \meta{numéro}\footnote{Ce numéro doit être
-    un nombre entier non nul, le cas échant négatif.}\footnote{En français et en
+  Cette commande affiche l'ordinal du \meta{numéro}\footnote{Ce numéro doit être
+    un nombre entier non nul, le cas échéant négatif.}\footnote{En français et en
     allemand, \meta{numéro} est composé en chiffre romain et en petites
     capitales.} d'un siècle, suivi du mot \enquote{siècle} traduit dans la
   langue de l'article et de la mention éventuelle qu'il s'agit d'un siècle
@@ -818,7 +819,7 @@ des packages automatiquement chargés par la \nwejmauthorcl\footnote{La
   \item seuls certains packages chargés par la classe sont cités ;
   \item seules certaines fonctionnalités des packages cités sont décrites. Le
     lecteur souhaitant en savoir davantage est invité à lire la documentation de
-    ces packages pour en savoir davantage.
+    ces packages.
   \end{itemize}
 \end{dbwarning}
 
@@ -855,10 +856,11 @@ canevas de fichier source [...]
 %   à \refCom{vref}.
 % \end{dbremark}
 
-\subsection{Équations (non-)numérotées}
+\subsection{\enquote{Équations} (non-)numérotées}
 \label{sec:equat-non-numer}
 
-Le \Package*{amsmath} fournit les environnements mathématiques :
+Pour les \enquote{équations}, le \Package*{amsmath} fournit les environnements
+mathématiques :
 \begin{itemize}
 \item |equation|, |align|, |gather|, |multline| et |flalign| qui numérotent
   leur contenu ;
@@ -866,15 +868,24 @@ Le \Package*{amsmath} fournit les environnements mathématiques :
   numérotent \emph{pas} leur contenu ;
 \end{itemize}
 les premiers étant à utiliser si (et seulement si, théoriquement) les contenus
-correspondants font l'objet de références croisées. Ceci oblige l'utilisateur à,
-chaque fois, se poser la question de la numérotation et son choix peut s'avérer
-caduc ultérieurement\footnote{Et donc nécessiter de passer d'un environnement
-  étoilé à un non-étoilé et d'ajouter un label.}
+correspondants font l'objet de références croisées.
 
-Pour éviter à l'utilisateur ce genre de question et de choix, le
-\Package{autonum} permet de n'utiliser que les environnements non-étoilés :
-alors, seuls ceux faisant l'objet dans le document de références croisées
-verront leurs contenus numérotés.
+Avoir à choisir entre les versions étoilées ou pas présente au moins deux
+inconvénients pour l'utilisateur :
+\begin{enumerate}
+\item cela l'oblige à se poser à chaque fois la question de la
+  numérotation de son équation ;
+\item son choix peut ultérieurement s'avérer caduc\footnote{Et donc nécessiter
+    de passer par exemple d'un environnement étoilé à un non-étoilé \aside*{donc
+      avec ajout d'un label}.}
+\end{enumerate}
+Pour pallier cela, le \Package{autonum} :
+\begin{enumerate}
+\item permet de ne recourir qu'aux environnements non-étoilés ;
+\item assure automatiquement que les \enquote{équations} effectivement
+  numérotées seront celles, et seulement celles, s'avérant faire l'objet de
+  références croisées au sein du document.
+\end{enumerate}
 
 \begin{bodycode}[listing and text,listing options={deletekeywords={label}}]
 L'\vref{euler-identy} mérite une référence croisée.
@@ -884,6 +895,10 @@ L'\vref{euler-identy} mérite une référence croisée.
 C'est bien la seule ici.
 \begin{equation}\label{not-interesting}
   0=0
+\end{equation}
+Malheureusement\dots
+\begin{equation}
+  1=1
 \end{equation}
 \end{bodycode}
 
@@ -920,7 +935,7 @@ mathématiques et le \Package{glossaries} propose pour cela une fonctionnalité
   \begin{enumerate}
   \item la 1\iere{} occurrence de cette commande dans le document affiche
     l'acronyme sous sa forme \emph{complète}, \ie*{} sa \meta{forme longue}
-    suivie entre parenthèses de sa \meta{forme courte} ;
+    suivie de sa \meta{forme courte} entre parenthèses ;
   \item les occurrences suivantes affichent l'acronyme uniquement sous
     \meta{forme courte}.
   \end{enumerate}
@@ -982,8 +997,6 @@ Il lui répondit : \enquote{Courteline disait: \enquote{Passer
   ajoutés\footnote{Au moyen de la commande \docAuxCommand{addbibresource}} et
   y étant identifiée par la clé \meta{clé}.
 
-  Les arguments optionnels permettent d'ajouter du texte \oarg{antérieur} et/ou
-  \oarg{postérieur} à la citation.
 \begin{bodycode}[listing and text]
 \citeauthor{Bitouze} précise que :
 \blockcquote{Bitouze}{%
@@ -999,14 +1012,15 @@ La commande \refCom{blockcquote} admet des arguments optionnels permettant
 d'ajouter du texte \meta{antérieur} et/ou \meta{postérieur} à la citation
 d'extrait\autocite[Pour plus de détails, cf. par exemple][]{Bitouze}.
 
-(\textsc{À suivre...})
+% (\textsc{À suivre...})
 
-\subsection{Adresses Web (\enquote{\textsc{url}})}
+\subsection{Adresses Web (\texorpdfstring{\acrshort{url}}{URL})}
 \label{sec-url}
 
-Le \Package*{hyperref} fournit (entre autres) la commande \refCom{url} qui permet
-de facilement afficher des adresses Web (aussi appelées \enquote{\textsc{url}}),
-même si elles comportent des caractères spéciaux de \TeX{} (|#|,
+Le \Package*{hyperref} fournit (entre autres) la commande \refCom{url} qui
+permet de facilement afficher des adresses Web, aussi appelées
+\enquote{\gls{url}}, même si elles comportent des caractères spéciaux de \TeX{}
+(|#|,
 %
 \lstinline[commentstyle={}]+%+,
 %
@@ -1035,12 +1049,13 @@ Nous renvoyons aux instructions aux auteurs sur notre site Web
 Le lecteur est certainement familier des environnements
 \docAuxEnvironment{itemize}, \docAuxEnvironment{enumerate} et
 \docAuxEnvironment{description} permettant de créer des listes respectivement
-\enquote{à puces}, \enquote{numérotées} et \enquote{de description}. Le
-\Package*{enumitem} fournit des versions étoilées de ces environnements qui
-composent ces listes \enquote{en ligne}, c'est-à-dire au sein d'un même
-paragraphe\footnote{Le but premier de ce package est de personnaliser les listes
-  mais cela est déconseillé dans le cadre du \nwejm{} car cela pourrait
-  contrevenir à la marche typographique qu'il a adoptée.}.
+non ordonnées\footnote{\enquote{À puces}.}, ordonnées\footnote{\Ie*{}
+  numérotées} et \enquote{de description}. Le \Package*{enumitem} fournit des
+versions étoilées de ces environnements qui composent ces listes \enquote{en
+  ligne}, c'est-à-dire au sein d'un même paragraphe\footnote{Le but premier de
+  ce package est de personnaliser les listes mais cela est déconseillé dans le
+  cadre du \nwejm{} car cela pourrait contrevenir à la marche typographique
+  qu'il a adoptée.}.
 
 \begin{docEnvironment}[doclang/environment content=liste]{itemize*}{}
   Cet environnement compose une liste \enquote{à puces} en ligne.
@@ -1076,7 +1091,7 @@ canevas de fichier source qui est un modèle typique d'article standard où les
 commandes et environnement moins fréquents ont été mis en commentaire. Il est
 attaché au fichier \file{PDF} de la présente documentation\footnote{Il peut
   également être copié-collé : la plupart des afficheurs \textsc{pdf}
-  permetttent de sélectionner et de copier du texte.}.
+  permettent de sélectionner et de copier du texte.}.
 %
 \embedfile[
   filespec=template.tex,
