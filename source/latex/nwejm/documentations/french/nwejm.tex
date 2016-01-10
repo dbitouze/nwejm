@@ -13,13 +13,13 @@
 %
 % \ExplSyntaxOn
 \makeatletter
-\renewcommand{\thetcb@cnt@dbremark}{\thesection.\arabic{tcb@cnt@dbremark}}%
-\renewcommand{\thetcb@cnt@dbwarning}{\thesection.\arabic{tcb@cnt@dbwarning}}%
-\renewcommand{\thetcb@cnt@dbexample}{\thesection.\arabic{tcb@cnt@dbexample}}%
-\renewcommand{\thetcb@cnt@dbfaq}{\thesection.\arabic{tcb@cnt@dbfaq}}%
+\renewcommand{\thetcb@cnt@dbremark}{\arabic{tcb@cnt@dbremark}}%
+\renewcommand{\thetcb@cnt@dbwarning}{\arabic{tcb@cnt@dbwarning}}%
+\renewcommand{\thetcb@cnt@dbexample}{\arabic{tcb@cnt@dbexample}}%
+\renewcommand{\thetcb@cnt@dbfaq}{\arabic{tcb@cnt@dbfaq}}%
 % \clist_set:Nn \l_tmpa_clist {dbremark}
 % \clist_map_inline:Nn \l_tmpa_clist {
-%   \renewcommand{\thetcb@cnt@##1}{\thesection.\arabic{tcb@cnt@##1}}%
+%   \renewcommand{\thetcb@cnt@##1}{\arabic{tcb@cnt@##1}}%
 % }
 \makeatother
 % \ExplSyntaxOff
