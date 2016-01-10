@@ -2097,6 +2097,7 @@
   }
   % \msg_warning:nnn{nwejmart}{Starred~AMS~environments}{#1}
 }
+\etocsettocdepth{section}
 \@ifpackageloaded{pgfplots}{%
   \ifcurrentbaselanguage{french}{%
     \pgfplotsset{%
