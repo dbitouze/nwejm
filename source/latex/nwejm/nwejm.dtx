@@ -363,7 +363,15 @@ Running "make install" installs the files in the local TeX tree.
   dutch    .code:n = {
     \tl_gset:Nn \g_@@_language_tl {dutch}
   },%
-  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} }
+  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} },
+%    \end{macrocode}
+%
+% An option to prevent automatic local table of contents at the end of
+% independent articles.
+%    \begin{macrocode}
+  nolocaltoc .code:n = {
+    \bool_gset_true:N \g_@@_nolocaltoc_bool
+  }%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -636,7 +644,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Completely customisable TOCs:
 %    \begin{macrocode}
-%<class>\RequirePackage{etoc}%
+\RequirePackage{etoc}%
 %    \end{macrocode}
 %
 % \item Subliminal refinements towards typographical perfection:
@@ -3903,6 +3911,7 @@ Running "make install" installs the files in the local TeX tree.
 % TOC depth level is ×section×:
 %    \begin{macrocode}
 %<class>\etocsettocdepth{section}
+%<class-article>\etocsettocdepth{subsection}
 %    \end{macrocode}
 %
 % \subsection{Related to \Pkg{pgfplots}}
@@ -3978,6 +3987,45 @@ Running "make install" installs the files in the local TeX tree.
   \int_set:Nn \l_@@_section_int {\thesection}
   \setcounter{section}{-1}
   \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class-article>
+%    \end{macrocode}
+%
+% The independant articles contain their (local) table of contents at their end.
+%    \begin{macrocode}
+   \bool_if:NF \g_@@_nolocaltoc_bool {
+     \newpage
+     \setcounter{page}{0}
+     \pagenumbering{roman}%
+     \etocarticlestylenomarks
+%    \end{macrocode}
+%
+% We don't want the article's title (chapter's title) in the (local) table of
+% contents.
+%    \begin{macrocode}
+    \etocsetlevel{chapter}{10}
+    \tableofcontents
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
+% We don't want the article's title (chapter's title) in the (local) table of
+% contents.
+%    \begin{macrocode}
   \setcounter{section}{\int_use:N \l_@@_section_int}
 }
 %    \end{macrocode}
