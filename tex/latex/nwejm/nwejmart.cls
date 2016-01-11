@@ -73,7 +73,10 @@
   dutch    .code:n = {
     \tl_gset:Nn \g__nwejm_language_tl {dutch}
   },%
-  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} }
+  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} },
+  nolocaltoc .code:n = {
+    \bool_gset_true:N \g__nwejm_nolocaltoc_bool
+  }%
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
@@ -142,6 +145,7 @@
 \RequirePackage{varioref}
 \RequirePackage{babel}%
 \RequirePackage{tocvsec2}
+\RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
@@ -1479,6 +1483,7 @@
   }
   % \msg_warning:nnn{nwejmart}{Starred~AMS~environments}{#1}
 }
+\etocsettocdepth{subsection}
 \@ifpackageloaded{pgfplots}{%
   \ifcurrentbaselanguage{french}{%
     \pgfplotsset{%
@@ -1512,6 +1517,14 @@
   \int_set:Nn \l__nwejm_section_int {\thesection}
   \setcounter{section}{-1}
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
+   \bool_if:NF \g__nwejm_nolocaltoc_bool {
+     \newpage
+     \setcounter{page}{0}
+     \pagenumbering{roman}%
+     \etocarticlestylenomarks
+    \etocsetlevel{chapter}{10}
+    \tableofcontents
+  }
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
