@@ -1552,7 +1552,7 @@
      \setcounter{page}{0}
      \pagenumbering{roman}%
      \etocarticlestylenomarks
-    \etocsetlevel{chapter}{10}
+    \etocsetlevel{chapter}{6}
     \tableofcontents
   }
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
