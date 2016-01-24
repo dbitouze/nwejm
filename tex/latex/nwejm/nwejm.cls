@@ -1234,21 +1234,19 @@
     \selectlanguage{#1}
   }%
   \inputfrom{./}{#2}
-  \setcounter{footnote}{0}
-  \setcounter{section}{0}
-  \setcounter{figure}{0}
-  \setcounter{table}{0}
-  \setcounter{equation}{0}
-  \setcounter{theorem}{0}
-  \setcounter{corollary}{0}
-  \setcounter{conjecture}{0}
-  \setcounter{proposition}{0}
-  \setcounter{lemma}{0}
-  \setcounter{axiom}{0}
-  \setcounter{definition}{0}
-  \setcounter{remark}{0}
-  \setcounter{example}{0}
-  \setcounter{notation}{0}
+  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
+    footnote,
+    section,
+    figure,
+    table,
+    equation
+  }
+  \clist_map_inline:Nn \g__nwejm_counters_to_be_reset_clist {
+    \@ifundefined{c@##1}{
+    }{
+      \setcounter{##1}{\c_zero}
+    }
+  }
   \glsresetall
   \selectlanguage{english}
 }
