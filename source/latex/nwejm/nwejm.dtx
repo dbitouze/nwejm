@@ -581,6 +581,12 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{booktabs}
 %    \end{macrocode}
 %
+% \item Extensions to theorem environments:
+%    \begin{macrocode}
+\RequirePackage[thmmarks]{ntheorem}
+% \RequirePackage{thmtools}
+%    \end{macrocode}
+%
 % \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
 %   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
 %   loads \pkg{amsmath}, hence it's not necessary to load the
@@ -670,16 +676,6 @@ Running "make install" installs the files in the local TeX tree.
 % \item Print page grid in background:
 %    \begin{macrocode}
 %<class>\RequirePackage[foreground]{pagegrid}%
-%    \end{macrocode}
-%
-% \item Typesetting theorems (AMS style):
-%    \begin{macrocode}
-\RequirePackage{amsthm}
-%    \end{macrocode}
-%
-% \item Extensions to theorem environments:
-%    \begin{macrocode}
-\RequirePackage{thmtools}
 %    \end{macrocode}
 %
 % \item Tools to load and manipulate data:
@@ -1964,7 +1960,7 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{New theorem options}
 %
 %    \begin{macrocode}
-\tl_new:N \l_nwejm_newtheorem_style_tl
+\tl_new:N \l_@@_newtheorem_style_tl
 \keys_define:nn { nwejm / newtheorem }
 {
   title .tl_set:N = \l_@@_newtheorem_title_tl,
@@ -1979,9 +1975,9 @@ Running "make install" installs the files in the local TeX tree.
   title / dutch .value_required:,
   %
   style .choice:,
-  style / theorem .code:n = {\tl_set:Nn \l_@@_newtheorem_style_tl {theorem}},
-  style / definition .code:n = {\tl_set:Nn \l_@@_newtheorem_style_tl {definition}},
-  style / proof .code:n = {\tl_set:Nn \l_@@_newtheorem_style_tl {proof}},
+  style / theorem .code:n = {\_@@_theorem_style:n {theorem}},
+  style / definition .code:n = {\_@@_theorem_style:n {definition}},
+  style / proof .code:n = {\_@@_theorem_style:n {proof}},
   style / unknown .code:n =
   \msg_error:nnxxx { nwejm } { Unknown~choice }
   { style } % Name of choice key
@@ -3533,41 +3529,63 @@ Running "make install" installs the files in the local TeX tree.
 % Then, we define a public command, similar to "\newtheorem", based on
 % "\_@@_new_theorem", that lets the user define his own theorems:
 %    \begin{macrocode}
-\cs_new_protected:Nn \_@@_new_theorem:nnnnnn
+\bool_new:N \g_@@_no_numbered_theorem_bool
+\cs_new_protected:Nn \_@@_theorem_style:n
 {
-  \AtBeginDocument{%
-    \IfTranslation{English}{#2}{%
-    }{%
-      \DeclareTranslation{English}{#2}{\tl_mixed_case:n{#3}}%
+  \bool_gset_false:N \g_@@_no_numbered_theorem_bool
+  \str_case:nn
+  { #1 }
+  {
+    { theorem }   {
+      \theoremstyle{plain}
+      \theoremheaderfont{\normalfont\bfseries}
+      \theorembodyfont{\itshape}
+      \theoremseparator{~--}
+      \theoremsymbol{}
     }
-    \IfTranslation{French}{#2}{%
-    }{%
-      \DeclareTranslation{French}{#2}{\tl_mixed_case:n{#4}}%
+    { definition }   {
+      \theoremstyle{plain}
+      \theoremheaderfont{\normalfont\bfseries}
+      \theorembodyfont{\normalfont}
+      \theoremseparator{~--}
+      \theoremsymbol{}
     }
-    \IfTranslation{German}{#2}{%
-    }{%
-      \DeclareTranslation{German}{#2}{\tl_mixed_case:n{#5}}%
-    }
-    \IfTranslation{Dutch}{#2}{%
-    }{%
-      \DeclareTranslation{Dutch}{#2}{\tl_mixed_case:n{#6}}%
+    { proof }   {
+      \theoremstyle{nonumberplain}
+      \bool_gset_true:N \g_@@_no_numbered_theorem_bool
+      \theoremheaderfont{\normalfont\itshape}
+      \theoremseparator{.}
+      \theoremsymbol{\ensuremath{\blacksquare}}
     }
   }
-  \declaretheorem[%
-  #1,%
-  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }
-  ]{@@_#2}
-  \declaretheorem[%
-  #1,%
-  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} },
-  numbered=no
-  ]{@@_#2*}
 }
-\cs_generate_variant:Nn \_@@_new_theorem:nnnnnn { nnVVVV }
-%
-\declaretheoremstyle[spaceabove=3pt,notefont=\bfseries,bodyfont=\itshape]{theorem}
-\declaretheoremstyle[spaceabove=3pt,notefont=\bfseries,bodyfont=\normalfont]{definition}
-\declaretheoremstyle[spaceabove=3pt,bodyfont=\normalfont,qed=\ensuremath{\qedsymbol},headfont=\normalfont\itshape,numbered=no]{proof}
+\cs_set_eq:NN \_@@_orig_newtheorem \newtheorem
+\cs_new_protected:Nn \_@@_new_theorem:nnnnn
+{
+  \AtBeginDocument{%
+    \IfTranslation{English}{#1}{%
+    }{%
+      \DeclareTranslation{English}{#1}{\tl_mixed_case:n{#2}}%
+    }
+    \IfTranslation{French}{#1}{%
+    }{%
+      \DeclareTranslation{French}{#1}{\tl_mixed_case:n{#3}}%
+    }
+    \IfTranslation{German}{#1}{%
+    }{%
+      \DeclareTranslation{German}{#1}{\tl_mixed_case:n{#4}}%
+    }
+    \IfTranslation{Dutch}{#1}{%
+    }{%
+      \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
+    }
+  }
+  \_@@_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
+    \_@@_orig_newtheorem*{#2_@@_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  }
+}
+\cs_generate_variant:Nn \_@@_new_theorem:nnnnn { nVVVV }
 %    \end{macrocode}
 %
 % Then, we define a public command, similar to "\newtheorem", based on
@@ -3597,6 +3615,7 @@ Running "make install" installs the files in the local TeX tree.
   \tl_set:Nn \l_@@_newtheorem_style_tl {
     theorem
   }
+  \_@@_theorem_style:n {theorem}
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm / newtheorem } { #1 }
@@ -3620,8 +3639,7 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
   %
-  \_@@_new_theorem:nnVVVV
-  {style=\l_@@_newtheorem_style_tl}
+  \_@@_new_theorem:nVVVV
   {#2}
   {\l_@@_newtheorem_english_title_tl}
   {\l_@@_newtheorem_french_title_tl}
@@ -3629,34 +3647,24 @@ Running "make install" installs the files in the local TeX tree.
   {\l_@@_newtheorem_dutch_title_tl}
 %    \end{macrocode}
 %
-% We add ×\noindent× at the beginning of each theorem environment as
-% a workaround of \url{http://tex.stackexchange.com/q/14000/18401}:
 %    \begin{macrocode}
-  \NewDocumentEnvironment{#2}{o}
-  {
-    \IfNoValueTF {##1}
-    { \begin{@@_#2} }
-    { \begin{@@_#2}[##1] }
-      \noindent%
-    }{
-    \end{@@_#2}
-  }
-  \NewDocumentEnvironment{#2*}{o}
-  {
-    \IfNoValueTF {##1}
-    { \begin{@@_#2*} }
-    { \begin{@@_#2*}[##1] }
-      \noindent%
-    }{
-    \end{@@_#2*}
-  }
+  \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
+    \RenewDocumentEnvironment{#2*}{o}
+    {
+      \IfNoValueTF {##1}
+      { \begin{#2_@@_nonumbered} }
+        { \begin{#2_@@_nonumbered}[##1] }
+        }{
+        \end{#2_@@_nonumbered}
+      }
+    }
 %    \end{macrocode}
 %
 % We add to the list of counters we want to be able to easily set to zero the
 % ones associated to the (numbered) theorem environments (defined either by the
 % or by the user):
 %    \begin{macrocode}
-  \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {@@_#2}
+  \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
 }
 %    \end{macrocode}
 %
@@ -3674,8 +3682,6 @@ Running "make install" installs the files in the local TeX tree.
 \newtheorem[style=definition]{example}
 \newtheorem[style=definition]{notation}
 %
-\let\proof\relax
-\let\endproof\relax
 \newtheorem[style=proof]{proof}
 %
 \cs_new_protected:Nn \_@@_clone_theorem:nn
@@ -3721,17 +3727,17 @@ Running "make install" installs the files in the local TeX tree.
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n { \GetTranslation{#1} }
-    }{
+    % \ifcurrentbaselanguage{english}{
+    %   \tl_mixed_case:n { \GetTranslation{#1} }
+    % }{
       \GetTranslation{#1}
-    }%
+    % }%
   }{%
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    }{
+    % \ifcurrentbaselanguage{english}{
+    %   \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    % }{
       \GetTranslation{plural-#1}
-    }%
+    % }%
   }
 }
 %    \end{macrocode}

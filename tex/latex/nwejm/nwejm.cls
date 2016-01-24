@@ -126,6 +126,7 @@
 \RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
+\RequirePackage[thmmarks]{ntheorem}
 \RequirePackage{mathtools}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
@@ -142,8 +143,6 @@
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
 \RequirePackage[foreground]{pagegrid}%
-\RequirePackage{amsthm}
-\RequirePackage{thmtools}
 \RequirePackage{datatool}%
 \RequirePackage{placeins}%
 \RequirePackage{hyperref}%
@@ -160,6 +159,7 @@
 \setacronymstyle{long-sc-short}
 \glsdisablehyper
 \int_new:N \g__nwejm_articles_int
+\clist_new:N \g__nwejm_counters_to_be_reset_clist
 \int_const:Nn \c__nwejm_first_issue_number_int { 1 }
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
@@ -755,7 +755,7 @@
   affiliation .value_required:,
   affiliationtagged .value_required:,
 }
-\tl_new:N \l_nwejm_newtheorem_style_tl
+\tl_new:N \l__nwejm_newtheorem_style_tl
 \keys_define:nn { nwejm / newtheorem }
 {
   title .tl_set:N = \l__nwejm_newtheorem_title_tl,
@@ -770,9 +770,9 @@
   title / dutch .value_required:,
   %
   style .choice:,
-  style / theorem .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {theorem}},
-  style / definition .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {definition}},
-  style / proof .code:n = {\tl_set:Nn \l__nwejm_newtheorem_style_tl {proof}},
+  style / theorem .code:n = {\__nwejm_theorem_style:n {theorem}},
+  style / definition .code:n = {\__nwejm_theorem_style:n {definition}},
+  style / proof .code:n = {\__nwejm_theorem_style:n {proof}},
   style / unknown .code:n =
   \msg_error:nnxxx { nwejm } { Unknown~choice }
   { style } % Name of choice key
@@ -1773,40 +1773,63 @@
 \RenewDocumentCommand \vec { m } {
   \vv{#1}
 }
-\cs_new_protected:Nn \__nwejm_new_theorem:nnnnnn
+\bool_new:N \g__nwejm_no_numbered_theorem_bool
+\cs_new_protected:Nn \__nwejm_theorem_style:n
 {
-  \AtBeginDocument{%
-    \IfTranslation{English}{#2}{%
-    }{%
-      \DeclareTranslation{English}{#2}{\tl_mixed_case:n{#3}}%
+  \bool_gset_false:N \g__nwejm_no_numbered_theorem_bool
+  \str_case:nn
+  { #1 }
+  {
+    { theorem }   {
+      \theoremstyle{plain}
+      \theoremheaderfont{\normalfont\bfseries}
+      \theorembodyfont{\itshape}
+      \theoremseparator{~--}
+      \theoremsymbol{}
     }
-    \IfTranslation{French}{#2}{%
-    }{%
-      \DeclareTranslation{French}{#2}{\tl_mixed_case:n{#4}}%
+    { definition }   {
+      \theoremstyle{plain}
+      \theoremheaderfont{\normalfont\bfseries}
+      \theorembodyfont{\normalfont}
+      \theoremseparator{~--}
+      \theoremsymbol{}
     }
-    \IfTranslation{German}{#2}{%
-    }{%
-      \DeclareTranslation{German}{#2}{\tl_mixed_case:n{#5}}%
-    }
-    \IfTranslation{Dutch}{#2}{%
-    }{%
-      \DeclareTranslation{Dutch}{#2}{\tl_mixed_case:n{#6}}%
+    { proof }   {
+      \theoremstyle{nonumberplain}
+      \bool_gset_true:N \g__nwejm_no_numbered_theorem_bool
+      \theoremheaderfont{\normalfont\itshape}
+      \theoremseparator{.}
+      \theoremsymbol{\ensuremath{\blacksquare}}
     }
   }
-  \declaretheorem[%
-  #1,%
-  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }
-  ]{#2}
-  \declaretheorem[%
-  #1,%
-  name=\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} },
-  numbered=no
-  ]{#2*}
 }
-\cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnn { nnVVVV }
-\declaretheoremstyle[spaceabove=3pt,notefont=\bfseries,bodyfont=\itshape]{theorem}
-\declaretheoremstyle[spaceabove=3pt,notefont=\bfseries,bodyfont=\normalfont]{definition}
-\declaretheoremstyle[spaceabove=3pt,bodyfont=\normalfont,qed=\ensuremath{\qedsymbol},headfont=\normalfont\itshape,numbered=no]{proof}
+\cs_set_eq:NN \__nwejm_orig_newtheorem \newtheorem
+\cs_new_protected:Nn \__nwejm_new_theorem:nnnnn
+{
+  \AtBeginDocument{%
+    \IfTranslation{English}{#1}{%
+    }{%
+      \DeclareTranslation{English}{#1}{\tl_mixed_case:n{#2}}%
+    }
+    \IfTranslation{French}{#1}{%
+    }{%
+      \DeclareTranslation{French}{#1}{\tl_mixed_case:n{#3}}%
+    }
+    \IfTranslation{German}{#1}{%
+    }{%
+      \DeclareTranslation{German}{#1}{\tl_mixed_case:n{#4}}%
+    }
+    \IfTranslation{Dutch}{#1}{%
+    }{%
+      \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
+    }
+  }
+  \__nwejm_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
+    \__nwejm_orig_newtheorem*{#2__nwejm_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  }
+}
+\cs_generate_variant:Nn \__nwejm_new_theorem:nnnnn { nVVVV }
 \RenewDocumentCommand \newtheorem { O{} m }
 {
   \tl_clear:N \l__nwejm_newtheorem_style_tl
@@ -1831,6 +1854,7 @@
   \tl_set:Nn \l__nwejm_newtheorem_style_tl {
     theorem
   }
+  \__nwejm_theorem_style:n {theorem}
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm / newtheorem } { #1 }
@@ -1854,13 +1878,23 @@
     }
   }
   %
-  \__nwejm_new_theorem:nnVVVV
-  {style=\l__nwejm_newtheorem_style_tl}
+  \__nwejm_new_theorem:nVVVV
   {#2}
   {\l__nwejm_newtheorem_english_title_tl}
   {\l__nwejm_newtheorem_french_title_tl}
   {\l__nwejm_newtheorem_german_title_tl}
   {\l__nwejm_newtheorem_dutch_title_tl}
+  \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
+    \RenewDocumentEnvironment{#2*}{o}
+    {
+      \IfNoValueTF {##1}
+      { \begin{#2__nwejm_nonumbered} }
+        { \begin{#2__nwejm_nonumbered}[##1] }
+        }{
+        \end{#2__nwejm_nonumbered}
+      }
+    }
+  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
 }
 \newtheorem{theorem}
 \newtheorem{corollary}
@@ -1872,8 +1906,6 @@
 \newtheorem[style=definition]{remark}
 \newtheorem[style=definition]{example}
 \newtheorem[style=definition]{notation}
-\let\proof\relax
-\let\endproof\relax
 \newtheorem[style=proof]{proof}
 \cs_new_protected:Nn \__nwejm_clone_theorem:nn
 {
@@ -1916,17 +1948,17 @@
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n { \GetTranslation{#1} }
-    }{
+    % \ifcurrentbaselanguage{english}{
+    %   \tl_mixed_case:n { \GetTranslation{#1} }
+    % }{
       \GetTranslation{#1}
-    }%
+    % }%
   }{%
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    }{
+    % \ifcurrentbaselanguage{english}{
+    %   \tl_mixed_case:n {\GetTranslation{plural-#1}}
+    % }{
       \GetTranslation{plural-#1}
-    }%
+    % }%
   }
 }
 \clist_set:Nn \l_tmpa_clist {%
