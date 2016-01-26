@@ -581,12 +581,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{booktabs}
 %    \end{macrocode}
 %
-% \item Extensions to theorem environments:
-%    \begin{macrocode}
-\RequirePackage[thmmarks]{ntheorem}
-% \RequirePackage{thmtools}
-%    \end{macrocode}
-%
 % \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
 %   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
 %   loads \pkg{amsmath}, hence it's not necessary to load the
@@ -594,6 +588,13 @@ Running "make install" installs the files in the local TeX tree.
 %   otherwise its ×fleqn× option isn't taken into account.}:
 %    \begin{macrocode}
 \RequirePackage{mathtools}
+%    \end{macrocode}
+%
+% \item Extensions to theorem environments:
+%    \begin{macrocode}
+% \RequirePackage[amsmath,amsthm,thmmarks]{ntheorem}
+\RequirePackage{amsthm}
+% \RequirePackage{thmtools}
 %    \end{macrocode}
 %
 % \item Support for using RSFS fonts in maths:
@@ -3518,7 +3519,27 @@ Running "make install" installs the files in the local TeX tree.
 % Then, we define a public command, similar to "\newtheorem", based on
 % "\_@@_new_theorem", that lets the user define his own theorems:
 %    \begin{macrocode}
-\bool_new:N \g_@@_no_numbered_theorem_bool
+\bool_new:N \l_@@_theoremstyle_proof_bool
+\renewcommand{\qedsymbol}{\ensuremath{\square}}
+\newtheoremstyle{theorem}%
+{3pt}%
+{3pt}%
+{\itshape}%
+{}%
+{\bfseries}%
+{\space{}--}%
+{.5em}%
+{\thmname{#1}\thmnumber{\space{}#2}\thmnote{\space{}(#3)}}%
+\newtheoremstyle{definition}%
+{3pt}%
+{3pt}%
+{}%
+{}%
+{\bfseries}%
+{\space{}--}%
+{.5em}%
+{\thmname{#1}\thmnumber{\space{}#2}\thmnote{\space{}(#3)}}%
+%
 \cs_new_protected:Nn \_@@_theorem_style:n
 {
   \bool_gset_false:N \g_@@_no_numbered_theorem_bool
@@ -3526,26 +3547,15 @@ Running "make install" installs the files in the local TeX tree.
   { #1 }
   {
     { theorem }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\itshape}
-      \theoremseparator{~--}
-      \theoremsymbol{}
+      \bool_set_false:N \l_@@_theoremstyle_proof_bool
+      \theoremstyle{theorem}
     }
     { definition }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{~--}
-      \theoremsymbol{}
+      \bool_set_false:N \l_@@_theoremstyle_proof_bool
+      \theoremstyle{definition}
     }
     { proof }   {
-      \theoremstyle{nonumberplain}
-      \bool_gset_true:N \g_@@_no_numbered_theorem_bool
-      \theoremheaderfont{\normalfont\itshape}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{.}
-      \theoremsymbol{\ensuremath{\blacksquare}}
+      \bool_set_true:N \l_@@_theoremstyle_proof_bool
     }
   }
 }
@@ -3570,9 +3580,13 @@ Running "make install" installs the files in the local TeX tree.
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
   }
-  \_@@_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
-  \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-    \_@@_orig_newtheorem*{#2_@@_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  \bool_if:NTF {\l_@@_theoremstyle_proof_bool} {
+    \NewDocumentEnvironment{#2}{}
+    {\begin{proof}[\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }]}
+      {\end{proof}}
+  }{
+    \_@@_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+    \_@@_orig_newtheorem*{#2*}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
   }
 }
 \cs_generate_variant:Nn \_@@_new_theorem:nnnnn { nVVVV }
@@ -3637,19 +3651,6 @@ Running "make install" installs the files in the local TeX tree.
   {\l_@@_newtheorem_dutch_title_tl}
 %    \end{macrocode}
 %
-%    \begin{macrocode}
-  \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-    \RenewDocumentEnvironment{#2*}{o}
-    {
-      \IfNoValueTF {##1}
-      { \begin{#2_@@_nonumbered} }
-        { \begin{#2_@@_nonumbered}[##1] }
-        }{
-        \end{#2_@@_nonumbered}
-      }
-    }
-%    \end{macrocode}
-%
 % We add to the list of counters we want to be able to easily set to zero the
 % ones associated to the (numbered) theorem environments (defined either by the
 % or by the user):
@@ -3672,7 +3673,7 @@ Running "make install" installs the files in the local TeX tree.
 \newtheorem[style=definition]{example}
 \newtheorem[style=definition]{notation}
 %
-\newtheorem[style=proof]{proof}
+\def\frenchproofname{Preuve}
 %
 \cs_new_protected:Nn \_@@_clone_theorem:nn
 {
