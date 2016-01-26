@@ -1173,7 +1173,6 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_topmargin_dim   { 20mm}
 \dim_const:Nn \c_@@_topmargin_frontcover_dim {
   \c_@@_topmargin_dim
-  + 30mm
 }
 \dim_const:Nn \c_@@_topmargin_inside_cover_dim   {
   \c_@@_topmargin_dim
@@ -1188,12 +1187,10 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_headsep_dim     { 7.5mm}
 \dim_const:Nn \c_@@_headsep_frontcover_dim {
   \c_@@_headsep_dim
-  +31mm
   % -\c_@@_potential_layoutoffset_dim
 }
 \dim_const:Nn \c_@@_headsep_inside_frontcover_dim {
   \c_@@_headsep_dim
-  +7mm
 }
 \dim_const:Nn \c_@@_headsep_front_matter_dim {
   \c_@@_headsep_inside_frontcover_dim
@@ -1477,16 +1474,9 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \newpagestyle{@@_frontcover_ps}[]{%
   \sethead
-  {}%
+  {\int_use:N \g_@@_issue_year_int}%
   {%
-    \adjustbox{stack=c}{
-      {\Large
-        \c_@@_frontcover_header_string_tl
-      }\\[7mm]
-      \adjustbox{scale=2.08}{
-        % \l_@@_frontmatter_head_text_tl
-      }%
-    }%
+    \c_@@_frontcover_header_string_tl
   }%
   {}%
   %
@@ -1832,7 +1822,6 @@ Running "make install" installs the files in the local TeX tree.
 \int_new:N \g_@@_issue_number_int
 \int_new:N \g_@@_issue_month_int
 \int_new:N \g_@@_issue_year_int
-\tl_new:N \g_@@_frontcover_image_options_tl
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
