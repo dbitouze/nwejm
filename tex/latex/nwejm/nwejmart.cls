@@ -135,8 +135,8 @@
 \RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage[thmmarks]{ntheorem}
 \RequirePackage{mathtools}
+\RequirePackage{amsthm}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
 \RequirePackage[noDcommand]{kpfonts}
@@ -239,7 +239,6 @@
 \dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
 \dim_const:Nn \c__nwejm_topmargin_frontcover_dim {
   \c__nwejm_topmargin_dim
-  + 30mm
 }
 \dim_const:Nn \c__nwejm_topmargin_inside_cover_dim   {
   \c__nwejm_topmargin_dim
@@ -251,12 +250,10 @@
 \dim_const:Nn \c__nwejm_headsep_dim     { 7.5mm}
 \dim_const:Nn \c__nwejm_headsep_frontcover_dim {
   \c__nwejm_headsep_dim
-  +31mm
   % -\c__nwejm_potential_layoutoffset_dim
 }
 \dim_const:Nn \c__nwejm_headsep_inside_frontcover_dim {
   \c__nwejm_headsep_dim
-  +7mm
 }
 \dim_const:Nn \c__nwejm_headsep_front_matter_dim {
   \c__nwejm_headsep_inside_frontcover_dim
@@ -401,7 +398,6 @@
 \int_new:N \g__nwejm_issue_number_int
 \int_new:N \g__nwejm_issue_month_int
 \int_new:N \g__nwejm_issue_year_int
-\tl_new:N \g__nwejm_frontcover_image_options_tl
 \keys_define:nn { nwejm/issuesetup }
 {
   number .int_gset:N = \g__nwejm_issue_number_int,
@@ -650,7 +646,7 @@
     @periodical{\c__nwejm_issue_bib_key_tl,\iow_newline:
       issuetitle   = {\exp_not:f\c__nwejm_journal_title_string_tl},\iow_newline:
       date         = {\g__nwejm_bib_issue_date_tl},\iow_newline:
-      number       = \int_use:N \g__nwejm_issue_number_int,\iow_newline:
+      number       = {\int_use:N \g__nwejm_issue_number_int},\iow_newline:
       % issn         = {\l__nwejm_journal_issn_tl},\iow_newline:
       options      = {skipbib}\iow_newline:
     }
@@ -1157,7 +1153,26 @@
 \RenewDocumentCommand \vec { m } {
   \vv{#1}
 }
-\bool_new:N \g__nwejm_no_numbered_theorem_bool
+\bool_new:N \l__nwejm_theoremstyle_proof_bool
+\renewcommand{\qedsymbol}{\ensuremath{\square}}
+\newtheoremstyle{theorem}%
+{3pt}%
+{3pt}%
+{\itshape}%
+{}%
+{\bfseries}%
+{\space{}--}%
+{.5em}%
+{\thmname{#1}\thmnumber{\space{}#2}\thmnote{\space{}(#3)}}%
+\newtheoremstyle{definition}%
+{3pt}%
+{3pt}%
+{}%
+{}%
+{\bfseries}%
+{\space{}--}%
+{.5em}%
+{\thmname{#1}\thmnumber{\space{}#2}\thmnote{\space{}(#3)}}%
 \cs_new_protected:Nn \__nwejm_theorem_style:n
 {
   \bool_gset_false:N \g__nwejm_no_numbered_theorem_bool
@@ -1165,25 +1180,15 @@
   { #1 }
   {
     { theorem }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\itshape}
-      \theoremseparator{~--}
-      \theoremsymbol{}
+      \bool_set_false:N \l__nwejm_theoremstyle_proof_bool
+      \theoremstyle{theorem}
     }
     { definition }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{~--}
-      \theoremsymbol{}
+      \bool_set_false:N \l__nwejm_theoremstyle_proof_bool
+      \theoremstyle{definition}
     }
     { proof }   {
-      \theoremstyle{nonumberplain}
-      \bool_gset_true:N \g__nwejm_no_numbered_theorem_bool
-      \theoremheaderfont{\normalfont\itshape}
-      \theoremseparator{.}
-      \theoremsymbol{\ensuremath{\blacksquare}}
+      \bool_set_true:N \l__nwejm_theoremstyle_proof_bool
     }
   }
 }
@@ -1208,9 +1213,13 @@
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
   }
-  \__nwejm_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
-  \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-    \__nwejm_orig_newtheorem*{#2__nwejm_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  \bool_if:NTF {\l__nwejm_theoremstyle_proof_bool} {
+    \NewDocumentEnvironment{#2}{}
+    {\begin{proof}[\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }]}
+      {\end{proof}}
+  }{
+    \__nwejm_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+    \__nwejm_orig_newtheorem*{#2*}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
   }
 }
 \cs_generate_variant:Nn \__nwejm_new_theorem:nnnnn { nVVVV }
@@ -1268,16 +1277,6 @@
   {\l__nwejm_newtheorem_french_title_tl}
   {\l__nwejm_newtheorem_german_title_tl}
   {\l__nwejm_newtheorem_dutch_title_tl}
-  \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-    \RenewDocumentEnvironment{#2*}{o}
-    {
-      \IfNoValueTF {##1}
-      { \begin{#2__nwejm_nonumbered} }
-        { \begin{#2__nwejm_nonumbered}[##1] }
-        }{
-        \end{#2__nwejm_nonumbered}
-      }
-    }
   \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
 }
 \newtheorem{theorem}
@@ -1290,7 +1289,7 @@
 \newtheorem[style=definition]{remark}
 \newtheorem[style=definition]{example}
 \newtheorem[style=definition]{notation}
-\newtheorem[style=proof]{proof}
+\def\frenchproofname{Preuve}
 \cs_new_protected:Nn \__nwejm_clone_theorem:nn
 {
   \NewDocumentEnvironment{#1}{}
@@ -1367,17 +1366,9 @@
     )
   }
   \crefname{#1i}{
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{#1}}
-    }{
-      \GetTranslation{#1}
-    }%
+    \GetTranslation{#1}
   }{%
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    }{
-      \GetTranslation{plural-#1}
-    }%
+    \GetTranslation{plural-#1}
   }
 }
 \NewDocumentEnvironment{hypotheses}{}
