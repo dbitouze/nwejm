@@ -1794,6 +1794,7 @@
       \theoremstyle{nonumberplain}
       \bool_gset_true:N \g__nwejm_no_numbered_theorem_bool
       \theoremheaderfont{\normalfont\itshape}
+      \theorembodyfont{\normalfont}
       \theoremseparator{.}
       \theoremsymbol{\ensuremath{\square}}
     }
