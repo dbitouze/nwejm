@@ -135,8 +135,8 @@
 \RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage[thmmarks]{ntheorem}
 \RequirePackage{mathtools}
+\RequirePackage[thmmarks,amsmath]{ntheorem}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
 \RequirePackage[noDcommand]{kpfonts}
@@ -534,8 +534,6 @@
     \tl_set:Nn \l__nwejm_crossref_tl {\c__nwejm_issue_bib_key_tl}
   }
   \tl_set:Nn \l__nwejm_people_first_last_name_tl {#1}
-  % \tl_show:N \g__nwejm_article_bib_key_tl
-  % \int_show:N \g__nwejm_articles_int
   \iow_now:Nx \g__nwejm_bib_out_iow {%
     @article{
       \c__nwejm_issue_bib_key_tl -#2- \int_use:c {g__nwejm_#2_int},
@@ -619,21 +617,19 @@
     \selectlanguage{#1}
   }%
   \inputfrom{./}{#2}
-  \setcounter{footnote}{0}
-  \setcounter{section}{0}
-  \setcounter{figure}{0}
-  \setcounter{table}{0}
-  \setcounter{equation}{0}
-  \setcounter{theorem}{0}
-  \setcounter{corollary}{0}
-  \setcounter{conjecture}{0}
-  \setcounter{proposition}{0}
-  \setcounter{lemma}{0}
-  \setcounter{axiom}{0}
-  \setcounter{definition}{0}
-  \setcounter{remark}{0}
-  \setcounter{example}{0}
-  \setcounter{notation}{0}
+  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
+    footnote,
+    section,
+    figure,
+    table,
+    equation
+  }
+  \clist_map_inline:Nn \g__nwejm_counters_to_be_reset_clist {
+    \@ifundefined{c@##1}{
+    }{
+      \setcounter{##1}{\c_zero}
+    }
+  }
   \glsresetall
   \selectlanguage{english}
 }
@@ -1185,7 +1181,7 @@
       \bool_gset_true:N \g__nwejm_no_numbered_theorem_bool
       \theoremheaderfont{\normalfont\itshape}
       \theoremseparator{.}
-      \theoremsymbol{\ensuremath{\blacksquare}}
+      \theoremsymbol{\ensuremath{\square}}
     }
   }
 }
@@ -1210,9 +1206,9 @@
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
   }
-  \__nwejm_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  \__nwejm_orig_newtheorem{#1}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#1} }}
   \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-    \__nwejm_orig_newtheorem*{#2__nwejm_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+    \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#1} }}
   }
 }
 \cs_generate_variant:Nn \__nwejm_new_theorem:nnnnn { nVVVV }
@@ -1271,15 +1267,26 @@
   {\l__nwejm_newtheorem_german_title_tl}
   {\l__nwejm_newtheorem_dutch_title_tl}
   \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-    \RenewDocumentEnvironment{#2*}{o}
-    {
-      \IfNoValueTF {##1}
-      { \begin{#2__nwejm_nonumbered} }
-        { \begin{#2__nwejm_nonumbered}[##1] }
-        }{
-        \end{#2__nwejm_nonumbered}
+    \ifcsmacro{#2*}{%
+      \RenewDocumentEnvironment{#2*}{o}
+      {
+        \IfNoValueTF {##1}
+        { \begin{#2__nwejm_nonumbered} }
+          { \begin{#2__nwejm_nonumbered}[##1] }
+          }{
+          \end{#2__nwejm_nonumbered}
+        }
+      }{
+        \NewDocumentEnvironment{#2*}{o}
+        {
+          \IfNoValueTF {##1}
+          { \begin{#2__nwejm_nonumbered} }
+            { \begin{#2__nwejm_nonumbered}[##1] }
+            }{
+            \end{#2__nwejm_nonumbered}
+          }
+        }
       }
-    }
   \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
 }
 \newtheorem{theorem}
@@ -1369,17 +1376,9 @@
     )
   }
   \crefname{#1i}{
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{#1}}
-    }{
       \GetTranslation{#1}
-    }%
   }{%
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    }{
       \GetTranslation{plural-#1}
-    }%
   }
 }
 \NewDocumentEnvironment{hypotheses}{}
@@ -1554,7 +1553,7 @@
      \setcounter{page}{0}
      \pagenumbering{roman}%
      \etocarticlestylenomarks
-    \etocsetlevel{chapter}{10}
+    \etocsetlevel{chapter}{6}
     \tableofcontents
   }
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
