@@ -581,12 +581,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{booktabs}
 %    \end{macrocode}
 %
-% \item Extensions to theorem environments:
-%    \begin{macrocode}
-\RequirePackage[thmmarks]{ntheorem}
-% \RequirePackage{thmtools}
-%    \end{macrocode}
-%
 % \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
 %   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
 %   loads \pkg{amsmath}, hence it's not necessary to load the
@@ -594,6 +588,11 @@ Running "make install" installs the files in the local TeX tree.
 %   otherwise its ×fleqn× option isn't taken into account.}:
 %    \begin{macrocode}
 \RequirePackage{mathtools}
+%    \end{macrocode}
+%
+% \item Extensions to theorem environments:
+%    \begin{macrocode}
+\RequirePackage[thmmarks,amsmath]{ntheorem}
 %    \end{macrocode}
 %
 % \item Support for using RSFS fonts in maths:
@@ -3555,7 +3554,7 @@ Running "make install" installs the files in the local TeX tree.
       \bool_gset_true:N \g_@@_no_numbered_theorem_bool
       \theoremheaderfont{\normalfont\itshape}
       \theoremseparator{.}
-      \theoremsymbol{\ensuremath{\blacksquare}}
+      \theoremsymbol{\ensuremath{\square}}
     }
   }
 }
