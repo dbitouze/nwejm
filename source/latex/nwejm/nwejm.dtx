@@ -3577,9 +3577,9 @@ Running "make install" installs the files in the local TeX tree.
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
   }
-  \_@@_orig_newtheorem{#2}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+  \_@@_orig_newtheorem{#1}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#1} }}
   \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-    \_@@_orig_newtheorem*{#2_@@_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#2} }}
+    \_@@_orig_newtheorem*{#1_@@_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#1} }}
   }
 }
 \cs_generate_variant:Nn \_@@_new_theorem:nnnnn { nVVVV }
