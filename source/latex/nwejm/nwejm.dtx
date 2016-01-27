@@ -3777,17 +3777,9 @@ Running "make install" installs the files in the local TeX tree.
     )
   }
   \crefname{#1i}{
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{#1}}
-    }{
       \GetTranslation{#1}
-    }%
   }{%
-    \ifcurrentbaselanguage{english}{
-      \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    }{
       \GetTranslation{plural-#1}
-    }%
   }
 }
 \NewDocumentEnvironment{hypotheses}{}
