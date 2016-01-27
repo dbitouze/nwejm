@@ -2051,8 +2051,6 @@ Running "make install" installs the files in the local TeX tree.
     \tl_set:Nn \l_@@_crossref_tl {\c_@@_issue_bib_key_tl}
   }
   \tl_set:Nn \l_@@_people_first_last_name_tl {#1}
-  % \tl_show:N \g_@@_article_bib_key_tl
-  % \int_show:N \g_@@_articles_int
   \iow_now:Nx \g_@@_bib_out_iow {%
     @article{
       \c_@@_issue_bib_key_tl -#2- \int_use:c {g_@@_#2_int},
@@ -3648,15 +3646,26 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
   \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-    \RenewDocumentEnvironment{#2*}{o}
-    {
-      \IfNoValueTF {##1}
-      { \begin{#2_@@_nonumbered} }
-        { \begin{#2_@@_nonumbered}[##1] }
-        }{
-        \end{#2_@@_nonumbered}
+    \ifcsmacro{#2*}{%
+      \RenewDocumentEnvironment{#2*}{o}
+      {
+        \IfNoValueTF {##1}
+        { \begin{#2_@@_nonumbered} }
+          { \begin{#2_@@_nonumbered}[##1] }
+          }{
+          \end{#2_@@_nonumbered}
+        }
+      }{
+        \NewDocumentEnvironment{#2*}{o}
+        {
+          \IfNoValueTF {##1}
+          { \begin{#2_@@_nonumbered} }
+            { \begin{#2_@@_nonumbered}[##1] }
+            }{
+            \end{#2_@@_nonumbered}
+          }
+        }
       }
-    }
 %    \end{macrocode}
 %
 % We add to the list of counters we want to be able to easily set to zero the
