@@ -398,32 +398,34 @@ La \nwejmauthorcl{} :
   listés ci-dessous.
 \end{itemize}
 
-\subsection{Constantes universelles}
-
-\begin{docCommand}{E}{}
-  Cette commande affiche le nombre d'Euler : \enquote{$\E$}.
-\end{docCommand}
+\subsection{Constantes universelles et fonctions courantes}
 
 \begin{docCommand}{I}{}
   Cette commande affiche l'unité imaginaire : \enquote{$\I$}.
 \end{docCommand}
 
-\subsection{Fonctions courantes}
-
 \begin{docCommand}{E}{\oarg{argument}}
  Selon que son argument optionnel est utilisé ou pas, cette commande affiche :
   \begin{itemize}
   \item la fonction exponentielle appliquée à l'\meta{argument} ;
-  \item le nombre d'Euler.
+  \item le nombre d'Euler \enquote{$\E$}.
   \end{itemize}
 \end{docCommand}
 
 \begin{bodycode}[listing and text]
 \begin{align}
-  \E[\I\pi+1] & =0 \\
-  \E          & =\sum_{n\geq 0} \frac{1}{n!}
+  \E[\I\pi+1] & = 0 \\
+  \E          & = \sum_{n\geq 0} \frac{1}{n!}
 \end{align}
 \end{bodycode}
+
+\begin{dbremark}{Syntaxes équivalentes pour la fonction exponentielle}{}
+  Il y a équivalence entre les commandes :
+  \begin{itemize}
+  \item |\E[|\meta{argument}|]| qui est fournie par la classe ;
+  \item |\E^{|\meta{argument}|}| qui est plus habituelle.
+\end{itemize}
+\end{dbremark}
 
 \begin{docCommand}{log(*)}{}
   Cette commande affiche, sous sa forme :
