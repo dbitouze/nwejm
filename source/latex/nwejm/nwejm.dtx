@@ -321,11 +321,37 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+%<*class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\bool_new:N \g_@@_language_specified_bool
+\cs_new_protected:Nn \_@@_language:n
+{
+  \bool_gset_true:N \g_@@_language_specified_bool%
+  \PassOptionsToPackage{main=#1}{babel}
+  \PassOptionsToPackage{#1}{varioref}
+  \AtBeginDocument{
+    \LoadDictionaryFor{#1}{nwejm}
+  }
+  \AtEndPreamble{%
+    \FCloadlang{#1}
+  }
+  \AfterEndPreamble{%
+    \selectlanguage{#1}
+  }
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 %<*class|class-article>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\tl_new:N \g_@@_language_tl
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -349,21 +375,24 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
   english  .code:n = {
-    \tl_gset:Nn \g_@@_language_tl {english}
+    \_@@_language:n {english}
   },%
   french   .code:n = {
-    \tl_gset:Nn \g_@@_language_tl {french}
+    \_@@_language:n {french}
   },%
   german   .code:n = {
-    \tl_gset:Nn \g_@@_language_tl {ngerman}
+    \_@@_language:n {ngerman}
   },%
   ngerman  .code:n = {
-    \tl_gset:Nn \g_@@_language_tl {ngerman}
+    \_@@_language:n {ngerman}
   },%
   dutch    .code:n = {
-    \tl_gset:Nn \g_@@_language_tl {dutch}
+    \_@@_language:n {dutch}
   },%
-  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} },
+  % unknown .code:n = {
+  %   \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption}
+  %   \tl_gset:Nn \g_@@_language_tl {english}
+  % },
 %    \end{macrocode}
 %
 % An option to prevent automatic local table of contents at the end of
@@ -409,41 +438,10 @@ Running "make install" installs the files in the local TeX tree.
 %<*class-article>
 %    \end{macrocode}
 %
-% We now deal with the language option passed at ×\documentclass× level.
+% We now treat the case where no language option is passed at ×\documentclass×
+% level (×english× is the default).
 %    \begin{macrocode}
-\cs_new_protected:Nn \_@@_language:n
-{
-  \PassOptionsToPackage{main=#1}{babel}
-  \PassOptionsToPackage{#1}{varioref}
-  \AtBeginDocument{
-    \LoadDictionaryFor{#1}{nwejm}
-  }
-  \AtEndPreamble{%
-    \FCloadlang{#1}
-  }
-  \AfterEndPreamble{%
-    \selectlanguage{#1}
-  }
-}
-\str_case_x:nnF
-{ \g_@@_language_tl }
-{
-  { english }   {
-    \_@@_language:n {english}
-  }
-  { french }   {
-    \_@@_language:n {french}
-  }
-  { ngerman }   {
-    \_@@_language:n {ngerman}
-  }
-  { german }   {
-    \_@@_language:n {ngerman}
-  }
-  { dutch }   {
-    \_@@_language:n {dutch}
-  }
-}{
+\bool_if:NF {\g_@@_language_specified_bool} {
   \_@@_language:n {english}
 }
 %    \end{macrocode}
@@ -3736,17 +3734,14 @@ Running "make install" installs the files in the local TeX tree.
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    % \ifcurrentbaselanguage{english}{
-    %   \tl_mixed_case:n { \GetTranslation{#1} }
-    % }{
-      \GetTranslation{#1}
-    % }%
+    \GetTranslation{#1}
   }{%
-    % \ifcurrentbaselanguage{english}{
-    %   \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    % }{
-      \GetTranslation{plural-#1}
-    % }%
+    \GetTranslation{plural-#1}
+  }
+  \Crefname{#1}{
+    \tl_mixed_case:n{ \protect\GetTranslation{#1} }
+  }{%
+    \tl_mixed_case:n{ \protect\GetTranslation{plural-#1} }
   }
 }
 %    \end{macrocode}
