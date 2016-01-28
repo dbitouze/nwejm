@@ -32,7 +32,7 @@
 \ProvideDictTranslation{plural-assertion}{assertions}
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
-\ProvideDictTranslation{plural-acknowledgment}{Acknowledgments}
+\ProvideDictTranslation{Acknowledgments}{Acknowledgments}
 \ProvideDictTranslation{idest}{id~est}
 \ProvideDictTranslation{ie}{i.e}
 \ProvideDictTranslation{Idest}{Id~est}

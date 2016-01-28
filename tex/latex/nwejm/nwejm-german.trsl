@@ -10,7 +10,7 @@
 \ProvideDictTranslation{notation}{Bezeichnung}
 \ProvideDictTranslation{proposition}{Proposition}
 \ProvideDictTranslation{proof}{Beweis}
-\ProvideDictTranslation{plural-theorem}{S\"{a}tze}
+\ProvideDictTranslation{plural-theorem}{Sätze}
 \ProvideDictTranslation{plural-corollary}{Korollare}
 \ProvideDictTranslation{plural-conjecture}{Vermutungen}
 \ProvideDictTranslation{plural-remark}{Bemerkungen}
@@ -22,7 +22,7 @@
 \ProvideDictTranslation{plural-proposition}{Propositionen}
 \ProvideDictTranslation{proofs}{Beweise}
 \ProvideDictTranslation{volume-abbreviated}{Bd}
-\ProvideDictTranslation{plural-keyword}{Schl\"{u}sselbegriffe}
+\ProvideDictTranslation{plural-keyword}{Schlüsselbegriffe}
 \ProvideDictTranslation{received}{empfangen}
 \ProvideDictTranslation{accepted}{angenommen}
 \ProvideDictTranslation{online}{online}
@@ -32,7 +32,7 @@
 \ProvideDictTranslation{plural-assertion}{Behauptungen}
 \ProvideDictTranslation{century}{Jhdt}
 \ProvideDictTranslation{before-christ}{v.~Chr}
-\ProvideDictTranslation{plural-acknowledgment}{Best\"{a}tigungen}
+\ProvideDictTranslation{Acknowledgments}{Bestätigungen}
 \ProvideDictTranslation{idest}{das~heißt}
 \ProvideDictTranslation{ie}{d.~h}
 \ProvideDictTranslation{Idest}{Das~heißt}

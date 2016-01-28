@@ -76,7 +76,6 @@
   },%
 }%
 \bool_gset_true:N \g__nwejm_no_inside_backcover_bool
-\tl_new:N \g__nwejm_language_tl
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -1956,17 +1955,14 @@
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    % \ifcurrentbaselanguage{english}{
-    %   \tl_mixed_case:n { \GetTranslation{#1} }
-    % }{
-      \GetTranslation{#1}
-    % }%
+    \GetTranslation{#1}
   }{%
-    % \ifcurrentbaselanguage{english}{
-    %   \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    % }{
-      \GetTranslation{plural-#1}
-    % }%
+    \GetTranslation{plural-#1}
+  }
+  \Crefname{#1}{
+    \tl_mixed_case:n{ \protect\GetTranslation{#1} }
+  }{%
+    \tl_mixed_case:n{ \protect\GetTranslation{plural-#1} }
   }
 }
 \clist_set:Nn \l_tmpa_clist {%
@@ -1991,9 +1987,9 @@
     )
   }
   \crefname{#1i}{
-      \GetTranslation{#1}
+    \GetTranslation{#1}
   }{%
-      \GetTranslation{plural-#1}
+    \GetTranslation{plural-#1}
   }
 }
 \NewDocumentEnvironment{hypotheses}{}
@@ -2153,11 +2149,7 @@
   \FloatBarrier%
   \tl_if_empty:NF {\g__nwejm_article_acknowledgments_tl}
   {
-    \ifcurrentbaselanguage{ngerman}{%
-      \section*{\GetTranslation{plural-acknowledgment}}
-    }{
-      \section*{\tl_mixed_case:n{\GetTranslation{plural-acknowledgment}}}
-    }
+    \section*{\GetTranslation{Acknowledgments}}
     \g__nwejm_article_acknowledgments_tl
     \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }

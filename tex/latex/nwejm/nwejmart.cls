@@ -46,45 +46,10 @@
   this~ article!}%
 \msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
   `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
-\tl_new:N \g__nwejm_language_tl
-\keys_define:nn { nwejm }
-{
-  10pt .code:n = {%
-    \PassOptionsToClass{10pt}{book}
-  },%
-  11pt .code:n = {%
-    \PassOptionsToClass{11pt}{book}
-  },%
-  12pt .code:n = {%
-    \PassOptionsToClass{12pt}{book}
-  },%
-  english  .code:n = {
-    \tl_gset:Nn \g__nwejm_language_tl {english}
-  },%
-  french   .code:n = {
-    \tl_gset:Nn \g__nwejm_language_tl {french}
-  },%
-  german   .code:n = {
-    \tl_gset:Nn \g__nwejm_language_tl {ngerman}
-  },%
-  ngerman  .code:n = {
-    \tl_gset:Nn \g__nwejm_language_tl {ngerman}
-  },%
-  dutch    .code:n = {
-    \tl_gset:Nn \g__nwejm_language_tl {dutch}
-  },%
-  unknown .code:n = { \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption} },
-  nolocaltoc .code:n = {
-    \bool_gset_true:N \g__nwejm_nolocaltoc_bool
-  }%
-}%
-\ProcessKeysOptions { nwejm }
-\LoadClass { book }
-\PassOptionsToPackage{export}{adjustbox}%
-\PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+\bool_new:N \g__nwejm_language_specified_bool
 \cs_new_protected:Nn \__nwejm_language:n
 {
+  \bool_gset_true:N \g__nwejm_language_specified_bool%
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
   \AtBeginDocument{
@@ -97,25 +62,46 @@
     \selectlanguage{#1}
   }
 }
-\str_case_x:nnF
-{ \g__nwejm_language_tl }
+\keys_define:nn { nwejm }
 {
-  { english }   {
+  10pt .code:n = {%
+    \PassOptionsToClass{10pt}{book}
+  },%
+  11pt .code:n = {%
+    \PassOptionsToClass{11pt}{book}
+  },%
+  12pt .code:n = {%
+    \PassOptionsToClass{12pt}{book}
+  },%
+  english  .code:n = {
     \__nwejm_language:n {english}
-  }
-  { french }   {
+  },%
+  french   .code:n = {
     \__nwejm_language:n {french}
-  }
-  { ngerman }   {
+  },%
+  german   .code:n = {
     \__nwejm_language:n {ngerman}
-  }
-  { german }   {
+  },%
+  ngerman  .code:n = {
     \__nwejm_language:n {ngerman}
-  }
-  { dutch }   {
+  },%
+  dutch    .code:n = {
     \__nwejm_language:n {dutch}
-  }
-}{
+  },%
+  % unknown .code:n = {
+  %   \msg_warning:nnx{nwejmart}{Unknown~language}{\CurrentOption}
+  %   \tl_gset:Nn \g__nwejm_language_tl {english}
+  % },
+  nolocaltoc .code:n = {
+    \bool_gset_true:N \g__nwejm_nolocaltoc_bool
+  }%
+}%
+\ProcessKeysOptions { nwejm }
+\LoadClass { book }
+\PassOptionsToPackage{export}{adjustbox}%
+\PassOptionsToPackage{fleqn}{mathtools}%
+\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+\bool_if:NF {\g__nwejm_language_specified_bool} {
   \__nwejm_language:n {english}
 }
 \RequirePackage[l2tabu,orthodox]{nag}
@@ -1342,17 +1328,14 @@
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    % \ifcurrentbaselanguage{english}{
-    %   \tl_mixed_case:n { \GetTranslation{#1} }
-    % }{
-      \GetTranslation{#1}
-    % }%
+    \GetTranslation{#1}
   }{%
-    % \ifcurrentbaselanguage{english}{
-    %   \tl_mixed_case:n {\GetTranslation{plural-#1}}
-    % }{
-      \GetTranslation{plural-#1}
-    % }%
+    \GetTranslation{plural-#1}
+  }
+  \Crefname{#1}{
+    \tl_mixed_case:n{ \protect\GetTranslation{#1} }
+  }{%
+    \tl_mixed_case:n{ \protect\GetTranslation{plural-#1} }
   }
 }
 \clist_set:Nn \l_tmpa_clist {%
@@ -1377,9 +1360,9 @@
     )
   }
   \crefname{#1i}{
-      \GetTranslation{#1}
+    \GetTranslation{#1}
   }{%
-      \GetTranslation{plural-#1}
+    \GetTranslation{plural-#1}
   }
 }
 \NewDocumentEnvironment{hypotheses}{}
@@ -1538,11 +1521,7 @@
 \RenewDocumentCommand \printbibliography { O{} } {
   \tl_if_empty:NF {\g__nwejm_article_acknowledgments_tl}
   {
-    \ifcurrentbaselanguage{ngerman}{%
-      \section*{\GetTranslation{plural-acknowledgment}}
-    }{
-      \section*{\tl_mixed_case:n{\GetTranslation{plural-acknowledgment}}}
-    }
+    \section*{\GetTranslation{Acknowledgments}}
     \g__nwejm_article_acknowledgments_tl
     \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
