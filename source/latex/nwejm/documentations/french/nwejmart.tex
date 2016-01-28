@@ -557,6 +557,25 @@ La \nwejmauthorcl{} :
   \enquote{$\curl$}. Elle a pour alias \docAuxCommand{rot}.
 \end{docCommand}
 
+\begin{dbwarning}{Opérateurs ne préfixant pas une application}{}
+  Les commandes correspondant à ces opérateurs sont à utiliser :
+  \begin{description}
+  \item[normalement] si ceux-ci préfixent une application ;
+  \item[entre accolades] sinon\footnote{Notamment s'ils sont employés au sein
+    d'opérations binaires.}.
+  \end{description}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]{text}}}]
+\begin{align}
+  \grad F          & = \grad G \quad\text{(bon)}     \\
+  \grad \cdot F    & = \grad \cdot G \quad\text{(mauvais)} \\
+  {\grad} \cdot F  & = {\grad} \cdot G \quad\text{(bon)}     \\
+  \grad \wedge F   & = \grad \wedge G \quad\text{(mauvais)} \\
+  {\grad} \wedge F & = {\grad} \wedge G \quad\text{(bon)}
+\end{align}
+\end{bodycode}
+\end{dbwarning}
+
+
 \subsubsection{Autre opérateurs}
 \label{sec:autre-operateurs}
 
