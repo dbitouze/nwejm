@@ -4012,17 +4012,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \tl_if_empty:NF {\g_@@_article_acknowledgments_tl}
   {
-%    \end{macrocode}
-% For the German case, ×\tl_mixed_case:n× cannot be applied because of
-% a diacritic in the \enquote{plural-acknowledgment} translation. Here, it is
-% okay because the German names are already mixed case but this is not safe:
-% XXX-TODO!
-%    \begin{macrocode}
-    \ifcurrentbaselanguage{ngerman}{%
-      \section*{\GetTranslation{plural-acknowledgment}}
-    }{
-      \section*{\tl_mixed_case:n{\GetTranslation{plural-acknowledgment}}}
-    }
+    \section*{\GetTranslation{Acknowledgments}}
     \g_@@_article_acknowledgments_tl
     \tl_gclear:N \g_@@_article_acknowledgments_tl
   }
@@ -4586,7 +4576,7 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
 %
-\ProvideDictTranslation{plural-acknowledgment}{Acknowledgments}
+\ProvideDictTranslation{Acknowledgments}{Acknowledgments}
 %
 \ProvideDictTranslation{idest}{id~est}
 \ProvideDictTranslation{ie}{i.e}
@@ -4645,7 +4635,7 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{century}{si\`{e}cle}
 \ProvideDictTranslation{before-christ}{av.~J.-C}
 %
-\ProvideDictTranslation{plural-acknowledgment}{Remerciements}
+\ProvideDictTranslation{Acknowledgments}{Remerciements}
 %
 \ProvideDictTranslation{idest}{c'est-\`{a}-dire}
 \ProvideDictTranslation{ie}{c.-\`{a}-d}
@@ -4704,7 +4694,7 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{century}{Jhdt}
 \ProvideDictTranslation{before-christ}{v.~Chr}
 %
-\ProvideDictTranslation{plural-acknowledgment}{Best\"{a}tigungen}
+\ProvideDictTranslation{Acknowledgments}{Bestätigungen}
 %
 \ProvideDictTranslation{idest}{das~heißt}
 \ProvideDictTranslation{ie}{d.~h}
@@ -4763,7 +4753,7 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{century}{eeuw}
 \ProvideDictTranslation{before-christ}{v.Chr}
 %
-\ProvideDictTranslation{plural-acknowledgment}{Dankwoord}
+\ProvideDictTranslation{Acknowledgments}{Dankwoord}
 %
 \ProvideDictTranslation{idest}{dat~wil~zeggen}
 \ProvideDictTranslation{ie}{d.w.z}
