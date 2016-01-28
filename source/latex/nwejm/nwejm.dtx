@@ -400,7 +400,15 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   nolocaltoc .code:n = {
     \bool_gset_true:N \g_@@_nolocaltoc_bool
-  }%
+  },%
+  gradient .choice:,
+  gradient / nabla .code:n = {\bool_gset_true:N \g_@@_gradient_nabla_bool},
+  gradient / grad .code:n = {\bool_gset_false:N \g_@@_gradient_nabla_bool},
+  gradient / unknown .code:n =
+  \msg_error:nnxxx { nwejmart } { Unknown~choice }
+  { gradient } % Name of choice key
+  { nabla~or~grad } % Valid choices
+  { \exp_not:n {#1} } % Invalid choice given
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3876,6 +3884,45 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% \subsection{Miscellaneous constants}
+%
+% We define here the constants $\exp(1)$ (and the function which derives from
+% it) and the complex number $i$/
+%    \begin{macrocode}
+\NewDocumentCommand \E { O{} } {
+  \ensuremath{
+    \mathsf{e}
+    \tl_if_empty:nF {#1} {^{#1}}
+  }
+}
+\NewDocumentCommand \I { } {
+  \ensuremath{\mathsf{i}}
+}
+%    \end{macrocode}
+%
+% \subsection{Miscellaneous operators}
+%
+%    \begin{macrocode}
+\bool_if:NTF \g_@@_gradient_nabla_bool {
+  \DeclareMathOperator{\grad}{\nabla}
+}{
+  \DeclareMathOperator{\grad}{grad}
+}
+\DeclareMathOperator{\Div}{div}
+\ifcurrentbaselanguage {english}{
+  \DeclareMathOperator{\curl}{curl}
+  \DeclareMathOperator{\rot}{curl}
+}{
+  \DeclareMathOperator{\curl}{rot}
+  \DeclareMathOperator{\rot}{rot}
+}%
+\ifcurrentbaselanguage {ngerman}{
+  \DeclareMathOperator{\supp}{Tr}
+}{
+  \DeclareMathOperator{\supp}{supp}
+}%
+%    \end{macrocode}
+%
 % \subsection{Various math utilities}
 %
 %    \begin{macrocode}
@@ -3893,6 +3940,11 @@ Running "make install" installs the files in the local TeX tree.
 \RenewDocumentCommand \geq {} {%
   \ifcurrentbaselanguage {french}{\geqslant}{\_@@_orig_geq}%
 }
+%    \end{macrocode}
+%
+% \subsection{Big sets}
+%
+%    \begin{macrocode}
 \NewDocumentCommand \N {} {\mathbb{N}}
 \NewDocumentCommand \Z {} {\mathbb{Z}}
 \NewDocumentCommand \D {} {\mathbb{D}}
