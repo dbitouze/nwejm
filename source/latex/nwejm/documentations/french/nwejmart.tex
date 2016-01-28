@@ -398,40 +398,80 @@ La \nwejmauthorcl{} :
   listés ci-dessous.
 \end{itemize}
 
+\subsection{Constantes universelles}
+
+\begin{docCommand}{E}{}
+  Cette commande affiche le nombre d'Euler : \enquote{$\E$}.
+\end{docCommand}
+
+\begin{docCommand}{I}{}
+  Cette commande affiche l'unité imaginaire : \enquote{$\I$}.
+\end{docCommand}
+
+\subsection{Fonctions courantes}
+
+\begin{docCommand}{E}{\oarg{argument}}
+ Selon que son argument optionnel est utilisé ou pas, cette commande affiche :
+  \begin{itemize}
+  \item la fonction exponentielle appliquée à l'\meta{argument} ;
+  \item le nombre d'Euler.
+  \end{itemize}
+\end{docCommand}
+
+\begin{bodycode}[listing and text]
+\begin{align}
+  \E[\I\pi+1] & =0 \\
+  \E          & =\sum_{n\geq 0} \frac{1}{n!}
+\end{align}
+\end{bodycode}
+
+\begin{docCommand}{log(*)}{}
+  Cette commande affiche, sous sa forme :
+  \begin{description}
+  \item[\emph{non} étoilée :] \enquote{$\log$} ;
+  \item[étoilée :] \enquote{$\log*$}.
+  \end{description}
+\end{docCommand}
+
+\begin{docCommand}{lg(*)}{}
+  Cette commande affiche, sous sa forme :
+  \begin{description}
+  \item[\emph{non} étoilée :] \enquote{$\lg$} ;
+  \item[étoilée :] \enquote{$\lg*$}.
+  \end{description}
+\end{docCommand}
+
 \subsection{Ensembles courants}
 
 \begin{docCommand}{N}{}
   Cette commande affiche l'ensemble des nombres entiers positifs :
-  \enquote{$\mathbb{N}$}.
+  \enquote{$\N$}.
 \end{docCommand}
 
 \begin{docCommand}{Z}{}
   Cette commande affiche l'ensemble des nombres entiers relatifs :
-  \enquote{$\mathbb{Z}$}.
+  \enquote{$\Z$}.
 \end{docCommand}
 
 \begin{docCommand}{D}{}
-  Cette commande affiche l'ensemble des nombres décimaux :
-  \enquote{$\mathbb{D}$}.
+  Cette commande affiche l'ensemble des nombres décimaux : \enquote{$\D$}.
 \end{docCommand}
 
 \begin{docCommand}{Q}{}
-  Cette commande affiche l'ensemble des nombres rationnels :
-  \enquote{$\mathbb{Q}$}.
+  Cette commande affiche l'ensemble des nombres rationnels : \enquote{$\Q$}.
 \end{docCommand}
 
 \begin{docCommand}{R}{}
-  Cette commande affiche l'ensemble des nombres réels : \enquote{$\mathbb{R}$}.
+  Cette commande affiche l'ensemble des nombres réels : \enquote{$\R$}.
 \end{docCommand}
 
 \begin{docCommand}{C}{}
-  Cette commande affiche l'ensemble des nombres complexes :
-  \enquote{$\mathbb{C}$}.
+  Cette commande affiche l'ensemble des nombres complexes : \enquote{$\C$}.
 \end{docCommand}
 
 \begin{docCommand}{K}{}
   Cette commande peut être utilisée pour dénoter un corps quelconque. Elle
-  affiche \enquote{$\mathbb{K}$}.
+  affiche \enquote{$\K$}.
 \end{docCommand}
 
 \subsection[Fonctions trigonométriques circulaires et hyperboliques]{Fonctions
@@ -474,8 +514,7 @@ La \nwejmauthorcl{} :
 
 \begin{docCommand}{tanh}{}
   Cette commande affiche la tangente hyperbolique : \enquote{$\tanh$}.
-  \begin{dbremark}{Pas de commande \protect\lstinline+\\th+\ pour la tangente
-      hyperbolique}{}
+  \begin{dbremark}{Pas de commande \protect\docAuxCommand{th} pour la tangente hyperbolique}{}
     La commande |\th| est déjà définie dans \LaTeX{} et ne peut donc pas être
     utilisée pour la tangente hyperbolique.
   \end{dbremark}
@@ -496,6 +535,36 @@ La \nwejmauthorcl{} :
   \enquote{$\arctanh$}. Elle a pour alias \docAuxCommand{Argth}.
 \end{docCommand}
 
+\subsection{Opérateurs courants}
+
+\subsubsection{Analyse vectorielle}
+\label{sec:analyse-vectorielle}
+
+\begin{docCommand}{grad}{}
+  Cette commande affiche le gradient : \enquote{$\grad$}.
+\end{docCommand}
+
+\begin{docCommand}{Div}{}
+  Cette commande affiche la divergence : \enquote{$\Div$}.
+  \begin{dbremark}{Pas de commande \protect\docAuxCommand{div} pour la divergence}{}
+    La commande |\div| est déjà définie dans \LaTeX{} et ne peut donc pas être
+    utilisée pour la divergence.
+  \end{dbremark}
+\end{docCommand}
+
+\begin{docCommand}{curl}{}
+  Cette commande affiche le rotationnel :
+  \enquote{$\curl$}. Elle a pour alias \docAuxCommand{rot}.
+\end{docCommand}
+
+\subsubsection{Autre opérateurs}
+\label{sec:autre-operateurs}
+
+\begin{docCommand}{supp}{}
+  Cette commande affiche le support (d'une fonction, d'une mesure, etc.) :
+  \enquote{$\supp$}.
+\end{docCommand}
+
 \subsection{Divers}
 
 \begin{docCommand}{set}{\marg{définition}\oarg{caractérisation}}
@@ -510,22 +579,6 @@ La \nwejmauthorcl{} :
   \Q & = \set{\frac{p}{q}}[p\in\Z,\ q\in\N^*]
 \end{align}
 \end{bodycode}
-\end{docCommand}
-
-\begin{docCommand}{log(*)}{}
-  Cette commande affiche, sous sa forme :
-  \begin{description}
-  \item[\emph{non} étoilée :] \enquote{$\log$} ;
-  \item[étoilée :] \enquote{$\log*$}.
-  \end{description}
-\end{docCommand}
-
-\begin{docCommand}{lg(*)}{}
-  Cette commande affiche, sous sa forme :
-  \begin{description}
-  \item[\emph{non} étoilée :] \enquote{$\lg$} ;
-  \item[étoilée :] \enquote{$\lg*$}.
-  \end{description}
 \end{docCommand}
 
 \begin{dbremark}{Commandes propres au français (bis)}{}
