@@ -2077,6 +2077,33 @@
     \ln
   }
 }
+\NewDocumentCommand \E { O{} } {
+  \ensuremath{
+    \mathsf{e}
+    \tl_if_empty:nF {#1} {^{#1}}
+  }
+}
+\NewDocumentCommand \I { } {
+  \ensuremath{\mathsf{i}}
+}
+\bool_if:NTF \g__nwejm_gradient_nabla_bool {
+  \DeclareMathOperator{\grad}{\nabla}
+}{
+  \DeclareMathOperator{\grad}{grad}
+}
+\DeclareMathOperator{\Div}{div}
+\ifcurrentbaselanguage {english}{
+  \DeclareMathOperator{\curl}{curl}
+  \DeclareMathOperator{\rot}{curl}
+}{
+  \DeclareMathOperator{\curl}{rot}
+  \DeclareMathOperator{\rot}{rot}
+}%
+\ifcurrentbaselanguage {ngerman}{
+  \DeclareMathOperator{\supp}{Tr}
+}{
+  \DeclareMathOperator{\supp}{supp}
+}%
 \cs_set_eq:NN \__nwejm_orig_leq \leq
 \cs_set_eq:NN \__nwejm_orig_geq \geq
 \RenewDocumentCommand \le {} {%

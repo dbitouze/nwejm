@@ -94,7 +94,15 @@
   % },
   nolocaltoc .code:n = {
     \bool_gset_true:N \g__nwejm_nolocaltoc_bool
-  }%
+  },%
+  gradient .choice:,
+  gradient / nabla .code:n = {\bool_gset_true:N \g__nwejm_gradient_nabla_bool},
+  gradient / grad .code:n = {\bool_gset_false:N \g__nwejm_gradient_nabla_bool},
+  gradient / unknown .code:n =
+  \msg_error:nnxxx { nwejmart } { Unknown~choice }
+  { gradient } % Name of choice key
+  { nabla~or~grad } % Valid choices
+  { \exp_not:n {#1} } % Invalid choice given
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
@@ -1450,6 +1458,33 @@
     \ln
   }
 }
+\NewDocumentCommand \E { O{} } {
+  \ensuremath{
+    \mathsf{e}
+    \tl_if_empty:nF {#1} {^{#1}}
+  }
+}
+\NewDocumentCommand \I { } {
+  \ensuremath{\mathsf{i}}
+}
+\bool_if:NTF \g__nwejm_gradient_nabla_bool {
+  \DeclareMathOperator{\grad}{\nabla}
+}{
+  \DeclareMathOperator{\grad}{grad}
+}
+\DeclareMathOperator{\Div}{div}
+\ifcurrentbaselanguage {english}{
+  \DeclareMathOperator{\curl}{curl}
+  \DeclareMathOperator{\rot}{curl}
+}{
+  \DeclareMathOperator{\curl}{rot}
+  \DeclareMathOperator{\rot}{rot}
+}%
+\ifcurrentbaselanguage {ngerman}{
+  \DeclareMathOperator{\supp}{Tr}
+}{
+  \DeclareMathOperator{\supp}{supp}
+}%
 \cs_set_eq:NN \__nwejm_orig_leq \leq
 \cs_set_eq:NN \__nwejm_orig_geq \geq
 \RenewDocumentCommand \le {} {%
