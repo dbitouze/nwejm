@@ -3996,18 +3996,22 @@ Running "make install" installs the files in the local TeX tree.
   \DeclareMathOperator{\grad}{grad}
 }
 \DeclareMathOperator{\Div}{div}
-\ifcurrentbaselanguage {english}{
-  \DeclareMathOperator{\curl}{curl}
-  \DeclareMathOperator{\rot}{curl}
-}{
-  \DeclareMathOperator{\curl}{rot}
-  \DeclareMathOperator{\rot}{rot}
-}%
-\ifcurrentbaselanguage {ngerman}{
-  \DeclareMathOperator{\supp}{Tr}
-}{
-  \DeclareMathOperator{\supp}{supp}
-}%
+\NewDocumentCommand \curl {} {%
+  \ifcurrentbaselanguage {english}{
+    \operatorname{curl}
+  }{
+    \operatorname{rot}
+  }%
+    \peek_after:Nw \@@_opx_check:
+}
+\NewDocumentCommand \supp {} {%
+  \ifcurrentbaselanguage {ngerman}{
+    \operatorname{Tr}
+  }{
+    \operatorname{supp}
+  }%
+    \peek_after:Nw \@@_opx_check:
+}
 %    \end{macrocode}
 %
 % \subsection{Various math utilities}
