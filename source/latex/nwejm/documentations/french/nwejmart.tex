@@ -537,10 +537,9 @@ La \nwejmauthorcl{} :
   \enquote{$\arctanh$}. Elle a pour alias \docAuxCommand{Argth}.
 \end{docCommand}
 
-\subsection{Opérateurs courants}
+\subsection{Opérateurs}
 
-\subsubsection{Analyse vectorielle}
-\label{sec:analyse-vectorielle}
+\subsubsection{Opérateurs prédéfinis}
 
 \begin{docCommand}{grad}{}
   Cette commande affiche le gradient : \enquote{$\grad$}.
@@ -559,32 +558,58 @@ La \nwejmauthorcl{} :
   \enquote{$\curl$}. Elle a pour alias \docAuxCommand{rot}.
 \end{docCommand}
 
-\begin{dbwarning}{Opérateurs ne préfixant pas une application}{}
-  Les commandes correspondant à ces opérateurs sont à utiliser :
-  \begin{description}
-  \item[normalement] si ceux-ci préfixent une application ;
-  \item[entre accolades] sinon\footnote{Notamment s'ils sont employés au sein
-    d'opérations binaires.}.
-  \end{description}
-\begin{bodycode}[listing and text,listing options={deletekeywords={[2]{text}}}]
-\begin{align}
-  \grad F          & = \grad G \quad\text{(bon)}     \\
-  \grad \cdot F    & = \grad \cdot G \quad\text{(mauvais)} \\
-  {\grad} \cdot F  & = {\grad} \cdot G \quad\text{(bon)}     \\
-  \grad \wedge F   & = \grad \wedge G \quad\text{(mauvais)} \\
-  {\grad} \wedge F & = {\grad} \wedge G \quad\text{(bon)}
-\end{align}
-\end{bodycode}
-\end{dbwarning}
-
-
-\subsubsection{Autre opérateurs}
-\label{sec:autre-operateurs}
-
 \begin{docCommand}{supp}{}
   Cette commande affiche le support (d'une fonction, d'une mesure, etc.) :
   \enquote{$\supp$}.
 \end{docCommand}
+
+\subsubsection{Opérateurs à définir}
+
+Il est possible de définir de nouveaux noms d'opérateurs au moyen de la commande
+usuelle \refCom{DeclareMathOperator}.
+
+\begin{docCommand}{DeclareMathOperator}{\marg{commande}\marg{nom}}
+  Cette commande définit la \meta{commande} qui affiche l'opérateur nommé
+  \meta{nom}.
+\end{docCommand}
+
+\begin{preamblecode}
+\DeclareMathOperator{\cat}{Cat}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[1]{example}},deletekeywords={[2]{all}}}]
+A standard example is $\cat$, the $2$-category of all (small)
+categories.
+\end{bodycode}
+
+\subsubsection{(Usage avancé) Précautions en cas d'opérations binaires non
+  courantes}
+
+Si, dans des opérations binaires, un opérateur\footnote{Prédéfini ou défini au
+  moyen de la commande \protect\refCom{DeclareMathOperator}.} est suivi par un
+opérateur binaire courant de \LaTeX{} (\docAuxCommand{circ},
+\docAuxCommand{cdot}, \docAuxCommand{wedge}, etc.), les espaces horizontales les
+séparant seront correctes.
+
+En revanche, si l'opérateur binaire impliqué n'est pas courant, il convient de
+le déclarer au moyen de la commande \refCom{BinaryOperators}.
+
+\begin{docCommand}{BinaryOperators}{\marg{opérateurs binaires}}
+  Cette commande assure que les \meta{opérateurs binaires}\footnote{Séparés par
+    des virgules.} seront, dans des opérations binaires, correctement espacés
+  des opérateurs les précédant.
+\end{docCommand}
+
+\begin{preamblecode}
+\newcommand{\mybinop}{\mathbin{@}}
+\end{preamblecode}
+\begin{bodycode}[listing and text]
+\begin{tabular}{l@{ : }l}
+  $\grad \cdot F$    & bon     \\
+  $\grad \mybinop F$ & mauvais \\
+  \BinaryOperators{\mybinop}%
+  $\grad \mybinop F$ & bon (grâce à \verb|\BinaryOperators{\mybinop}|)
+\end{tabular}
+\end{bodycode}
 
 \subsection{Divers}
 
