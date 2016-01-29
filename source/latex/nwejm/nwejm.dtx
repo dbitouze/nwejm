@@ -3800,6 +3800,93 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% We borrow the following code provided by Enrico Gregorio (see
+% \url{http://tex.stackexchange.com/q/289913/18401}) in order to improve the
+% operators defined with ×\DeclareMathOperator×.
+%    \begin{macrocode}
+\RenewDocumentCommand{\DeclareMathOperator}{mm}
+{
+  \NewDocumentCommand{#1}{}
+  {
+    \operatorname{#2}
+    \peek_after:Nw \@@_opx_check:
+  }
+}
+\NewDocumentCommand{\BinaryOperators}{m}
+{
+  \clist_gput_right:Nn \g_@@_opx_binary_clist { #1 }
+}
+\clist_new:N \g_@@_opx_binary_clist
+\cs_new_protected:Nn \@@_opx_check:
+{
+  \clist_map_inline:Nn \g_@@_opx_binary_clist
+  {
+    \token_if_eq_meaning:NNT \l_peek_token ##1 { \clist_map_break:n { {\!} } }
+  }
+}
+\BinaryOperators{%
+  \amalg,%
+  \ast,%
+  \bigcirc,%
+  \bigtriangledown,%
+  \bigtriangleup,%
+  \bullet,%
+  \cap,%
+  \cdot,%
+  \circ,%
+  \cup,%
+  \dagger,%
+  \ddagger,%
+  \diamond,%
+  \div,%
+  \lhd,%
+  \mp,%
+  \odot,%
+  \ominus,%
+  \oplus,%
+  \oslash,%
+  \otimes,%
+  \pm,%
+  \rhd,%
+  \setminus,%
+  \sqcap,%
+  \sqcup,%
+  \star,%
+  \times,%
+  \triangleleft,%
+  \triangleright,%
+  \unlhd,%
+  \unrhd,%
+  \uplus,%
+  \vee,%
+  \wedge,%
+  \wr,%
+  \barwedge,%
+  \boxdot,%
+  \boxminus,%
+  \boxplus,%
+  \boxtimes,%
+  \Cap,%
+  \centerdot,%
+  \circledast,%
+  \circledcirc,%
+  \circleddash,%
+  \Cup,%
+  \curlyvee,%
+  \curlywedge,%
+  \divideontimes,%
+  \dotplus,%
+  \doublebarwedge,%
+  \intercal,%
+  \leftthreetimes,%
+  \ltimes,%
+  \rightthreetimes,%
+  \rtimes,%
+  \smallsetminus,%
+  \veebar%
+}
+%    \end{macrocode}
+%
 % \subsection{(Reciprocal) Trigonometric and hyperbolic functions}
 %
 % Reciprocal trigonometric functions, even written with usual "\arccos",
