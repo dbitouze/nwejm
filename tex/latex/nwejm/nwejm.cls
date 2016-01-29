@@ -2004,6 +2004,87 @@
   }{
   \end{assertion}
 }
+\RenewDocumentCommand{\DeclareMathOperator}{mm}
+{
+  \NewDocumentCommand{#1}{}
+  {
+    \operatorname{#2}
+    \peek_after:Nw \__nwejm_opx_check:
+  }
+}
+\NewDocumentCommand{\BinaryOperators}{m}
+{
+  \clist_gput_right:Nn \g__nwejm_opx_binary_clist { #1 }
+}
+\clist_new:N \g__nwejm_opx_binary_clist
+\cs_new_protected:Nn \__nwejm_opx_check:
+{
+  \clist_map_inline:Nn \g__nwejm_opx_binary_clist
+  {
+    \token_if_eq_meaning:NNT \l_peek_token ##1 { \clist_map_break:n { {\!} } }
+  }
+}
+\BinaryOperators{%
+  \amalg,%
+  \ast,%
+  \bigcirc,%
+  \bigtriangledown,%
+  \bigtriangleup,%
+  \bullet,%
+  \cap,%
+  \cdot,%
+  \circ,%
+  \cup,%
+  \dagger,%
+  \ddagger,%
+  \diamond,%
+  \div,%
+  \lhd,%
+  \mp,%
+  \odot,%
+  \ominus,%
+  \oplus,%
+  \oslash,%
+  \otimes,%
+  \pm,%
+  \rhd,%
+  \setminus,%
+  \sqcap,%
+  \sqcup,%
+  \star,%
+  \times,%
+  \triangleleft,%
+  \triangleright,%
+  \unlhd,%
+  \unrhd,%
+  \uplus,%
+  \vee,%
+  \wedge,%
+  \wr,%
+  \barwedge,%
+  \boxdot,%
+  \boxminus,%
+  \boxplus,%
+  \boxtimes,%
+  \Cap,%
+  \centerdot,%
+  \circledast,%
+  \circledcirc,%
+  \circleddash,%
+  \Cup,%
+  \curlyvee,%
+  \curlywedge,%
+  \divideontimes,%
+  \dotplus,%
+  \doublebarwedge,%
+  \intercal,%
+  \leftthreetimes,%
+  \ltimes,%
+  \rightthreetimes,%
+  \rtimes,%
+  \smallsetminus,%
+  \veebar%
+}
 \DeclareMathOperator{\cotan}{cotan}
 \DeclareMathOperator{\Arccos}{Arccos}
 \DeclareMathOperator{\Arcsin}{Arcsin}
@@ -2092,18 +2173,22 @@
   \DeclareMathOperator{\grad}{grad}
 }
 \DeclareMathOperator{\Div}{div}
-\ifcurrentbaselanguage {english}{
-  \DeclareMathOperator{\curl}{curl}
-  \DeclareMathOperator{\rot}{curl}
-}{
-  \DeclareMathOperator{\curl}{rot}
-  \DeclareMathOperator{\rot}{rot}
-}%
-\ifcurrentbaselanguage {ngerman}{
-  \DeclareMathOperator{\supp}{Tr}
-}{
-  \DeclareMathOperator{\supp}{supp}
-}%
+\NewDocumentCommand \curl {} {%
+  \ifcurrentbaselanguage {english}{
+    \operatorname{curl}
+  }{
+    \operatorname{rot}
+  }%
+    \peek_after:Nw \__nwejm_opx_check:
+}
+\NewDocumentCommand \supp {} {%
+  \ifcurrentbaselanguage {ngerman}{
+    \operatorname{Tr}
+  }{
+    \operatorname{supp}
+  }%
+    \peek_after:Nw \__nwejm_opx_check:
+}
 \cs_set_eq:NN \__nwejm_orig_leq \leq
 \cs_set_eq:NN \__nwejm_orig_geq \geq
 \RenewDocumentCommand \le {} {%
