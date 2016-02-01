@@ -4124,6 +4124,40 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Related to \Pkg{biblatex}}
 %
+% The following is borrowed from Joseph Wright
+% (\url|http://tex.stackexchange.com/a/5795/18401|) in order to prevent
+% identical URL and DOI fields to be both displayed.
+%    \begin{macrocode}
+  \renewbibmacro*{doi+eprint+url}{%
+  \iftoggle{bbx:doi}
+    {%
+      \iffieldundef{doi}
+        {}
+        {%
+          \begingroup
+          \edef\URLorDOI{%
+            \detokenize{http://dx.doi.org/}%
+            \thefield{doi}%
+          }%
+          \iffieldequals{url}{\URLorDOI}
+            {\endgroup}
+            {%
+              \endgroup
+              \printfield{doi}%
+            }%
+        }%
+    }
+    {}%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%
+  \newunit\newblock
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}}
+%    \end{macrocode}
+%
 % Necessary setting (otherwise \textquote{REFERENCES} is displayed in both
 % header and footer on the page (and the following ones until the next article)
 % where the bibliography appears).
