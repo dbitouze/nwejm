@@ -401,14 +401,6 @@ Running "make install" installs the files in the local TeX tree.
   nolocaltoc .code:n = {
     \bool_gset_true:N \g_@@_nolocaltoc_bool
   },%
-  gradient .choice:,
-  gradient / nabla .code:n = {\bool_gset_true:N \g_@@_gradient_nabla_bool},
-  gradient / grad .code:n = {\bool_gset_false:N \g_@@_gradient_nabla_bool},
-  gradient / unknown .code:n =
-  \msg_error:nnxxx { nwejmart } { Unknown~choice }
-  { gradient } % Name of choice key
-  { nabla~or~grad } % Valid choices
-  { \exp_not:n {#1} } % Invalid choice given
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1994,6 +1986,20 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 % \end{macro}
 %
+%    \begin{macrocode}
+\keys_define:nn { nwejm/articlesetup }
+{
+  gradient .choice:,
+  gradient / nabla .code:n = {\bool_gset_true:N \g_@@_gradient_nabla_bool},
+  gradient / grad .code:n = {\bool_gset_false:N \g_@@_gradient_nabla_bool},
+  gradient / unknown .code:n =
+  \msg_error:nnxxx { nwejmart } { Unknown~choice }
+  { gradient } % Name of choice key
+  { nabla~or~grad } % Valid choices
+  { \exp_not:n {#1} } % Invalid choice given
+}
+%    \end{macrocode}
+%
 % \section{Miscellaneous token lists}
 %
 % We define some token lists for the long and short forms of the journal.
@@ -2666,6 +2672,17 @@ Running "make install" installs the files in the local TeX tree.
 %<*class|class-article>
 %    \end{macrocode}
 %
+% \subsection{Issue setup}
+%
+% \begin{macro}{\articlesetup}
+%   We define the command that lets the user specify the article setup.
+%    \begin{macrocode}
+\NewDocumentCommand \articlesetup { m } {
+  \keys_set:nn { nwejm/articlesetup } {#1}
+}
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{Dates setup}
 %
 % \begin{macro}{\dates}
@@ -2690,6 +2707,14 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \selectlanguage{#1}
   }%
+%    \end{macrocode}
+%
+% We reset setup possibly chosen in previous articles.
+%    \begin{macrocode}
+%<class>      \bool_gset_false:N \g_@@_gradient_nabla_bool
+%    \end{macrocode}
+%
+%    \begin{macrocode}
   \inputfrom{./}{#2}
 %    \end{macrocode}
 % The list of counters we want to be able to easily set to zero doesn't contains
@@ -3027,7 +3052,7 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_title_for_toc_tl
 %    \end{macrocode}
 %
-% \begin{macro}{\_@@_maketitle}
+% \begin{macro}{\maketitle}
 %   The command that \emph{makes} the title is redefined.
 %    \begin{macrocode}
 \RenewDocumentCommand \maketitle { } {
@@ -3990,10 +4015,13 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Miscellaneous operators}
 %
 %    \begin{macrocode}
-\bool_if:NTF \g_@@_gradient_nabla_bool {
-  \DeclareMathOperator{\grad}{\nabla}
-}{
-  \DeclareMathOperator{\grad}{grad}
+\NewDocumentCommand \grad {} {%
+  \bool_if:NTF \g_@@_gradient_nabla_bool {
+    \operatorname{\nabla}
+  }{
+    \operatorname{grad}
+  }%
+    \peek_after:Nw \@@_opx_check:
 }
 \DeclareMathOperator{\Div}{div}
 \NewDocumentCommand \curl {} {%
