@@ -95,14 +95,6 @@
   nolocaltoc .code:n = {
     \bool_gset_true:N \g__nwejm_nolocaltoc_bool
   },%
-  gradient .choice:,
-  gradient / nabla .code:n = {\bool_gset_true:N \g__nwejm_gradient_nabla_bool},
-  gradient / grad .code:n = {\bool_gset_false:N \g__nwejm_gradient_nabla_bool},
-  gradient / unknown .code:n =
-  \msg_error:nnxxx { nwejmart } { Unknown~choice }
-  { gradient } % Name of choice key
-  { nabla~or~grad } % Valid choices
-  { \exp_not:n {#1} } % Invalid choice given
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
@@ -480,6 +472,17 @@
   { theorem~or~definition~or~proof } % Valid choices
   { \exp_not:n {#1} } % Invalid choice given
 }
+\keys_define:nn { nwejm/articlesetup }
+{
+  gradient .choice:,
+  gradient / nabla .code:n = {\bool_gset_true:N \g__nwejm_gradient_nabla_bool},
+  gradient / grad .code:n = {\bool_gset_false:N \g__nwejm_gradient_nabla_bool},
+  gradient / unknown .code:n =
+  \msg_error:nnxxx { nwejmart } { Unknown~choice }
+  { gradient } % Name of choice key
+  { nabla~or~grad } % Valid choices
+  { \exp_not:n {#1} } % Invalid choice given
+}
 \tl_new:N \g__nwejm_nwejm_short_string_tl
 \tl_new:N \g__nwejm_nwejm_string_tl
 \tl_gset:Nn \g__nwejm_nwejm_short_string_tl {
@@ -599,6 +602,9 @@
   % \seq_use puts the items from the seq back in the input with ",~" as a separator
   \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
+}
+\NewDocumentCommand \articlesetup { m } {
+  \keys_set:nn { nwejm/articlesetup } {#1}
 }
 \NewDocumentCommand \dates { m } {
   \keys_set:nn { nwejm/dates } { #1 }
@@ -1548,10 +1554,13 @@
 \NewDocumentCommand \I { } {
   \ensuremath{\mathsf{i}}
 }
-\bool_if:NTF \g__nwejm_gradient_nabla_bool {
-  \DeclareMathOperator{\grad}{\nabla}
-}{
-  \DeclareMathOperator{\grad}{grad}
+\NewDocumentCommand \grad {} {%
+  \bool_if:NTF \g__nwejm_gradient_nabla_bool {
+    \operatorname{\nabla}
+  }{
+    \operatorname{grad}
+  }%
+    \peek_after:Nw \__nwejm_opx_check:
 }
 \DeclareMathOperator{\Div}{div}
 \NewDocumentCommand \curl {} {%
@@ -1630,6 +1639,34 @@
   }{
   }
 }
+  \renewbibmacro*{doi+eprint+url}{%
+  \iftoggle{bbx:doi}
+    {%
+      \iffieldundef{doi}
+        {}
+        {%
+          \begingroup
+          \edef\URLorDOI{%
+            \detokenize{http://dx.doi.org/}%
+            \thefield{doi}%
+          }%
+          \iffieldequals{url}{\URLorDOI}
+            {\endgroup}
+            {%
+              \endgroup
+              \printfield{doi}%
+            }%
+        }%
+    }
+    {}%
+  \newunit\newblock
+  \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}%
+  \newunit\newblock
+  \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}}
 \AtEndPreamble{%
   \defbibheading{__nwejm_subbibliography}[\refname]{%
     \section*{#1}
