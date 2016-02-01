@@ -4158,6 +4158,11 @@ Running "make install" installs the files in the local TeX tree.
     {}}
 %    \end{macrocode}
 %
+% % Use the new French abbreviations
+% %    \begin{macrocode}
+% \DeclareLanguageMapping{french}{nwejm}%
+% %    \end{macrocode}
+%
 % Necessary setting (otherwise \textquote{REFERENCES} is displayed in both
 % header and footer on the page (and the following ones until the next article)
 % where the bibliography appears).
@@ -4575,7 +4580,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  \ProvidesFile{gzt.lbx}
+  \ProvidesFile{nwejm.lbx}
   \InheritBibliographyExtras{french}% extras are inherited from French...
   \DeclareBibliographyStrings{%
     inherit          = {french},% .... as well as all the keys
