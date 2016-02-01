@@ -58,7 +58,9 @@ classe a pour but :
   \end{itemize}
 \end{dbwarning}
 
-\section{Langue de l'article}
+\section{Configuration de l'article}
+
+\subsection{Langue de l'article}
 \label{sec:langue-de-larticle}
 
 Le \nwejm{} accepte des articles dans chacune des quatre langues
@@ -96,6 +98,22 @@ options de classe suivantes.
   Si aucune de ces options n'est spécifiée, la langue de l'article est par
   défaut l'anglais.
 \end{dbremark}
+
+\subsection{Autres configurations}
+\label{sec:autr-conf}
+
+\begin{docCommand}{articlesetup}{\marg{options}}
+  Cette commande permet de configurer les \meta{options} de l'article en cours
+  sous la forme clés/valeurs. La seule clé fournie pour l'instant est
+  \refKey{gradient} (mais ceci peut être amené à changer).
+\end{docCommand}
+
+\begin{dbwarning}{Commande \protect\refCom{articlesetup} : pas en préambule !}{}
+  La commande \refCom{articlesetup} doit être utilisée \emph{exclusivement} dans
+  le corps du document (juste après |\begin{document}|) sans quoi la
+    configuration choisie, prise en compte dans l'article seul, risque de ne pas
+    l'être dans le volume qui le contiendra !
+\end{dbwarning}
 
 \section{Préparation du \enquote{titre} de l'article}
 \label{sec-prep-de-lart}
@@ -542,7 +560,18 @@ La \nwejmauthorcl{} :
 \subsubsection{Opérateurs prédéfinis}
 
 \begin{docCommand}{grad}{}
-  Cette commande affiche le gradient : \enquote{$\grad$}.
+  Cette commande affiche le gradient :
+  \begin{itemize}
+  \item sous la forme \enquote{$\grad$} par défaut ;
+  \item sous la forme \enquote{$\nabla$} si la valeur \docValue{nabla} est
+    passée à la clé \refKey{gradient} en argument de la commande
+    \refCom{articlesetup}.
+  \end{itemize}
+  \begin{docKey}{gradient}{=\docValue{grad}\textbar\docValue{nabla}}{pas
+      de valeur par défaut, initialement \docValue{grad}}
+    Cette clé permet de spécifier la façon dont est affiché le gradient grâce
+    à la commande \refCom{grad}.
+  \end{docKey}
 \end{docCommand}
 
 \begin{docCommand}{Div}{}
