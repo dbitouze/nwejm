@@ -46,6 +46,9 @@
   this~ article!}%
 \msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
   `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
+\msg_new:nnn{
+ nwejmart
+}{Command~restricted~to~document~body~used~in~preamble}{The~command~#1 can~be~used~only~in~document~body~and~not~in~preamble!}%
 \bool_new:N \g__nwejm_language_specified_bool
 \cs_new_protected:Nn \__nwejm_language:n
 {
@@ -603,7 +606,16 @@
   \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
+\cs_new_protected:Nn \__nwejm_command_only_in_body:n
+{
+  \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {
+    \msg_error:nnn{
+     nwejmart
+     }{Command~restricted~to~document~body~used~in~preamble}{#1}
+  }
+}
 \NewDocumentCommand \articlesetup { m } {
+  \__nwejm_command_only_in_body:n {\articlesetup}
   \keys_set:nn { nwejm/articlesetup } {#1}
 }
 \NewDocumentCommand \dates { m } {
