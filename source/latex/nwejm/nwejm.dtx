@@ -259,6 +259,10 @@ Running "make install" installs the files in the local TeX tree.
   this~ article!}%
 \msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
   `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
+\msg_new:nnn{
+%<class-article> nwejmart
+%<class>         nwejm
+}{Command~restricted~to~document~body~used~in~preamble}{The~command~#1 can~be~used~only~in~document~body~and~not~in~preamble!}%
 %    \end{macrocode}
 %
 % \subsection{Class options}
@@ -2672,12 +2676,29 @@ Running "make install" installs the files in the local TeX tree.
 %<*class|class-article>
 %    \end{macrocode}
 %
-% \subsection{Issue setup}
+% \subsection{Article setup}
+%
+% Some of the document commands will be restricted to document body, as the
+% following ×\articlesetup× command whose effects would otherwise be overriden
+% when, for the whole issue, preambles of each article will be gathered thanks
+% to \Pkg{standalone}.
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_command_only_in_body:n
+{
+  \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {
+    \msg_error:nnn{
+%<class-article>     nwejmart
+%<class>     nwejm
+     }{Command~restricted~to~document~body~used~in~preamble}{#1}
+  }
+}
+%    \end{macrocode}
 %
 % \begin{macro}{\articlesetup}
 %   We define the command that lets the user specify the article setup.
 %    \begin{macrocode}
 \NewDocumentCommand \articlesetup { m } {
+  \_@@_command_only_in_body:n {\articlesetup}
   \keys_set:nn { nwejm/articlesetup } {#1}
 }
 %    \end{macrocode}
