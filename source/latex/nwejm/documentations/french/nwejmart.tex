@@ -559,6 +559,16 @@ La \nwejmauthorcl{} :
 
 \subsubsection{Opérateurs prédéfinis}
 
+\begin{docCommand}{dif}{}
+  Cette commande affiche l'opérateur différentiel employé notamment dans les
+  intégrales : \enquote{$\dif$}.
+\begin{bodycode}[listing and text]
+\begin{equation}
+\iiint_T f(x,y,z)\dif x \dif y \dif z=0
+\end{equation}
+\end{bodycode}
+\end{docCommand}
+
 \begin{docCommand}{grad}{}
   Cette commande affiche le gradient :
   \begin{itemize}
@@ -586,6 +596,13 @@ La \nwejmauthorcl{} :
   Cette commande affiche le rotationnel :
   \enquote{$\curl$}. Elle a pour alias \docAuxCommand{rot}.
 \end{docCommand}
+
+\begin{bodycode}[listing and text]
+\begin{align}
+  \Div  F & = \grad \cdot  F \\
+  \curl F & = \grad \wedge F
+\end{align}
+\end{bodycode}
 
 \begin{docCommand}{supp}{}
   Cette commande affiche le support (d'une fonction, d'une mesure, etc.) :
