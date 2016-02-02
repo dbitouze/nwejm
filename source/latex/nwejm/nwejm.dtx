@@ -262,7 +262,12 @@ Running "make install" installs the files in the local TeX tree.
 \msg_new:nnn{
 %<class-article> nwejmart
 %<class>         nwejm
-}{Command~restricted~to~document~body~used~in~preamble}{The~command~#1 can~be~used~only~in~document~body~and~not~in~preamble!}%
+}{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
+  can~be~used~only~in~document~body~and~not~in~preamble!}%
+\msg_new:nnn{nwejmart}{Article~setup~not~consistent}{The~ article~ setup~
+  concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~
+  use.~ Please~ use~ \articlesetup~ command~ just~ once,~ just~
+  after~ the~ beginning~ of~ the~ document.}%
 %    \end{macrocode}
 %
 % \subsection{Class options}
@@ -1991,6 +1996,8 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 %
 %    \begin{macrocode}
+\bool_new:N \g_@@_gradient_nabla_bool
+\bool_new:N \g_@@_gradient_nabla_control_bool
 \keys_define:nn { nwejm/articlesetup }
 {
   gradient .choice:,
@@ -2733,6 +2740,8 @@ Running "make install" installs the files in the local TeX tree.
 % We reset setup possibly chosen in previous articles.
 %    \begin{macrocode}
 %<class>      \bool_gset_false:N \g_@@_gradient_nabla_bool
+%<class>      \bool_gset_false:N \g_@@_gradient_nabla_control_bool
+%<class>      \bool_gset_false:N \g_@@_grad_used_bool
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4036,13 +4045,26 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Miscellaneous operators}
 %
 %    \begin{macrocode}
+\bool_new:N \g_@@_grad_used_bool
 \NewDocumentCommand \grad {} {%
   \bool_if:NTF \g_@@_gradient_nabla_bool {
     \operatorname{\nabla}
   }{
     \operatorname{grad}
   }%
-    \peek_after:Nw \@@_opx_check:
+  \peek_after:Nw \@@_opx_check:
+  \bool_if:NTF \g_@@_grad_used_bool {
+    \bool_if:nT { (\g_@@_gradient_nabla_bool && !\g_@@_gradient_nabla_control_bool)
+      || ( !\g_@@_gradient_nabla_bool && \g_@@_gradient_nabla_control_bool) } {
+      \msg_error:nnn{nwejmart}{Article~setup~not~consistent}{gradient}
+    }
+  }{
+    \bool_gset_eq:NN \g_@@_gradient_nabla_control_bool \g_@@_gradient_nabla_bool
+    \bool_gset_true:N \g_@@_grad_used_bool
+  }
+  % \bool_show:N \g_@@_grad_used_bool
+  % \bool_show:N \g_@@_gradient_nabla_control_bool
+  % \bool_show:N \g_@@_grad_used_bool
 }
 \DeclareMathOperator{\Div}{div}
 \NewDocumentCommand \curl {} {%
@@ -4051,7 +4073,7 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \operatorname{rot}
   }%
-    \peek_after:Nw \@@_opx_check:
+  \peek_after:Nw \@@_opx_check:
 }
 \NewDocumentCommand \supp {} {%
   \ifcurrentbaselanguage {ngerman}{
@@ -4059,7 +4081,7 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \operatorname{supp}
   }%
-    \peek_after:Nw \@@_opx_check:
+  \peek_after:Nw \@@_opx_check:
 }
 %    \end{macrocode}
 %
