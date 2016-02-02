@@ -48,7 +48,12 @@
   `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
 \msg_new:nnn{
  nwejmart
-}{Command~restricted~to~document~body~used~in~preamble}{The~command~#1 can~be~used~only~in~document~body~and~not~in~preamble!}%
+}{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
+  can~be~used~only~in~document~body~and~not~in~preamble!}%
+\msg_new:nnn{nwejmart}{Article~setup~not~consistent}{The~ article~ setup~
+  concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~
+  use.~ Please~ use~ \articlesetup~ command~ just~ once,~ just~
+  after~ the~ beginning~ of~ the~ document.}%
 \bool_new:N \g__nwejm_language_specified_bool
 \cs_new_protected:Nn \__nwejm_language:n
 {
@@ -103,7 +108,7 @@
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english}{cleveref}
+\PassOptionsToPackage{french,ngerman,dutch,english,noabbrev}{cleveref}
 \bool_if:NF {\g__nwejm_language_specified_bool} {
   \__nwejm_language:n {english}
 }
@@ -475,6 +480,8 @@
   { theorem~or~definition~or~proof } % Valid choices
   { \exp_not:n {#1} } % Invalid choice given
 }
+\bool_new:N \g__nwejm_gradient_nabla_bool
+\bool_new:N \g__nwejm_gradient_nabla_control_bool
 \keys_define:nn { nwejm/articlesetup }
 {
   gradient .choice:,
@@ -1566,13 +1573,26 @@
 \NewDocumentCommand \I { } {
   \ensuremath{\mathsf{i}}
 }
+\bool_new:N \g__nwejm_grad_used_bool
 \NewDocumentCommand \grad {} {%
   \bool_if:NTF \g__nwejm_gradient_nabla_bool {
     \operatorname{\nabla}
   }{
     \operatorname{grad}
   }%
-    \peek_after:Nw \__nwejm_opx_check:
+  \peek_after:Nw \__nwejm_opx_check:
+  \bool_if:NTF \g__nwejm_grad_used_bool {
+    \bool_if:nT { (\g__nwejm_gradient_nabla_bool && !\g__nwejm_gradient_nabla_control_bool)
+      || ( !\g__nwejm_gradient_nabla_bool && \g__nwejm_gradient_nabla_control_bool) } {
+      \msg_error:nnn{nwejmart}{Article~setup~not~consistent}{gradient}
+    }
+  }{
+    \bool_gset_eq:NN \g__nwejm_gradient_nabla_control_bool \g__nwejm_gradient_nabla_bool
+    \bool_gset_true:N \g__nwejm_grad_used_bool
+  }
+  % \bool_show:N \g__nwejm_grad_used_bool
+  % \bool_show:N \g__nwejm_gradient_nabla_control_bool
+  % \bool_show:N \g__nwejm_grad_used_bool
 }
 \DeclareMathOperator{\Div}{div}
 \NewDocumentCommand \curl {} {%
@@ -1581,7 +1601,7 @@
   }{
     \operatorname{rot}
   }%
-    \peek_after:Nw \__nwejm_opx_check:
+  \peek_after:Nw \__nwejm_opx_check:
 }
 \NewDocumentCommand \supp {} {%
   \ifcurrentbaselanguage {ngerman}{
@@ -1589,8 +1609,9 @@
   }{
     \operatorname{supp}
   }%
-    \peek_after:Nw \__nwejm_opx_check:
+  \peek_after:Nw \__nwejm_opx_check:
 }
+\NewDocumentCommand \dif {}{\mathop{}\!\mathrm{d}}
 \cs_set_eq:NN \__nwejm_orig_leq \leq
 \cs_set_eq:NN \__nwejm_orig_geq \geq
 \RenewDocumentCommand \le {} {%
