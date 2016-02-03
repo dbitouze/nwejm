@@ -461,6 +461,8 @@ La \nwejmauthorcl{} :
   \end{description}
 \end{docCommand}
 
+\subsection{Ensembles}
+
 \subsection{Ensembles courants}
 
 \begin{docCommand}{N}{}
@@ -492,6 +494,22 @@ La \nwejmauthorcl{} :
 \begin{docCommand}{K}{}
   Cette commande peut être utilisée pour dénoter un corps quelconque. Elle
   affiche \enquote{$\K$}.
+\end{docCommand}
+
+\subsection{Ensembles définis}
+
+\begin{docCommand}{set}{\marg{définition}\oarg{caractérisation}}
+  Cette commande affiche l'ensemble défini par \meta{définition}, avec une
+  éventuelle \meta{caractérisation}\footnote{Partie suivant \enquote{tels
+      que}.}.
+\begin{bodycode}[listing and text]
+\begin{align}
+  \N & = \set{0,1,2,3,\dots}                  \\
+  \Z & = \N\cup\set{-n}[n\in\N]               \\
+  \Q & = \set{p/q}[p\in\Z,\ q\in\N^*]         \\
+  \Q & = \set{\frac{p}{q}}[p\in\Z,\ q\in\N^*]
+\end{align}
+\end{bodycode}
 \end{docCommand}
 
 \subsection[Fonctions trigonométriques circulaires et hyperboliques]{Fonctions
@@ -658,20 +676,6 @@ le déclarer au moyen de la commande \refCom{BinaryOperators}.
 \end{bodycode}
 
 \subsection{Divers}
-
-\begin{docCommand}{set}{\marg{définition}\oarg{caractérisation}}
-  Cette commande affiche l'ensemble défini par \meta{définition}, avec une
-  éventuelle \meta{caractérisation}\footnote{Partie suivant \enquote{tels
-      que}.}.
-\begin{bodycode}[listing and text]
-\begin{align}
-  \N & = \set{0,1,2,3,\dots}                  \\
-  \Z & = \N\cup\set{-n}[n\in\N]               \\
-  \Q & = \set{p/q}[p\in\Z,\ q\in\N^*]         \\
-  \Q & = \set{\frac{p}{q}}[p\in\Z,\ q\in\N^*]
-\end{align}
-\end{bodycode}
-\end{docCommand}
 
 \begin{dbremark}{Commandes propres au français (bis)}{}
   Les commandes suivantes ne sont définies redéfinies que pour les articles en
