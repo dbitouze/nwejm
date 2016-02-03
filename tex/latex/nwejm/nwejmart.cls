@@ -51,9 +51,13 @@
 }{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
   can~be~used~only~in~document~body~and~not~in~preamble!}%
 \msg_new:nnn{nwejmart}{Article~setup~not~consistent}{The~ article~ setup~
-  concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~
-  use.~ Please~ use~ \articlesetup~ command~ just~ once,~ just~
-  after~ the~ beginning~ of~ the~ document.}%
+  concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~ use.~ Please~
+  use~ \articlesetup~ command~ just~ once,~ just~ after~ the~ beginning~ of~
+  the~ document.}%
+\msg_new:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{The~
+  size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
+  `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
+  `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
 \bool_new:N \g__nwejm_language_specified_bool
 \cs_new_protected:Nn \__nwejm_language:n
 {
@@ -1590,9 +1594,6 @@
     \bool_gset_eq:NN \g__nwejm_gradient_nabla_control_bool \g__nwejm_gradient_nabla_bool
     \bool_gset_true:N \g__nwejm_grad_used_bool
   }
-  % \bool_show:N \g__nwejm_grad_used_bool
-  % \bool_show:N \g__nwejm_gradient_nabla_control_bool
-  % \bool_show:N \g__nwejm_grad_used_bool
 }
 \DeclareMathOperator{\Div}{div}
 \NewDocumentCommand \curl {} {%
@@ -1650,6 +1651,127 @@
   }{
     \__nwejm_set*{#1\l__nwejm_given_tl #2}
   }
+}
+\DeclareDocumentCommand{\NewPairedDelimiter}{mm}
+ {
+  \__nwejm_delimiter_clear_keys: % reset to the default
+  \keys_set:nn { nwejm/delimiters } { #2 }
+  \use:x % we want to expand the values of the token variables set with the keys
+   {
+    \exp_not:n {\NewDocumentCommand{#1}{sO{}m} }
+     {
+      \exp_not:n { \IfBooleanTF{##1} }
+       {
+        \exp_not:N \__nwejm_paired_delimiter:nnnnn
+         { \exp_not:n { 0 } }
+         { \exp_not:V \l__nwejm_delimiter_left_tl }
+         { \exp_not:V \l__nwejm_delimiter_right_tl }
+         { \exp_not:n { ##3 } }
+         { \exp_not:V \l__nwejm_delimiter_subscript_tl }
+       }
+       {
+         \exp_not:N \__nwejm_paired_delimiter:nnnnn
+         { \exp_not:n { ##2 } }
+         { \exp_not:V \l__nwejm_delimiter_left_tl }
+         { \exp_not:V \l__nwejm_delimiter_right_tl }
+         { \exp_not:n { ##3 } }
+         { \exp_not:V \l__nwejm_delimiter_subscript_tl }
+       }
+     }
+   }
+ }
+\keys_define:nn { nwejm/delimiters }
+ {
+  left      .tl_set:N = \l__nwejm_delimiter_left_tl,
+  right     .tl_set:N = \l__nwejm_delimiter_right_tl,
+  subscript .tl_set:N = \l__nwejm_delimiter_subscript_tl,
+ }
+\cs_new_protected:Npn \__nwejm_delimiter_clear_keys:
+ {
+  \keys_set:nn { nwejm/delimiters } { left=.,right=.,subscript={} }
+ }
+\cs_new_protected:Npn \__nwejm_paired_delimiter_expand:nnnn #1 #2 #3 #4
+ {% Fix the spacing issue with \left and \right (D. Arsenau, P. Stephani and H. Oberdiek)
+  \mathopen{}
+  \mathclose\c_group_begin_token
+   \left#1
+   #3
+   \group_insert_after:N \c_group_end_token
+   \right#2
+   \tl_if_empty:nF {#4} { \c_math_subscript_token {#4} }
+ }
+\cs_new_protected:Npn \__nwejm_paired_delimiter_fixed:nnnnn #1 #2 #3 #4 #5
+ {
+  \mathopen{#1#2}#4\mathclose{#1#3}
+  \tl_if_empty:nF {#5} { \c_math_subscript_token {#5} }
+ }
+\cs_new_protected:Npn \__nwejm_paired_delimiter:nnnnn #1 #2 #3 #4 #5
+ {
+   \str_case:nnF {#1}
+   {
+     { } { \__nwejm_paired_delimiter_expand:nnnn {#2}{#3}{#4}{#5} }
+     {0} { \__nwejm_paired_delimiter_fixed:nnnnn {}{#2}{#3}{#4}{#5} }
+     {1} { \__nwejm_paired_delimiter_fixed:nnnnn { \big }{#2}{#3}{#4}{#5} }
+     {\big} { \__nwejm_paired_delimiter_fixed:nnnnn { \big }{#2}{#3}{#4}{#5} }
+     {2} { \__nwejm_paired_delimiter_fixed:nnnnn { \Big }{#2}{#3}{#4}{#5} }
+     {\Big} { \__nwejm_paired_delimiter_fixed:nnnnn { \Big }{#2}{#3}{#4}{#5} }
+     {3} { \__nwejm_paired_delimiter_fixed:nnnnn { \bigg }{#2}{#3}{#4}{#5} }
+     {\bigg} { \__nwejm_paired_delimiter_fixed:nnnnn { \bigg }{#2}{#3}{#4}{#5} }
+     {4} { \__nwejm_paired_delimiter_fixed:nnnnn { \Bigg }{#2}{#3}{#4}{#5} }
+     {\Bigg} { \__nwejm_paired_delimiter_fixed:nnnnn { \Bigg }{#2}{#3}{#4}{#5} }
+   }
+   {
+     \msg_warning:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{#1}
+     \__nwejm_paired_delimiter_expand:nnnn {#2}{#3}{#4}
+   }
+ }
+\NewPairedDelimiter{\norm}{
+  left=\lVert,
+  right=\rVert
+}
+\NewPairedDelimiter{\lnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=1
+}
+\NewPairedDelimiter{\llnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=2
+}
+\NewPairedDelimiter{\lpnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=p
+}
+\NewPairedDelimiter{\supnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=\infty
+}
+\NewPairedDelimiter{\abs}{
+  left=\lvert,
+  right=\rvert
+}
+\NewPairedDelimiter{\prt}{
+  left=(,
+  right=)
+}
+\NewPairedDelimiter{\brk}{
+  left=[,
+  right=]
+}
+\NewPairedDelimiter{\brc}{
+  left=\{,
+  right=\}
+}
+\NewPairedDelimiter{\lrangle}{
+  left=\langle,
+  right=\rangle
+}
+\NewPairedDelimiter{\leqgeq}{
+  left=<,
+  right=>
 }
 \AfterEndPreamble{
   \autonum@generatePatchedReferenceCSL{vref}
