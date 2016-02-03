@@ -573,6 +573,129 @@ La \nwejmauthorcl{} :
   \enquote{$\arctanh$}. Elle a pour alias \docAuxCommand{Argth}.
 \end{docCommand}
 
+\subsection{Paires de délimiteurs}
+
+\subsubsection{Commandes prédéfinies}
+
+La classe offre un certain nombre de commandes listées dans le \vref{com-paired}
+facilitant la saisie de paires de délimiteurs courants, par exemple pour les
+normes, les valeurs absolues, etc.
+
+\begin{table}
+  \centering
+  \begin{tabular}{ll}
+    Commandes               & Exemple           \\\toprule
+    \docAuxCommand{norm}    & $\norm{\cdot}$    \\\midrule
+    \docAuxCommand{lnorm}   & $\lnorm{\cdot}$   \\\midrule
+    \docAuxCommand{llnorm}  & $\llnorm{\cdot}$  \\\midrule
+    \docAuxCommand{lpnorm}  & $\lpnorm{\cdot}$  \\\midrule
+    \docAuxCommand{supnorm} & $\supnorm{\cdot}$ \\\midrule
+    \docAuxCommand{abs}     & $\abs{\cdot}$     \\\midrule
+    \docAuxCommand{prt}     & $\prt{\cdot}$     \\\midrule
+    \docAuxCommand{brk}     & $\brk{\cdot}$     \\\midrule
+    \docAuxCommand{brc}     & $\brc{\cdot}$     \\\midrule
+    \docAuxCommand{leqgeq}  & $\leqgeq{\cdot}$  \\\midrule
+    \docAuxCommand{lrangle} & $\lrangle{\cdot}$ \\\bottomrule
+  \end{tabular}
+  \caption{Commandes facilitant la saisie de paires de
+    délimiteurs courants}
+  \label{com-paired}
+\end{table}
+
+Ces commandes ayant toutes la même syntaxe, seule celle de la commande
+\docAuxCommand{norm} est détaillée.
+
+\begin{docCommand*}{norm}{\oarg{paramètre de taille}\marg{argument}}
+  Cette commande affiche la norme de l'\meta{argument}.
+
+  Par défaut, la hauteur des délimiteurs est automatiquement adaptée à celle de
+  l'\meta{argument} mais il est possible de spécifier en argument optionnel un
+  \meta{paramètre de taille} :
+  \begin{itemize}
+  \item \docValue{0} : taille par défaut du délimiteur\footnote{Taille du
+      délimiteur en mode texte.} ;
+  \item \docValue{1} ou \docAuxCommand{big} : taille du délimiteur plus grande
+    que la précédente ;
+  \item \docValue{2} ou \docAuxCommand{Big} : taille du délimiteur plus grande
+    que la précédente ;
+  \item \docValue{3} ou \docAuxCommand{bigg} : taille du délimiteur plus grande
+    que la précédente ;
+  \item \docValue{4} ou \docAuxCommand{Bigg} : taille du délimiteur plus grande
+    que la précédente.
+  \end{itemize}
+\end{docCommand*}
+
+\begin{docCommand}{norm*}{\marg{argument}}
+  Cette commande est équivalente à |\norm[0]{|\meta{argument}|}|.
+\end{docCommand}
+
+\begin{bodycode}[listing and text]
+\begin{equation}
+\supnorm{\frac{A}{2}}^k    \quad
+\supnorm[0]{\frac{A}{2}}^k \quad
+\supnorm[1]{\frac{A}{2}}^k \quad
+\supnorm[2]{\frac{A}{2}}^k \quad
+\supnorm[3]{\frac{A}{2}}^k \quad
+\supnorm[4]{\frac{A}{2}}^k \quad
+\supnorm*{\frac{A}{2}}^k
+\end{equation}
+\end{bodycode}
+
+\begin{dbremark}{Indices des paires de délimiteurs qui n'en sont pas pourvues par défaut}{}
+  Il est toujours possible d'ajouter manuellement un indice à une commande de
+  paire de délimiteurs qui n'en est pas pourvue par défaut.
+\begin{bodycode}[listing and text]
+\begin{equation}
+\norm{\frac{A}{2}}_3
+\end{equation}
+\end{bodycode}
+\end{dbremark}
+
+\subsubsection{Commandes à définir}
+
+Il est possible de définir de nouvelles commandes facilitant la saisie de paires
+de délimiteurs au moyen de la commande \refCom{NewPairedDelimiter}.
+%
+\begin{docCommand}{NewPairedDelimiter}{\marg{commande}\marg{options}}
+  Cette commande définit une \meta{commande} similaire à la commande
+  \docAuxCommand{norm} mais dont les délimiteurs gauche et droit et l'indice
+  sont ceux spécifiés en \meta{options} au moyen des clés \refKey{left},
+  \refKey{right} et \refKey{subscript}.
+  \begin{docKey}{left}{=\meta{délimiteur}}{pas de valeur par défaut,
+      initialement vide}
+    Cette clé permet de spécifier le délimiteur gauche de la \meta{commande}
+    créée par \refCom{NewPairedDelimiter}.
+  \end{docKey}
+  \begin{docKey}{right}{=\meta{délimiteur}}{pas de valeur par défaut,
+      initialement vide}
+    Cette clé permet de spécifier le délimiteur droit de la \meta{commande}
+    créée par \refCom{NewPairedDelimiter}.
+  \end{docKey}
+  \begin{docKey}{subscript}{=\meta{indice}}{pas de valeur par défaut,
+      initialement vide}
+    Cette clé permet de spécifier l'indice de la \meta{commande} créée par
+    \refCom{NewPairedDelimiter}.
+  \end{docKey}
+\end{docCommand}
+
+\NewPairedDelimiter{\floor}{
+  left=\lfloor,
+  right=\rfloor,
+  subscript=\text{eff}
+}
+\begin{preamblecode}
+\NewPairedDelimiter{\floor}{
+  left=\lfloor,
+  right=\rfloor,
+  subscript=\text{eff}
+}
+\end{preamblecode}
+\begin{bodycode}[listing and text]
+\begin{equation}
+\floor{\frac{A}{2}}
+\end{equation}
+\end{bodycode}
+
 \subsection{Opérateurs}
 
 \subsubsection{Opérateurs prédéfinis}
@@ -709,18 +832,18 @@ Le \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis pa
 \begin{table}
   \centering
   \begin{tabular}{ll}
-    Environnement                                                    & Titre (ici en français) \\\toprule
-    \docAuxEnvironment{theorem}/\docAuxEnvironment{theorem*}         & Théorème                \\\midrule
-    \docAuxEnvironment{corollary}/\docAuxEnvironment{corollary*}     & Corollaire              \\\midrule
-    \docAuxEnvironment{conjecture}/\docAuxEnvironment{conjecture*}   & Conjecture              \\\midrule
-    \docAuxEnvironment{proposition}/\docAuxEnvironment{proposition*} & Proposition             \\\midrule
-    \docAuxEnvironment{lemma}/\docAuxEnvironment{lemma*}             & Lemme                   \\\midrule
-    \docAuxEnvironment{axiom}/\docAuxEnvironment{axiom*}             & Axiome                  \\\midrule[.75pt]
-    \docAuxEnvironment{definition}/\docAuxEnvironment{definition*}   & Définition              \\\midrule
-    \docAuxEnvironment{remark}/\docAuxEnvironment{remark*}           & Remarque                \\\midrule
-    \docAuxEnvironment{example}/\docAuxEnvironment{example*}         & Exemple                 \\\midrule
-    \docAuxEnvironment{notation}/\docAuxEnvironment{notation*}       & Notation                \\\midrule[.75pt]
-    \docAuxEnvironment{proof}/\docAuxEnvironment{proof*}             & Preuve                  \\\bottomrule
+    Environnement                   & Titre (ici en français) \\\toprule
+    \docAuxEnvironment{theorem}     & Théorème                \\\midrule
+    \docAuxEnvironment{corollary}   & Corollaire              \\\midrule
+    \docAuxEnvironment{conjecture}  & Conjecture              \\\midrule
+    \docAuxEnvironment{proposition} & Proposition             \\\midrule
+    \docAuxEnvironment{lemma}       & Lemme                   \\\midrule
+    \docAuxEnvironment{axiom}       & Axiome                  \\\midrule[.75pt]
+    \docAuxEnvironment{definition}  & Définition              \\\midrule
+    \docAuxEnvironment{remark}      & Remarque                \\\midrule
+    \docAuxEnvironment{example}     & Exemple                 \\\midrule
+    \docAuxEnvironment{notation}    & Notation                \\\midrule[.75pt]
+    \docAuxEnvironment{proof}       & Preuve                  \\\bottomrule
   \end{tabular}
   \caption{Environnements de type \enquote{théorème} fournis}
   \label{env-theorems}
