@@ -265,9 +265,13 @@ Running "make install" installs the files in the local TeX tree.
 }{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
   can~be~used~only~in~document~body~and~not~in~preamble!}%
 \msg_new:nnn{nwejmart}{Article~setup~not~consistent}{The~ article~ setup~
-  concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~
-  use.~ Please~ use~ \articlesetup~ command~ just~ once,~ just~
-  after~ the~ beginning~ of~ the~ document.}%
+  concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~ use.~ Please~
+  use~ \articlesetup~ command~ just~ once,~ just~ after~ the~ beginning~ of~
+  the~ document.}%
+\msg_new:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{The~
+  size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
+  `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
+  `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
 %    \end{macrocode}
 %
 % \subsection{Class options}
@@ -4106,7 +4110,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% \subsection{Big sets}
+% \subsection{(Big) Sets}
 %
 %    \begin{macrocode}
 \NewDocumentCommand \N {} {\mathbb{N}}
@@ -4141,6 +4145,144 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \_@@_set*{#1\l_@@_given_tl #2}
   }
+}
+%    \end{macrocode}
+%
+% \subsection{Paired delimiters}
+%
+% The following code is adapted from
+% \url{http://tex.stackexchange.com/a/136767/18401} which defines a variant to
+% \pkg{mathtools}' ×\DeclarePairedDelimiter× that improves it. Note that the
+% behaviour is reversed from \pkg{mathtools}' one: the starred versions of the
+% commands don't expand to the height of the contained material whereas the non
+% starred versions, if used without the optional argument, do expand to the
+% height of the contained material.
+%    \begin{macrocode}
+\DeclareDocumentCommand{\NewPairedDelimiter}{mm}
+ {
+  \_@@_delimiter_clear_keys: % reset to the default
+  \keys_set:nn { nwejm/delimiters } { #2 }
+  \use:x % we want to expand the values of the token variables set with the keys
+   {
+    \exp_not:n {\NewDocumentCommand{#1}{sO{}m} }
+     {
+      \exp_not:n { \IfBooleanTF{##1} }
+       {
+        \exp_not:N \@@_paired_delimiter:nnnnn
+         { \exp_not:n { 0 } }
+         { \exp_not:V \l_@@_delimiter_left_tl }
+         { \exp_not:V \l_@@_delimiter_right_tl }
+         { \exp_not:n { ##3 } }
+         { \exp_not:V \l_@@_delimiter_subscript_tl }
+       }
+       {
+         \exp_not:N \@@_paired_delimiter:nnnnn
+         { \exp_not:n { ##2 } }
+         { \exp_not:V \l_@@_delimiter_left_tl }
+         { \exp_not:V \l_@@_delimiter_right_tl }
+         { \exp_not:n { ##3 } }
+         { \exp_not:V \l_@@_delimiter_subscript_tl }
+       }
+     }
+   }
+ }
+\keys_define:nn { nwejm/delimiters }
+ {
+  left      .tl_set:N = \l@@_delimiter_left_tl,
+  right     .tl_set:N = \l@@_delimiter_right_tl,
+  subscript .tl_set:N = \l@@_delimiter_subscript_tl,
+ }
+\cs_new_protected:Npn \_@@_delimiter_clear_keys:
+ {
+  \keys_set:nn { nwejm/delimiters } { left=.,right=.,subscript={} }
+ }
+\cs_new_protected:Npn \@@_paired_delimiter_expand:nnnn #1 #2 #3 #4
+ {% Fix the spacing issue with \left and \right (D. Arsenau, P. Stephani and H. Oberdiek)
+  \mathopen{}
+  \mathclose\c_group_begin_token
+   \left#1
+   #3
+   \group_insert_after:N \c_group_end_token
+   \right#2
+   \tl_if_empty:nF {#4} { \c_math_subscript_token {#4} }
+ }
+\cs_new_protected:Npn \@@_paired_delimiter_fixed:nnnnn #1 #2 #3 #4 #5
+ {
+  \mathopen{#1#2}#4\mathclose{#1#3}
+  \tl_if_empty:nF {#5} { \c_math_subscript_token {#5} }
+ }
+\cs_new_protected:Npn \@@_paired_delimiter:nnnnn #1 #2 #3 #4 #5
+ {
+   \str_case:nnF {#1}
+   {
+     { } { \@@_paired_delimiter_expand:nnnn {#2}{#3}{#4}{#5} }
+     {0} { \@@_paired_delimiter_fixed:nnnnn {}{#2}{#3}{#4}{#5} }
+     {1} { \@@_paired_delimiter_fixed:nnnnn { \big }{#2}{#3}{#4}{#5} }
+     {\big} { \@@_paired_delimiter_fixed:nnnnn { \big }{#2}{#3}{#4}{#5} }
+     {2} { \@@_paired_delimiter_fixed:nnnnn { \Big }{#2}{#3}{#4}{#5} }
+     {\Big} { \@@_paired_delimiter_fixed:nnnnn { \Big }{#2}{#3}{#4}{#5} }
+     {3} { \@@_paired_delimiter_fixed:nnnnn { \bigg }{#2}{#3}{#4}{#5} }
+     {\bigg} { \@@_paired_delimiter_fixed:nnnnn { \bigg }{#2}{#3}{#4}{#5} }
+     {4} { \@@_paired_delimiter_fixed:nnnnn { \Bigg }{#2}{#3}{#4}{#5} }
+     {\Bigg} { \@@_paired_delimiter_fixed:nnnnn { \Bigg }{#2}{#3}{#4}{#5} }
+   }
+   {
+     \msg_warning:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{#1}
+     \@@_paired_delimiter_expand:nnnn {#2}{#3}{#4}
+   }
+ }
+%    \end{macrocode}
+%
+% Thanks to ×\NewPairedDelimiter×, we define various paired delimiters such
+% as norms, absolute value, etc.
+%    \begin{macrocode}
+\NewPairedDelimiter{\norm}{
+  left=\lVert,
+  right=\rVert
+}
+\NewPairedDelimiter{\lnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=1
+}
+\NewPairedDelimiter{\llnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=2
+}
+\NewPairedDelimiter{\lpnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=p
+}
+\NewPairedDelimiter{\supnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=\infty
+}
+\NewPairedDelimiter{\abs}{
+  left=\lvert,
+  right=\rvert
+}
+\NewPairedDelimiter{\prt}{
+  left=(,
+  right=)
+}
+\NewPairedDelimiter{\brk}{
+  left=[,
+  right=]
+}
+\NewPairedDelimiter{\brc}{
+  left=\{,
+  right=\}
+}
+\NewPairedDelimiter{\lrangle}{
+  left=\langle,
+  right=\rangle
+}
+\NewPairedDelimiter{\leqgeq}{
+  left=<,
+  right=>
 }
 %    \end{macrocode}
 %
@@ -4198,7 +4340,7 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Related to \Pkg{biblatex}}
 %
 % The following is borrowed from Joseph Wright
-% (\url|http://tex.stackexchange.com/a/5795/18401|) in order to prevent
+% (\url{http://tex.stackexchange.com/a/5795/18401}) in order to prevent
 % identical URL and DOI fields to be both displayed.
 %    \begin{macrocode}
   \renewbibmacro*{doi+eprint+url}{%
