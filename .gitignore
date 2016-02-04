@@ -62,6 +62,8 @@ ls-R
 *.drv
 *.ins
 *.listing
+*.thm
+_region_.*
 
 tex/latex/nwejm/nwejm.cfg
 tex/latex/nwejm/nwejm.dbx
