@@ -134,7 +134,7 @@
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
-\RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref]{biblatex}%
+\RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref,safeinputenc]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
