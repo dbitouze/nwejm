@@ -582,7 +582,13 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Programmable bibliographies and citations:
 %    \begin{macrocode}
-\RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref,safeinputenc]{biblatex}%
+\RequirePackage[backend=biber,style=authoryear]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
+\@ifpackagelater{biblatex}{2016/01/01}{%
+  \ExecuteBibliographyOptions{firstinits}
+}{
+  \ExecuteBibliographyOptions{giveninits}
+}
 %    \end{macrocode}
 %
 % \item Extended implementation of the \LaTeX{} array and
@@ -1674,7 +1680,7 @@ Running "make install" installs the files in the local TeX tree.
   [%
   ]%
   [
-  \DeclareNameAlias{labelname}{firstinits-last}
+  \DeclareNameAlias{labelname}{giveninits-last}
   \AtNextCitekey{\defcounter{maxnames}{2}}\citeauthor{\g_@@_article_bib_key_tl}
   ]%
   {
@@ -2182,7 +2188,7 @@ Running "make install" installs the files in the local TeX tree.
   }{%
     \tl_if_in:NnTF \l_@@_people_role_tl { editor } {
     \item[
-      \_@@_citeauthor_no_firstinits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
+      \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
       ]
       \l_@@_people_affiliation_tl%
         \space%
@@ -2199,7 +2205,7 @@ Running "make install" installs the files in the local TeX tree.
         \noindent%
         \begin{description}[leftmargin=1em,style=nextline]
         \item[%
-          \_@@_citeauthor_no_firstinits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
+          \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
           ]
           \tl_if_empty:NF \l_@@_people_affiliation_tl
           {%
@@ -2220,7 +2226,7 @@ Running "make install" installs the files in the local TeX tree.
           \medskip%
         }
       }{
-        \_@@_citeauthor_no_firstinits:n {\c_@@_issue_bib_key_tl -#1-
+        \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1-
           \exp_not:V\DTLcurrentindex}%
         \tl_if_empty:NF \l_@@_people_email_tl
         {
@@ -3084,15 +3090,19 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_article_bib_key_tl%
 \tl_new:N \l_@@_people_first_last_names_tl
 \tl_new:N \g_@@_authors_first_last_names_tl%
-\tl_new:N \g__@@_citeauthor_no_firstinits%
+\tl_new:N \g__@@_citeauthor_no_giveninits%
 \tl_new:N \g_@@_citeauthor_tl%
 \int_new:N \g_@@_author_s_number_current_article_int%
 %
-\cs_new_protected:Nn \_@@_citeauthor_no_firstinits:n {%
+\cs_new_protected:Nn \_@@_citeauthor_no_giveninits:n {%
   \tl_gset:Nn \g_@@_citeauthor_tl {%
     \DeclareNameAlias{labelname}{default}%
     \group_begin:
-    \togglefalse{blx@firstinits}%
+    \@ifpackagelater{biblatex}{2016/01/01}{%
+      \togglefalse{blx@giveninits}%
+    }{
+      \togglefalse{blx@firstinits}%
+    }
     \citeauthor{#1}
     \group_end:
   }%
@@ -3124,7 +3134,7 @@ Running "make install" installs the files in the local TeX tree.
   \AtNextCitekey{\defcounter{maxnames}{100}}
   \group_begin:
   \DeclareNameAlias{labelname}{default}%
-  \togglefalse{blx@firstinits}%
+  \togglefalse{blx@giveninits}%
   \citeauthor{#1}
   \group_end:
   \cs_set_eq:NN \multinamedelim \_@@_orig_multinamedelim
@@ -3146,7 +3156,7 @@ Running "make install" installs the files in the local TeX tree.
     { \sort_ordered: }
   }
   \mbox{%
-    \_@@_citeauthor_no_firstinits:n {\c_@@_issue_bib_key_tl -author-art- \int_use:N \g_@@_articles_int-#1}
+    \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -author-art- \int_use:N \g_@@_articles_int-#1}
   }
   \seq_map_inline:Nn \l_tmpa_seq {
     \prop_get:cnN {l_author_ #1 _affiliations_prop} {##1} \l_tmpb_tl
@@ -3326,6 +3336,7 @@ Running "make install" installs the files in the local TeX tree.
       \cs_if_exist:cTF {texorpdfstring}
       {
         \texorpdfstring{%
+          \AtNextCitekey{\defcounter{maxnames}{100}}
           \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
         }{}
       }{%
@@ -4559,9 +4570,20 @@ Running "make install" installs the files in the local TeX tree.
 % We create a name format that prints the initial(s) of the first name(s) before
 % last name of a cited author.
 %    \begin{macrocode}
-\DeclareNameFormat{firstinits-last}{%
-  \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
-  \usebibmacro{name:andothers}%
+\@ifpackagelater{biblatex}{2016/01/01}{%
+  \DeclareNameFormat{giveninits-last}{%
+    \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
+    \usebibmacro{name:andothers}%
+  }
+}{
+  \DeclareNameFormat{giveninits-last}{%
+    \nameparts{#1}
+    \usebibmacro{name:given-family}
+    {\namepartfamily}
+    {\namepartgiveni}
+    {\namepartprefix}
+    {\namepartsuffix}%
+  }
 }
 %    \end{macrocode}
 %
