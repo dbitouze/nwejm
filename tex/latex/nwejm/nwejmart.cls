@@ -128,9 +128,16 @@
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
 \RequirePackage[multiple]{footmisc}%
+\RequirePackage[svgnames]{xcolor}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
-\RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref,safeinputenc]{biblatex}%
+\RequirePackage[backend=biber,style=authoryear]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
+\@ifpackageloaded{biblatex_legacy}{%
+  \ExecuteBibliographyOptions{firstinits}
+}{
+  \ExecuteBibliographyOptions{giveninits}
+}
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
@@ -141,8 +148,8 @@
 \RequirePackage{geometry}
 \RequirePackage{translations}%
 \RequirePackage{fmtcount}%
-\RequirePackage{varioref}
 \RequirePackage{babel}%
+\RequirePackage{varioref}
 \RequirePackage{tocvsec2}
 \RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
@@ -237,7 +244,7 @@
 \dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
 \dim_const:Nn \c__nwejm_topmargin_frontcover_dim {
   \c__nwejm_topmargin_dim
-  + 30mm
+  % + 30mm
 }
 \dim_const:Nn \c__nwejm_topmargin_inside_cover_dim   {
   \c__nwejm_topmargin_dim
@@ -246,10 +253,10 @@
 \dim_const:Nn \c__nwejm_topmargin_front_matter_dim   {
   \c__nwejm_topmargin_inside_cover_dim
 }
-\dim_const:Nn \c__nwejm_headsep_dim     { 7.5mm}
+\dim_const:Nn \c__nwejm_headsep_dim     { 9.5mm}
 \dim_const:Nn \c__nwejm_headsep_frontcover_dim {
   \c__nwejm_headsep_dim
-  +31mm
+  % +31mm
   % -\c__nwejm_potential_layoutoffset_dim
 }
 \dim_const:Nn \c__nwejm_headsep_inside_frontcover_dim {
@@ -259,9 +266,13 @@
 \dim_const:Nn \c__nwejm_headsep_front_matter_dim {
   \c__nwejm_headsep_inside_frontcover_dim
 }
-\dim_const:Nn \c__nwejm_headheight_dim  { 10mm }
+\dim_const:Nn \c__nwejm_headheight_dim  { 5mm }
 \dim_const:Nn \c__nwejm_botmargin_dim   { 30mm}
 \dim_const:Nn \c__nwejm_footskip_dim    { 10mm}
+\dim_const:Nn \c__nwejm_margin_frontcover_dim { 15mm }
+\dim_const:Nn \c__nwejm_bottom_frontcover_dim { 15mm }
+\dim_const:Nn \c__nwejm_left_minipage_frontcover_dim { .4\linewidth }
+\dim_const:Nn \c__nwejm_right_minipage_frontcover_dim { .6\linewidth }
 \dim_const:Nn \c__nwejm_innermargin_dim { 23mm }
 \dim_const:Nn \c__nwejm_outermargin_dim { 30mm }
 \dim_const:Nn \c__nwejm_inside_cover_box_width_dim { 150mm }%
@@ -326,7 +337,7 @@
   [%
   ]%
   [
-  \DeclareNameAlias{labelname}{firstinits-last}
+  \DeclareNameAlias{labelname}{giveninits-last}
   \AtNextCitekey{\defcounter{maxnames}{2}}\citeauthor{\g__nwejm_article_bib_key_tl}
   ]%
   {
@@ -774,15 +785,16 @@
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
 \tl_new:N \g__nwejm_authors_first_last_names_tl%
-\tl_new:N \g__nwejm_citeauthor_no_firstinits%
+\tl_new:N \g__nwejm_citeauthor_no_giveninits%
 \tl_new:N \g__nwejm_citeauthor_tl%
 \int_new:N \g__nwejm_author_s_number_current_article_int%
-\cs_new_protected:Nn \__nwejm_citeauthor_no_firstinits:n {%
+\cs_new_protected:Nn \__nwejm_citeauthor_no_giveninits:n {%
   \tl_gset:Nn \g__nwejm_citeauthor_tl {%
     \DeclareNameAlias{labelname}{default}%
     \group_begin:
-    \togglefalse{blx@firstinits}%
+    \togglefalse{blx@giveninits}%
     \citeauthor{#1}
+    \toggletrue{blx@giveninits}%
     \group_end:
   }%
   \cs_if_exist:cTF {texorpdfstring}
@@ -802,7 +814,7 @@
   \AtNextCitekey{\defcounter{maxnames}{100}}
   \group_begin:
   \DeclareNameAlias{labelname}{default}%
-  \togglefalse{blx@firstinits}%
+  \togglefalse{blx@giveninits}%
   \citeauthor{#1}
   \group_end:
   \cs_set_eq:NN \multinamedelim \__nwejm_orig_multinamedelim
@@ -824,7 +836,7 @@
     { \sort_ordered: }
   }
   \mbox{%
-    \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -author-art- \int_use:N \g__nwejm_articles_int-#1}
+    \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -author-art- \int_use:N \g__nwejm_articles_int-#1}
   }
   \seq_map_inline:Nn \l_tmpa_seq {
     \prop_get:cnN {l_author_ #1 _affiliations_prop} {##1} \l_tmpb_tl
@@ -955,6 +967,7 @@
       \cs_if_exist:cTF {texorpdfstring}
       {
         \texorpdfstring{%
+          \AtNextCitekey{\defcounter{maxnames}{100}}
           \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
         }{}
       }{%
@@ -1851,9 +1864,20 @@
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-\DeclareNameFormat{firstinits-last}{%
-  \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
-  \usebibmacro{name:andothers}%
+\@ifpackageloaded{biblatex_legacy}{%
+  \DeclareNameFormat{giveninits-last}{%
+    \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
+    \usebibmacro{name:andothers}%
+  }
+}{
+  \DeclareNameFormat{giveninits-last}{%
+    \nameparts{#1}
+    \usebibmacro{name:given-family}
+    {\namepartfamily}
+    {\namepartgiveni}
+    {\namepartprefix}
+    {\namepartsuffix}%
+  }
 }
 \renewcommand*\bibnamedelimc{\addnbspace}
 \renewcommand*\bibnamedelimd{\addnbspace}

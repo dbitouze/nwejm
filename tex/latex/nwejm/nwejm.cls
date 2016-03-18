@@ -87,7 +87,6 @@
   output / web .code:n = {%
   },%
 }%
-\bool_gset_true:N \g__nwejm_no_inside_backcover_bool
 \keys_define:nn { nwejm }
 {
   10pt .code:n = {%
@@ -132,6 +131,7 @@
 \RequirePackage{zref-totpages}
 \RequirePackage{zref-xr}%
 \RequirePackage[multiple]{footmisc}%
+\RequirePackage[svgnames]{xcolor}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref,safeinputenc]{biblatex}%
@@ -145,8 +145,8 @@
 \RequirePackage{geometry}
 \RequirePackage{translations}%
 \RequirePackage{fmtcount}%
-\RequirePackage{varioref}
 \RequirePackage{babel}%
+\RequirePackage{varioref}
 \RequirePackage{tocvsec2}
 \RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
@@ -175,6 +175,7 @@
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
 \int_const:Nn \c__nwejm_interval_in_months_int { 6 }
+\tl_const:Nn \c__nwejm_backcover_tableofcontents_string_tl {Volume's~Contents}
 \tl_const:Nn \c__nwejm_editorinchief_string_tl {Editor~in~Chief}
 \tl_const:Nn \c__nwejm_associate_editors_string_tl {Associate~Editors}
 \tl_const:Nn \c__nwejm_managing_editor_string_tl {Managing~Editor}
@@ -184,10 +185,14 @@
 \tl_const:Nn \c__nwejm_issn_string_tl {\textsc{issn}}
 \tl_const:Nn \c__nwejm_isbn_string_tl {\textsc{isbn}}
 \tl_const:Nn \c__nwejm_latexclass_string_tl {\LaTeX{}~class}
-\tl_const:Nn \c__nwejm_printer_string_tl {Printer}
+\tl_const:Nn \c__nwejm_computer_engineering_string_tl {Computer~engineering~issues}
+\tl_const:Nn \c__nwejm_printer_string_tl {Printing~service}
 \tl_const:Nn \c__nwejm_configuration_file_string_tl {nwejm.cfg}
-\tl_const:Nn \c__nwejm_frontcover_header_string_tl {
-  \space\textendash\space\int_use:N\g__nwejm_issue_number_int%
+\tl_const:Nn \c__nwejm_frontcover_header_left_string_tl {
+  \int_use:N\g__nwejm_issue_year_int%
+}
+\tl_const:Nn \c__nwejm_frontcover_header_right_string_tl {
+  Number\space\int_use:N\g__nwejm_issue_number_int%
 }
 \tl_const:Nn \c__nwejm_backmatter_directory_string_tl {backmatter}
 \tl_const:Nn \c__nwejm_issue_backcover_text_file_string_tl {backcover}
@@ -312,7 +317,7 @@
 \dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
 \dim_const:Nn \c__nwejm_topmargin_frontcover_dim {
   \c__nwejm_topmargin_dim
-  + 30mm
+  % + 30mm
 }
 \dim_const:Nn \c__nwejm_topmargin_inside_cover_dim   {
   \c__nwejm_topmargin_dim
@@ -321,10 +326,10 @@
 \dim_const:Nn \c__nwejm_topmargin_front_matter_dim   {
   \c__nwejm_topmargin_inside_cover_dim
 }
-\dim_const:Nn \c__nwejm_headsep_dim     { 7.5mm}
+\dim_const:Nn \c__nwejm_headsep_dim     { 9.5mm}
 \dim_const:Nn \c__nwejm_headsep_frontcover_dim {
   \c__nwejm_headsep_dim
-  +31mm
+  % +31mm
   % -\c__nwejm_potential_layoutoffset_dim
 }
 \dim_const:Nn \c__nwejm_headsep_inside_frontcover_dim {
@@ -334,9 +339,13 @@
 \dim_const:Nn \c__nwejm_headsep_front_matter_dim {
   \c__nwejm_headsep_inside_frontcover_dim
 }
-\dim_const:Nn \c__nwejm_headheight_dim  { 10mm }
+\dim_const:Nn \c__nwejm_headheight_dim  { 5mm }
 \dim_const:Nn \c__nwejm_botmargin_dim   { 30mm}
 \dim_const:Nn \c__nwejm_footskip_dim    { 10mm}
+\dim_const:Nn \c__nwejm_margin_frontcover_dim { 15mm }
+\dim_const:Nn \c__nwejm_bottom_frontcover_dim { 15mm }
+\dim_const:Nn \c__nwejm_left_minipage_frontcover_dim { .4\linewidth }
+\dim_const:Nn \c__nwejm_right_minipage_frontcover_dim { .6\linewidth }
 \dim_const:Nn \c__nwejm_innermargin_dim { 23mm }
 \dim_const:Nn \c__nwejm_outermargin_dim { 30mm }
 \dim_const:Nn \c__nwejm_inside_cover_box_width_dim { 150mm }%
@@ -360,16 +369,20 @@
   papersize={\c__nwejm_paperwidth_dim,\c__nwejm_paperheight_dim}
 }
 \bool_if:NTF {\g__nwejm_cover_bool} {
+  \dim_show:N \c__nwejm_topmargin_frontcover_dim
+  \dim_show:N \c__nwejm_headsep_frontcover_dim
+  \dim_show:N \c__nwejm_headheight_dim
   \tl_const:Nn \c__nwejm_frontcover_geometry_tl {%
     ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
     ,layoutvoffset=\c__nwejm_potential_layoutoffset_dim
     ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
     ,top=\c__nwejm_topmargin_frontcover_dim
+    ,top=\c__nwejm_topmargin_frontcover_dim
     ,headsep=\c__nwejm_headsep_frontcover_dim
     ,headheight=\c__nwejm_headheight_dim
-    ,bottom=\c_zero_dim
-    ,footskip=\c_zero_dim
-    ,outer=\c_zero_dim
+    ,bottom=\c__nwejm_bottom_frontcover_dim
+    ,footskip=\c__nwejm_footskip_dim
+    ,outer=\c__nwejm_margin_frontcover_dim
     ,inner=\c__nwejm_potential_layoutoffset_dim
     ,nomarginpar%
   }%
@@ -381,9 +394,9 @@
     ,top=\c__nwejm_topmargin_frontcover_dim
     ,headsep=\c__nwejm_headsep_frontcover_dim
     ,headheight=\c__nwejm_headheight_dim
-    ,bottom=\c_zero_dim
-    ,footskip=\c_zero_dim
-    ,hmargin=\c__nwejm_potential_layoutoffset_dim
+    ,bottom=\c__nwejm_bottom_frontcover_dim
+    ,footskip=\c__nwejm_footskip_dim
+    ,hmargin=\c__nwejm_margin_frontcover_dim
     ,nomarginpar%
   }%
 }
@@ -468,65 +481,59 @@
 \bool_if:NF {\g__nwejm_coverpage_bool} {
   \bool_if:NF {\g__nwejm_inside_pages_bool} {
     \preto\@enddocumenthook{
-      \clearpage
+      \cleardoublepage
       \pagenumbering{roman}%
-      \addtocounter{page}{2}
-      \ifoddpage%
-      \hbox{}
-      \else
-      \fi
-      \newpage
+      \setcounter{page}{3}
       \bool_gset_true:N \g__nwejm_backmatter_bool
       \g__nwejm_display_inside_backcover_tl
       \newpage
+      \@openrightfalse
       \g__nwejm_display_backcover_tl
     }%
   }%
 }%
-\bool_if:NF {\g__nwejm_coverpage_bool} {
-  \bool_if:nF { \g__nwejm_for_authors_bool } {
-    \bool_if:nT { \g__nwejm_inside_pages_bool } {
-      \AtEndDocument{%
-        \prg_replicate:nn
-        { \int_mod:nn { 4 - \int_mod:nn { \getpagerefnumber{LastPage} } { 4 } } { 4 } }
-        { \thispagestyle{__nwejm_blank_pages_ps}\null\clearpage }
-      }
-    }
-  }
-}
+\bool_new:N \g__nwejm_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
   \DeclareNameAlias{labelname}{firstinits-last}
   \bool_if:NF {\g__nwejm_for_authors_bool}{
-    \g__nwejm_frontmatter_switch_tl
-    \phantomsection
-    \hypertarget{__nwejm_toc}{}
-    \bookmark[dest=__nwejm_toc,level=chapter]{\contentsname}
+    \bool_if:NF {\g__nwejm_tableofcontents_already_used_bool}{
+      \g__nwejm_frontmatter_switch_tl
+      \phantomsection
+      \hypertarget{__nwejm_toc}{}
+      \bookmark[dest=__nwejm_toc,level=chapter]{\contentsname}
+    }
   }
 }%
 \renewcommand\etocaftertochook
 {%
   \bool_if:NF {\g__nwejm_for_authors_bool}{
-    \normalsize%
-    \clearpage%
-    \bool_gset_false:N \g__nwejm_frontmatter_bool%
-    \g__nwejm_mainmatter_switch_tl
+    \bool_if:NF {\g__nwejm_tableofcontents_already_used_bool}{
+      \normalsize%
+      \clearpage%
+      \bool_gset_false:N \g__nwejm_frontmatter_bool%
+      \g__nwejm_mainmatter_switch_tl
+    }
   }
+  \bool_gset_true:N \g__nwejm_tableofcontents_already_used_bool
 }%
 \newpagestyle{__nwejm_frontcover_ps}[]{%
   \sethead
-  {}%
-  {%
-    \adjustbox{stack=c}{
-      {\Large
-        \c__nwejm_frontcover_header_string_tl
-      }\\[7mm]
-      \adjustbox{scale=2.08}{
-        % \l__nwejm_frontmatter_head_text_tl
-      }%
-    }%
+  {
+    \color{Navy}
+    \LARGE
+    \bfseries
+    \sffamily
+    \c__nwejm_frontcover_header_left_string_tl
   }%
   {}%
+  {%
+    \color{Navy}
+    \LARGE
+    \bfseries
+    \sffamily
+    \c__nwejm_frontcover_header_right_string_tl
+  }%
   %
   \setfoot%
   {}%
@@ -947,10 +954,52 @@
   }{
     \hspace*{-2\c__nwejm_potential_layoutoffset_dim}
   }
+  {
+    \LARGE
+    \bfseries
+    \sffamily
+    \color{Navy}
+    \c__nwejm_journal_title_string_tl
+  }
   \vfill%
-  \noindent%
-  \hspace*{10mm}%
-  \hspace*{-\c__nwejm_potential_layoutoffset_dim}
+  \begin{adjustbox}{valign=M,minipage=\c__nwejm_left_minipage_frontcover_dim}
+    \mbox{}
+    \vfill
+    \includegraphics[width=.7\linewidth]{ logo_SMF }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=\linewidth]{ kwglogo-crop }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=\linewidth]{ sml }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=.7\linewidth]{ fields-institute-logo }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=\linewidth]{ frm }
+    \par
+    \vfill%
+    \mbox{}
+  \end{adjustbox}
+  \hfill
+  \begin{adjustbox}{valign=M,minipage=\c__nwejm_right_minipage_frontcover_dim}
+    \mbox{}
+    \hfill
+    \includegraphics[width=\linewidth]{ grandMoulin }
+  \end{adjustbox}
   % \includegraphics[height=22.5mm]{\c__nwejm_smf_logo_file_string_tl}%
   \vfill%
   \clearpage%
@@ -998,7 +1047,7 @@
 \tl_gset:Nn \g__nwejm_display_inside_backcover_tl {%
   \bool_gset_true:N \g__nwejm_inside_backcover_bool%
   \pagestyle{__nwejm_inside_backcover_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_inside_cover_geometry_tl}%
+  % \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_inside_cover_geometry_tl}%
   % \file_if_exist:nT { \c__nwejm_authors_instructions_file_tl } {%
     \bool_if:NTF {\g__nwejm_no_inside_backcover_bool} {
       \hbox{}
@@ -1028,15 +1077,14 @@
         {%
         \item[\c__nwejm_isbn_string_tl{}~:] \l__nwejm_journal_isbn_tl
         }
-        \bool_if:NT {\g__nwejm_no_inside_backcover_bool} {
         \item[\c__nwejm_latexclass_string_tl{}~:]
           \__nwejm_display_people_by_role:n { classdesigner }
-        \item[\c__nwejm_printer_string_tl{}~:] \g__nwejm_printer_text_tl
-        }
+        \item[\c__nwejm_computer_engineering_string_tl{}~:] %\g__nwejm_printer_text_tl
+          \__nwejm_display_people_by_role:n { computerengineer }
+        \item[\c__nwejm_printer_string_tl{}~:] %\g__nwejm_printer_text_tl
+          \__nwejm_display_people_by_role:n { printingservice }
       \end{description}
-      \bool_if:NT {\g__nwejm_no_inside_backcover_bool} {
         \g__nwejm_font_designer_text_tl
-      }
     }
   % }{%
   %   \hbox{}
@@ -1046,13 +1094,20 @@
 \tl_new:N \g__nwejm_display_backcover_tl%
 \tl_gset:Nn \g__nwejm_display_backcover_tl {%
   \bool_gset_true:N \g__nwejm_backcover_bool
-  \pagestyle{__nwejm_backcover_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_backcover_geometry_tl}%
-  \file_if_exist:nTF { \c__nwejm_backcover_page_file_string_tl } {%
-    \file_input:n {\c__nwejm_backcover_page_file_string_tl}
-  }{%
-    \hbox{}
-  }
+  \begingroup
+  \etocstandardlines
+  \etocsetnexttocdepth{chapter}
+  \renewcommand{\etocbkgcolorcmd}{\color{Navy!5}}
+  \renewcommand{\etocbelowtocskip}{0pt\relax}
+  \fboxsep1ex
+  \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c__nwejm_backcover_tableofcontents_string_tl}}}
+  \tableofcontents
+  \endgroup
+  % \file_if_exist:nTF { \c__nwejm_backcover_page_file_string_tl } {%
+  % \file_input:n {\c__nwejm_backcover_page_file_string_tl}
+  % }{%
+  %   \hbox{}
+  % }
 }
 \cs_new_protected:Nn \__nwejm_date:nn
 {
@@ -1586,6 +1641,7 @@
       \cs_if_exist:cTF {texorpdfstring}
       {
         \texorpdfstring{%
+          \AtNextCitekey{\defcounter{maxnames}{100}}
           \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
         }{}
       }{%
@@ -2474,10 +2530,21 @@
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-\DeclareNameFormat{firstinits-last}{%
-  \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
-  \usebibmacro{name:andothers}%
-}
+% \@ifpackageloaded{biblatex_legacy}{%
+%   \DeclareNameFormat{firstinits-last}{%
+%     \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
+%     \usebibmacro{name:andothers}%
+%   }
+% }{
+  \DeclareNameFormat{firstinits-last}{%
+    \nameparts{#1}
+    \usebibmacro{name:family}
+    {\namepartfamily}
+    {\namepartgiven}
+    {\namepartprefix}
+    {\namepartsuffix}%
+  }
+% }
 \renewcommand*\bibnamedelimc{\addnbspace}
 \renewcommand*\bibnamedelimd{\addnbspace}
 \renewbibmacro{in:}{%
