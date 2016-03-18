@@ -131,13 +131,6 @@
 \RequirePackage[svgnames]{xcolor}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
-\RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
-\@ifpackageloaded{biblatex_legacy}{%
-  \ExecuteBibliographyOptions{firstinits}
-}{
-  \ExecuteBibliographyOptions{giveninits}
-}
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
@@ -165,6 +158,8 @@
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
+\RequirePackage[backend=biber,style=authoryear]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -794,7 +789,6 @@
     \group_begin:
     \togglefalse{blx@giveninits}%
     \citeauthor{#1}
-    \toggletrue{blx@giveninits}%
     \group_end:
   }%
   \cs_if_exist:cTF {texorpdfstring}
@@ -1864,20 +1858,13 @@
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-\@ifpackageloaded{biblatex_legacy}{%
-  \DeclareNameFormat{giveninits-last}{%
-    \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
-    \usebibmacro{name:andothers}%
-  }
-}{
-  \DeclareNameFormat{giveninits-last}{%
-    \nameparts{#1}
-    \usebibmacro{name:given-family}
-    {\namepartfamily}
-    {\namepartgiveni}
-    {\namepartprefix}
-    {\namepartsuffix}%
-  }
+\DeclareNameFormat{giveninits-last}{%
+  \nameparts{#1}
+  \usebibmacro{name:given-family}
+  {\namepartfamily}
+  {\namepartgiveni}
+  {\namepartprefix}
+  {\namepartsuffix}%
 }
 \renewcommand*\bibnamedelimc{\addnbspace}
 \renewcommand*\bibnamedelimd{\addnbspace}

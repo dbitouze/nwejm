@@ -580,17 +580,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[autostyle]{csquotes}%
 %    \end{macrocode}
 %
-% \item Programmable bibliographies and citations:
-%    \begin{macrocode}
-\RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
-\@ifpackagelater{biblatex}{2016/01/01}{%
-  \ExecuteBibliographyOptions{firstinits}
-}{
-  \ExecuteBibliographyOptions{giveninits}
-}
-%    \end{macrocode}
-%
 % \item Extended implementation of the \LaTeX{} array and
 %   tabular–environments:
 %    \begin{macrocode}
@@ -741,6 +730,12 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{autonum}
 %    \end{macrocode}
 % \end{enumerate}
+%
+% \item Programmable bibliographies and citations:
+%    \begin{macrocode}
+\RequirePackage[backend=biber,style=authoryear]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits}
+%    \end{macrocode}
 %
 % Setings of the glossaries and acronyms.
 %    \begin{macrocode}
@@ -3098,11 +3093,7 @@ Running "make install" installs the files in the local TeX tree.
   \tl_gset:Nn \g_@@_citeauthor_tl {%
     \DeclareNameAlias{labelname}{default}%
     \group_begin:
-    \@ifpackagelater{biblatex}{2016/01/01}{%
-      \togglefalse{blx@giveninits}%
-    }{
-      \togglefalse{blx@firstinits}%
-    }
+    \togglefalse{blx@giveninits}%
     \citeauthor{#1}
     \group_end:
   }%
@@ -4570,20 +4561,13 @@ Running "make install" installs the files in the local TeX tree.
 % We create a name format that prints the initial(s) of the first name(s) before
 % last name of a cited author.
 %    \begin{macrocode}
-\@ifpackagelater{biblatex}{2016/01/01}{%
-  \DeclareNameFormat{giveninits-last}{%
-    \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
-    \usebibmacro{name:andothers}%
-  }
-}{
-  \DeclareNameFormat{giveninits-last}{%
-    \nameparts{#1}
-    \usebibmacro{name:given-family}
-    {\namepartfamily}
-    {\namepartgiveni}
-    {\namepartprefix}
-    {\namepartsuffix}%
-  }
+\DeclareNameFormat{giveninits-last}{%
+  \nameparts{#1}
+  \usebibmacro{name:given-family}
+  {\namepartfamily}
+  {\namepartgiveni}
+  {\namepartprefix}
+  {\namepartsuffix}%
 }
 %    \end{macrocode}
 %

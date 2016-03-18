@@ -134,7 +134,6 @@
 \RequirePackage[svgnames]{xcolor}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
-\RequirePackage[backend=biber,defernumbers=true,dashed=false,firstinits,uniquename=init,style=authoryear,backref,safeinputenc]{biblatex}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
@@ -165,6 +164,8 @@
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
+\RequirePackage[backend=biber,style=authoryear]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -495,7 +496,7 @@
 \bool_new:N \g__nwejm_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
-  \DeclareNameAlias{labelname}{firstinits-last}
+  \DeclareNameAlias{labelname}{giveninits-last}
   \bool_if:NF {\g__nwejm_for_authors_bool}{
     \bool_if:NF {\g__nwejm_tableofcontents_already_used_bool}{
       \g__nwejm_frontmatter_switch_tl
@@ -616,7 +617,7 @@
   [%
   ]%
   [
-  \DeclareNameAlias{labelname}{firstinits-last}
+  \DeclareNameAlias{labelname}{giveninits-last}
   \AtNextCitekey{\defcounter{maxnames}{2}}\citeauthor{\g__nwejm_article_bib_key_tl}
   ]%
   {
@@ -895,7 +896,7 @@
   }{%
     \tl_if_in:NnTF \l__nwejm_people_role_tl { editor } {
     \item[
-      \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
+      \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
       ]
       \l__nwejm_people_affiliation_tl%
         \space%
@@ -912,7 +913,7 @@
         \noindent%
         \begin{description}[leftmargin=1em,style=nextline]
         \item[%
-          \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
+          \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
           ]
           \tl_if_empty:NF \l__nwejm_people_affiliation_tl
           {%
@@ -933,7 +934,7 @@
           \medskip%
         }
       }{
-        \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -#1-
+        \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -#1-
           \exp_not:V\DTLcurrentindex}%
         \tl_if_empty:NF \l__nwejm_people_email_tl
         {
@@ -1460,14 +1461,14 @@
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
 \tl_new:N \g__nwejm_authors_first_last_names_tl%
-\tl_new:N \g__nwejm_citeauthor_no_firstinits%
+\tl_new:N \g__nwejm_citeauthor_no_giveninits%
 \tl_new:N \g__nwejm_citeauthor_tl%
 \int_new:N \g__nwejm_author_s_number_current_article_int%
-\cs_new_protected:Nn \__nwejm_citeauthor_no_firstinits:n {%
+\cs_new_protected:Nn \__nwejm_citeauthor_no_giveninits:n {%
   \tl_gset:Nn \g__nwejm_citeauthor_tl {%
     \DeclareNameAlias{labelname}{default}%
     \group_begin:
-    \togglefalse{blx@firstinits}%
+    \togglefalse{blx@giveninits}%
     \citeauthor{#1}
     \group_end:
   }%
@@ -1488,7 +1489,7 @@
   \AtNextCitekey{\defcounter{maxnames}{100}}
   \group_begin:
   \DeclareNameAlias{labelname}{default}%
-  \togglefalse{blx@firstinits}%
+  \togglefalse{blx@giveninits}%
   \citeauthor{#1}
   \group_end:
   \cs_set_eq:NN \multinamedelim \__nwejm_orig_multinamedelim
@@ -1510,7 +1511,7 @@
     { \sort_ordered: }
   }
   \mbox{%
-    \__nwejm_citeauthor_no_firstinits:n {\c__nwejm_issue_bib_key_tl -author-art- \int_use:N \g__nwejm_articles_int-#1}
+    \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -author-art- \int_use:N \g__nwejm_articles_int-#1}
   }
   \seq_map_inline:Nn \l_tmpa_seq {
     \prop_get:cnN {l_author_ #1 _affiliations_prop} {##1} \l_tmpb_tl
@@ -2530,21 +2531,14 @@
   \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-% \@ifpackageloaded{biblatex_legacy}{%
-%   \DeclareNameFormat{firstinits-last}{%
-%     \usebibmacro{name:first-last}{#1}{#4}{#5}{#7}%
-%     \usebibmacro{name:andothers}%
-%   }
-% }{
-  \DeclareNameFormat{firstinits-last}{%
-    \nameparts{#1}
-    \usebibmacro{name:family}
-    {\namepartfamily}
-    {\namepartgiven}
-    {\namepartprefix}
-    {\namepartsuffix}%
-  }
-% }
+\DeclareNameFormat{giveninits-last}{%
+  \nameparts{#1}
+  \usebibmacro{name:given-family}
+  {\namepartfamily}
+  {\namepartgiveni}
+  {\namepartprefix}
+  {\namepartsuffix}%
+}
 \renewcommand*\bibnamedelimc{\addnbspace}
 \renewcommand*\bibnamedelimd{\addnbspace}
 \renewbibmacro{in:}{%
