@@ -326,7 +326,6 @@ Running "make install" installs the files in the local TeX tree.
   output / web .code:n = {%
   },%
 }%
-\bool_gset_true:N \g_@@_no_inside_backcover_bool
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -566,6 +565,11 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[multiple]{footmisc}%
 %    \end{macrocode}
 %
+% \item Extension of \LaTeX{}'s color facilities:
+%    \begin{macrocode}
+\RequirePackage[svgnames]{xcolor}%
+%    \end{macrocode}
+%
 % \item Define commands that appear not to eat spaces:
 %    \begin{macrocode}
 \RequirePackage{xspace}%
@@ -800,6 +804,10 @@ Running "make install" installs the files in the local TeX tree.
 %<*class>
 %    \end{macrocode}
 %
+% For the backcover table of contents.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_backcover_tableofcontents_string_tl {Volume's~Contents}
+%    \end{macrocode}
 % For the editor in chief.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_editorinchief_string_tl {Editor~in~Chief}
@@ -836,18 +844,25 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_latexclass_string_tl {\LaTeX{}~class}
 %    \end{macrocode}
+% For the computer engineering.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_computer_engineering_string_tl {Computer~engineering~issues}
+%    \end{macrocode}
 % For the printer.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_printer_string_tl {Printer}
+\tl_const:Nn \c_@@_printer_string_tl {Printing~service}
 %    \end{macrocode}
 % For configuration file.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_configuration_file_string_tl {nwejm.cfg}
 %    \end{macrocode}
-% For the front cover header text.
+% For the front cover header texts.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_frontcover_header_string_tl {
-  \space\textendash\space\int_use:N\g_@@_issue_number_int%
+\tl_const:Nn \c_@@_frontcover_header_left_string_tl {
+  \int_use:N\g_@@_issue_year_int%
+}
+\tl_const:Nn \c_@@_frontcover_header_right_string_tl {
+  Number\space\int_use:N\g_@@_issue_number_int%
 }
 %    \end{macrocode}
 % For the name of the directory containing the 3rd and 4th cover pages.
@@ -1183,7 +1198,7 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_topmargin_dim   { 20mm}
 \dim_const:Nn \c_@@_topmargin_frontcover_dim {
   \c_@@_topmargin_dim
-  + 30mm
+  % + 30mm
 }
 \dim_const:Nn \c_@@_topmargin_inside_cover_dim   {
   \c_@@_topmargin_dim
@@ -1195,10 +1210,10 @@ Running "make install" installs the files in the local TeX tree.
 % \dim_const:Nn \c_@@_topmargin_backcover_dim {
 %   \c_@@_topmargin_frontcover_dim
 % }
-\dim_const:Nn \c_@@_headsep_dim     { 7.5mm}
+\dim_const:Nn \c_@@_headsep_dim     { 9.5mm}
 \dim_const:Nn \c_@@_headsep_frontcover_dim {
   \c_@@_headsep_dim
-  +31mm
+  % +31mm
   % -\c_@@_potential_layoutoffset_dim
 }
 \dim_const:Nn \c_@@_headsep_inside_frontcover_dim {
@@ -1208,9 +1223,13 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_headsep_front_matter_dim {
   \c_@@_headsep_inside_frontcover_dim
 }
-\dim_const:Nn \c_@@_headheight_dim  { 10mm }
+\dim_const:Nn \c_@@_headheight_dim  { 5mm }
 \dim_const:Nn \c_@@_botmargin_dim   { 30mm}
 \dim_const:Nn \c_@@_footskip_dim    { 10mm}
+\dim_const:Nn \c_@@_margin_frontcover_dim { 15mm }
+\dim_const:Nn \c_@@_bottom_frontcover_dim { 15mm }
+\dim_const:Nn \c_@@_left_minipage_frontcover_dim { .4\linewidth }
+\dim_const:Nn \c_@@_right_minipage_frontcover_dim { .6\linewidth }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1264,16 +1283,20 @@ Running "make install" installs the files in the local TeX tree.
 % We create a constant token list that contains the geometry of the front cover.
 %    \begin{macrocode}
 \bool_if:NTF {\g_@@_cover_bool} {
+  \dim_show:N \c_@@_topmargin_frontcover_dim
+  \dim_show:N \c_@@_headsep_frontcover_dim
+  \dim_show:N \c_@@_headheight_dim
   \tl_const:Nn \c_@@_frontcover_geometry_tl {%
     ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
     ,layoutvoffset=\c_@@_potential_layoutoffset_dim
     ,bindingoffset=\c_@@_potential_bindingoffset_dim
     ,top=\c_@@_topmargin_frontcover_dim
+    ,top=\c_@@_topmargin_frontcover_dim
     ,headsep=\c_@@_headsep_frontcover_dim
     ,headheight=\c_@@_headheight_dim
-    ,bottom=\c_zero_dim
-    ,footskip=\c_zero_dim
-    ,outer=\c_zero_dim
+    ,bottom=\c_@@_bottom_frontcover_dim
+    ,footskip=\c_@@_footskip_dim
+    ,outer=\c_@@_margin_frontcover_dim
     ,inner=\c_@@_potential_layoutoffset_dim
     ,nomarginpar%
   }%
@@ -1285,9 +1308,9 @@ Running "make install" installs the files in the local TeX tree.
     ,top=\c_@@_topmargin_frontcover_dim
     ,headsep=\c_@@_headsep_frontcover_dim
     ,headheight=\c_@@_headheight_dim
-    ,bottom=\c_zero_dim
-    ,footskip=\c_zero_dim
-    ,hmargin=\c_@@_potential_layoutoffset_dim
+    ,bottom=\c_@@_bottom_frontcover_dim
+    ,footskip=\c_@@_footskip_dim
+    ,hmargin=\c_@@_margin_frontcover_dim
     ,nomarginpar%
   }%
 }
@@ -1415,68 +1438,75 @@ Running "make install" installs the files in the local TeX tree.
 \bool_if:NF {\g_@@_coverpage_bool} {
   \bool_if:NF {\g_@@_inside_pages_bool} {
     \preto\@enddocumenthook{
-      \clearpage
 %    \end{macrocode}
 %
 % The inside front cover and front cover pages are numbered \enquote{i} and
 % \enquote{ii} hence the inside back cover and back cover pages are numbered
 % \enquote{iii} and \enquote{iv}.
 %    \begin{macrocode}
+      \cleardoublepage
       \pagenumbering{roman}%
-      \addtocounter{page}{2}
-      \ifoddpage%
-      \hbox{}
-      \else
-      \fi
-      \newpage
+      \setcounter{page}{3}
+%    \end{macrocode}
+%
+% On the backcover, we want the table of contents (displayed as a chapter,
+% therefore by default starting on a right page) to be displayed on a left page.
+%    \begin{macrocode}
       \bool_gset_true:N \g_@@_backmatter_bool
       \g_@@_display_inside_backcover_tl
       \newpage
+      \@openrightfalse
       \g_@@_display_backcover_tl
     }%
   }%
 }%
 %    \end{macrocode}
 %
-% If we don't ask the cover page (only), the document total page numbers should
-% be a multiple of four and we add the necessary and sufficient number of blank
-% pages if it isn't the case (code borrowed from
-% \url{http://tex.stackexchange.com/a/83498/18401}).
-%    \begin{macrocode}
-\bool_if:NF {\g_@@_coverpage_bool} {
-  \bool_if:nF { \g_@@_for_authors_bool } {
-    \bool_if:nT { \g_@@_inside_pages_bool } {
-      \AtEndDocument{%
-        \prg_replicate:nn
-        { \int_mod:nn { 4 - \int_mod:nn { \getpagerefnumber{LastPage} } { 4 } } { 4 } }
-        { \thispagestyle{@@_blank_pages_ps}\null\clearpage }
-      }
-    }
-  }
-}
-%    \end{macrocode}
+% % If we don't ask the cover page (only), the document total page numbers should
+% % be a multiple of four and we add the necessary and sufficient number of blank
+% % pages if it isn't the case (code borrowed from
+% % \url{http://tex.stackexchange.com/a/83498/18401}).
+% %    \begin{macrocode}
+% \bool_if:NF {\g_@@_coverpage_bool} {
+%   \bool_if:nF { \g_@@_for_authors_bool } {
+%     \bool_if:nT { \g_@@_inside_pages_bool } {
+%       \AtEndDocument{%
+%         \prg_replicate:nn
+%         { \int_mod:nn { 4 - \int_mod:nn { \getpagerefnumber{LastPage} } { 4 } } { 4 } }
+%         { \thispagestyle{@@_blank_pages_ps}\null\clearpage }
+%       }
+%     }
+%   }
+% }
+% %    \end{macrocode}
 %
 % \section{Displaying the table of contents}
 %
 %    \begin{macrocode}
+\bool_new:N \g_@@_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
-  \DeclareNameAlias{labelname}{firstinits-last}
+  \DeclareNameAlias{labelname}{giveninits-last}
   \bool_if:NF {\g_@@_for_authors_bool}{
-    \g_@@_frontmatter_switch_tl
-    \phantomsection
-    \hypertarget{@@_toc}{}
-    \bookmark[dest=@@_toc,level=chapter]{\contentsname}
+    \bool_if:NF {\g_@@_tableofcontents_already_used_bool}{
+      \g_@@_frontmatter_switch_tl
+      \phantomsection
+      \hypertarget{@@_toc}{}
+      \bookmark[dest=@@_toc,level=chapter]{\contentsname}
+    }
   }
 }%
 \renewcommand\etocaftertochook
 {%
   \bool_if:NF {\g_@@_for_authors_bool}{
-    \normalsize%
-    \clearpage%
-    \bool_gset_false:N \g_@@_frontmatter_bool%
-    \g_@@_mainmatter_switch_tl
+    \bool_if:NF {\g_@@_tableofcontents_already_used_bool}{
+      \normalsize%
+      \clearpage%
+      \bool_gset_false:N \g_@@_frontmatter_bool%
+      \g_@@_mainmatter_switch_tl
+    }
   }
+  \bool_gset_true:N \g_@@_tableofcontents_already_used_bool
 }%
 %    \end{macrocode}
 %
@@ -1487,18 +1517,21 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \newpagestyle{@@_frontcover_ps}[]{%
   \sethead
-  {}%
-  {%
-    \adjustbox{stack=c}{
-      {\Large
-        \c_@@_frontcover_header_string_tl
-      }\\[7mm]
-      \adjustbox{scale=2.08}{
-        % \l_@@_frontmatter_head_text_tl
-      }%
-    }%
+  {
+    \color{Navy}
+    \LARGE
+    \bfseries
+    \sffamily
+    \c_@@_frontcover_header_left_string_tl
   }%
   {}%
+  {%
+    \color{Navy}
+    \LARGE
+    \bfseries
+    \sffamily
+    \c_@@_frontcover_header_right_string_tl
+  }%
   %
   \setfoot%
   {}%
@@ -2214,10 +2247,52 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \hspace*{-2\c_@@_potential_layoutoffset_dim}
   }
+  {
+    \LARGE
+    \bfseries
+    \sffamily
+    \color{Navy}
+    \c_@@_journal_title_string_tl
+  }
   \vfill%
-  \noindent%
-  \hspace*{10mm}%
-  \hspace*{-\c_@@_potential_layoutoffset_dim}
+  \begin{adjustbox}{valign=M,minipage=\c_@@_left_minipage_frontcover_dim}
+    \mbox{}
+    \vfill
+    \includegraphics[width=.7\linewidth]{ logo_SMF }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=\linewidth]{ kwglogo-crop }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=\linewidth]{ sml }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=.7\linewidth]{ fields-institute-logo }
+    \par
+    \mbox{}
+    \vfill%
+    \mbox{}
+    \par
+    \includegraphics[width=\linewidth]{ frm }
+    \par
+    \vfill%
+    \mbox{}
+  \end{adjustbox}
+  \hfill
+  \begin{adjustbox}{valign=M,minipage=\c_@@_right_minipage_frontcover_dim}
+    \mbox{}
+    \hfill
+    \includegraphics[width=\linewidth]{ grandMoulin }
+  \end{adjustbox}
   % \includegraphics[height=22.5mm]{\c_@@_smf_logo_file_string_tl}%
   \vfill%
   \clearpage%
@@ -2277,7 +2352,7 @@ Running "make install" installs the files in the local TeX tree.
 \tl_gset:Nn \g_@@_display_inside_backcover_tl {%
   \bool_gset_true:N \g_@@_inside_backcover_bool%
   \pagestyle{@@_inside_backcover_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_inside_cover_geometry_tl}%
+  % \exp_after:wN\newgeometry\exp_after:wN{\c_@@_inside_cover_geometry_tl}%
   % \file_if_exist:nT { \c_@@_authors_instructions_file_tl } {%
     \bool_if:NTF {\g_@@_no_inside_backcover_bool} {
       \hbox{}
@@ -2307,15 +2382,14 @@ Running "make install" installs the files in the local TeX tree.
         {%
         \item[\c_@@_isbn_string_tl{}~:] \l_@@_journal_isbn_tl
         }
-        \bool_if:NT {\g_@@_no_inside_backcover_bool} {
         \item[\c_@@_latexclass_string_tl{}~:]
           \@@_display_people_by_role:n { classdesigner }
-        \item[\c_@@_printer_string_tl{}~:] \g_@@_printer_text_tl
-        }
+        \item[\c_@@_computer_engineering_string_tl{}~:] %\g_@@_printer_text_tl
+          \@@_display_people_by_role:n { computerengineer }
+        \item[\c_@@_printer_string_tl{}~:] %\g_@@_printer_text_tl
+          \@@_display_people_by_role:n { printingservice }
       \end{description}
-      \bool_if:NT {\g_@@_no_inside_backcover_bool} {
         \g_@@_font_designer_text_tl
-      }
     }
   % }{%
   %   \hbox{}
@@ -2331,13 +2405,24 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_display_backcover_tl%
 \tl_gset:Nn \g_@@_display_backcover_tl {%
   \bool_gset_true:N \g_@@_backcover_bool
-  \pagestyle{@@_backcover_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_backcover_geometry_tl}%
-  \file_if_exist:nTF { \c_@@_backcover_page_file_string_tl } {%
-    \file_input:n {\c_@@_backcover_page_file_string_tl}
-  }{%
-    \hbox{}
-  }
+%    \end{macrocode}
+%
+% The following code is borrowed from \pkg{etoc}'s documentation.
+%    \begin{macrocode}
+  \begingroup
+  \etocstandardlines
+  \etocsetnexttocdepth{chapter}
+  \renewcommand{\etocbkgcolorcmd}{\color{Navy!5}}
+  \renewcommand{\etocbelowtocskip}{0pt\relax}
+  \fboxsep1ex
+  \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c_@@_backcover_tableofcontents_string_tl}}}
+  \tableofcontents
+  \endgroup
+  % \file_if_exist:nTF { \c_@@_backcover_page_file_string_tl } {%
+  % \file_input:n {\c_@@_backcover_page_file_string_tl}
+  % }{%
+  %   \hbox{}
+  % }
 }
 %    \end{macrocode}
 %
@@ -4904,20 +4989,17 @@ Running "make install" installs the files in the local TeX tree.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Font designer text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\fontdesignertext{Nous utilisons la police \href{http://ctan.org/pkg/kpfonts}{Kp-Fonts} cr\'{e}\'{e}e par Christophe \textsc{Caignaert}.}
+\fontdesignertext{We make use of the set of fonts \href{http://ctan.org/pkg/kpfonts}{Kp-Fonts}, designed by Christophe Caignaert.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Printer text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\printertext{Impression supervis\'{e}e par Jean-Jacques \textsc{Derycke}}
+\printingservice{Derycke, Jean-Jacques}{Universit\'{e} de Lille 1}{France}{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Authors instructions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{authorsinstructions}
+% Bla bla bla.
 % \end{authorsinstructions}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Font designer
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\fontdesigner{Caignaert, Christophe}{}{}{}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
