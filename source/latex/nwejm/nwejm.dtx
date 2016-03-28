@@ -697,6 +697,13 @@ Running "make install" installs the files in the local TeX tree.
 %<class>\RequirePackage{placeins}%
 %    \end{macrocode}
 %
+% \item Improve on \LaTeX{}'s footnote handling (useful for its ×\savenotes× and
+% ×\spewnotes× commands added to theorems environment in order footnotes are
+% not trapped within them).
+%    \begin{macrocode}
+\RequirePackage{footnote}%
+%    \end{macrocode}
+%
 % \item Hypertext marks:
 %    \begin{macrocode}
 \RequirePackage{hyperref}%
@@ -3795,6 +3802,12 @@ Running "make install" installs the files in the local TeX tree.
   {\l_@@_newtheorem_french_title_tl}
   {\l_@@_newtheorem_german_title_tl}
   {\l_@@_newtheorem_dutch_title_tl}
+%    \end{macrocode}
+% The following line ensures footnotes and, more specifically, autocitations
+% (which are in footnotes) are handled in theorems' notes (i.e. in their
+% optional argument).
+%    \begin{macrocode}
+  \makesavenoteenv{#2}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
