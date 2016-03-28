@@ -149,6 +149,7 @@
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
+\RequirePackage{footnote}%
 \RequirePackage{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
@@ -1297,6 +1298,7 @@
   {\l__nwejm_newtheorem_french_title_tl}
   {\l__nwejm_newtheorem_german_title_tl}
   {\l__nwejm_newtheorem_dutch_title_tl}
+  \makesavenoteenv{#2}
   \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
     \ifcsmacro{#2*}{%
       \RenewDocumentEnvironment{#2*}{o}
@@ -1377,9 +1379,13 @@
     \GetTranslation{plural-#1}
   }
   \Crefname{#1}{
-    \tl_mixed_case:n{ \protect\GetTranslation{#1} }
+    \tl_mixed_case:n{ \protect
+      \GetTranslation{#1}
+    }
   }{%
-    \tl_mixed_case:n{ \protect\GetTranslation{plural-#1} }
+    \tl_mixed_case:n{
+      \GetTranslation{plural-#1}
+    }
   }
 }
 \clist_set:Nn \l_tmpa_clist {%
@@ -1407,6 +1413,15 @@
     \GetTranslation{#1}
   }{%
     \GetTranslation{plural-#1}
+  }
+  \Crefname{#1i}{
+    \tl_mixed_case:n{
+      \GetTranslation{#1}
+    }
+  }{%
+    \tl_mixed_case:n{
+      \GetTranslation{plural-#1}
+    }
   }
 }
 \NewDocumentEnvironment{hypotheses}{}
@@ -1844,8 +1859,6 @@
     \g__nwejm_article_acknowledgments_tl
     \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
-  \int_set:Nn \l__nwejm_section_int {\thesection}
-  \setcounter{section}{-1}
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
    \bool_if:NF \g__nwejm_nolocaltoc_bool {
      \newpage
@@ -1855,7 +1868,6 @@
     \etocsetlevel{chapter}{6}
     \tableofcontents
   }
-  \setcounter{section}{\int_use:N \l__nwejm_section_int}
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
 \DeclareNameFormat{giveninits-last}{%
