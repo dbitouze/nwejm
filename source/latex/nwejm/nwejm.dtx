@@ -3948,6 +3948,15 @@ Running "make install" installs the files in the local TeX tree.
   }{%
     \GetTranslation{plural-#1}
   }
+  \Crefname{#1i}{
+    \tl_mixed_case:n{
+      \GetTranslation{#1}
+    }
+  }{%
+    \tl_mixed_case:n{
+      \GetTranslation{plural-#1}
+    }
+  }
 }
 \NewDocumentEnvironment{hypotheses}{}
 {
