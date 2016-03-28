@@ -3836,7 +3836,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We add to the list of counters we want to be able to easily set to zero the
 % ones associated to the (numbered) theorem environments (defined either by the
-% or by the user):
+% class or by the user):
 %    \begin{macrocode}
   \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
 }
@@ -3906,9 +3906,13 @@ Running "make install" installs the files in the local TeX tree.
     \GetTranslation{plural-#1}
   }
   \Crefname{#1}{
-    \tl_mixed_case:n{ \protect\GetTranslation{#1} }
+    \tl_mixed_case:n{ \protect
+      \GetTranslation{#1}
+    }
   }{%
-    \tl_mixed_case:n{ \protect\GetTranslation{plural-#1} }
+    \tl_mixed_case:n{
+      \GetTranslation{plural-#1}
+    }
   }
 }
 %    \end{macrocode}
