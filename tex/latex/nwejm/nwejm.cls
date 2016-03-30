@@ -156,7 +156,7 @@
 \RequirePackage{datatool}%
 \RequirePackage{placeins}%
 \RequirePackage{footnote}%
-\RequirePackage{hyperref}%
+\RequirePackage[hyperfootnotes=false]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
 }%
@@ -166,7 +166,7 @@
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
 \RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits}
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits,ibidtracker,autolang=other}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -2610,29 +2610,41 @@
     }
   }
 }
+\newbool{cbx:loccit}
+\providecommand*{\mkibid}[1]{#1}
+\newbibmacro*{cite:ibid}{%
+  \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
+  \ifloccit
+    {\global\booltrue{cbx:loccit}}
+    {}}
 \newbibmacro*{__nwejm_cite}{%
   \iffieldundef{shorthand}{%
-    \ifthenelse{%
-      \ifnameundef{labelname}%
-    }{%
-      \usebibmacro{cite:label}%
-      \setunit{\addcomma\space}%
-    }{%
-      \printnames{labelname}%
-      \ifthenelse{%
-        \iffieldundef{labelyear}%
-      }{%
-      }{%
-        \setunit{\addcomma\space}%
-        \usebibmacro{cite:labelyear+extrayear}%
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+      {\usebibmacro{cite:ibid}}
+      {%
         \ifthenelse{%
-          \iffieldundef{labeltitle}%
+          \ifnameundef{labelname}%
         }{%
-        }{%
+          \usebibmacro{cite:label}%
           \setunit{\addcomma\space}%
-          \usebibmacro{cite:title}%
-        }
-      }
+        }{%
+          \printnames{labelname}%
+          \ifthenelse{%
+            \iffieldundef{labelyear}%
+          }{%
+          }{%
+            \setunit{\addcomma\space}%
+            \usebibmacro{cite:labelyear+extrayear}%
+            \ifthenelse{%
+              \iffieldundef{labeltitle}%
+            }{%
+            }{%
+              \setunit{\addcomma\space}%
+              \usebibmacro{cite:title}%
+            }
+          }
+        }%
+      }%
     }%
   }{%
     \usebibmacro{cite:shorthand}%
@@ -2646,7 +2658,12 @@
 {\usebibmacro{citeindex}%
   \usebibmacro{__nwejm_cite}}
 {%
-  \setlength{\parindent}{\footnotemargin}
+  \ifcurrentbaselanguage{french}{%
+    \parindent=\parindentFFN%
+    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
+  }{%
+    \parindent=\footnotemargin%
+  }%
   \multicitedelim\newline\indent
 }
 {\usebibmacro{postnote}}
