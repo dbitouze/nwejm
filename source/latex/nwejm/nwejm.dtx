@@ -741,7 +741,7 @@ Running "make install" installs the files in the local TeX tree.
 % \item Programmable bibliographies and citations:
 %    \begin{macrocode}
 \RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits}
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits,ibidtracker}
 %    \end{macrocode}
 %
 % Setings of the glossaries and acronyms.
@@ -4667,29 +4667,41 @@ Running "make install" installs the files in the local TeX tree.
 % ×authortitle× and ×authoryear× styles: it displays the label name (mainly
 % authors' names), then the year and finally the title.
 %    \begin{macrocode}
+\newbool{cbx:loccit}
+\providecommand*{\mkibid}[1]{#1}
+\newbibmacro*{cite:ibid}{%
+  \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
+  \ifloccit
+    {\global\booltrue{cbx:loccit}}
+    {}}
 \newbibmacro*{_@@_cite}{%
   \iffieldundef{shorthand}{%
-    \ifthenelse{%
-      \ifnameundef{labelname}%
-    }{%
-      \usebibmacro{cite:label}%
-      \setunit{\addcomma\space}%
-    }{%
-      \printnames{labelname}%
-      \ifthenelse{%
-        \iffieldundef{labelyear}%
-      }{%
-      }{%
-        \setunit{\addcomma\space}%
-        \usebibmacro{cite:labelyear+extrayear}%
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+      {\usebibmacro{cite:ibid}}
+      {%
         \ifthenelse{%
-          \iffieldundef{labeltitle}%
+          \ifnameundef{labelname}%
         }{%
-        }{%
+          \usebibmacro{cite:label}%
           \setunit{\addcomma\space}%
-          \usebibmacro{cite:title}%
-        }
-      }
+        }{%
+          \printnames{labelname}%
+          \ifthenelse{%
+            \iffieldundef{labelyear}%
+          }{%
+          }{%
+            \setunit{\addcomma\space}%
+            \usebibmacro{cite:labelyear+extrayear}%
+            \ifthenelse{%
+              \iffieldundef{labeltitle}%
+            }{%
+            }{%
+              \setunit{\addcomma\space}%
+              \usebibmacro{cite:title}%
+            }
+          }
+        }%
+      }%
     }%
   }{%
     \usebibmacro{cite:shorthand}%
