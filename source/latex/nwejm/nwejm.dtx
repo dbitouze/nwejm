@@ -4732,7 +4732,12 @@ Running "make install" installs the files in the local TeX tree.
 % Unique (auto)citations with multiple keys are displayed in footnotes but each
 % of the corresponding references is on its own line.
 %    \begin{macrocode}
-  \setlength{\parindent}{\footnotemargin}
+  \ifcurrentbaselanguage{french}{%
+    \parindent=\parindentFFN%
+    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
+  }{%
+    \parindent=\footnotemargin%
+  }%
   \multicitedelim\newline\indent
 }
 {\usebibmacro{postnote}}
