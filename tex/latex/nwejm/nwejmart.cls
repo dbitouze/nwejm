@@ -160,7 +160,7 @@
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
 \RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits,ibidtracker,autolang=other}
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits,ibidtracker=constrict}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -1668,11 +1668,19 @@
   #1
 }
 \NewDocumentCommand \set { m O{} } {
+  \if@display
   \tl_if_empty:nTF {#2} {%
     \__nwejm_set*{#1}
   }{
     \__nwejm_set*{#1\l__nwejm_given_tl #2}
   }
+  \else
+  \tl_if_empty:nTF {#2} {%
+    \__nwejm_set{#1}
+  }{
+    \__nwejm_set{#1\l__nwejm_given_tl #2}
+  }
+  \fi
 }
 \DeclareDocumentCommand{\NewPairedDelimiter}{mm}
  {
