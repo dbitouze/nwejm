@@ -5195,15 +5195,15 @@ Running "make install" installs the files in the local TeX tree.
 % ×\@makefnmark×.
 %    \begin{macrocode}
 \renewrobustcmd{\blx@mkbibfootnote}[2]{%
-  \iftoggle{blx@footnote}
+  \iftoggle{blx@footnote}%
   {\blx@warning{Nested notes}%
-    \addspace\mkbibparens{#2}}
-  {\unspace
-    \ifnum\blx@notetype=\tw@
-    \expandafter\@firstoftwo
-    \else
-    \expandafter\@secondoftwo
-    \fi
+    \addspace\mkbibparens{#2}}%
+  {\unspace%
+    \ifnum\blx@notetype=\tw@%
+    \expandafter\@firstoftwo%
+    \else%
+    \expandafter\@secondoftwo%
+    \fi%
     {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}%
     {%
       \patchcmd\@makefnmark%
@@ -5240,8 +5240,8 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \newbibmacro*{nwejm:cite}{%
   \iffieldundef{shorthand}{%
-    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
-      {\usebibmacro{cite:ibid}}
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}%
+      {\usebibmacro{cite:ibid}}%
       {%
         \ifthenelse{%
           \ifnameundef{labelname}%
@@ -5262,8 +5262,8 @@ Running "make install" installs the files in the local TeX tree.
             }{%
               \setunit{\addcomma\space}%
               \usebibmacro{cite:title}%
-            }
-          }
+            }%
+          }%
         }%
       }%
     }%
@@ -5278,7 +5278,7 @@ Running "make install" installs the files in the local TeX tree.
 % bib macro instead of the usual ×cite× one.
 %    \begin{macrocode}
 \DeclareCiteCommand{\nwejmfootcite}[\mkbibfootnote]
-{\usebibmacro{prenote}}
+{\usebibmacro{prenote}}%
 {\usebibmacro{citeindex}%
   \usebibmacro{nwejm:cite}}
 {%
@@ -5293,9 +5293,9 @@ Running "make install" installs the files in the local TeX tree.
   }{%
     \parindent=\footnotemargin%
   }%
-  \multicitedelim\newline\indent
+  \multicitedelim\newline\indent%
 }
-{\usebibmacro{postnote}}
+{\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
 {\addsemicolon\space}
 %    \end{macrocode}
