@@ -76,6 +76,7 @@ Running "make install" installs the files in the local TeX tree.
   \file{\NWEJM@classname.cls}{\from{\jobname.dtx}{class}}
   \file{\NWEJM@classname art.cls}{\from{\jobname.dtx}{class-article}}
   \file{\NWEJM@classname.dbx}{\from{\jobname.dtx}{datamodel}}
+  \file{\NWEJM@classname.cbx}{\from{\jobname.dtx}{citationstyle}}
   \file{\NWEJM@classname.lbx}{\from{\jobname.dtx}{languagemodel}}
   \nopreamble\nopostamble
   \file{\NWEJM@classname.cfg}{\from{\jobname.dtx}{configuration}}
@@ -739,8 +740,8 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Programmable bibliographies and citations:
 %    \begin{macrocode}
-\RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits,ibidtracker=constrict}
+\RequirePackage[backend=biber,bibstyle=authoryear,citestyle=nwejm]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 %    \end{macrocode}
 %
 % Setings of the glossaries and acronyms.
@@ -4644,121 +4645,6 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% We redefine the ×\blx@mkbibfootnote× macro in order the footnote mark of
-% bibliographic citations are in bold, just by inserting a patch of
-% ×\@makefnmark×.
-%    \begin{macrocode}
-\renewrobustcmd{\blx@mkbibfootnote}[2]{%
-  \iftoggle{blx@footnote}
-  {\blx@warning{Nested notes}%
-    \addspace\mkbibparens{#2}}
-  {\unspace
-    \ifnum\blx@notetype=\tw@
-    \expandafter\@firstoftwo
-    \else
-    \expandafter\@secondoftwo
-    \fi
-    {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
-    {%
-      \patchcmd\@makefnmark%
-      {\normalfont}%
-      {\normalfont\bfseries}%
-      {}{}%
-      \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}
-    }
-  }
-}
-%    \end{macrocode}
-%
-% We create the ×_@@_cite× bib macro which emulates a mix between
-% ×authortitle× and ×authoryear× styles: it displays the label name (mainly
-% authors' names), then the year and finally the title.
-%    \begin{macrocode}
-\newbool{cbx:loccit}
-\providecommand*{\mkibid}[1]{#1}
-\newbibmacro*{cite:ibid}{%
-  \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
-  \ifloccit
-    {\global\booltrue{cbx:loccit}}
-    {}}
-\newbibmacro*{_@@_cite}{%
-  \iffieldundef{shorthand}{%
-    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
-      {\usebibmacro{cite:ibid}}
-      {%
-        \ifthenelse{%
-          \ifnameundef{labelname}%
-        }{%
-          \usebibmacro{cite:label}%
-          \setunit{\addcomma\space}%
-        }{%
-          \printnames{labelname}%
-          \ifthenelse{%
-            \iffieldundef{labelyear}%
-          }{%
-          }{%
-            \setunit{\addcomma\space}%
-            \usebibmacro{cite:labelyear+extrayear}%
-            \ifthenelse{%
-              \iffieldundef{labeltitle}%
-            }{%
-            }{%
-              \setunit{\addcomma\space}%
-              \usebibmacro{cite:title}%
-            }
-          }
-        }%
-      }%
-    }%
-  }{%
-    \usebibmacro{cite:shorthand}%
-  }%
-}
-%    \end{macrocode}
-%
-% Because this mix is based upon ×authoryear× style loaded at ×biblatex× load,
-% we need to define the bib macro ×cite:title× defined in ×authortitle× but not
-% in ×authoryear×.
-%    \begin{macrocode}
-\newbibmacro*{cite:title}{%
-  \printtext[bibhyperref]{%
-    \printfield[citetitle]{labeltitle}}}
-%    \end{macrocode}
-%
-% We now declare the new cite command ×\_@@_foot_cite× (and it multicite
-% counterpart) which is identical to ×\footcite× except it uses the ×_@@_cite×
-% bib macro instead of the usual ×cite× one.
-%    \begin{macrocode}
-\DeclareCiteCommand{\_@@_foot_cite}[\mkbibfootnote]
-{\usebibmacro{prenote}}
-{\usebibmacro{citeindex}%
-  \usebibmacro{_@@_cite}}
-{%
-%    \end{macrocode}
-%
-% Unique (auto)citations with multiple keys are displayed in footnotes but each
-% of the corresponding references is on its own line.
-%    \begin{macrocode}
-  \ifcurrentbaselanguage{french}{%
-    \parindent=\parindentFFN%
-    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
-  }{%
-    \parindent=\footnotemargin%
-  }%
-  \multicitedelim\newline\indent
-}
-{\usebibmacro{postnote}}
-\DeclareMultiCiteCommand{\_@@_foot_cites}[\mkbibfootnote]{\_@@_foot_cite}
-{\addsemicolon\space}
-%    \end{macrocode}
-%
-% We now declare the ×_@@_× identifier that provides the definitions for the
-% ×\autocite× and ×\autocites× commands and we apply these definitions.
-%    \begin{macrocode}
-\DeclareAutoCiteCommand{_@@_foot_cite}{\_@@_foot_cite}{\_@@_foot_cites}
-\ExecuteBibliographyOptions{autocite=_@@_foot_cite}
-%    \end{macrocode}
-%
 % \subsection{Related to \Pkg{kpfonts}}
 %
 % We robustify the "\itshape" redefinition (in case of "easyscsl" option), that
@@ -5287,6 +5173,143 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %</dutch>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*citationstyle>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesFile{nwejm.cbx}
+[2016/04/01 v 0.1 nwejm citation style (DB)]
+
+\RequireCitationStyle{authoryear}
+
+\ExecuteBibliographyOptions{giveninits,ibidtracker=constrict}
+
+%    \end{macrocode}
+%
+% We redefine the ×\blx@mkbibfootnote× macro in order the footnote mark of
+% bibliographic citations are in bold, just by inserting a patch of
+% ×\@makefnmark×.
+%    \begin{macrocode}
+\renewrobustcmd{\blx@mkbibfootnote}[2]{%
+  \iftoggle{blx@footnote}
+  {\blx@warning{Nested notes}%
+    \addspace\mkbibparens{#2}}
+  {\unspace
+    \ifnum\blx@notetype=\tw@
+    \expandafter\@firstoftwo
+    \else
+    \expandafter\@secondoftwo
+    \fi
+    {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}%
+    {%
+      \patchcmd\@makefnmark%
+      {\normalfont}%
+      {\normalfont\bfseries}%
+      {}{}%
+      \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% Because this cite style is a mix between ×authortitle× and ×authoryear× but is
+% mainly based upon ×authoryear× style, we need to define the bib macro
+% ×cite:title× defined in ×authortitle× but not in ×authoryear×.
+%    \begin{macrocode}
+\newbibmacro*{cite:title}{%
+  \printtext[bibhyperref]{%
+    \printfield[citetitle]{labeltitle}}}
+%    \end{macrocode}
+%
+% Because we want to replace autocite redundant consecutive citations by
+% \enquote{Ibid.}, we need to borrow some code from \pkg{biblatex}'s ×*-ibid* styles.
+%    \begin{macrocode}
+\providecommand*{\mkibid}[1]{#1}
+\newbibmacro*{cite:ibid}{%
+  \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
+}
+%    \end{macrocode}
+%
+% We create the ×nwejm:cite× bib macro which emulates a mix between
+% ×authortitle× and ×authoryear× styles: it displays the label name (mainly
+% authors' names), then the year and finally the title.
+%    \begin{macrocode}
+\newbibmacro*{nwejm:cite}{%
+  \iffieldundef{shorthand}{%
+    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+      {\usebibmacro{cite:ibid}}
+      {%
+        \ifthenelse{%
+          \ifnameundef{labelname}%
+        }{%
+          \usebibmacro{cite:label}%
+          \setunit{\addcomma\space}%
+        }{%
+          \printnames{labelname}%
+          \ifthenelse{%
+            \iffieldundef{labelyear}%
+          }{%
+          }{%
+            \setunit{\addcomma\space}%
+            \usebibmacro{cite:labelyear+extrayear}%
+            \ifthenelse{%
+              \iffieldundef{labeltitle}%
+            }{%
+            }{%
+              \setunit{\addcomma\space}%
+              \usebibmacro{cite:title}%
+            }
+          }
+        }%
+      }%
+    }%
+  }{%
+    \usebibmacro{cite:shorthand}%
+  }%
+}
+%    \end{macrocode}
+%
+% We now declare the new cite command ×\nwejmfootcite× (and it multicite
+% counterpart) which is identical to ×\footcite× except it uses the ×nwejm:cite×
+% bib macro instead of the usual ×cite× one.
+%    \begin{macrocode}
+\DeclareCiteCommand{\nwejmfootcite}[\mkbibfootnote]
+{\usebibmacro{prenote}}
+{\usebibmacro{citeindex}%
+  \usebibmacro{nwejm:cite}}
+{%
+%    \end{macrocode}
+%
+% Unique (auto)citations with multiple keys are displayed in footnotes but each
+% of the corresponding references is on its own line.
+%    \begin{macrocode}
+  \ifcurrentbaselanguage{french}{%
+    \parindent=\parindentFFN%
+    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
+  }{%
+    \parindent=\footnotemargin%
+  }%
+  \multicitedelim\newline\indent
+}
+{\usebibmacro{postnote}}
+\DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
+{\addsemicolon\space}
+%    \end{macrocode}
+%
+% We now declare the definitions for the ×\autocite× and ×\autocites× commands
+% and we apply these definitions.
+%    \begin{macrocode}
+\DeclareAutoCiteCommand{nwejmfootcite}{\nwejmfootcite}{\nwejmfootcites}
+\ExecuteBibliographyOptions{autocite=nwejmfootcite}
+
+\endinput
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</citationstyle>
 %    \end{macrocode}
 %
 % \chapter{Completion files for TeXstudio and friends}
