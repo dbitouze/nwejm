@@ -3,18 +3,25 @@
 \iffalse
 %</internal>
 %<*readme>
-|
--------:| -----------------------------------------------------------------
-  nwejm:| Class for the journal "North-Western European Journal of Mathematics"
- Author:| Denis Bitouze
- E-mail:| denis.bitouze@lmpa.univ-littoral.fr
-License:| Released under the LaTeX Project Public License v1.3c or later
-    See:| http://www.latex-project.org/lppl.txt
+nwejm - Support for the journal "North-Western European Journal of Mathematics"
+===============================================================================
 
+The `nwejm` bundle provides LaTeX classes for the journal "North-Western
+European Journal of Mathematics.
 
-Short description:
-LaTeX class for the new math journal "North-Western European Journal of
-Mathematics"
+Installation
+------------
+
+The classes are supplied in `.dtx` format.  If you want to unpack the `.dtx`
+yourself, running `tex nwejm.dtx` will extract the package whereas
+%
+`pdflatex nwejm` will typeset the documentation of the `nwejmart` class
+(currently only in French).
+
+Typesetting the documentation also requires a number of packages in addition to
+those needed to use the `nwejm` classes.  To compile the documentation without
+error, you will need, among others, my personal package `denisbdoc` for
+documenting the classes I've written.
 %</readme>
 %<*internal>
 \fi
@@ -69,7 +76,7 @@ Running "make install" installs the files in the local TeX tree.
 \usedir{/}
 \generate{
   \nopreamble\nopostamble
-  \file{README}{\from{\jobname.dtx}{readme}}
+  \file{README.md}{\from{\jobname.dtx}{readme}}
 }%
 \usedir{tex/latex/\NWEJM@classname}
 \generate{%
@@ -100,7 +107,7 @@ Running "make install" installs the files in the local TeX tree.
 \nopreamble\nopostamble
 \usedir{doc/latex/\NWEJM@classname}
 \generate{
-  \file{README.txt}{\from{\jobname.dtx}{readme}}
+  \file{README.md}{\from{\jobname.dtx}{readme}}
 }
 \usedir{doc/latex/\NWEJM@classname/\NWEJM@addons/completion}
 \generate{%
@@ -4508,6 +4515,8 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 %</class|class-article>
 %    \end{macrocode}
+%
+% \subsection{Miscellaneous}
 %
 %    \begin{macrocode}
 %<*class-article>
