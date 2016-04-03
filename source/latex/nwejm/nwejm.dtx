@@ -76,7 +76,8 @@ Running "make install" installs the files in the local TeX tree.
   \file{\NWEJM@classname.cls}{\from{\jobname.dtx}{class}}
   \file{\NWEJM@classname art.cls}{\from{\jobname.dtx}{class-article}}
   \file{\NWEJM@classname.dbx}{\from{\jobname.dtx}{datamodel}}
-  \file{\NWEJM@classname.cbx}{\from{\jobname.dtx}{citationstyle}}
+  \file{\NWEJM@classname.cbx}{\from{\jobname.dtx}{citestyle}}
+  \file{\NWEJM@classname.bbx}{\from{\jobname.dtx}{bibstyle}}
   \file{\NWEJM@classname.lbx}{\from{\jobname.dtx}{languagemodel}}
   \nopreamble\nopostamble
   \file{\NWEJM@classname.cfg}{\from{\jobname.dtx}{configuration}}
@@ -739,9 +740,9 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{enumerate}
 %
-% \item Programmable bibliographies and citations:
+% \item Programmable bibliographies and citations (loaded with a dedicated style):
 %    \begin{macrocode}
-\RequirePackage[backend=biber,bibstyle=authoryear,citestyle=nwejm]{biblatex}%
+\RequirePackage[backend=biber,style=nwejm]{biblatex}%
 \ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 %    \end{macrocode}
 %
@@ -4461,40 +4462,6 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Related to \Pkg{biblatex}}
 %
-% The following is borrowed from Joseph Wright
-% (\url{http://tex.stackexchange.com/a/5795/18401}) in order to prevent
-% identical URL and DOI fields to be both displayed.
-%    \begin{macrocode}
-  \renewbibmacro*{doi+eprint+url}{%
-  \iftoggle{bbx:doi}
-    {%
-      \iffieldundef{doi}
-        {}
-        {%
-          \begingroup
-          \edef\URLorDOI{%
-            \detokenize{http://dx.doi.org/}%
-            \thefield{doi}%
-          }%
-          \iffieldequals{url}{\URLorDOI}
-            {\endgroup}
-            {%
-              \endgroup
-              \printfield{doi}%
-            }%
-        }%
-    }
-    {}%
-  \newunit\newblock
-  \iftoggle{bbx:eprint}
-    {\usebibmacro{eprint}}
-    {}%
-  \newunit\newblock
-  \iftoggle{bbx:url}
-    {\usebibmacro{url+urldate}}
-    {}}
-%    \end{macrocode}
-%
 % % Use the new French abbreviations
 % %    \begin{macrocode}
 % \DeclareLanguageMapping{french}{nwejm}%
@@ -4580,70 +4547,6 @@ Running "make install" installs the files in the local TeX tree.
 % As bibiliographic resource, we add the file of the current issue.
 %    \begin{macrocode}
 \exp_after:wN\addbibresource\exp_after:wN{\c_@@_issue_bib_path_string_tl}
-%    \end{macrocode}
-%
-% We create a name format that prints the initial(s) of the first name(s) before
-% last name of a cited author.
-%    \begin{macrocode}
-\DeclareNameFormat{giveninits-last}{%
-  \nameparts{#1}
-  \usebibmacro{name:given-family}
-  {\namepartfamily}
-  {\namepartgiveni}
-  {\namepartprefix}
-  {\namepartsuffix}%
-}
-%    \end{macrocode}
-%
-% We ensure the space between initial(s) and last name is unbreakable.
-%    \begin{macrocode}
-\renewcommand*\bibnamedelimc{\addnbspace}
-\renewcommand*\bibnamedelimd{\addnbspace}
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}
-}
-\renewbibmacro*{journal}{%
-  \iffieldundef{shortjournal}%
-  {%
-    \iffieldundef{journaltitle}
-    {}
-    {%
-      \printtext[journaltitle]%
-      {%
-        \printfield[titlecase]{journaltitle}%
-        \setunit{\subtitlepunct}%
-        \printfield[titlecase]{journalsubtitle}%
-      }%
-    }%
-  }%
-  {\printtext[journaltitle]{\printfield[titlecase]{shortjournal}}}%
-}
-\renewbibmacro*{volume+number+eid}{%
-  \printfield{volume}%
-  \setunit*{\addnbthinspace}%
-  \printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}
-}
-\DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
-\DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
-\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
-%    \end{macrocode}
-%
-% We redefine the label date in order the pubstate is used in case no date is
-% provided (e.g. for references to appear).
-%    \begin{macrocode}
-\DeclareLabeldate{%
-  \field{date}
-  \field{eventdate}
-  \field{origdate}
-  \field{urldate}
-  \field{pubstate}
-  \literal{nodate}
-}
 %    \end{macrocode}
 %
 % \subsection{Related to \Pkg{kpfonts}}
@@ -5177,7 +5080,123 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<*citationstyle>
+%<*bibstyle>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesFile{nwejm.bbx}
+[2016/04/01 v 0.1 nwejm bibliographic style (DB)]
+
+\RequireBibliographyStyle{authoryear}
+
+%    \end{macrocode}
+%
+% We create a name format that prints the initial(s) of the first name(s) before
+% last name of a cited author.
+%    \begin{macrocode}
+\DeclareNameFormat{giveninits-last}{%
+  \nameparts{#1}
+  \usebibmacro{name:given-family}
+  {\namepartfamily}
+  {\namepartgiveni}
+  {\namepartprefix}
+  {\namepartsuffix}%
+}
+%    \end{macrocode}
+%
+% The following is borrowed from Joseph Wright
+% (\url{http://tex.stackexchange.com/a/5795/18401}) in order to prevent
+% identical URL and DOI fields to be both displayed.
+%    \begin{macrocode}
+\renewbibmacro*{doi+eprint+url}{%
+  \iftoggle{bbx:doi}%
+  {%
+    \iffieldundef{doi}%
+    {}%
+    {%
+      \begingroup%
+      \edef\URLorDOI{%
+        \detokenize{http://dx.doi.org/}%
+        \thefield{doi}%
+      }%
+      \iffieldequals{url}{\URLorDOI}%
+      {\endgroup}%
+      {%
+        \endgroup%
+        \printfield{doi}%
+      }%
+    }%
+  }%
+  {}%
+  \newunit\newblock%
+  \iftoggle{bbx:eprint}%
+  {\usebibmacro{eprint}}%
+  {}%
+  \newunit\newblock%
+  \iftoggle{bbx:url}%
+  {\usebibmacro{url+urldate}}%
+  {}%
+}
+%    \end{macrocode}
+%
+% We perform some other modifications to ×authoryear× bib style.
+%    \begin{macrocode}
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}%
+}
+\renewbibmacro*{journal}{%
+  \iffieldundef{shortjournal}%
+  {%
+    \iffieldundef{journaltitle}%
+    {}%
+    {%
+      \printtext[journaltitle]%
+      {%
+        \printfield[titlecase]{journaltitle}%
+        \setunit{\subtitlepunct}%
+        \printfield[titlecase]{journalsubtitle}%
+      }%
+    }%
+  }%
+  {\printtext[journaltitle]{\printfield[titlecase]{shortjournal}}}%
+}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \setunit*{\addnbthinspace}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}%
+}
+\DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+%    \end{macrocode}
+%
+% We redefine the label date in order the pubstate is used in case no date is
+% provided (e.g. for references to appear).
+%    \begin{macrocode}
+\DeclareLabeldate{%
+  \field{date}%
+  \field{eventdate}%
+  \field{origdate}%
+  \field{urldate}%
+  \field{pubstate}%
+  \literal{nodate}%
+}
+%    \end{macrocode}
+%
+% We ensure the space between initial(s) and last name is unbreakable.
+%    \begin{macrocode}
+\renewcommand*\bibnamedelimc{\addnbspace}
+\renewcommand*\bibnamedelimd{\addnbspace}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</bibstyle>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*citestyle>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -5305,12 +5324,10 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \DeclareAutoCiteCommand{nwejmfootcite}{\nwejmfootcite}{\nwejmfootcites}
 \ExecuteBibliographyOptions{autocite=nwejmfootcite}
-
-\endinput
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%</citationstyle>
+%</citestyle>
 %    \end{macrocode}
 %
 % \chapter{Completion files for TeXstudio and friends}
