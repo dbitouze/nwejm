@@ -5332,6 +5332,21 @@ Running "make install" installs the files in the local TeX tree.
 % and we apply these definitions.
 %    \begin{macrocode}
 \DeclareAutoCiteCommand{nwejmfootcite}{\nwejmfootcite}{\nwejmfootcites}
+
+\DeclareCiteCommand{\textcite}
+  {\boolfalse{cbx:parens}}
+  {\usebibmacro{citeindex}%
+   \iffirstcitekey
+     {\setcounter{textcitetotal}{1}}
+     {\stepcounter{textcitetotal}%
+      \textcitedelim}%
+    \iffootnote{\usebibmacro{nwejm:cite}}{\usebibmacro{textcite}}}
+  {\ifbool{cbx:parens}
+     {\bibcloseparen\global\boolfalse{cbx:parens}}
+     {}}
+  {\usebibmacro{textcite:postnote}}
+
+
 \ExecuteBibliographyOptions{autocite=nwejmfootcite}
 %    \end{macrocode}
 %
