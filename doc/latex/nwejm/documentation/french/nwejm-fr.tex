@@ -394,6 +394,64 @@ cf. par exemple][en français]{Bitouze}.
   remerciements (commande \refCom{acknowledgements}).
 \end{docCommand}
 
+Par exemple, si le \File{.bib} contient :
+
+\begin{bodycode}[listing only,listing options={morekeywords={Book,Article}}]
+@Book{            har,
+  author	= {Hartshorne, Robin},
+  title		= {Algebraic geometry},
+  note		= {Graduate Texts in Mathematics, No. 52},
+  publisher	= {Springer-Verlag},
+  address	= {New York},
+  year		= {1977}
+}
+@Book{		  laz1,
+  author	= {Lazarsfeld, Robert},
+  title		= {Positivity in algebraic geometry. {I}},
+  volume	= {48},
+  note		= {Classical setting: line bundles and linear series},
+  publisher	= {Springer-Verlag},
+  address	= {Berlin},
+  year		= {2004}
+}
+@Article{         shin,
+  author	= {Shin, Kil-Ho},
+  title		= {{$3$}-dimensional {F}ano varieties with canonical
+                  singularities},
+  journal	= {Tokyo J. Math.},
+  volume	= {12},
+  year		= {1989},
+  number	= {2},
+  pages	= {375-385}
+}
+\end{bodycode}
+
+alors, le source \file{.tex} suivant :
+\begin{bodycode}[listing only,listing
+options={deletekeywords={[1]{theorem},[2]{first,and,see}}}]
+The first assertion is a direct consequence of the Riemann-Roch
+formula for threefolds\autocite[See e.g.][437]{har} and
+Kawamata-Viehweg vanishing\autocite[theorem~4.3.1]{laz1}. For the
+second assertion, see \textcite[theorem~(0.4)]{shin}.
+%
+\printbibliography
+\end{bodycode}
+
+donne le texte figurant dans l'encadré intitulé \enquote{Exemple de
+  bibliographie} \vpageref{biblio}.
+
+\begin{refsegment}
+  % \selectlanguage{english}
+\begin{bodycode}[text only,float,title={Exemple de bibliographie},label=biblio]
+The first assertion is a direct consequence of the Riemann-Roch formula for
+threefolds\autocite[See e.g.][437]{har} and Kawamata-Viehweg
+vanishing\autocite[theorem~4.3.1]{laz1}.  For the second assertion, see
+\textcite[theorem~(0.4)]{shin}.
+%
+\printbibliography[segment=1]
+\end{bodycode}
+\end{refsegment}
+
 \section{Commandes propres aux mathématiques}
 \label{sec:comm-propr-aux}
 
@@ -1353,16 +1411,14 @@ attaché au fichier \file{PDF} de la présente documentation\footnote{Il peut
   également être copié-collé : la plupart des afficheurs \textsc{pdf}
   permettent de sélectionner et de copier du texte.}.
 %
-\embedfile[
-  filespec=template.tex,
-  desc={Template for articles to be published in NWEJM},
-]{../template.tex}%
-%
+\newcommand{\attachfilename}{template.tex}%
+\newcommand{\attachfiletextlink}{Canevas de fichier source typique}%
 \tcbinputlisting{%
   samples,
   fontupper=\scriptsize\ttfamily,
   listing only,
-  listing file=../template.tex,
+  listing file=../examples/\attachfilename,
+  title={\attachfiletextlink\ \attachfile{../examples/\attachfilename}},%
   listing options={deletekeywords={title,subtitle,author,keywords},deletekeywords={[2]{first}}}
 }
 

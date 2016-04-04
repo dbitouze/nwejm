@@ -1,7 +1,6 @@
 \documentclass[french,nolocaltoc]{nwejmart}
 \usepackage{denisbdoc}
-\usepackage{draftwatermark}
-\usepackage{embedfile}
+\usepackage[firstpage]{draftwatermark}
 %
 \indexsetup{level=\section*,toclevel=section,noclearpage}
 \makeindex[columns=2]
@@ -9,19 +8,6 @@
 %
 \lstMakeShortInline[style=dbtex]|
 \tcbset{listing options={escapechar=+}}
-%
-% \ExplSyntaxOn
-\makeatletter
-\renewcommand{\thetcb@cnt@dbremark}{\arabic{tcb@cnt@dbremark}}%
-\renewcommand{\thetcb@cnt@dbwarning}{\arabic{tcb@cnt@dbwarning}}%
-\renewcommand{\thetcb@cnt@dbexample}{\arabic{tcb@cnt@dbexample}}%
-\renewcommand{\thetcb@cnt@dbfaq}{\arabic{tcb@cnt@dbfaq}}%
-% \clist_set:Nn \l_tmpa_clist {dbremark}
-% \clist_map_inline:Nn \l_tmpa_clist {
-%   \renewcommand{\thetcb@cnt@##1}{\arabic{tcb@cnt@##1}}%
-% }
-\makeatother
-% \ExplSyntaxOff
 %
 \SetWatermarkColor{gray!10}%
 \SetWatermarkFontSize{20mm}%
@@ -55,12 +41,12 @@ affiliation={%
 \etocarticlestylenomarks
 \localtableofcontents
 %
-\input{fixed-footnotes}
-\input{nwejmart}
+\input{french/fixed-footnotes}
+\input{french/nwejm-fr}
 %
 \section{Annexes}
-\input{packages-un-loaded}
-\input{notations}
+\input{french/packages-un-loaded}
+\input{french/notations}
 %
 \printbibliography
 %
