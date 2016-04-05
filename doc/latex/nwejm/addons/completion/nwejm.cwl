@@ -1,4 +1,4 @@
-# mode: nwejmart.cls
+# mode: nwejm.cls
 # denisbitouze, 23.12.2015
 #
 #include:class-book
@@ -76,53 +76,102 @@ dutch
 \R#m
 \C#m
 \K#m
+\arccosh#m
+\arcsin#m
+\arcsinh#m
+\arctan#m
+\arctanh#m
+\Argch#m
+\Argsh#m
+\Argth#m
+\ch#m
+\cotan#m
+\curl#m
+\dif#m
+\Div#m
+\grad#m
+\E#m
+\I#m
+\rot#m
+\sh#m
+\supp#m
+\th#m
+\norm#m
+\lnorm#m
+\llnorm#m
+\lpnorm#m
+\supnorm#m
+\abs#m
+\prt#m
+\brk#m
+\brc#m
+\leqgeq#m
+\lrangle#m
 \set{%<set self-contained definition%>}#m
 \set{%<set definition%>}[%<such that...%>]#m
-\begin{Theorem}
-\begin{Corollary}
-\begin{Conjecture}
-\begin{Proposition}
-\begin{Lemma}
-\begin{Axiom}
-\begin{Definition}
-\begin{Remark}
-\begin{Example}
-\begin{Notation}
-\begin{Proof}
-\end{Theorem}
-\end{Corollary}
-\end{Conjecture}
-\end{Proposition}
-\end{Lemma}
-\end{Axiom}
-\end{Definition}
-\end{Remark}
-\end{Example}
-\end{Notation}
-\end{Proof}
-\begin{theorem}
-\begin{corollary}
+\begin{axiom}
+\begin{assertions}
 \begin{conjecture}
+\begin{corollary}
+\begin{definition}
+\begin{example}
+\begin{hypotheses}
 \begin{proposition}
 \begin{lemma}
-\begin{axiom}
-\begin{definition}
-\begin{remark}
-\begin{example}
 \begin{notation}
 \begin{proof}
-\end{theorem}
-\end{corollary}
+\begin{remark}
+\begin{theorem}
+#
+\begin{axiom*}
+\begin{assertions*}
+\begin{conjecture*}
+\begin{corollary*}
+\begin{definition*}
+\begin{example*}
+\begin{hypotheses*}
+\begin{proposition*}
+\begin{lemma*}
+\begin{notation*}
+\begin{proof*}
+\begin{remark*}
+\begin{theorem*}
+#
+\end{axiom}
+\end{assertions}
 \end{conjecture}
+\end{corollary}
+\end{definition}
+\end{example}
+\end{hypotheses}
 \end{proposition}
 \end{lemma}
-\end{axiom}
-\end{definition}
-\end{remark}
-\end{example}
 \end{notation}
 \end{proof}
+\end{remark}
+\end{theorem}
 #
+\end{axiom*}
+\end{assertions*}
+\end{conjecture*}
+\end{corollary*}
+\end{definition*}
+\end{example*}
+\end{hypotheses*}
+\end{proposition*}
+\end{lemma*}
+\end{notation*}
+\end{proof*}
+\end{remark*}
+\end{theorem*}
+#
+\begin{description*}
+\begin{enumerate*}
+\begin{itemize*}
+#
+\end{description*}
+\end{enumerate*}
+\end{itemize*}
 # Miscellaneous commands
 \keywords{%<list of keywords%>}#n
 \msc{%<list of MSCs%>}#n
@@ -132,7 +181,14 @@ dutch
 \century*{%<(positive or negative) integer%>}#n*
 \aside{%<interpolated clause%>}#n
 \aside*{%<interpolated clause%>}#n
-\acknowledgments{%<acknowledgments%>}#n
+\acknowledgements{%<acknowledgments%>}#n
+\ie#n
+\ie*#n*
+\Ie#n
+\Ie*#n*
+\NewPairedDelimiter#n
+\articlesetup#n
+\BinaryOperators#n
 #
 \editorinchief{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \editor{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n

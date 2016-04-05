@@ -165,8 +165,8 @@
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
-\RequirePackage[backend=biber,style=authoryear]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,giveninits,ibidtracker=constrict}
+\RequirePackage[backend=biber,style=nwejm]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -973,7 +973,7 @@
     \vfill%
     \mbox{}
     \par
-    \includegraphics[width=\linewidth]{ kwglogo-crop }
+    \includegraphics[width=\linewidth]{ kwglogo }
     \par
     \mbox{}
     \vfill%
@@ -2504,34 +2504,6 @@
   }{
   }
 }
-  \renewbibmacro*{doi+eprint+url}{%
-  \iftoggle{bbx:doi}
-    {%
-      \iffieldundef{doi}
-        {}
-        {%
-          \begingroup
-          \edef\URLorDOI{%
-            \detokenize{http://dx.doi.org/}%
-            \thefield{doi}%
-          }%
-          \iffieldequals{url}{\URLorDOI}
-            {\endgroup}
-            {%
-              \endgroup
-              \printfield{doi}%
-            }%
-        }%
-    }
-    {}%
-  \newunit\newblock
-  \iftoggle{bbx:eprint}
-    {\usebibmacro{eprint}}
-    {}%
-  \newunit\newblock
-  \iftoggle{bbx:url}
-    {\usebibmacro{url+urldate}}
-    {}}
 \AtEndPreamble{%
   \defbibheading{__nwejm_subbibliography}[\refname]{%
     \section*{#1}
@@ -2551,134 +2523,6 @@
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-\DeclareNameFormat{giveninits-last}{%
-  \nameparts{#1}
-  \usebibmacro{name:given-family}
-  {\namepartfamily}
-  {\namepartgiveni}
-  {\namepartprefix}
-  {\namepartsuffix}%
-}
-\renewcommand*\bibnamedelimc{\addnbspace}
-\renewcommand*\bibnamedelimd{\addnbspace}
-\renewbibmacro{in:}{%
-  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}
-}
-\renewbibmacro*{journal}{%
-  \iffieldundef{shortjournal}%
-  {%
-    \iffieldundef{journaltitle}
-    {}
-    {%
-      \printtext[journaltitle]%
-      {%
-        \printfield[titlecase]{journaltitle}%
-        \setunit{\subtitlepunct}%
-        \printfield[titlecase]{journalsubtitle}%
-      }%
-    }%
-  }%
-  {\printtext[journaltitle]{\printfield[titlecase]{shortjournal}}}%
-}
-\renewbibmacro*{volume+number+eid}{%
-  \printfield{volume}%
-  \setunit*{\addnbthinspace}%
-  \printfield{number}%
-  \setunit{\addcomma\space}%
-  \printfield{eid}
-}
-\DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
-\DeclareFieldFormat[book]{volume}{\mkbibbold{#1}}
-\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
-\DeclareLabeldate{%
-  \field{date}
-  \field{eventdate}
-  \field{origdate}
-  \field{urldate}
-  \field{pubstate}
-  \literal{nodate}
-}
-\renewrobustcmd{\blx@mkbibfootnote}[2]{%
-  \iftoggle{blx@footnote}
-  {\blx@warning{Nested notes}%
-    \addspace\mkbibparens{#2}}
-  {\unspace
-    \ifnum\blx@notetype=\tw@
-    \expandafter\@firstoftwo
-    \else
-    \expandafter\@secondoftwo
-    \fi
-    {\csuse{blx@theendnote#1}{\protecting{\blxmkbibnote{end}{#2}}}}
-    {%
-      \patchcmd\@makefnmark%
-      {\normalfont}%
-      {\normalfont\bfseries}%
-      {}{}%
-      \csuse{footnote#1}{\protecting{\blxmkbibnote{foot}{#2}}}
-    }
-  }
-}
-\newbool{cbx:loccit}
-\providecommand*{\mkibid}[1]{#1}
-\newbibmacro*{cite:ibid}{%
-  \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
-  \ifloccit
-    {\global\booltrue{cbx:loccit}}
-    {}}
-\newbibmacro*{__nwejm_cite}{%
-  \iffieldundef{shorthand}{%
-    {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
-      {\usebibmacro{cite:ibid}}
-      {%
-        \ifthenelse{%
-          \ifnameundef{labelname}%
-        }{%
-          \usebibmacro{cite:label}%
-          \setunit{\addcomma\space}%
-        }{%
-          \printnames{labelname}%
-          \ifthenelse{%
-            \iffieldundef{labelyear}%
-          }{%
-          }{%
-            \setunit{\addcomma\space}%
-            \usebibmacro{cite:labelyear+extrayear}%
-            \ifthenelse{%
-              \iffieldundef{labeltitle}%
-            }{%
-            }{%
-              \setunit{\addcomma\space}%
-              \usebibmacro{cite:title}%
-            }
-          }
-        }%
-      }%
-    }%
-  }{%
-    \usebibmacro{cite:shorthand}%
-  }%
-}
-\newbibmacro*{cite:title}{%
-  \printtext[bibhyperref]{%
-    \printfield[citetitle]{labeltitle}}}
-\DeclareCiteCommand{\__nwejm_foot_cite}[\mkbibfootnote]
-{\usebibmacro{prenote}}
-{\usebibmacro{citeindex}%
-  \usebibmacro{__nwejm_cite}}
-{%
-  \ifcurrentbaselanguage{french}{%
-    \parindent=\parindentFFN%
-    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
-  }{%
-    \parindent=\footnotemargin%
-  }%
-  \multicitedelim\newline\indent
-}
-{\usebibmacro{postnote}}
-\DeclareMultiCiteCommand{\__nwejm_foot_cites}[\mkbibfootnote]{\__nwejm_foot_cite}
-{\addsemicolon\space}
-\DeclareAutoCiteCommand{__nwejm_foot_cite}{\__nwejm_foot_cite}{\__nwejm_foot_cites}
-\ExecuteBibliographyOptions{autocite=__nwejm_foot_cite}
 \ifkp@easyscsl
 \DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
   \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
