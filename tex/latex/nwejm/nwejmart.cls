@@ -596,10 +596,7 @@
   \tl_clear:N \l__nwejm_keywords_tl
   \seq_set_from_clist:Nn \l_tmpa_seq {#1}
   \seq_set_map:NNn \l__nwejm_keywords_seq \l_tmpa_seq {
-    \exp_not:n {
-      % \textbf { ##1 } % It is possible to format each of the keywords
-      ##1
-    }
+    ##1
   }
   \tl_set:Nn \l__nwejm_keywords_tl { \seq_use:Nn \l__nwejm_keywords_seq {,~} }
     \hypersetup{pdfkeywords=\l__nwejm_keywords_tl}
