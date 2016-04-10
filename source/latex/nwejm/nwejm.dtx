@@ -5255,6 +5255,19 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% We also redefine the command that is responsible of the \pkg{csquotes}'
+% quotations without formal citations (e.g. ×displayquote× versus
+% ×displaycquote× environments).
+%    \begin{macrocode}
+\renewcommand*{\mkcitation}[1]{%
+  \patchcmd\@makefnmark%
+  {\normalfont}%
+  {\normalfont\bfseries}%
+  {}{}%
+  \footnote{#1}%
+}
+%    \end{macrocode}
+%
 % Because this cite style is a mix between ×authortitle× and ×authoryear× but is
 % mainly based upon ×authoryear× style, we need to define the bib macro
 % ×cite:title× defined in ×authortitle× but not in ×authoryear×.
