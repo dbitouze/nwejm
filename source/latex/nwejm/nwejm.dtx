@@ -758,13 +758,14 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \RequirePackage{autonum}
 %    \end{macrocode}
-% \end{enumerate}
 %
 % \item Programmable bibliographies and citations (loaded with a dedicated style):
 %    \begin{macrocode}
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
 \ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 %    \end{macrocode}
+%
+% \end{enumerate}
 %
 % Setings of the glossaries and acronyms.
 %    \begin{macrocode}
@@ -2533,10 +2534,7 @@ Running "make install" installs the files in the local TeX tree.
   \seq_set_from_clist:Nn \l_tmpa_seq {#1}
   % applies final arg to each element of second seq and stores result in first seq
   \seq_set_map:NNn \l_@@_msc_seq \l_tmpa_seq {
-    % \exp_not:n {
-      % \textbf { ##1 } % It is possible to format each of the msc
       ##1
-    % }
   }
   %
   % \seq_use puts the items from the seq back in the input with ",~" as a separator
