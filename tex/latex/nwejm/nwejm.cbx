@@ -39,6 +39,13 @@
     }%
   }%
 }
+\renewcommand*{\mkcitation}[1]{%
+  \patchcmd\@makefnmark%
+  {\normalfont}%
+  {\normalfont\bfseries}%
+  {}{}%
+  \footnote{#1}%
+}
 \newbibmacro*{cite:title}{%
   \printtext[bibhyperref]{%
     \printfield[citetitle]{labeltitle}}}

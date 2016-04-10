@@ -113,7 +113,6 @@
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \RequirePackage[l2tabu,orthodox]{nag}
-\RequirePackage[group=false,subpreambles,sort]{standalone}%
 \pdftex_if_engine:TF
   {
     \RequirePackage[T1]{fontenc}
@@ -121,6 +120,7 @@
   }{
     \RequirePackage{fontspec}
   }
+\RequirePackage[group=false,subpreambles,sort]{standalone}%
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
 \RequirePackage{import}%
@@ -1155,10 +1155,7 @@
   \seq_set_from_clist:Nn \l_tmpa_seq {#1}
   % applies final arg to each element of second seq and stores result in first seq
   \seq_set_map:NNn \l__nwejm_msc_seq \l_tmpa_seq {
-    % \exp_not:n {
-      % \textbf { ##1 } % It is possible to format each of the msc
       ##1
-    % }
   }
   %
   % \seq_use puts the items from the seq back in the input with ",~" as a separator
@@ -1320,6 +1317,9 @@
     \selectlanguage{ngerman}
   }{
     \selectlanguage{#1}
+    \tl_if_eq:nnT { #1 } { french } {%
+      \FrenchFootnotes
+    }
   }%
       \bool_gset_false:N \g__nwejm_gradient_nabla_bool
       \bool_gset_false:N \g__nwejm_gradient_nabla_control_bool
