@@ -2848,6 +2848,9 @@ Running "make install" installs the files in the local TeX tree.
     \selectlanguage{ngerman}
   }{
     \selectlanguage{#1}
+    \tl_if_eq:nnT { #1 } { french } {%
+      \FrenchFootnotes
+    }
   }%
 %    \end{macrocode}
 %
