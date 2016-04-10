@@ -523,11 +523,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[l2tabu,orthodox]{nag}
 %    \end{macrocode}
 %
-% \item Compile \TeX{} pictures stand-alone or as part of a document:
-%    \begin{macrocode}
-%<class>\RequirePackage[group=false,subpreambles,sort]{standalone}%
-%    \end{macrocode}
-%
 % \item In case of \hologo{pdfTeX} engine, we enforce \pkg{fontenc} to be loaded
 %   with its \docAuxKey*{T1} option (usual for French and English documents) and
 %   \pkg{inputenc} to be loaded with its \docAuxKey*{utf8} option. Otherwise
@@ -541,6 +536,11 @@ Running "make install" installs the files in the local TeX tree.
   }{
     \RequirePackage{fontspec}
   }
+%    \end{macrocode}
+%
+% \item Compile \TeX{} pictures stand-alone or as part of a document:
+%    \begin{macrocode}
+%<class>\RequirePackage[group=false,subpreambles,sort]{standalone}%
 %    \end{macrocode}
 %
 % \item Formatting both header and footers (pagestyle), and sections headers:
