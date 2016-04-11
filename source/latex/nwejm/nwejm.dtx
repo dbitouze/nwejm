@@ -2850,10 +2850,17 @@ Running "make install" installs the files in the local TeX tree.
     \selectlanguage{ngerman}
   }{
     \selectlanguage{#1}
-    \tl_if_eq:nnT { #1 } { french } {%
-      \FrenchFootnotes
-    }
   }%
+%    \end{macrocode}
+%
+% Though we switch to \pkg{babel}'s ×french×, footnotes are not displayed as
+% French ones in the issue. The following fixes this trouble.
+%    \begin{macrocode}
+  \tl_if_eq:nnTF { #1 } { french } {%
+    \FrenchFootnotes
+  }{%
+    \StandardFootnotes
+  }
 %    \end{macrocode}
 %
 % We reset setup possibly chosen in previous articles.
