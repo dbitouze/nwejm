@@ -2456,11 +2456,6 @@ Running "make install" installs the files in the local TeX tree.
   \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c_@@_backcover_tableofcontents_string_tl}}}
   \tableofcontents
   \endgroup
-  % \file_if_exist:nTF { \c_@@_backcover_page_file_string_tl } {%
-  % \file_input:n {\c_@@_backcover_page_file_string_tl}
-  % }{%
-  %   \hbox{}
-  % }
 }
 %    \end{macrocode}
 %
@@ -3379,7 +3374,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \setsecnumdepth{none}
 %<class-article> \bookmarksetup{depth=-2}
-
   \chapter[\g_@@_title_for_toc_tl]{%
     \LARGE%
     \g_@@_title_tl
