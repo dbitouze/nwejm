@@ -144,6 +144,7 @@
 \RequirePackage{babel}%
 \RequirePackage{varioref}
 \RequirePackage{tocvsec2}
+\RequirePackage{tocloft}%
 \RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
 \RequirePackage[useregional]{datetime2}%
@@ -300,6 +301,7 @@
   ,inner=\c__nwejm_innermargin_dim
   ,headheight=\c__nwejm_headheight_dim
   ,footskip=\c__nwejm_footskip_dim
+  ,includemp
   %
   % ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
   % ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
@@ -396,6 +398,7 @@
   {\thepage}%
   {}%
 }
+\gdef\ttl@savemark{}
 \AtBeginDocument{%
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
@@ -639,10 +642,12 @@
     \selectlanguage{ngerman}
   }{
     \selectlanguage{#1}
-    \tl_if_eq:nnT { #1 } { french } {%
-      \FrenchFootnotes
-    }
   }%
+  \tl_if_eq:nnTF { #1 } { french } {%
+    \FrenchFootnotes
+  }{%
+    \StandardFootnotes
+  }
   \inputfrom{./}{#2}
   \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
     footnote,
@@ -946,7 +951,7 @@
   }
   \bool_if:nF { \tl_if_empty_p:N \g__nwejm_short_subtitle_tl }
   {
-    \space\textendash{}\space\g__nwejm_short_subtitle_tl
+    .\space\g__nwejm_short_subtitle_tl
   }
 }
     \hypersetup{pdftitle=\g__nwejm_partial_title_for_toc_tl}
@@ -960,17 +965,16 @@
       {
         \texorpdfstring{%
           \AtNextCitekey{\defcounter{maxnames}{100}}
-          \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
+          \space\textendash\space\citeauthor{\g__nwejm_article_bib_key_tl}
         }{}
       }{%
-        \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
+        \space\textendash\space\citeauthor{\g__nwejm_article_bib_key_tl}
       }%
     }
   }
 }
   \setsecnumdepth{none}
  \bookmarksetup{depth=-2}
-
   \chapter[\g__nwejm_title_for_toc_tl]{%
     \LARGE%
     \g__nwejm_title_tl

@@ -147,6 +147,7 @@
 \RequirePackage{babel}%
 \RequirePackage{varioref}
 \RequirePackage{tocvsec2}
+\RequirePackage{tocloft}%
 \RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
 \RequirePackage[useregional]{datetime2}%
@@ -386,6 +387,7 @@
     ,footskip=\c__nwejm_footskip_dim
     ,outer=\c__nwejm_margin_frontcover_dim
     ,inner=\c__nwejm_potential_layoutoffset_dim
+    ,includemp
     ,nomarginpar%
   }%
 }{
@@ -399,6 +401,7 @@
     ,bottom=\c__nwejm_bottom_frontcover_dim
     ,footskip=\c__nwejm_footskip_dim
     ,hmargin=\c__nwejm_margin_frontcover_dim
+    ,includemp
     ,nomarginpar%
   }%
 }
@@ -414,6 +417,7 @@
     ,footskip=\c__nwejm_footskip_dim
     ,inner=\c__nwejm_innermargin_inside_cover_dim-\c__nwejm_potential_layoutoffset_dim
     ,outer=\c__nwejm_outermargin_inside_cover_dim+\c__nwejm_potential_layoutoffset_dim
+    ,includemp
     ,nomarginpar%
   }%
 }{
@@ -430,6 +434,7 @@
     % ,outer=1cm
     ,inner=\c__nwejm_innermargin_inside_cover_dim
     ,outer=\c__nwejm_outermargin_inside_cover_dim
+    ,includemp
     ,nomarginpar%
   }%
 }
@@ -444,6 +449,7 @@
   ,footskip=\c__nwejm_footskip_dim%
   ,inner=\c__nwejm_innermargin_dim+\c__nwejm_front_matter_extra_innermargin_dim%
   ,outer=\c__nwejm_outermargin_dim+\c__nwejm_front_matter_extra_outermargin_dim%
+  ,includemp
   ,nomarginpar%
 }%
 \tl_const:Nn \c__nwejm_backcover_geometry_tl {%
@@ -458,6 +464,7 @@
   % ,footskip=\c__nwejm_footskip_dim
   ,inner=\c__nwejm_innermargin_backcover_dim
   ,outer=\c__nwejm_outermargin_backcover_dim
+  ,includemp
 }
 \tl_const:Nn \c__nwejm_main_geometry_tl {%
   ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
@@ -468,6 +475,7 @@
   ,inner=\c__nwejm_innermargin_dim
   ,headheight=\c__nwejm_headheight_dim
   ,footskip=\c__nwejm_footskip_dim
+  ,includemp
   %
   % ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
   % ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
@@ -681,6 +689,7 @@
   {\thepage}%
   {}%
 }
+\gdef\ttl@savemark{}
 \AtBeginDocument{%
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
@@ -1105,11 +1114,6 @@
   \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c__nwejm_backcover_tableofcontents_string_tl}}}
   \tableofcontents
   \endgroup
-  % \file_if_exist:nTF { \c__nwejm_backcover_page_file_string_tl } {%
-  % \file_input:n {\c__nwejm_backcover_page_file_string_tl}
-  % }{%
-  %   \hbox{}
-  % }
 }
 \cs_new_protected:Nn \__nwejm_date:nn
 {
@@ -1317,10 +1321,12 @@
     \selectlanguage{ngerman}
   }{
     \selectlanguage{#1}
-    \tl_if_eq:nnT { #1 } { french } {%
-      \FrenchFootnotes
-    }
   }%
+  \tl_if_eq:nnTF { #1 } { french } {%
+    \FrenchFootnotes
+  }{%
+    \StandardFootnotes
+  }
       \bool_gset_false:N \g__nwejm_gradient_nabla_bool
       \bool_gset_false:N \g__nwejm_gradient_nabla_control_bool
       \bool_gset_false:N \g__nwejm_grad_used_bool
@@ -1628,7 +1634,7 @@
   }
   \bool_if:nF { \tl_if_empty_p:N \g__nwejm_short_subtitle_tl }
   {
-    \space\textendash{}\space\g__nwejm_short_subtitle_tl
+    .\space\g__nwejm_short_subtitle_tl
   }
 }
 \tl_set:Nn \g__nwejm_title_for_toc_tl
@@ -1641,16 +1647,15 @@
       {
         \texorpdfstring{%
           \AtNextCitekey{\defcounter{maxnames}{100}}
-          \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
+          \space\textendash\space\citeauthor{\g__nwejm_article_bib_key_tl}
         }{}
       }{%
-        \space\textendash{}\space\citeauthor{\g__nwejm_article_bib_key_tl}
+        \space\textendash\space\citeauthor{\g__nwejm_article_bib_key_tl}
       }%
     }
   }
 }
   \setsecnumdepth{none}
-
   \chapter[\g__nwejm_title_for_toc_tl]{%
     \LARGE%
     \g__nwejm_title_tl
