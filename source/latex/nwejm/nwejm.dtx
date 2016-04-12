@@ -679,12 +679,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{tocvsec2}
 %    \end{macrocode}
 %
-% \item Control table of contents, figures, etc. (Needed only in order entries
-%   of the framed TOC on back cover don't overlap the page numbers.)
-%    \begin{macrocode}
-\RequirePackage{tocloft}%
-%    \end{macrocode}
-%
 % \item Completely customisable TOCs:
 %    \begin{macrocode}
 \RequirePackage{etoc}%
@@ -1781,7 +1775,12 @@ Running "make install" installs the files in the local TeX tree.
   {\thepage}%
   {}%
 }
-\gdef\ttl@savemark{}
+%    \end{macrocode}
+%
+% Patch needed in order entries of the framed TOC on back cover don't overlap
+% the page numbers.
+%    \begin{macrocode}
+\def\@pnumwidth{\@tocrmarg}
 %    \end{macrocode}
 %
 % \section{First pages}
