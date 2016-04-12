@@ -4733,6 +4733,18 @@ Running "make install" installs the files in the local TeX tree.
 \ExplSyntaxOff
 %    \end{macrocode}
 %
+% We get rid of useless overfull hbox warnings (due to ×fleqn× and
+% \Pkg{autonum}) by telling autonum to ignore overfull box messages when it does
+% its tentative math environment in order to establish some internal values
+% (see \url{http://tex.stackexchange.com/q/205393/18401}). But this patch works
+% only outside ×\ExplSyntaxOn×/×\ExplSyntaxOff×
+%    \begin{macrocode}
+\patchcmd{\autonum@saveEnvironmentSubcommands}
+  {(0,0)\begin}
+  {(0,0)\hfuzz=\maxdimen\begin}
+    {}{}
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 %</class|class-article>
 %    \end{macrocode}
