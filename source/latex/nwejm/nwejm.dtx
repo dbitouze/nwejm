@@ -746,7 +746,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Hypertext marks:
 %    \begin{macrocode}
-\RequirePackage[hyperfootnotes=false]{hyperref}%
+\RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
 }%
@@ -4271,13 +4271,13 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{(Big) Sets}
 %
 %    \begin{macrocode}
-\NewDocumentCommand \N {} {\mathbb{N}}
-\NewDocumentCommand \Z {} {\mathbb{Z}}
-\NewDocumentCommand \D {} {\mathbb{D}}
-\NewDocumentCommand \Q {} {\mathbb{Q}}
-\NewDocumentCommand \R {} {\mathbb{R}}
-\NewDocumentCommand \C {} {\mathbb{C}}
-\NewDocumentCommand \K {} {\mathbb{K}}
+\NewDocumentCommand \bbN {} {\mathbb{N}}
+\NewDocumentCommand \bbZ {} {\mathbb{Z}}
+\NewDocumentCommand \bbD {} {\mathbb{D}}
+\NewDocumentCommand \bbQ {} {\mathbb{Q}}
+\NewDocumentCommand \bbR {} {\mathbb{R}}
+\NewDocumentCommand \bbC {} {\mathbb{C}}
+\NewDocumentCommand \bbK {} {\mathbb{K}}
 %    \end{macrocode}
 %
 % We replace the ugly default ×\emptyset× by the much nicer ×\varnothing×.
