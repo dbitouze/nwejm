@@ -1863,9 +1863,7 @@ Running "make install" installs the files in the local TeX tree.
 %   geometry of the page.} in the \enquote{article} version of the class.
 % \end{itemize}
 %    \begin{macrocode}
-\AtBeginDocument{%
-%<class-article>    \g_@@_mainmatter_switch_tl
-}
+%<class-article>    \AtBeginDocument{\g_@@_mainmatter_switch_tl}
 %    \end{macrocode}
 %
 % \section{Options}
@@ -3383,10 +3381,10 @@ Running "make install" installs the files in the local TeX tree.
       {
         \texorpdfstring{%
           \AtNextCitekey{\defcounter{maxnames}{100}}
-          \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
+          \space\textendash\space\citeauthor{\g_@@_article_bib_key_tl}
         }{}
       }{%
-        \space\textendash{}\space\citeauthor{\g_@@_article_bib_key_tl}
+        \space\textendash\space\citeauthor{\g_@@_article_bib_key_tl}
       }%
     }
   }
@@ -4755,9 +4753,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We get rid of useless overfull hbox warnings (due to ×fleqn× and
 % \Pkg{autonum}) by telling autonum to ignore overfull box messages when it does
-% its tentative math environment in order to establish some internal values
-% (see \url{http://tex.stackexchange.com/q/205393/18401}). But this patch works
-% only outside ×\ExplSyntaxOn×/×\ExplSyntaxOff×
+% its tentative math environment in order to establish some internal values (see
+% \url{http://tex.stackexchange.com/q/205393/18401}). But this patch works only
+% outside ×\ExplSyntaxOn×/×\ExplSyntaxOff×
 %    \begin{macrocode}
 \patchcmd{\autonum@saveEnvironmentSubcommands}
   {(0,0)\begin}
