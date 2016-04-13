@@ -116,6 +116,11 @@
 \bool_if:NF {\g__nwejm_language_specified_bool} {
   \__nwejm_language:n {english}
 }
+\RequirePackage{silence}
+\WarningFilter[nwejm]{kpfonts}{With 'easyscsl' option, don't fit together}
+\WarningFilter[nwejm]{etex}{Extended allocation already in use}
+\WarningFilter[nwejm]{etoc}{package tocvsec2 detected and its modification of}
+\ActivateWarningFilters[nwejm]
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
   {
@@ -144,14 +149,13 @@
 \RequirePackage{babel}%
 \RequirePackage{varioref}
 \RequirePackage{tocvsec2}
-\RequirePackage{tocloft}%
 \RequirePackage{etoc}%
 \RequirePackage[babel=true]{microtype}%
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
 \RequirePackage{footnote}%
-\RequirePackage[hyperfootnotes=false]{hyperref}%
+\RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
 }%
@@ -197,6 +201,9 @@
 \tl_const:Nn \c__nwejm_journal_short_title_string_tl {\textsc{nwejm}}
 \tl_const:Nn \c__nwejm_journal_title_string_tl {
   North-Western~European~Journal~of~Mathematics%
+}
+\tl_const:Nn \c__nwejm_journal_front_cover_title_string_tl {
+  North-Western~European\\Journal\\of\\Mathematics%
 }
 \tl_const:Nn \c__nwejm_nwejm_class_name_tl {nwejm}
 \tl_const:Nn \c__nwejm_nwejmarticle_class_name_tl {nwejmart}
@@ -301,7 +308,6 @@
   ,inner=\c__nwejm_innermargin_dim
   ,headheight=\c__nwejm_headheight_dim
   ,footskip=\c__nwejm_footskip_dim
-  ,includemp
   %
   % ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
   % ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
@@ -353,33 +359,33 @@
 }
   \box_new:N \l__nwejm_journal_logo_box
   \box_new:N \l__nwejm_journal_name_box
-\AfterEndPreamble{%
-  \hbox_set:Nn \l__nwejm_journal_name_box
-  {
-    \bfseries%
-    \adjustbox{stack=l}{%
-      \c__nwejm_journal_title_string_tl
-\mbox{}
-    }
-  }
-  \hbox_set:Nn \l__nwejm_journal_logo_box
-  {
-    \includegraphics[width=1cm]{ grandMoulinNB }
-  }
-  \hbox_set_to_wd:Nnn \l__nwejm_journal_logo_box { 1cm }
-  {
-    \box_move_down:nn
+  \AfterEndPreamble{%
+    \hbox_set:Nn \l__nwejm_journal_name_box
     {
-      \box_ht:N \l__nwejm_journal_logo_box / 2
-      -
-      \box_ht:N \l__nwejm_journal_name_box / 2
-    }
-    {
-      \box_use:N \l__nwejm_journal_logo_box
-    }
+      \bfseries%
+      \adjustbox{stack=l}{%
+        \c__nwejm_journal_title_string_tl
+ \mbox{}
+}
+}
+\hbox_set:Nn \l__nwejm_journal_logo_box
+{
+  \includegraphics[width=1cm]{ nwejm-logo-NB }
+}
+\hbox_set_to_wd:Nnn \l__nwejm_journal_logo_box { 1cm }
+{
+  \box_move_down:nn
+  {
+    \box_ht:N \l__nwejm_journal_logo_box / 2
+    -
+    \box_ht:N \l__nwejm_journal_name_box / 2
   }
-  \box_set_ht:Nn \l__nwejm_journal_logo_box { 0pt }
-  \box_set_dp:Nn \l__nwejm_journal_logo_box { 0pt }
+  {
+    \box_use:N \l__nwejm_journal_logo_box
+  }
+}
+\box_set_ht:Nn \l__nwejm_journal_logo_box { \c_zero_dim }
+\box_set_dp:Nn \l__nwejm_journal_logo_box { \c_zero_dim }
 }
 \newpagestyle{__nwejm_article_title_ps}[]{%
   % \widenhead{\c_zero_dim}{\c_zero_dim}
@@ -398,14 +404,12 @@
   {\thepage}%
   {}%
 }
-\gdef\ttl@savemark{}
+\def\@pnumwidth{\@tocrmarg}
 \AtBeginDocument{%
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
-\AtBeginDocument{%
-    \g__nwejm_mainmatter_switch_tl
-}
+    \AtBeginDocument{\g__nwejm_mainmatter_switch_tl}
 \int_new:N \g__nwejm_issue_number_int
 \int_new:N \g__nwejm_issue_month_int
 \int_new:N \g__nwejm_issue_year_int
@@ -1650,13 +1654,13 @@
 \RenewDocumentCommand \geq {} {%
   \ifcurrentbaselanguage {french}{\geqslant}{\__nwejm_orig_geq}%
 }
-\NewDocumentCommand \N {} {\mathbb{N}}
-\NewDocumentCommand \Z {} {\mathbb{Z}}
-\NewDocumentCommand \D {} {\mathbb{D}}
-\NewDocumentCommand \Q {} {\mathbb{Q}}
-\NewDocumentCommand \R {} {\mathbb{R}}
-\NewDocumentCommand \C {} {\mathbb{C}}
-\NewDocumentCommand \K {} {\mathbb{K}}
+\NewDocumentCommand \bbN {} {\mathbb{N}}
+\NewDocumentCommand \bbZ {} {\mathbb{Z}}
+\NewDocumentCommand \bbD {} {\mathbb{D}}
+\NewDocumentCommand \bbQ {} {\mathbb{Q}}
+\NewDocumentCommand \bbR {} {\mathbb{R}}
+\NewDocumentCommand \bbC {} {\mathbb{C}}
+\NewDocumentCommand \bbK {} {\mathbb{K}}
 \cs_set_eq:NN \emptyset \varnothing
 \tl_new:N \l__nwejm_given_tl
 \tl_set:Nn \l__nwejm_given_tl {
@@ -1907,6 +1911,10 @@
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
 }
 \ExplSyntaxOff
+\patchcmd{\autonum@saveEnvironmentSubcommands}
+  {(0,0)\begin}
+  {(0,0)\hfuzz=\maxdimen\begin}
+    {}{}
 %% 
 %% Copyright (C) 2015, 2016 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
 %% 
