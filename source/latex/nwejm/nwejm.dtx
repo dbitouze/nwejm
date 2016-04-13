@@ -2455,15 +2455,14 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \section{Displaying the back cover}
 %
-% We create the variable that displays the back cover.
 %    \begin{macrocode}
-\tl_new:N \g_@@_display_backcover_tl%
-\tl_gset:Nn \g_@@_display_backcover_tl {%
-  \bool_gset_true:N \g_@@_backcover_bool
+\tl_new:N \g_@@_short_toc_tl%
 %    \end{macrocode}
 %
-% The following code is borrowed from \pkg{etoc}'s documentation.
+% The following code to get a framed TOC is borrowed from \pkg{etoc}'s
+% documentation.
 %    \begin{macrocode}
+\tl_gset:Nn \g_@@_short_toc_tl {%
   \begingroup
   \etocstandardlines
   \etocsetnexttocdepth{chapter}
@@ -2473,6 +2472,26 @@ Running "make install" installs the files in the local TeX tree.
   \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c_@@_backcover_tableofcontents_string_tl}}}
   \tableofcontents
   \endgroup
+}
+%    \end{macrocode}
+%
+% We compute the height of this framed TOC to know the place left on the page
+% for the collection of logos that will be displayed below.
+%    \begin{macrocode}
+% \newlength\toto
+% \setlength{\toto}{ \textheight - \heightof{\g_@@_short_toc_tl} }
+\tl_new:N \g_@@_display_backcover_tl%
+\tl_gset:Nn \g_@@_display_backcover_tl {%
+  \bool_gset_true:N \g_@@_backcover_bool
+%    \end{macrocode}
+%
+% The following code is borrowed from \pkg{etoc}'s documentation.
+%    \begin{macrocode}
+\g_@@_short_toc_tl
+\vfill{}
+  \begin{center}
+    \includegraphics[height=.4\textheight]{nwejm-logos-collection.pdf}
+  \end{center}
 }
 %    \end{macrocode}
 %
