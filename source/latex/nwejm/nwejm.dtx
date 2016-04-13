@@ -1004,6 +1004,9 @@ Running "make install" installs the files in the local TeX tree.
 \tl_const:Nn \c_@@_journal_title_string_tl {
   North-Western~European~Journal~of~Mathematics%
 }
+\tl_const:Nn \c_@@_journal_front_cover_title_string_tl {
+  North-Western~European\\Journal\\of\\Mathematics%
+}
 %    \end{macrocode}
 %
 % For the names of the underlying classes.
@@ -1564,22 +1567,56 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Front cover page style}
 %
 %    \begin{macrocode}
+  % \box_new:N \l_@@_journal_frontcover_logo_box
+  % \box_new:N \l_@@_journal_volume_box
+  % \AfterEndPreamble{%
+  %   \hbox_set:Nn \l_@@_journal_volume_box
+  %   {
+  %     \color{Navy}
+  %     \LARGE
+  %     \bfseries
+  %     \sffamily
+  %     \adjustbox{stack=l}{%
+  %       \c_@@_frontcover_header_left_string_tl
+  %       \\\c_@@_frontcover_header_right_string_tl
+  %     }
+  %   }
+  %   \hbox_set:Nn \l_@@_journal_frontcover_logo_box
+  %   {
+  %     \includegraphics[width=3cm]{ nwejm-logo }
+  %   }
+    % \hbox_set_to_wd:Nnn \l_@@_journal_frontcover_logo_box { 1cm }
+    % {
+    %   \box_move_down:nn
+    %   {
+    %     \box_ht:N \l_@@_journal_frontcover_logo_box / 2
+    %     -
+    %     \box_ht:N \l_@@_journal_volume_box / 2
+    %   }
+    %   {
+    %     \box_use:N \l_@@_journal_frontcover_logo_box
+    %   }
+    % }
+%     \box_set_ht:Nn \l_@@_journal_frontcover_logo_box { \c_zero_dim }
+%     \box_set_dp:Nn \l_@@_journal_frontcover_logo_box { \c_zero_dim }
+% }
+%
 \newpagestyle{@@_frontcover_ps}[]{%
   \sethead
   {
-    \color{Navy}
-    \LARGE
-    \bfseries
-    \sffamily
-    \c_@@_frontcover_header_left_string_tl
+      \color{Navy}
+      \Large
+      \bfseries
+      \sffamily
+      \adjustbox{stack=l}{%
+        \c_@@_frontcover_header_left_string_tl
+        \\\c_@@_frontcover_header_right_string_tl
+      }
   }%
   {}%
   {%
-    \color{Navy}
-    \LARGE
-    \bfseries
-    \sffamily
-    \c_@@_frontcover_header_right_string_tl
+    % \l_@@_journal_frontcover_logo_box
+    {\includegraphics[width=1cm]{ nwejm-logo }}
   }%
   %
   \setfoot%
@@ -1746,34 +1783,34 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \box_new:N \l_@@_journal_logo_box
   \box_new:N \l_@@_journal_name_box
-\AfterEndPreamble{%
-  \hbox_set:Nn \l_@@_journal_name_box
-  {
-    \bfseries%
-    \adjustbox{stack=l}{%
-      \c_@@_journal_title_string_tl
-%<class>      \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\space\int_use:N \g_@@_issue_number_int
-%<class-article>\mbox{}
-    }
-  }
-  \hbox_set:Nn \l_@@_journal_logo_box
-  {
-    \includegraphics[width=1cm]{ grandMoulinNB }
-  }
-  \hbox_set_to_wd:Nnn \l_@@_journal_logo_box { 1cm }
-  {
-    \box_move_down:nn
+  \AfterEndPreamble{%
+    \hbox_set:Nn \l_@@_journal_name_box
     {
-      \box_ht:N \l_@@_journal_logo_box / 2
-      -
-      \box_ht:N \l_@@_journal_name_box / 2
-    }
-    {
-      \box_use:N \l_@@_journal_logo_box
-    }
+      \bfseries%
+      \adjustbox{stack=l}{%
+        \c_@@_journal_title_string_tl
+%<class> \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\space\int_use:N \g_@@_issue_number_int
+%<class-article> \mbox{}
+}
+}
+\hbox_set:Nn \l_@@_journal_logo_box
+{
+  \includegraphics[width=1cm]{ nwejm-logo-NB }
+}
+\hbox_set_to_wd:Nnn \l_@@_journal_logo_box { 1cm }
+{
+  \box_move_down:nn
+  {
+    \box_ht:N \l_@@_journal_logo_box / 2
+    -
+    \box_ht:N \l_@@_journal_name_box / 2
   }
-  \box_set_ht:Nn \l_@@_journal_logo_box { 0pt }
-  \box_set_dp:Nn \l_@@_journal_logo_box { 0pt }
+  {
+    \box_use:N \l_@@_journal_logo_box
+  }
+}
+\box_set_ht:Nn \l_@@_journal_logo_box { \c_zero_dim }
+\box_set_dp:Nn \l_@@_journal_logo_box { \c_zero_dim }
 }
 %
 \newpagestyle{@@_article_title_ps}[]{%
@@ -2303,52 +2340,17 @@ Running "make install" installs the files in the local TeX tree.
     \hspace*{-2\c_@@_potential_layoutoffset_dim}
   }
   {
-    \LARGE
-    \bfseries
-    \sffamily
-    \color{Navy}
-    \c_@@_journal_title_string_tl
-  }
-  \vfill%
-  \begin{adjustbox}{valign=M,minipage=\c_@@_left_minipage_frontcover_dim}
     \mbox{}
     \vfill
-    \includegraphics[width=.7\linewidth]{ logo_SMF }
-    \par
-    \mbox{}
-    \vfill%
-    \mbox{}
-    \par
-    \includegraphics[width=\linewidth]{ kwglogo }
-    \par
-    \mbox{}
-    \vfill%
-    \mbox{}
-    \par
-    \includegraphics[width=\linewidth]{ sml }
-    \par
-    \mbox{}
-    \vfill%
-    \mbox{}
-    \par
-    \includegraphics[width=.7\linewidth]{ fields-institute-logo }
-    \par
-    \mbox{}
-    \vfill%
-    \mbox{}
-    \par
-    \includegraphics[width=\linewidth]{ frm }
-    \par
-    \vfill%
-    \mbox{}
-  \end{adjustbox}
-  \hfill
-  \begin{adjustbox}{valign=M,minipage=\c_@@_right_minipage_frontcover_dim}
-    \mbox{}
-    \hfill
-    \includegraphics[width=\linewidth]{ grandMoulin }
-  \end{adjustbox}
-  % \includegraphics[height=22.5mm]{\c_@@_smf_logo_file_string_tl}%
+    \begin{center}
+      \Huge%
+      \bfseries%
+      \sffamily%
+      \itshape%
+      \color{Navy}%
+      \c_@@_journal_front_cover_title_string_tl%
+    \end{center}
+  }
   \vfill%
   \clearpage%
   \bool_gset_false:N \g_@@_frontcover_bool
