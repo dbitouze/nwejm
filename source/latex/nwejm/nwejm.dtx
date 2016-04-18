@@ -289,6 +289,12 @@ Running "make install" installs the files in the local TeX tree.
   concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~ use.~ Please~
   use~ \articlesetup~ command~ just~ once,~ just~ after~ the~ beginning~ of~
   the~ document.}%
+\msg_new:nnn{
+%<class-article> nwejmart
+%<class>         nwejm
+}{`xy'~package~not~allowed!}{The~ `xy'~ package~ is~ not~ allowed~ with~ the~
+  `nwejm'~ LaTeX~ classes.~ Please~ use~ instead~ the~ user-friendly~ and~
+  modern~ `tikz-cd'~ package.}%
 \msg_new:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{The~
   size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
@@ -4763,6 +4769,21 @@ Running "make install" installs the files in the local TeX tree.
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+}
+%    \end{macrocode}
+%
+% \Pkg{xy} performs category code changes of ×@× ×\AtBeginDocument× and this
+% cause troubles (see \url{tex.stackexchange.com/q/303238/18401}). Hence, we
+% prohibit it.
+%    \begin{macrocode}
+\AtEndPreamble{%
+  \@ifpackageloaded{xy}{%
+    \msg_error:nn{
+%<class-article> nwejmart
+%<class>         nwejm
+    }{`xy'~package~not~allowed!}
+  }{
+  }
 }
 %    \end{macrocode}
 %
