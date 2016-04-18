@@ -54,6 +54,11 @@
   concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~ use.~ Please~
   use~ \articlesetup~ command~ just~ once,~ just~ after~ the~ beginning~ of~
   the~ document.}%
+\msg_new:nnn{
+ nwejmart
+}{`xy'~package~not~allowed!}{The~ `xy'~ package~ is~ not~ allowed~ with~ the~
+  `nwejm'~ LaTeX~ classes.~ Please~ use~ instead~ the~ user-friendly~ and~
+  modern~ `tikz-cd'~ package.}%
 \msg_new:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{The~
   size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
@@ -1909,6 +1914,14 @@
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+}
+\AtEndPreamble{%
+  \@ifpackageloaded{xy}{%
+    \msg_error:nn{
+ nwejmart
+    }{`xy'~package~not~allowed!}
+  }{
+  }
 }
 \ExplSyntaxOff
 \patchcmd{\autonum@saveEnvironmentSubcommands}
