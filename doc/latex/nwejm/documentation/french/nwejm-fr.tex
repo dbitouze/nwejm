@@ -1,3 +1,50 @@
+\documentclass[french,nolocaltoc]{nwejmart}
+\usepackage{denisbdoc}
+\usepackage[firstpage]{draftwatermark}
+%
+\indexsetup{level=\section*,toclevel=section,noclearpage}
+\makeindex[columns=2]
+\tcbset{index format=off}
+%
+\lstMakeShortInline[style=dbtex]|
+\tcbset{listing options={escapechar=+}}
+%
+\SetWatermarkColor{gray!10}%
+\SetWatermarkFontSize{20mm}%
+\SetWatermarkText{\MakeUppercase{travail en cours}}%
+%
+\addbibresource{nwejm-fr.bib}
+%
+\newacronym{nwejm}{nwejm}{North-Western European Journal of Mathematics}
+\newacronym{bap}{bap}{bounded approximation property}
+\newacronym{msc}{msc}{Mathematical Subject Classification}
+\newacronym{url}{url}{Uniform Resource Locator}
+%
+\newtheorem{article}
+\newtheorem[title=Fait,style=definition]{fact}
+%
+\DeclareMathOperator{\cat}{Cat}
+\newcommand{\mybinop}{\mathbin{@}}
+%
+\begin{document}
+\title[Documentation de la classe \LaTeX{} du \texorpdfstring{\nwejm}{NWEJM}]{Documentation de la classe \LaTeX{} du \nwejm*{} destinée aux auteurs}
+%
+\author[%
+affiliation={%
+  Université du Littoral Côte d'Opale, Laboratoire de mathématiques pures et
+  appliquées (\nolinkurl{denis.bitouze@lmpa.univ-littoral.fr})%
+},%
+]{Bitouzé, Denis}
+%
+\maketitle
+%
+\etocarticlestylenomarks
+\localtableofcontents
+%
+\DeclareFixedFootnote{\conseilslatex}{Et donne de façon subliminale quelques conseils
+  \LaTeX{}. On consultera \autocite{Ensenbach} pour un panorama plus complet des
+  commandes et extensions obsolètes (et autres erreurs).}
+
 \section{Introduction}
 \label{sec-introduction}
 
@@ -440,14 +487,20 @@ donne le texte figurant dans l'encadré intitulé \enquote{Exemple de
   bibliographie} \vpageref{biblio}.
 
 \begin{refsegment}
-  % \selectlanguage{english}
+  \ExplSyntaxOn
+  \makeatletter
+  \defbibheading{origsectionnotintoc}[References]{%
+    \__nwejm_section*{#1}%
+  }
+  \makeatother
+  \ExplSyntaxOff
 \begin{bodycode}[text only,float,title={Exemple de bibliographie},label=biblio]
 The first assertion is a direct consequence of the Riemann-Roch formula for
 threefolds\autocite[See e.g.][437]{har} and Kawamata-Viehweg
 vanishing\autocite[theorem~4.3.1]{laz1}.  For the second assertion, see
 \textcite[theorem~(0.4)]{shin}.
 %
-\printbibliography[segment=1]
+\printbibliography[heading=origsectionnotintoc,segment=1]
 \end{bodycode}
 \end{refsegment}
 
@@ -1116,8 +1169,8 @@ On soupçonne que non \aside*{par exemple on s'attend à ce que
 \begin{docCommand}{nwejm}{}
   Cette commande affiche, sous sa forme :
   \begin{description}
-  \item[\emph{non} étoilée :] la version abrégée \enquote{\nwejm} ;
-  \item[étoilée :] la version \emph{non} abrégée \enquote{\nwejm*}.
+  \item[\emph{non} étoilée :] la version abrégée \enquote{\nwejm{}} ;
+  \item[étoilée :] la version \emph{non} abrégée \enquote{\nwejm*{}}.
   \end{description}
 \end{docCommand}
 
@@ -1406,7 +1459,8 @@ versions étoilées de ces environnements qui composent ces listes \enquote{en
 Le lecteur souhaitant écrire un article pour le \nwejm*{} trouvera ci-dessous un
 canevas de fichier source qui est un modèle typique d'article standard où les
 commandes et environnement moins fréquents ont été mis en commentaire. Il est
-attaché au fichier \file{PDF} de la présente documentation\footnote{Il peut
+attaché au fichier \file{PDF} de la présente documentation\footnote{Pour
+  l'extraire, il devrait suffire de cliquer sur l'icône ci-dessous. Il peut
   également être copié-collé : la plupart des afficheurs \textsc{pdf}
   permettent de sélectionner et de copier du texte.}.
 %
@@ -1416,16 +1470,252 @@ attaché au fichier \file{PDF} de la présente documentation\footnote{Il peut
   samples,
   fontupper=\scriptsize\ttfamily,
   listing only,
-  listing file=../examples/\attachfilename,
-  title={\attachfiletextlink\ \attachfile{../examples/\attachfilename}},%
+  listing file=../../examples/\attachfilename,
+  title={\attachfiletextlink\ \attachfile{../../examples/\attachfilename}},%
   listing options={deletekeywords={title,subtitle,author,keywords},deletekeywords={[2]{first}}}
 }
 
-\iffalse
+\appendix
+
+\section{Packages chargés (ou pas) par la
+  classe}\label{sec-packages-charges-ou-pas}
+
+\subsection{Packages chargés par la classe}\label{sec:packages-charges-par}
+
+On a vu que, pour plusieurs de ses fonctionnalités, la \nwejmauthorcl{} s'appuie
+sur des packages qu'elle charge automatiquement. Ceux dont les fonctionnalités
+peuvent être utiles aux auteurs d'articles du \nwejm{} sont répertoriés dans la
+liste suivante qui indique leur fonction et le cas échéant la ou les options
+avec lesquelles ils sont chargés.
+
+En sus des outils propres à la \nwejmauthorcl, tous ceux fournis par ces
+différents packages sont donc à disposition des auteurs de la \nwejm{}.
+
+\begin{description}
+\item[\package{nag} :] signalement\footnote{Sous forme de \emph{warnings}.} de
+  packages, commandes et environnements obsolètes :
+  \begin{description}
+  \item[options par défaut :] \docAuxKey{l2tabu}, \docAuxKey{orthodox} ;
+  \end{description}
+\item[\package{kpfonts} :] police principale du document :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{noDcommand} ;
+  \end{description}
+\item[\package{graphicx} :] inclusion d'images ;
+\item[\package{adjustbox} :] ajustement de la position de boîtes, par exemple
+  d'images ;
+\item[\package{xspace} :] définition de commandes qui ne \enquote{mangent} pas
+  l'espace qui suit ;
+\item[\package{array} :] extension (et corrections de bogues) des
+  environnements de tableaux ;
+\item[\package{booktabs} :] tableaux d'allure professionnelle ;
+\item[\package{csquotes} :] citations d'extraits informelles et
+  formelles\footnote{Avec citation des sources,
+    cf. \vref{sec-guillemets-citations}.} :
+    \begin{description}
+    \item[option par défaut :] \docAuxKey{autostyle} ;
+    \item[réglage par défaut] |\SetCiteCommand{\autocite}| ;
+  \end{description}
+\item[\package{biblatex} :] gestion puissante de la bibliographie ;
+\item[\package{datetime2} :] formats de dates et de (zones de) temps :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{useregional} ;
+  \end{description}
+\item[\package{hyperref} :] support pour les liens
+  hypertextes\footnote{Cf. \vref{sec-url}.} :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{hidelinks},
+    \docAuxKey{hypertexnames}(|=false|) ;
+  \end{description}
+\item[\package{glossaries} :] création de glossaires et (listes d')acronymes :
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{nowarn} ;
+  \end{description}
+\item[\package{varioref} et \package{cleveref} :] références croisées
+  intelligentes\footnote{Cf. \vref{sec-references-croisees}.}.
+\end{description}
+
+\subsection{Packages non  chargés par la classe}\label{sec:packages-non-charges}
+
+La liste suivante, loin d'être exhaustive, répertorie des packages non chargés
+par la \nwejmauthorcl{} mais pouvant se révéler utiles aux auteurs.  En outre,
+lorsqu'ils sont chargés manuellement par l'utilisateur, certains d'entre eux se
+voient fixés par la \nwejmauthorcl{} des options ou réglages dont les plus
+notables sont précisés.
+
+\begin{description}
+\item[\package{tikz-cd} :] création simple de diagrammes commutatifs de très
+  haute qualité\footnote{Le \Package{xy}, souvent utilisé pour de tels
+    diagrammes, est incomptible avec la présente :
+    cf. \vref{sec-incompatibilites}.} ;
+\item[\package{pgfplots} :] création simple de graphiques (de dimensions~$2$
+  ou~$3$) de très haute qualité pour représenter des fonctions ou des données
+  expérimentales ;
+\item[\package{siunitx} :] gestion des nombres, angles et unités, et alignement
+  vertical sur le séparateur décimal dans les tableaux :
+  \begin{description}
+  \item[option par défaut :]\
+    \begin{itemize}
+    \item \docAuxKey{detect-all} ;
+    \item \docAuxKey{locale}|=|\docValue{FR} ou \docValue{UK} ou \docValue{DE}
+      selon la langue de l'article ;
+    \end{itemize}
+  \end{description}
+\item[\package{listings} :] insertion de listings informatiques ;
+\item[\package{todonotes} :] insertion de \enquote{TODO}\footnote{Rappels de
+    points qu'il ne faut pas oublier d'ajouter, de compléter, de réviser, etc.}.
+\end{description}
+
+\section{Incompatibilités}
+\label{sec-incompatibilites}
+
+Pour des raison techniques, le \nwejm{} n'accepte pas de fichier source
+\file{.tex} chargeant le \Package{xy} et la classe \nwejmauthor{} émet une
+erreur si tel est le cas. L'utilisateur ayant à composer des diagrammes
+\enquote{de type matriciel}, notamment des diagrammes commutatifs, est invité
+à recourir au \Package{tikz-cd} à la fois moderne et convivial.
+
+\section{Notations, syntaxe, terminologie et codes couleurs}\label{sec-synt-term-notat}
+
+Nous précisons ici les notations, syntaxe, terminologie et codes couleurs de
+la présente documentation.
+
+\subsection{Commandes, environnements, clés, valeurs}\label{sec-comm-envir-cles}
+
+Les commandes, environnements, clés et valeurs de clés sont systématiquement
+composés en fonte à chasse fixe. En outre, pour plus facilement les
+distinguer, ils figurent avec des couleurs propres :
+\begin{itemize}
+\item les commandes en bleu : \docAuxCommand*{commande} ;
+\item les environnements en \enquote{sarcelle} :
+  \docAuxEnvironment*{environnement} ;
+\item les clés en pourpre : \docAuxKey*{clé} ;
+\item les valeurs des clés en violet : \docValue*{valeur}.
+\end{itemize}
+
+\subsection{Arguments génériques}
+\label{sec-arguments-generiques}
+
+Pour expliquer le rôle d'une commande, il est parfois nécessaire d'indiquer
+à quoi celle-ci s'applique, autrement dit quel en est l'argument générique.
+Un tel argument est composé :
+\begin{itemize}
+\item en fonte à chasse fixe ;
+\item en italique ;
+\item entre chevrons simples ;
+\end{itemize}
+le tout en marron, ainsi : \meta{argument générique}.
+
+\subsection{Liens hypertextes}
+\label{sec-liens-hypertextes}
+
+Les liens hypertextes figurent en couleur, ainsi :
+\href{http://gte.univ-littoral.fr/members/dbitouze/pub/latex}{lien hypertexte}.
+La plupart des références aux commandes, environnements et clés définis dans la
+présente documentation, sont des liens hypertextes, surmontés du numéro de page
+où se trouve la cible correspondante (sauf si elle se situe sur la même page) :
+\begin{itemize}
+\item \refCom{author} ;
+\item \refEnv{abstract}.
+\end{itemize}
+
+
+\subsection{Éléments \enquote{obligatoires}}
+\label{sec-comm-oblig}
+
+L'icône \mandatory{}, figurant en regard de certains éléments (commandes ou
+environnements), indique que ceux-ci sont \enquote{obligatoires}.
+
+\subsection{Codes sources}
+\label{sec-codes-sources}
+
+Les exemples qui illustrent la présente documentation sont constitués de codes
+sources et, le cas échéant, des \enquote{copies d'écran} correspondantes.
+% Ceux-ci proviennent le plus souvent du spécimen de document composé avec la
+% \yatcl, fourni avec l'ensemble de la classe
+% (cf. \vref{sec-specimen-arborescence}).
+
+Ces codes sources figurent dans des cadres, pouvant comporter un titre, de
+couleur bleu :
+\begin{itemize}
+\item non ombrés s'ils doivent être saisis dans le corps du document ;
+\begin{bodycode}
+"\meta{code source}"
+\end{bodycode}
+\begin{bodycode}[title=\meta{titre}]
+"\meta{code source}"
+\end{bodycode}
+\item ombrés s'ils doivent être saisis en préambule du fichier.
+\begin{preamblecode}
+"\meta{code source à insérer en préambule}"
+\end{preamblecode}
+\begin{preamblecode}[title=\meta{titre}]
+"\meta{code source à insérer en préambule}"
+\end{preamblecode}
+\end{itemize}
+
+\subsection{Espaces dans les codes sources}
+\label{sec-espaces-dans-les}
+
+Pour éviter certaines confusions, les espaces dans les codes sources devant
+être saisis au clavier sont parfois matérialisés au moyen de la marque
+\lstinline[showspaces]+ +.
+
+\subsection{Options}
+\label{sec-options}
+
+La présente classe, ainsi que certaines de ses commandes et certains de ses
+environnements, peuvent être modulés au moyen d'options, ou listes d'options
+(séparées par des virgules). Ces options peuvent se présenter sous la forme
+\meta{clé}|=|\meta{valeur} et la \meta{valeur} passée à une \meta{clé} peut
+être :
+%^^A \begin{description}
+%^^A \item[ne prennent pas de valeur.] Une telle option, par exemple nommée
+%^^A   \refKey{option}, est alors documentée selon la syntaxe suivante:
+%^^A     \begin{docKey*}{option}{}{\meta{valeurs par défaut et initiale}}
+%^^A       \meta{Description de \refKey{option}}
+%^^A     \end{docKey*}
+%^^A \item[prennent des valeurs.] Une telle option se présente alors sous la forme
+%^^A   \meta{clé}"="\meta{valeur}. Les valeurs passées à une clé peuvent être :
+\begin{description}
+\item[libre.] Si une telle \meta{clé} est (pour l'exemple) nommée
+  \refKey{freekey}, elle est alors documentée selon la syntaxe suivante :
+  \begin{docKey*}{freekey}{=\meta{valeur}}{\meta{valeurs par défaut et initiale}}
+    \meta{Description de \refKey{freekey}}
+  \end{docKey*}
+\item[imposée] (parmi une liste de valeurs possibles). Si une telle \meta{clé} est
+   (pour l'exemple) nommée \refKey{choicekey} et de valeurs imposées
+  \docValue*{valeur1}, \dots{}, \docValue*{valeurN}, elle est alors
+  documentée selon la syntaxe suivante\footnote{Comme souvent en informatique,
+    la barre verticale séparant les valeurs possibles signifie \enquote{ou}.} :
+  \begin{docKey*}{choicekey}{=\docValue*{valeur1}\textbar...\textbar\docValue*{valeurN}}{\meta{valeurs par défaut et initiale}}
+    \meta{Description de \refKey{choicekey} et de ses valeurs possibles}
+  \end{docKey*}
+\end{description}
+%^^A \end{description}
+
+Les \meta{valeurs par défaut et initiale} d'une clé sont souvent précisées
+(entre parenthèses en fin de ligne). Elles indiquent ce que la clé vaut :
+\begin{description}
+\item[par défaut] c'est-à-dire lorsque la clé \emph{est} employée, mais
+  \emph{seule} c'est-à-dire sans qu'une valeur explicite lui soit passée ;
+\item[initialement] c'est-à-dire lorsque la clé \emph{n'est pas} employée.
+\end{description}
+%
+\printbibliography
+%
+% \tcblistof{dbwarninglist}{Table des
+%   avertissements\addcontentsline{toc}{section}{Table des avertissements}}%
+% \tcblistof{dbremarklist}{Table des remarques\addcontentsline{toc}{section}{Table
+%     des remarques}}%
+% \tcblistof[\chapter*]{dbexamplelist}{Table des exemples\addcontentsline{toc}{chapter}{Table des exemples}}%
+% \tcblistof[\chapter*]{dbfaqlist}{Table des
+% questions\addcontentsline{toc}{chapter}{Table des questions}
+%
+\printindex
+\end{document}
+
 %%% Local Variables:
 %%% mode: latex
-%%% eval: (latex-mode)
-%%% ispell-local-dictionary: "fr_FR"
-%%% TeX-master: "nwejm.tex"
+%%% TeX-master: t
 %%% End:
-\fi
