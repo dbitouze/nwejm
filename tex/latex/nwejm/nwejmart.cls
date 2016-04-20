@@ -129,11 +129,12 @@
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
   {
-    \RequirePackage[T1]{fontenc}
     \RequirePackage[utf8]{inputenc}
   }{
     \RequirePackage{fontspec}
+    \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
   }
+\RequirePackage[T1]{fontenc}
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
@@ -1049,6 +1050,7 @@
   }
   \sisetup{detect-all}
 }
+\apptocmd{\appendix}{\renewcommand{\thesection}{\Alph{section}}}{}{}
 \cs_set_eq:NN \__nwejm_section \section
 \cs_set_eq:NN \__nwejm_subsection \subsection
 \cs_set_eq:NN \__nwejm_subsubsection \subsubsection

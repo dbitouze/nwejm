@@ -125,11 +125,12 @@
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
   {
-    \RequirePackage[T1]{fontenc}
     \RequirePackage[utf8]{inputenc}
   }{
     \RequirePackage{fontspec}
+    \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
   }
+\RequirePackage[T1]{fontenc}
 \RequirePackage[group=false,subpreambles,sort]{standalone}%
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
@@ -209,8 +210,6 @@
 \tl_const:Nn \c__nwejm_backmatter_directory_string_tl {backmatter}
 \tl_const:Nn \c__nwejm_issue_backcover_text_file_string_tl {backcover}
 \tl_const:Nn \c__nwejm_backcover_page_file_string_tl {\c__nwejm_backmatter_directory_string_tl/\c__nwejm_issue_backcover_text_file_string_tl}
-\tl_const:Nn \c__nwejm_authors_instructions_file_extension_tl {ain}
-\tl_const:Nn \c__nwejm_authors_instructions_file_tl {\c_job_name_tl.\c__nwejm_authors_instructions_file_extension_tl}
 \tl_const:Nn \c__nwejm_authors_instructions_string_tl {Instructions~to~authors}
 \tl_const:Nn \c__nwejm_date_received_tl {received}
 \tl_const:Nn \c__nwejm_date_accepted_tl {accepted}
@@ -1061,36 +1060,31 @@
     \bool_if:NTF {\g__nwejm_no_inside_backcover_bool} {
       \hbox{}
     }{%
-      \small%
-        \file_if_exist:nT { \c__nwejm_authors_instructions_file_tl } {%
-          % \begin{multicols}{2}
-          %   \setlength{\columnsep}{1mm}
-          \file_input:n {\c__nwejm_authors_instructions_file_tl}
-          % \end{multicols}
-          % \setlength{\columnseprule}{1pt}
-        }
+      % \small%
       \begin{description}[leftmargin=1em]
-      \item[\c__nwejm_editorial_secretariat_string_tl{}~:] \ \par%
+      \item[\c__nwejm_authors_instructions_string_tl{}:] \
+        \g__nwejm_authors_instructions_tl
+      \item[\c__nwejm_editorial_secretariat_string_tl{}:] \ \par%
         % \l__nwejm_journal_publisher_tl%
         % \par%
         % \space\textendash{}\space%
         \__nwejm_display_people_by_role:n { secretary }\par
         \l__nwejm_journal_address_tl\par%
-        \c__nwejm_phone_string_tl{}~:~\l__nwejm_journal_phone_tl{}\par%
+        \c__nwejm_phone_string_tl{}:~\l__nwejm_journal_phone_tl{}\par%
         \__nwejm_email:n {\l__nwejm_journal_email_tl}
         \newline%
         % \space\textendash{}\space
         \url{\l__nwejm_journal_url_tl}
-      \item[\c__nwejm_issn_string_tl{}~:] \l__nwejm_journal_issn_tl
+      \item[\c__nwejm_issn_string_tl{}:] \l__nwejm_journal_issn_tl
         \tl_if_empty:NF \l__nwejm_journal_isbn_tl
         {%
-        \item[\c__nwejm_isbn_string_tl{}~:] \l__nwejm_journal_isbn_tl
+        \item[\c__nwejm_isbn_string_tl{}:] \l__nwejm_journal_isbn_tl
         }
-        \item[\c__nwejm_latexclass_string_tl{}~:]
+        \item[\c__nwejm_latexclass_string_tl{}:]
           \__nwejm_display_people_by_role:n { classdesigner }
-        \item[\c__nwejm_computer_engineering_string_tl{}~:] %\g__nwejm_printer_text_tl
+        \item[\c__nwejm_computer_engineering_string_tl{}:] %\g__nwejm_printer_text_tl
           \__nwejm_display_people_by_role:n { computerengineer }
-        \item[\c__nwejm_printer_string_tl{}~:] %\g__nwejm_printer_text_tl
+        \item[\c__nwejm_printer_string_tl{}:] %\g__nwejm_printer_text_tl
           \__nwejm_display_people_by_role:n { printingservice }
       \end{description}
         \g__nwejm_font_designer_text_tl
@@ -1258,6 +1252,13 @@
 }
 \NewDocumentCommand \journalsetup { m } {
   \keys_set:nn { nwejm/journalsetup } { #1 }
+}
+\tl_new:N \g__nwejm_authors_instructions_tl
+\NewDocumentCommand \authorsinstructions { +m } {
+  \IfNoValueF {#1}
+  {
+    \tl_gset:Nn \g__nwejm_authors_instructions_tl {#1}
+  }
 }
 \addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
@@ -1727,6 +1728,7 @@
   }
   \sisetup{detect-all}
 }
+\apptocmd{\appendix}{\renewcommand{\thesection}{\Alph{section}}}{}{}
 \cs_set_eq:NN \__nwejm_section \section
 \cs_set_eq:NN \__nwejm_subsection \subsection
 \cs_set_eq:NN \__nwejm_subsubsection \subsubsection
