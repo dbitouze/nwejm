@@ -548,19 +548,23 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[l2tabu,orthodox]{nag}
 %    \end{macrocode}
 %
-% \item In case of \hologo{pdfTeX} engine, we enforce \pkg{fontenc} to be loaded
-%   with its \docAuxKey*{T1} option (usual for French and English documents) and
-%   \pkg{inputenc} to be loaded with its \docAuxKey*{utf8} option. Otherwise
-%   \pkg{fontspec}, convenient for both \hologo{XeLaTeX} and \hologo{LuaLaTeX},
-%   is loaded, with ligatures à la \TeX{} by default enabled.
+% \item In case of \hologo{pdfTeX} engine, we enforce \pkg{inputenc} to be
+%   loaded with its \docAuxKey*{utf8} option. Otherwise \pkg{fontspec},
+%   convenient for both \hologo{XeLaTeX} and \hologo{LuaLaTeX}, is loaded with
+%   ligatures à la \TeX{} by default enabled. In case
 %    \begin{macrocode}
 \pdftex_if_engine:TF
   {
-    \RequirePackage[T1]{fontenc}
     \RequirePackage[utf8]{inputenc}
   }{
     \RequirePackage{fontspec}
+    \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
   }
+%    \end{macrocode}
+%
+% \item Standard package for selecting font encodings:
+%    \begin{macrocode}
+\RequirePackage[T1]{fontenc}
 %    \end{macrocode}
 %
 % \item Compile \TeX{} pictures stand-alone or as part of a document:
