@@ -3544,6 +3544,13 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% Both classes are based on ×book× class hence ×\appendix× makes only chapters
+% to be lettered but, in case of a single article, only ×\section× and below are
+% used, so ×\appendix× should make the latter lettered.
+%    \begin{macrocode}
+\apptocmd{\appendix}{\renewcommand{\thesection}{\Alph{section}}}{}{}
+%    \end{macrocode}
+%
 % \subsection{Redefinition of heading commands}
 %
 % We redefine the heading commands (×\section× and ×\subsection×, not below as
