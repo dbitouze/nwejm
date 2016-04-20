@@ -2418,36 +2418,31 @@ Running "make install" installs the files in the local TeX tree.
     \bool_if:NTF {\g_@@_no_inside_backcover_bool} {
       \hbox{}
     }{%
-      \small%
-        \file_if_exist:nT { \c_@@_authors_instructions_file_tl } {%
-          % \begin{multicols}{2}
-          %   \setlength{\columnsep}{1mm}
-          \file_input:n {\c_@@_authors_instructions_file_tl}
-          % \end{multicols}
-          % \setlength{\columnseprule}{1pt}
-        }
+      % \small%
       \begin{description}[leftmargin=1em]
-      \item[\c_@@_editorial_secretariat_string_tl{}~:] \ \par%
+      \item[\c_@@_authors_instructions_string_tl{}:] \
+        \g_@@_authors_instructions_tl
+      \item[\c_@@_editorial_secretariat_string_tl{}:] \ \par%
         % \l_@@_journal_publisher_tl%
         % \par%
         % \space\textendash{}\space%
         \@@_display_people_by_role:n { secretary }\par
         \l_@@_journal_address_tl\par%
-        \c_@@_phone_string_tl{}~:~\l_@@_journal_phone_tl{}\par%
+        \c_@@_phone_string_tl{}:~\l_@@_journal_phone_tl{}\par%
         \_@@_email:n {\l_@@_journal_email_tl}
         \newline%
         % \space\textendash{}\space
         \url{\l_@@_journal_url_tl}
-      \item[\c_@@_issn_string_tl{}~:] \l_@@_journal_issn_tl
+      \item[\c_@@_issn_string_tl{}:] \l_@@_journal_issn_tl
         \tl_if_empty:NF \l_@@_journal_isbn_tl
         {%
-        \item[\c_@@_isbn_string_tl{}~:] \l_@@_journal_isbn_tl
+        \item[\c_@@_isbn_string_tl{}:] \l_@@_journal_isbn_tl
         }
-        \item[\c_@@_latexclass_string_tl{}~:]
+        \item[\c_@@_latexclass_string_tl{}:]
           \@@_display_people_by_role:n { classdesigner }
-        \item[\c_@@_computer_engineering_string_tl{}~:] %\g_@@_printer_text_tl
+        \item[\c_@@_computer_engineering_string_tl{}:] %\g_@@_printer_text_tl
           \@@_display_people_by_role:n { computerengineer }
-        \item[\c_@@_printer_string_tl{}~:] %\g_@@_printer_text_tl
+        \item[\c_@@_printer_string_tl{}:] %\g_@@_printer_text_tl
           \@@_display_people_by_role:n { printingservice }
       \end{description}
         \g_@@_font_designer_text_tl
