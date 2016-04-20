@@ -934,11 +934,6 @@ Running "make install" installs the files in the local TeX tree.
 \tl_const:Nn \c_@@_issue_backcover_text_file_string_tl {backcover}
 \tl_const:Nn \c_@@_backcover_page_file_string_tl {\c_@@_backmatter_directory_string_tl/\c_@@_issue_backcover_text_file_string_tl}
 %    \end{macrocode}
-% For authors' instructions file.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_authors_instructions_file_extension_tl {ain}
-\tl_const:Nn \c_@@_authors_instructions_file_tl {\c_job_name_tl.\c_@@_authors_instructions_file_extension_tl}
-%    \end{macrocode}
 % For the authors instructions.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_authors_instructions_string_tl {Instructions~to~authors}
@@ -2779,6 +2774,19 @@ Running "make install" installs the files in the local TeX tree.
 % and "issn" are relevant here).
 %    \begin{macrocode}
   \keys_set:nn { nwejm/journalsetup } { #1 }
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\authorsinstructions}
+%   We define the command that lets us specify the instructions to authors. This
+%   setup is likely to be rarely changed.
+%    \begin{macrocode}
+\tl_new:N \g_@@_authors_instructions_tl
+\NewDocumentCommand \authorsinstructions { +m } {
+  \IfNoValueF {#1}
+  {
+    \tl_gset:Nn \g_@@_authors_instructions_tl {#1}
+  }
 }
 %    \end{macrocode}
 % \end{macro}
@@ -4934,9 +4942,42 @@ Running "make install" installs the files in the local TeX tree.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Authors instructions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{authorsinstructions}
-% Bla bla bla.
-% \end{authorsinstructions}
+\authorsinstructions{%
+  \begin{description}
+  \item[Articles submission:] At the initial stage, the authors have only to
+    provide a file in the \textsc{pdf} format. Only when the article is accepted
+    or subject to minor revisions are they asked to ensure it complies with the
+    journal format.
+  \item[\LaTeX{} details:]\
+    \begin{description}
+    \item[\LaTeX{} class:] We strongly encourage the authors to prepare their
+      article to appear in the \href{\l_@@_journal_url_tl}{\nwejm} journal with
+      the dedicated \href{http://ctan.org/pkg/nwejm}{\textsf{nwejmart}} \LaTeX{}
+      class (currently,
+      \href{http://mirrors.ctan.org/macros/latex/contrib/nwejm/doc/documentation/nwejm.pdf}{documented
+        only in French}), available with \textsf{MiKTeX} and \textsf{TeX~Live}
+      distributions.
+    \item[Incompatibilities:]\
+      \begin{itemize}
+      \item Our production system is \emph{not} compatible with the
+        \href{http://ctan.org/pkg/xypic}{\textsf{xypic} bundle}. For commutative
+        diagramms, please use instead the user-friendly and modern
+        \href{http://ctan.org/pkg/xypic}{\textsf{tikz-cd}} package.
+      \item We much more prefer graphics \emph{not} created with
+        \href{http://ctan.org/topic/pstricks}{\textsf{PSTricks} and
+          derived}. Consider using
+        \href{http://ctan.org/pkg/pgf}{\textsf{PGF/TikZ}} or
+        \href{http://ctan.org/topic/pgf-tikz}{derived packages}.
+      \end{itemize}
+      In case you really need one of these packages, please contact us.
+    \item[Bibliography:] The bibliography must be provided as a \texttt{.bib}
+      file in the format of the
+      \href{http://ctan.org/pkg/biblatex}{\textsf{biblatex}} package.
+    \item[Figures:] The figures must be provided in \textsc{pdf} or \textsc{eps}
+      formats.
+    \end{description}
+  \end{description}
+}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
