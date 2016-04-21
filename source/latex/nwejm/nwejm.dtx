@@ -2620,17 +2620,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %<class-article>\externaldocument[@@-]{\c_@@_main_file_name_tl}
-\cs_new_protected:Nn \_@@_set_page_number:n
-{
-%<class>
-%<class-article>\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-#1}}}
-}
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<class-article>\AtEndPreamble{
-%<class-article>  \_@@_set_page_number:n {\currfilebase}
-%<class-article>}
+%<class-article>\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-\currfilebase}}}
 %    \end{macrocode}
 %
 % \section{User level commands}

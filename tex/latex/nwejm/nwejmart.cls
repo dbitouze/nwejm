@@ -640,13 +640,7 @@
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
 \externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
-\cs_new_protected:Nn \__nwejm_set_page_number:n
-{
-\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-#1}}}
-}
-\AtEndPreamble{
-  \__nwejm_set_page_number:n {\currfilebase}
-}
+\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
 \cs_new_protected:Nn \__nwejm_command_only_in_body:n
 {
   \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {

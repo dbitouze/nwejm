@@ -1176,10 +1176,6 @@
 \tl_new:N \l__nwejm_jobname_tl
 \tl_set:Nn \l__nwejm_jobname_tl {\jobname}
 \str_if_eq_x:nnF \l__nwejm_jobname_tl \c__nwejm_main_file_name_tl { \msg_error:nn{nwejm}{Wrong~main~file~name!} }
-\cs_new_protected:Nn \__nwejm_set_page_number:n
-{
-
-}
 %%   \enquote{R\'{e}dacteur(s) en chef}.
 \NewDocumentCommand \editorinchief {mmmm}
 {
