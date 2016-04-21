@@ -265,6 +265,9 @@ Running "make install" installs the files in the local TeX tree.
 \msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c_@@_first_issue_number_int'.}%
+\msg_new:nnn{nwejm}{Wrong~main~file~name!}{The~ main~ file~ should~ be~ named~
+  `\tl_use:N\c_@@_main_file_name_tl.tex',~ not~ `\jobname.tex'.~ Please~ rename~
+  the~ current~ file~ accordingly.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
@@ -606,8 +609,21 @@ Running "make install" installs the files in the local TeX tree.
 %<class>\RequirePackage{zref-totpages}
 %    \end{macrocode}
 %
-\usepackage{xr}
-\usepackage{refcount}
+% \item References to other \LaTeX{} documents:
+%    \begin{macrocode}
+\RequirePackage{xr}
+%    \end{macrocode}
+%
+% \item References to other \LaTeX{} documents:
+%    \begin{macrocode}
+%<class-article>\RequirePackage{xr}
+%    \end{macrocode}
+%
+% \item Provide file name and path of input files:
+%    \begin{macrocode}
+\RequirePackage{currfile}
+%    \end{macrocode}
+%
 % \item A new reference scheme for \LaTeX{}, providing the facilities of the
 %   \package{xr} and \package{xr-hyper} packages:
 %    \begin{macrocode}
@@ -2590,6 +2606,32 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 % \end{macro}
 %
+% \section{Page numbers' synchronization of standalone articles/issue}
+%
+% The machinery for page numbers' synchronization of standalone articles/issue
+% needs the main file name to be fixed (chosen name: \enquote{issue}). If that's
+% not the case an error is thrown.
+%    \begin{macrocode}
+%<class>\tl_new:N \l_@@_jobname_tl
+%<class>\tl_set:Nn \l_@@_jobname_tl {\jobname}
+%<class>\str_if_eq_x:nnF \l_@@_jobname_tl \c_@@_main_file_name_tl { \msg_error:nn{nwejm}{Wrong~main~file~name!} }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<class-article>\externaldocument[@@-]{\c_@@_main_file_name_tl}
+\cs_new_protected:Nn \_@@_set_page_number:n
+{
+%<class>
+%<class-article>\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-#1}}}
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<class-article>\AtEndPreamble{
+%<class-article>  \_@@_set_page_number:n {\currfilebase}
+%<class-article>}
+%    \end{macrocode}
+%
 % \section{User level commands}
 %
 % Here, we gather all the user level (public) commands.
@@ -3453,6 +3495,7 @@ Running "make install" installs the files in the local TeX tree.
     }
     \\[-4ex]
   }
+\label{\currfilebase}
   \bool_gset_false:N \g_@@_date_specified_bool
   \bookmarksetup{depth=subsection}
   \setsecnumdepth{subsection}
