@@ -31,6 +31,9 @@
 \msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
+\msg_new:nnn{nwejm}{Wrong~main~file~name!}{The~ main~ file~ should~ be~ named~
+  `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~ `\jobname.tex'.~ Please~ rename~
+  the~ current~ file~ accordingly.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
@@ -45,7 +48,8 @@
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
 \msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
-  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
+  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~
+  counterpart~ `#1'.}%
 \msg_new:nnn{
          nwejm
 }{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
@@ -140,6 +144,8 @@
 }
 \RequirePackage{adjustbox}%
 \RequirePackage{zref-totpages}
+\RequirePackage{xr}
+\RequirePackage{currfile}
 \RequirePackage{zref-xr}%
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage[svgnames]{xcolor}%
@@ -211,6 +217,7 @@
 \tl_const:Nn \c__nwejm_issue_backcover_text_file_string_tl {backcover}
 \tl_const:Nn \c__nwejm_backcover_page_file_string_tl {\c__nwejm_backmatter_directory_string_tl/\c__nwejm_issue_backcover_text_file_string_tl}
 \tl_const:Nn \c__nwejm_authors_instructions_string_tl {Instructions~to~authors}
+\tl_const:Nn \c__nwejm_main_file_name_tl {issue}
 \tl_const:Nn \c__nwejm_date_received_tl {received}
 \tl_const:Nn \c__nwejm_date_accepted_tl {accepted}
 \tl_const:Nn \c__nwejm_date_online_tl {online}
@@ -497,7 +504,7 @@
     \preto\@enddocumenthook{
       \cleardoublepage
       \pagenumbering{roman}%
-      \setcounter{page}{3}
+      \setcounter{page}{\c_three}
       \bool_gset_true:N \g__nwejm_backmatter_bool
       \g__nwejm_display_inside_backcover_tl
       \newpage
@@ -1166,6 +1173,13 @@
   \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
+\tl_new:N \l__nwejm_jobname_tl
+\tl_set:Nn \l__nwejm_jobname_tl {\jobname}
+\str_if_eq_x:nnF \l__nwejm_jobname_tl \c__nwejm_main_file_name_tl { \msg_error:nn{nwejm}{Wrong~main~file~name!} }
+\cs_new_protected:Nn \__nwejm_set_page_number:n
+{
+
+}
 %%   \enquote{R\'{e}dacteur(s) en chef}.
 \NewDocumentCommand \editorinchief {mmmm}
 {
@@ -1679,6 +1693,7 @@
     }
     \\[-4ex]
   }
+\label{\currfilebase}
   \bool_gset_false:N \g__nwejm_date_specified_bool
   \bookmarksetup{depth=subsection}
   \setsecnumdepth{subsection}
@@ -2594,26 +2609,11 @@
       disable%
     }
   }
-  \bool_if:NTF {\g__nwejm_for_authors_bool} {
-    \thispagestyle{empty}
-    \includegraphics{gzt-logo}
-    \hfill
-    \includegraphics[height=22.5mm]{\c__nwejm_smf_logo_file_string_tl}%
-    \par
-    \vfill
-    \begin{adjustbox}{valign=c,minipage=\linewidth}
-      \Large%
-      \c__nwejm_preliminary_version_string_tl%
-    \end{adjustbox}
-    \vfill
-    \newpage
-  }{
-    \bool_if:NF {\g__nwejm_inside_pages_bool} {
-      \g__nwejm_display_frontcover_tl
-      \g__nwejm_display_inside_frontcover_tl
-    }
-    \tableofcontents
+  \bool_if:NF {\g__nwejm_inside_pages_bool} {
+    \g__nwejm_display_frontcover_tl
+    \g__nwejm_display_inside_frontcover_tl
   }
+  \tableofcontents
 }
 \AfterEndPreamble{%
   \titleformat{\chapter}[block]

@@ -31,6 +31,9 @@
 \msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
+\msg_new:nnn{nwejm}{Wrong~main~file~name!}{The~ main~ file~ should~ be~ named~
+  `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~ `\jobname.tex'.~ Please~ rename~
+  the~ current~ file~ accordingly.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
@@ -45,7 +48,8 @@
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
 \msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
-  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
+  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~
+  counterpart~ `#1'.}%
 \msg_new:nnn{
  nwejmart
 }{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
@@ -138,6 +142,9 @@
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
+\RequirePackage{xr}
+\RequirePackage{xr}
+\RequirePackage{currfile}
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage[svgnames]{xcolor}%
 \RequirePackage{xspace}%
@@ -182,6 +189,7 @@
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
 \int_const:Nn \c__nwejm_interval_in_months_int { 6 }
+\tl_const:Nn \c__nwejm_main_file_name_tl {issue}
 \tl_const:Nn \c__nwejm_date_received_tl {received}
 \tl_const:Nn \c__nwejm_date_accepted_tl {accepted}
 \tl_const:Nn \c__nwejm_date_online_tl {online}
@@ -631,6 +639,14 @@
   \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
+\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
+\cs_new_protected:Nn \__nwejm_set_page_number:n
+{
+\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-#1}}}
+}
+\AtEndPreamble{
+  \__nwejm_set_page_number:n {\currfilebase}
+}
 \cs_new_protected:Nn \__nwejm_command_only_in_body:n
 {
   \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {
@@ -1001,6 +1017,7 @@
     }
     \\[-4ex]
   }
+\label{\currfilebase}
   \bool_gset_false:N \g__nwejm_date_specified_bool
   \bookmarksetup{depth=subsection}
   \setsecnumdepth{subsection}
@@ -1854,7 +1871,7 @@
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
    \bool_if:NF \g__nwejm_nolocaltoc_bool {
      \newpage
-     \setcounter{page}{0}
+     \setcounter{page}{\c_zero}
      \pagenumbering{roman}%
      \etocarticlestylenomarks
     \etocsetlevel{chapter}{6}
