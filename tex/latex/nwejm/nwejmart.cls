@@ -639,8 +639,11 @@
   \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
 %%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
 }
-\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
-\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
+
+\file_if_exist:nT { \c__nwejm_main_file_name_tl.aux }
+{\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
+  \AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
+}
 \cs_new_protected:Nn \__nwejm_command_only_in_body:n
 {
   \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {

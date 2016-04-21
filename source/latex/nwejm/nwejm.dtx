@@ -2619,8 +2619,11 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-%<class-article>\externaldocument[@@-]{\c_@@_main_file_name_tl}
-%<class-article>\AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-\currfilebase}}}
+%<class-article>
+%<class-article>\file_if_exist:nT { \c_@@_main_file_name_tl.aux }
+%<class-article>{\externaldocument[@@-]{\c_@@_main_file_name_tl}
+%<class-article>  \AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-\currfilebase}}}
+%<class-article>}
 %    \end{macrocode}
 %
 % \section{User level commands}
