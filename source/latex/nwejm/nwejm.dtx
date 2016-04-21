@@ -282,7 +282,8 @@ Running "make install" installs the files in the local TeX tree.
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
 \msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
-  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~ counterpart~ `#1'.}%
+  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~
+  counterpart~ `#1'.}%
 \msg_new:nnn{
 %<class-article> nwejmart
 %<class>         nwejm
@@ -1526,7 +1527,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
       \cleardoublepage
       \pagenumbering{roman}%
-      \setcounter{page}{3}
+      \setcounter{page}{\c_three}
 %    \end{macrocode}
 %
 % On the backcover, we want the table of contents (displayed as a chapter,
@@ -4651,7 +4652,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
    \bool_if:NF \g_@@_nolocaltoc_bool {
      \newpage
-     \setcounter{page}{0}
+     \setcounter{page}{\c_zero}
      \pagenumbering{roman}%
      \etocarticlestylenomarks
 %    \end{macrocode}
