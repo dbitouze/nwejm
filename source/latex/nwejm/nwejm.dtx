@@ -769,6 +769,12 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{footnote}%
 %    \end{macrocode}
 %
+% \item Programmable bibliographies and citations (loaded with a dedicated style):
+%    \begin{macrocode}
+\RequirePackage[backend=biber,style=nwejm]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
+%    \end{macrocode}
+%
 % \item Hypertext marks:
 %    \begin{macrocode}
 \RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
@@ -800,12 +806,6 @@ Running "make install" installs the files in the local TeX tree.
 % \item Automatic equation references:
 %    \begin{macrocode}
 \RequirePackage{autonum}
-%    \end{macrocode}
-%
-% \item Programmable bibliographies and citations (loaded with a dedicated style):
-%    \begin{macrocode}
-\RequirePackage[backend=biber,style=nwejm]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 %    \end{macrocode}
 %
 % \end{enumerate}
@@ -5860,6 +5860,5 @@ dutch
 % Local Variables:
 % mode: doctex
 % ispell-local-dictionary: "english"
-% TeX-command-default: "TeX"
 % TeX-master: t
 % End:
