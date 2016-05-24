@@ -143,7 +143,6 @@
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
 \RequirePackage{xr}
-\RequirePackage{xr}
 \RequirePackage{currfile}
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage[svgnames]{xcolor}%
@@ -168,6 +167,8 @@
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
 \RequirePackage{footnote}%
+\RequirePackage[backend=biber,style=nwejm]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
@@ -177,8 +178,6 @@
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
-\RequirePackage[backend=biber,style=nwejm]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}

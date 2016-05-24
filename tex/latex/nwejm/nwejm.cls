@@ -173,6 +173,8 @@
 \RequirePackage{datatool}%
 \RequirePackage{placeins}%
 \RequirePackage{footnote}%
+\RequirePackage[backend=biber,style=nwejm]{biblatex}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
@@ -182,8 +184,6 @@
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
 \RequirePackage{autonum}
-\RequirePackage[backend=biber,style=nwejm]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
