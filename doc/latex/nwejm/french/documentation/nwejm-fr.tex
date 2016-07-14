@@ -301,10 +301,20 @@ et \refKey{affiliationtagged} suivantes.
 
 \subsection{Mots clés}
 
-\begin{docCommand}[doc description=\mandatory]{keywords}{\marg{mot(s) clé(s)}}
-  Cette commande permet de spécifier le (ou les) \meta{mot(s) clé(s)} de
-  l'article sous la forme d'une liste séparée par des virgules.
+\begin{docCommand}[doc description=\mandatory]{keywords}{\oarg{variante des mots clés}\marg{mots clés}}
+  Cette commande permet de spécifier les \meta{mots clés} de l'article sous la
+  forme d'une liste séparée par des virgules.
+
+  La propriété \enquote{\texttt{pdfkeywords}} du \File{PDF} produit contient
+  automatiquement les \meta{mots clés} spécifiés. Dans le cas où ceux-ci
+  contiennent des caractères non admis en propriétés des fichers \file{PDF}
+  (notamment des mathématiques), on spécifiera en argument optionnel une
+  \meta{variante des mots clés} ne contenant que des caractères autorisés.
 \end{docCommand}
+
+\begin{bodycode}[listing options={deletekeywords={keywords}}]
+\keywords[N\string_p-space]{$\mathcal{N}_p$-space}
+\end{bodycode}
 
 \subsection{\texorpdfstring{\acrfull{msc}}{MSC}}
 
