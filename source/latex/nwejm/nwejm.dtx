@@ -927,7 +927,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % For the printer.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_printer_string_tl {Printing~service}
+\tl_const:Nn \c_@@_graphicdesign_string_tl {Graphic~design}
 %    \end{macrocode}
 % For configuration file.
 %    \begin{macrocode}
@@ -2454,7 +2454,10 @@ Running "make install" installs the files in the local TeX tree.
         \newline%
         % \space\textendash{}\space
         \url{\l_@@_journal_url_tl}
-      \item[\c_@@_issn_string_tl{}:] \l_@@_journal_issn_tl
+        \tl_if_empty:NF \l_@@_journal_issn_tl
+        {%
+        \item[\c_@@_issn_string_tl{}:] \l_@@_journal_issn_tl
+        }
         \tl_if_empty:NF \l_@@_journal_isbn_tl
         {%
         \item[\c_@@_isbn_string_tl{}:] \l_@@_journal_isbn_tl
