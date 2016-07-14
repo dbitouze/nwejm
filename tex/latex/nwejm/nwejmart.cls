@@ -125,11 +125,6 @@
 \bool_if:NF {\g__nwejm_language_specified_bool} {
   \__nwejm_language:n {english}
 }
-\RequirePackage{silence}
-\WarningFilter[nwejm]{kpfonts}{With 'easyscsl' option, don't fit together}
-\WarningFilter[nwejm]{etex}{Extended allocation already in use}
-\WarningFilter[nwejm]{etoc}{package tocvsec2 detected and its modification of}
-\ActivateWarningFilters[nwejm]
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
   {
@@ -185,7 +180,7 @@
 \int_new:N \g__nwejm_articles_int
 \clist_new:N \g__nwejm_counters_to_be_reset_clist
 \int_const:Nn \c__nwejm_first_issue_number_int { 1 }
-\int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
+\int_const:Nn \c__nwejm_first_issue_year_int   { 2015 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
 \int_const:Nn \c__nwejm_interval_in_months_int { 6 }
 \tl_const:Nn \c__nwejm_main_file_name_tl {issue}
@@ -230,7 +225,7 @@
 \bool_new:N \g__nwejm_date_specified_bool
 \dim_const:Nn \c__nwejm_layoutheight_dim { 240mm}
 \dim_const:Nn \c__nwejm_layoutwidth_dim  { 170mm}
-\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 5mm}
+\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 7.5mm}
 \bool_if:NTF {\g__nwejm_for_printer_bool} {
   \dim_const:Nn \c__nwejm_potential_layoutoffset_dim { \c__nwejm_printer_layoutoffset_dim}
 }{
@@ -609,17 +604,17 @@
   \tl_gclear:N \g__nwejm_acception_date_tl
   \tl_gclear:N \g__nwejm_online_date_tl
 }
-\seq_new:N \l__nwejm_keywords_seq
 \tl_new:N \l__nwejm_keywords_tl
-\NewDocumentCommand \keywords { m } {
-  \seq_clear:N \l__nwejm_keywords_seq
+\NewDocumentCommand \keywords { O{} m } {
   \tl_clear:N \l__nwejm_keywords_tl
-  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
-  \seq_set_map:NNn \l__nwejm_keywords_seq \l_tmpa_seq {
-    ##1
+  \clist_set:Nn \l_tmpa_clist {#2}
+  \tl_set:Nn \l__nwejm_keywords_tl { \clist_use:Nnnn \l_tmpa_clist { ,~ } { ,~ } { ,~ } }
+  \tl_if_empty:nTF {#1} {%
+    \hypersetup{pdfkeywords={\l__nwejm_keywords_tl}}
+  }{
+    \clist_set:Nn \l_tmpb_clist {#1}
+    \hypersetup{pdfkeywords={\clist_use:Nnnn \l_tmpb_clist { ,~ } { ,~ } { ,~ }}}
   }
-  \tl_set:Nn \l__nwejm_keywords_tl { \seq_use:Nn \l__nwejm_keywords_seq {,~} }
-    \hypersetup{pdfkeywords=\l__nwejm_keywords_tl}
 }
 \seq_new:N \l__nwejm_msc_seq
 \tl_new:N \l__nwejm_msc_tl
@@ -1906,14 +1901,14 @@
 {
   \__nwejm_font_designer_text:n {#1}%
 }
-\tl_new:N \g__nwejm_printer_text_tl%
-\cs_new_protected:Nn \__nwejm_printer_text:n
+\tl_new:N \g__nwejm_graphicdesign_text_tl%
+\cs_new_protected:Nn \__nwejm_graphicdesign_text:n
 {
-  \tl_gset:Nn \g__nwejm_printer_text_tl { #1 }
+  \tl_gset:Nn \g__nwejm_graphicdesign_text_tl { #1 }
 }
-\NewDocumentCommand \printertext {m}
+\NewDocumentCommand \graphicdesigntext {m}
 {
-  \__nwejm_printer_text:n {#1}%
+  \__nwejm_graphicdesign_text:n {#1}%
 }
 \NewDocumentCommand \nwejm { s } {
   \IfBooleanTF {#1}

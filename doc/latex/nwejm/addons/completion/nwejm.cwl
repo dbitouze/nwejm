@@ -198,7 +198,7 @@ dutch
 \computerengineer{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \classmaintainer{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \fontdesigner{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
-\printingservice{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
+\graphicdesign{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \computerassistance{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \secretary{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \issuesetup{number=%<positive integer%>}#n
@@ -206,4 +206,4 @@ dutch
 \inputarticle{file}#i
 \inputarticle[path]{file}#i
 \fontdesignertext{text}#n
-\printertext{text}#n
+\graphicdesigntext{text}#n

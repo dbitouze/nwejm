@@ -121,11 +121,6 @@
 }
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
-\RequirePackage{silence}
-\WarningFilter[nwejm]{kpfonts}{With 'easyscsl' option, don't fit together}
-\WarningFilter[nwejm]{etex}{Extended allocation already in use}
-\WarningFilter[nwejm]{etoc}{package tocvsec2 detected and its modification of}
-\ActivateWarningFilters[nwejm]
 \RequirePackage[l2tabu,orthodox]{nag}
 \pdftex_if_engine:TF
   {
@@ -191,7 +186,7 @@
 \int_new:N \g__nwejm_articles_int
 \clist_new:N \g__nwejm_counters_to_be_reset_clist
 \int_const:Nn \c__nwejm_first_issue_number_int { 1 }
-\int_const:Nn \c__nwejm_first_issue_year_int   { 2016 }
+\int_const:Nn \c__nwejm_first_issue_year_int   { 2015 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
 \int_const:Nn \c__nwejm_interval_in_months_int { 6 }
 \tl_const:Nn \c__nwejm_backcover_tableofcontents_string_tl {Volume's~Contents}
@@ -205,7 +200,7 @@
 \tl_const:Nn \c__nwejm_isbn_string_tl {\textsc{isbn}}
 \tl_const:Nn \c__nwejm_latexclass_string_tl {\LaTeX{}~class}
 \tl_const:Nn \c__nwejm_computer_engineering_string_tl {Computer~engineering~issues}
-\tl_const:Nn \c__nwejm_printer_string_tl {Printing~service}
+\tl_const:Nn \c__nwejm_graphicdesign_string_tl {Graphic~design}
 \tl_const:Nn \c__nwejm_configuration_file_string_tl {nwejm.cfg}
 \tl_const:Nn \c__nwejm_frontcover_header_left_string_tl {
   \int_use:N\g__nwejm_issue_year_int%
@@ -259,7 +254,7 @@
 \bool_new:N \g__nwejm_date_specified_bool
 \dim_const:Nn \c__nwejm_layoutheight_dim { 240mm}
 \dim_const:Nn \c__nwejm_layoutwidth_dim  { 170mm}
-\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 5mm}
+\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 7.5mm}
 \bool_if:NTF {\g__nwejm_for_printer_bool} {
   \dim_const:Nn \c__nwejm_potential_layoutoffset_dim { \c__nwejm_printer_layoutoffset_dim}
 }{
@@ -271,12 +266,12 @@
 \int_const:Nn \c__nwejm_thresold_d_int {96}
 \int_const:Nn \c__nwejm_thresold_e_int {104}
 \int_const:Nn \c__nwejm_thresold_f_int {120}
-\dim_const:Nn \c__nwejm_bindingoffset_a_dim {3mm}
-\dim_const:Nn \c__nwejm_bindingoffset_b_dim {3.5mm}
-\dim_const:Nn \c__nwejm_bindingoffset_c_dim {3.9mm}
-\dim_const:Nn \c__nwejm_bindingoffset_d_dim {4.1mm}
-\dim_const:Nn \c__nwejm_bindingoffset_e_dim {4.5mm}
-\dim_const:Nn \c__nwejm_bindingoffset_f_dim {5mm}
+\dim_const:Nn \c__newjm_bindingoffset_a_dim {6mm}
+\dim_const:Nn \c__newjm_bindingoffset_b_dim {7mm}
+\dim_const:Nn \c__newjm_bindingoffset_c_dim {7.8mm}
+\dim_const:Nn \c__newjm_bindingoffset_d_dim {8.2mm}
+\dim_const:Nn \c__newjm_bindingoffset_e_dim {9mm}
+\dim_const:Nn \c__newjm_bindingoffset_f_dim {10mm}
 \zexternaldocument[self]{\jobname}%
 \int_new:N \g__nwejm_total_pages_number_int%
 \int_new:N \g__nwejm_total_inside_pages_number_int%
@@ -501,16 +496,6 @@
 }%
 \bool_if:NF {\g__nwejm_coverpage_bool} {
   \bool_if:NF {\g__nwejm_inside_pages_bool} {
-    \preto\@enddocumenthook{
-      \cleardoublepage
-      \pagenumbering{roman}%
-      \setcounter{page}{\c_three}
-      \bool_gset_true:N \g__nwejm_backmatter_bool
-      \g__nwejm_display_inside_backcover_tl
-      \newpage
-      \@openrightfalse
-      \g__nwejm_display_backcover_tl
-    }%
   }%
 }%
 \bool_new:N \g__nwejm_tableofcontents_already_used_bool
@@ -1082,7 +1067,10 @@
         \newline%
         % \space\textendash{}\space
         \url{\l__nwejm_journal_url_tl}
-      \item[\c__nwejm_issn_string_tl{}:] \l__nwejm_journal_issn_tl
+        \tl_if_empty:NF \l__nwejm_journal_issn_tl
+        {%
+        \item[\c__nwejm_issn_string_tl{}:] \l__nwejm_journal_issn_tl
+        }
         \tl_if_empty:NF \l__nwejm_journal_isbn_tl
         {%
         \item[\c__nwejm_isbn_string_tl{}:] \l__nwejm_journal_isbn_tl
@@ -1091,8 +1079,8 @@
           \__nwejm_display_people_by_role:n { classdesigner }
         \item[\c__nwejm_computer_engineering_string_tl{}:] %\g__nwejm_printer_text_tl
           \__nwejm_display_people_by_role:n { computerengineer }
-        \item[\c__nwejm_printer_string_tl{}:] %\g__nwejm_printer_text_tl
-          \__nwejm_display_people_by_role:n { printingservice }
+        \item[\c__nwejm_graphicdesign_string_tl{}:] %\g__nwejm_graphicdesign_text_tl
+          \__nwejm_display_people_by_role:n { graphicdesign }
       \end{description}
         \g__nwejm_font_designer_text_tl
     }
@@ -1145,16 +1133,11 @@
   \tl_gclear:N \g__nwejm_acception_date_tl
   \tl_gclear:N \g__nwejm_online_date_tl
 }
-\seq_new:N \l__nwejm_keywords_seq
 \tl_new:N \l__nwejm_keywords_tl
-\NewDocumentCommand \keywords { m } {
-  \seq_clear:N \l__nwejm_keywords_seq
+\NewDocumentCommand \keywords { O{} m } {
   \tl_clear:N \l__nwejm_keywords_tl
-  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
-  \seq_set_map:NNn \l__nwejm_keywords_seq \l_tmpa_seq {
-    ##1
-  }
-  \tl_set:Nn \l__nwejm_keywords_tl { \seq_use:Nn \l__nwejm_keywords_seq {,~} }
+  \clist_set:Nn \l_tmpa_clist {#2}
+  \tl_set:Nn \l__nwejm_keywords_tl { \clist_use:Nnnn \l_tmpa_clist { ,~ } { ,~ } { ,~ } }
 }
 \seq_new:N \l__nwejm_msc_seq
 \tl_new:N \l__nwejm_msc_tl
@@ -1209,9 +1192,9 @@
 {
   \__nwejm_people:nnnnn {#1}{#2}{#3}{#4}{fontdesigner}
 }
-\NewDocumentCommand \printingservice {mmmm}
+\NewDocumentCommand \graphicdesign {mmmm}
 {
-  \__nwejm_people:nnnnn {#1}{#2}{#3}{#4}{printingservice}
+  \__nwejm_people:nnnnn {#1}{#2}{#3}{#4}{graphicdesign}
 }
 \NewDocumentCommand \computerassistance {mmmm}
 {
@@ -2575,14 +2558,14 @@
 {
   \__nwejm_font_designer_text:n {#1}%
 }
-\tl_new:N \g__nwejm_printer_text_tl%
-\cs_new_protected:Nn \__nwejm_printer_text:n
+\tl_new:N \g__nwejm_graphicdesign_text_tl%
+\cs_new_protected:Nn \__nwejm_graphicdesign_text:n
 {
-  \tl_gset:Nn \g__nwejm_printer_text_tl { #1 }
+  \tl_gset:Nn \g__nwejm_graphicdesign_text_tl { #1 }
 }
-\NewDocumentCommand \printertext {m}
+\NewDocumentCommand \graphicdesigntext {m}
 {
-  \__nwejm_printer_text:n {#1}%
+  \__nwejm_graphicdesign_text:n {#1}%
 }
 \NewDocumentCommand \nwejm { s } {
   \IfBooleanTF {#1}
@@ -2605,10 +2588,10 @@
       disable%
     }
   }
-  \bool_if:NF {\g__nwejm_inside_pages_bool} {
-    \g__nwejm_display_frontcover_tl
-    \g__nwejm_display_inside_frontcover_tl
-  }
+  % \bool_if:NF {\g__nwejm_inside_pages_bool} {
+  %   \g__nwejm_display_frontcover_tl
+  %   \g__nwejm_display_inside_frontcover_tl
+  % }
   \tableofcontents
 }
 \AfterEndPreamble{%
