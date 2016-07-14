@@ -536,20 +536,6 @@ Running "make install" installs the files in the local TeX tree.
 % into two lists: one of the packages needed just by \nwejm{} (for both its logic
 % and its layout) and one of packages useful for the end user.}
 %
-% \begin{enumerate}
-% \item Selective filtering of error messages and warnings
-%    \begin{macrocode}
-\RequirePackage{silence}
-%    \end{macrocode}
-%
-% We filter harmless warnings (from \pkg{kpfonts}, \pkg{etex}, \pkg{etoc}).
-%    \begin{macrocode}
-\WarningFilter[nwejm]{kpfonts}{With 'easyscsl' option, don't fit together}
-\WarningFilter[nwejm]{etex}{Extended allocation already in use}
-\WarningFilter[nwejm]{etoc}{package tocvsec2 detected and its modification of}
-\ActivateWarningFilters[nwejm]
-%    \end{macrocode}
-%
 % \item Detecting and warning about obsolete \LaTeX{} commands:
 %    \begin{macrocode}
 \RequirePackage[l2tabu,orthodox]{nag}
