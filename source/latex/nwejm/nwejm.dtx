@@ -2466,8 +2466,8 @@ Running "make install" installs the files in the local TeX tree.
           \@@_display_people_by_role:n { classdesigner }
         \item[\c_@@_computer_engineering_string_tl{}:] %\g_@@_printer_text_tl
           \@@_display_people_by_role:n { computerengineer }
-        \item[\c_@@_printer_string_tl{}:] %\g_@@_printer_text_tl
-          \@@_display_people_by_role:n { printingservice }
+        \item[\c_@@_graphicdesign_string_tl{}:] %\g_@@_graphicdesign_text_tl
+          \@@_display_people_by_role:n { graphicdesign }
       \end{description}
         \g_@@_font_designer_text_tl
     }
@@ -2648,7 +2648,7 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\classdesigner}
 % \begin{macro}{\fontdesigner}
 % \begin{macro}{\classmaintainer}
-% \begin{macro}{\printingservice}
+% \begin{macro}{\graphicdesign}
 % \begin{macro}{\computerengineer}
 % \begin{macro}{\secretary}
 %   We define some document-level commands that let the user specify
@@ -2688,9 +2688,9 @@ Running "make install" installs the files in the local TeX tree.
 {
   \_@@_people:nnnnn {#1}{#2}{#3}{#4}{fontdesigner}
 }
-\NewDocumentCommand \printingservice {mmmm}
+\NewDocumentCommand \graphicdesign {mmmm}
 {
-  \_@@_people:nnnnn {#1}{#2}{#3}{#4}{printingservice}
+  \_@@_people:nnnnn {#1}{#2}{#3}{#4}{graphicdesign}
 }
 \NewDocumentCommand \computerassistance {mmmm}
 {
@@ -4743,14 +4743,14 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\tl_new:N \g_@@_printer_text_tl%
-\cs_new_protected:Nn \@@_printer_text:n
+\tl_new:N \g_@@_graphicdesign_text_tl%
+\cs_new_protected:Nn \@@_graphicdesign_text:n
 {
-  \tl_gset:Nn \g_@@_printer_text_tl { #1 }
+  \tl_gset:Nn \g_@@_graphicdesign_text_tl { #1 }
 }
-\NewDocumentCommand \printertext {m}
+\NewDocumentCommand \graphicdesigntext {m}
 {
-  \_@@_printer_text:n {#1}%
+  \_@@_graphicdesign_text:n {#1}%
 }
 %    \end{macrocode}
 %
@@ -4970,7 +4970,7 @@ Running "make install" installs the files in the local TeX tree.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Printer text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\printingservice{Derycke, Jean-Jacques}{Universit\'{e} de Lille 1}{France}{}
+\graphicdesign{Luu, Patricia and Rémond, Catherine}{Universit\'{e} de Lille 1}{France}{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Authors instructions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -5827,7 +5827,7 @@ dutch
 \computerengineer{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \classmaintainer{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \fontdesigner{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
-\printingservice{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
+\graphicdesign{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \computerassistance{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \secretary{%<Last name%>, %<First name%>}{%<affiliation%>}{%<country%>}{%<email%>}#n
 \issuesetup{number=%<positive integer%>}#n
@@ -5835,7 +5835,7 @@ dutch
 \inputarticle{file}#i
 \inputarticle[path]{file}#i
 \fontdesignertext{text}#n
-\printertext{text}#n
+\graphicdesigntext{text}#n
 %    \end{macrocode}
 %
 %    \begin{macrocode}
