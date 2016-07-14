@@ -4368,15 +4368,15 @@ Running "make install" installs the files in the local TeX tree.
 \NewDocumentCommand \set { m O{} } {
   \if@display
   \tl_if_empty:nTF {#2} {%
-    \__nwejm_set*{#1}
+    \_@@_set*{#1}
   }{
-    \__nwejm_set*{#1\l__nwejm_given_tl #2}
+    \_@@_set*{#1\l_@@_given_tl #2}
   }
   \else
   \tl_if_empty:nTF {#2} {%
-    \__nwejm_set{#1}
+    \_@@_set{#1}
   }{
-    \__nwejm_set{#1\l__nwejm_given_tl #2}
+    \_@@_set{#1\l_@@_given_tl #2}
   }
   \fi
 }
