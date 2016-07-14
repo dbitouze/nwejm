@@ -2550,14 +2550,15 @@ Running "make install" installs the files in the local TeX tree.
 %   The command for article's keywords is defined: the article's keywords is
 %   store in "\l_@@_keywords_tl" for later use.
 %    \begin{macrocode}
-\seq_new:N \l_@@_keywords_seq
-\tl_new:N \l_@@_keywords_tl
-\NewDocumentCommand \keywords { m } {
-  \clist_clear_new:N \l_@@_keywords_seq
+\NewDocumentCommand \keywords { O{} m } {
   \tl_clear_new:N  \l_@@_keywords_tl
-  \clist_set:Nn \l_tmpa_clist {#1}
+  \clist_set:Nn \l_tmpa_clist {#2}
   \tl_set:Nn \l_@@_keywords_tl { \clist_use:Nnnn \l_tmpa_clist { ,~ } { ,~ } { ,~ } }
+%<class-article>  \tl_if_empty:nTF {#1} {%
 %<class-article>    \hypersetup{pdfkeywords=\l_@@_keywords_tl}
+%<class-article>  }{
+%<class-article>    \hypersetup{pdfkeywords=#1}
+%<class-article>  }
 }
 %    \end{macrocode}
 % \end{macro}
