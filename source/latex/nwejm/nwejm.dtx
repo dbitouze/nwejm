@@ -354,7 +354,7 @@ Running "make install" installs the files in the local TeX tree.
   pagegrid .dim_gset:N = \g_@@_pagegrid_dim,
   pagegrid .default:n = {\c_@@_pagegrid_dim},
   output .choice:,
-  output / frontcover .code:n = {%
+  output / cover .code:n = {%
     \bool_gset_true:N \g_@@_for_printer_bool%
     \bool_gset_true:N \g_@@_cover_bool%
   },%
