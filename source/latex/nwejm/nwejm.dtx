@@ -5243,7 +5243,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 \ProvideDictTranslation{received}{re\c cu}
 \ProvideDictTranslation{accepted}{accept\'{e}}
-\ProvideDictTranslation{online}{en\c_space_tl ligne}
+\ProvideDictTranslation{online}{en~ligne}
 %
 \ProvideDictTranslation{hypothesis}{hypoth\`{e}se}
 \ProvideDictTranslation{plural-hypothesis}{hypoth\`{e}ses}
@@ -5526,7 +5526,7 @@ Running "make install" installs the files in the local TeX tree.
   \printfield{volume}%
   \setunit*{\addnbthinspace}%
   \printfield{number}%
-  \setunit{\addcomma\c_space_tl}%
+  \setunit{\addcomma\space}%
   \printfield{eid}%
 }
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
@@ -5641,20 +5641,20 @@ Running "make install" installs the files in the local TeX tree.
           \ifnameundef{labelname}%
         }{%
           \usebibmacro{cite:label}%
-          \setunit{\addcomma\c_space_tl}%
+          \setunit{\addcomma\space}%
         }{%
           \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
           }{%
-            \setunit{\addcomma\c_space_tl}%
+            \setunit{\addcomma\space}%
             \usebibmacro{cite:labelyear+extrayear}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
             }{%
-              \setunit{\addcomma\c_space_tl}%
+              \setunit{\addcomma\space}%
               \usebibmacro{cite:title}%
             }%
           }%
@@ -5691,7 +5691,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 {\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
-{\addsemicolon\c_space_tl}
+{\addsemicolon\space}
 %    \end{macrocode}
 %
 % We now declare the definitions for the ×\autocite× and ×\autocites× commands
