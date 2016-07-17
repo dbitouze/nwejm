@@ -1278,7 +1278,11 @@ Running "make install" installs the files in the local TeX tree.
 % plus 2 times (top and bottom) the layout offset dimension (which turns to be
 % non-zero iff the output is prepared for the printer).
 %    \begin{macrocode}
-\dim_const:Nn \c_@@_paperheight_dim { \c_@@_layoutheight_dim+2\c_@@_potential_layoutoffset_dim}
+\dim_const:Nn \c_@@_paperheight_dim {
+  \c_@@_layoutheight_dim
+  +
+  2\c_@@_potential_layoutoffset_dim
+}
 %    \end{macrocode}
 %
 % The paper width is more complicated: it is the layout width dimension plus:
