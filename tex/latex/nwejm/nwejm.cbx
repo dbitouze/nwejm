@@ -62,20 +62,20 @@
           \ifnameundef{labelname}%
         }{%
           \usebibmacro{cite:label}%
-          \setunit{\addcomma\c_space_tl}%
+          \setunit{\addcomma\space}%
         }{%
           \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
           }{%
-            \setunit{\addcomma\c_space_tl}%
+            \setunit{\addcomma\space}%
             \usebibmacro{cite:labelyear+extrayear}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
             }{%
-              \setunit{\addcomma\c_space_tl}%
+              \setunit{\addcomma\space}%
               \usebibmacro{cite:title}%
             }%
           }%
@@ -101,7 +101,7 @@
 }
 {\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
-{\addsemicolon\c_space_tl}
+{\addsemicolon\space}
 \DeclareAutoCiteCommand{nwejmfootcite}{\nwejmfootcite}{\nwejmfootcites}
 
 \DeclareCiteCommand{\textcite}
