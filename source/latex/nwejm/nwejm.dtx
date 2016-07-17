@@ -2110,18 +2110,6 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% We fix some strings for the PDF's metadata .
-%    \begin{macrocode}
-\tl_new:N \l_@@_pdftitle_string_tl
-\tl_new:N \l_@@_pdfauthor_string_tl
-\tl_set:Nn \l_@@_pdftile_string_tl {
-  \c_@@_journal_title_string_tl\space--\space{}N°\int_use:N\g_@@_issue_number_int
-}
-\tl_set:Nn \l_@@_pdfauthor_string_tl {
-  \g_@@_nwejm_string_tl
-}
-%    \end{macrocode}
-%
 %    \begin{macrocode}
 \cs_new_protected:Nn \_@@_email:n
   {
@@ -2810,12 +2798,6 @@ Running "make install" installs the files in the local TeX tree.
 % Its keys are set (only "number", "month" and "year" are relevant here).
 %    \begin{macrocode}
   \keys_set:nn { nwejm/issuesetup } {#1}
-%    \end{macrocode}
-%
-% We fix some of the PDF's metadata .
-%    \begin{macrocode}
-\hypersetup{pdftitle=\l_@@_pdftitle_string_tl}
-\hypersetup{pdfauthor=\l_@@_pdfauthor_string_tl}
 %    \end{macrocode}
 %
 % We use here the fact that, if the "number", "month" or "year" options are not
