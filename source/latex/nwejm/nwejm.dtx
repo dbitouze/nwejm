@@ -2879,8 +2879,6 @@ Running "make install" installs the files in the local TeX tree.
   \iow_new:N   \g_@@_issue_number_year_out_iow
   \iow_open:Nn \g_@@_issue_number_year_out_iow {\c_@@_issue_number_year_file_string_tl}
   \iow_now:Nx \g_@@_issue_number_year_out_iow {
-     \token_to_str:N \ExplSyntaxOn
-    \iow_newline:
     \tl_const:Nn \token_to_str:N \c_@@_issue_number_tl {
       \int_eval:n {\g_@@_issue_number_int}
     }
@@ -2888,8 +2886,6 @@ Running "make install" installs the files in the local TeX tree.
     \tl_const:Nn \token_to_str:N \c_@@_issue_year_tl {
       \int_eval:n {\g_@@_issue_year_int}
     }
-    \iow_newline:
-    \token_to_str:N \ExplSyntaxOff
   }
   \iow_close:N \g_@@_issue_number_year_out_iow
 }
