@@ -1381,6 +1381,13 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% When the inside pages are produced, the crop marks are shown.
+%    \begin{macrocode}
+\bool_if:NT {\g_@@_inside_pages_bool} {
+  \geometry{showcrop}
+}
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 %</class|class-article>
 %    \end{macrocode}
