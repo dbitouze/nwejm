@@ -84,24 +84,14 @@
 {
   pagegrid .dim_gset:N = \g__nwejm_pagegrid_dim,
   pagegrid .default:n = {\c__nwejm_pagegrid_dim},
-  forauthors .code:n = {%
-    \bool_gset_true:N \g__nwejm_for_authors_bool%
-    \bool_gset_true:N \g__nwejm_inside_pages_bool%
-  },%
-  forprinter .bool_gset:N = \g__nwejm_for_printer_bool,
   output .choice:,
-  output / frontcover .code:n = {%
+  output / cover .code:n = {%
     \bool_gset_true:N \g__nwejm_for_printer_bool%
     \bool_gset_true:N \g__nwejm_cover_bool%
   },%
   output / insidepages .code:n = {%
     \bool_gset_true:N \g__nwejm_for_printer_bool%
     \bool_gset_true:N \g__nwejm_inside_pages_bool%
-  },%
-  output / backcover .code:n = {%
-    \bool_gset_true:N \g__nwejm_for_printer_bool%
-  },%
-  output / web .code:n = {%
   },%
   binding .dim_gset:N = \g__nwejm_binding_dim,
   showbinding .code:n = {%
