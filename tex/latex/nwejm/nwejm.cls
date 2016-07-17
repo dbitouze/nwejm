@@ -269,6 +269,7 @@
   \c__nwejm_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
 \tl_const:Nn \c__nwejm_cover_background_image_tl {nwejm-cover-background.jpg}
+\definecolor{__nwejm_cover_background_color_tl}{rgb}{0.16,0.22,0.56}
 \tl_const:Nn \c__nwejm_msc_string_tl {\textsc{msc}}
 \tl_const:Nn \c__nwejm_colon_tl {
   \ifcurrentbaselanguage{french}{\FBcolonspace}{}:
@@ -992,7 +993,7 @@
           }
         };
       }{
-        \fill[blue] (current~page.north~east) rectangle
+        \fill[__nwejm_cover_background_color_tl] (current~page.north~east) rectangle
         (current~page.south~west);
       }
     \end{pgfonlayer}
@@ -1179,10 +1180,10 @@
           \includegraphics[width=\paperheight,height=\c__nwejm_paperwidth_dim,angle=90]{\c__nwejm_cover_background_image_tl}%
         };
       }{
-        \fill[blue] (current~page.north~east) rectangle
+        \fill[__nwejm_cover_background_color_tl] (current~page.north~east) rectangle
         (current~page.south~west);
-      \end{pgfonlayer}
-    }
+      }
+    \end{pgfonlayer}
     \__nwejm_binding_text:n {west}
   \end{tikzpicture}
   \noindent%
