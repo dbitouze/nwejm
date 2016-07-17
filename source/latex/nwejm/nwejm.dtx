@@ -220,6 +220,7 @@ Running "make install" installs the files in the local TeX tree.
   \RequirePackage{l3sort}
 }{
 }
+%    \end{macrocode}
 % \item e-\TeX{} tools for \LaTeX:
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
@@ -471,7 +472,6 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Class loading}
 %
-%    \begin{macrocode}
 % As subsequent class, the \Cls{book} is loaded.
 %    \begin{macrocode}
 \LoadClass { book }
@@ -3093,6 +3093,7 @@ Running "make install" installs the files in the local TeX tree.
   \cleardoublepage
 %    \end{macrocode}
 %
+%    \begin{macrocode}
   \int_incr:N \l_author_int
   \prop_gput_if_new:Nxn \g_authors_prop {author_\int_use:c {l_author_int}} {#2}
   \IfNoValueF {#1}
