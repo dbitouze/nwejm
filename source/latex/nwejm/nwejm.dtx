@@ -560,11 +560,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[T1]{fontenc}
 %    \end{macrocode}
 %
-% \item Compile \TeX{} pictures stand-alone or as part of a document:
-%    \begin{macrocode}
-%<class>\RequirePackage[group=false,subpreambles,sort]{standalone}%
-%    \end{macrocode}
-%
 % \item Formatting both header and footers (pagestyle), and sections headers:
 %    \begin{macrocode}
 \RequirePackage[pagestyles]{titlesec}%
@@ -674,11 +669,6 @@ Running "make install" installs the files in the local TeX tree.
 %<class>\RequirePackage[easyscsl,noDcommand]{kpfonts}
 %<class-article>\RequirePackage[noDcommand]{kpfonts}
 %    \end{macrocode}
-%
-% % \item Hooks to do actions on every page or on the current page:
-% %    \begin{macrocode}
-% \RequirePackage{everypage}
-% %    \end{macrocode}
 %
 % \item Flexible and easy interface to page dimensions:
 %    \begin{macrocode}
@@ -1263,11 +1253,9 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_topmargin_dim   { 20mm}
 \dim_const:Nn \c_@@_topmargin_frontcover_dim {
   \c_@@_topmargin_dim
-  % + 30mm
 }
 \dim_const:Nn \c_@@_topmargin_inside_cover_dim   {
   \c_@@_topmargin_dim
-  % +10mm
 }
 \dim_const:Nn \c_@@_topmargin_front_matter_dim   {
   \c_@@_topmargin_inside_cover_dim
@@ -1278,8 +1266,6 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_headsep_dim     { 9.5mm}
 \dim_const:Nn \c_@@_headsep_frontcover_dim {
   \c_@@_headsep_dim
-  % +31mm
-  % -\c_@@_potential_layoutoffset_dim
 }
 \dim_const:Nn \c_@@_headsep_inside_frontcover_dim {
   \c_@@_headsep_dim
@@ -1580,40 +1566,6 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Front cover page style}
 %
 %    \begin{macrocode}
-  % \box_new:N \l_@@_journal_frontcover_logo_box
-  % \box_new:N \l_@@_journal_volume_box
-  % \AfterEndPreamble{%
-  %   \hbox_set:Nn \l_@@_journal_volume_box
-  %   {
-  %     \color{Navy}
-  %     \LARGE
-  %     \bfseries
-  %     \sffamily
-  %     \adjustbox{stack=l}{%
-  %       \c_@@_frontcover_header_left_string_tl
-  %       \\\c_@@_frontcover_header_right_string_tl
-  %     }
-  %   }
-  %   \hbox_set:Nn \l_@@_journal_frontcover_logo_box
-  %   {
-  %     \includegraphics[width=3cm]{ nwejm-logo }
-  %   }
-    % \hbox_set_to_wd:Nnn \l_@@_journal_frontcover_logo_box { 1cm }
-    % {
-    %   \box_move_down:nn
-    %   {
-    %     \box_ht:N \l_@@_journal_frontcover_logo_box / 2
-    %     -
-    %     \box_ht:N \l_@@_journal_volume_box / 2
-    %   }
-    %   {
-    %     \box_use:N \l_@@_journal_frontcover_logo_box
-    %   }
-    % }
-%     \box_set_ht:Nn \l_@@_journal_frontcover_logo_box { \c_zero_dim }
-%     \box_set_dp:Nn \l_@@_journal_frontcover_logo_box { \c_zero_dim }
-% }
-%
 \newpagestyle{@@_frontcover_ps}[]{%
   \sethead
   {
@@ -2639,7 +2591,6 @@ Running "make install" installs the files in the local TeX tree.
 %   We define some document-level commands that let the user specify
 %   respectively the editor(s) in chief, the fields editor, the managing editor,
 %   the editors, the class designer and maintainer(s), etc.
-%%   \enquote{R\'{e}dacteur(s) en chef}.
 %    \begin{macrocode}
 \NewDocumentCommand \editorinchief {mmmm}
 {
