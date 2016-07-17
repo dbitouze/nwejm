@@ -1119,9 +1119,9 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 % We define a \enquote{printer} layout offset dimension
-% "\c_@@_printer_layoutoffset_dim", fixed by the printer to be \SI{5}{\mm}.
+% "\c_@@_printer_layoutoffset_dim", fixed by the printer to be \SI{10}{\mm}.
 %    \begin{macrocode}
-\dim_const:Nn \c_@@_printer_layoutoffset_dim { 5mm}
+\dim_const:Nn \c_@@_printer_layoutoffset_dim { 10mm }
 %    \end{macrocode}
 %
 % We define a \enquote{potential} layout offset dimension which is non-zero (and
@@ -1173,19 +1173,18 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % and the corresponding binding dimensions:
 %    \begin{macrocode}
-\dim_const:Nn \c_@@_bindingoffset_a_dim {3mm}
-\dim_const:Nn \c_@@_bindingoffset_b_dim {3.5mm}
-\dim_const:Nn \c_@@_bindingoffset_c_dim {3.9mm}
-\dim_const:Nn \c_@@_bindingoffset_d_dim {4.1mm}
-\dim_const:Nn \c_@@_bindingoffset_e_dim {4.5mm}
-\dim_const:Nn \c_@@_bindingoffset_f_dim {5mm}
+\dim_const:Nn \c_@@_bindingoffset_a_dim {6mm}
+\dim_const:Nn \c_@@_bindingoffset_b_dim {7mm}
+\dim_const:Nn \c_@@_bindingoffset_c_dim {7.8mm}
+\dim_const:Nn \c_@@_bindingoffset_d_dim {8.2mm}
+\dim_const:Nn \c_@@_bindingoffset_e_dim {9mm}
+\dim_const:Nn \c_@@_bindingoffset_f_dim {10mm}
 %    \end{macrocode}
 %
 % In order to know the total pages number of the document (store in
 % "\g_@@_total_page_number_int"), we need first to specify the
 % \enquote{external} document whom \File{.aux} will be read.
 %    \begin{macrocode}
-\zexternaldocument[self]{\jobname}%
 \int_new:N \g_@@_total_pages_number_int%
 \int_new:N \g_@@_total_inside_pages_number_int%
 %    \end{macrocode}
@@ -1280,7 +1279,8 @@ Running "make install" installs the files in the local TeX tree.
     \c_@@_layoutwidth_dim
     +
     \c_@@_potential_layoutoffset_dim
-    +\c_@@_potential_bindingoffset_dim
+    +
+    .5\c_@@_potential_bindingoffset_dim
   }
 }{
   \dim_const:Nn \c_@@_paperwidth_dim  {
@@ -1330,16 +1330,9 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \dim_const:Nn \c_@@_innermargin_dim { 23mm }
 \dim_const:Nn \c_@@_outermargin_dim { 30mm }
-\dim_const:Nn \c_@@_inside_cover_box_width_dim { 150mm }%
-\dim_const:Nn \c_@@_innermargin_inside_cover_dim {
-  (\c_@@_layoutwidth_dim - \c_@@_inside_cover_box_width_dim)/2
-  - \c_@@_potential_bindingoffset_dim
-  % + \c_@@_adjustmargin_dim
-}
-\dim_const:Nn \c_@@_outermargin_inside_cover_dim {
-  (\c_@@_layoutwidth_dim - \c_@@_inside_cover_box_width_dim)/2
-  % - \c_@@_adjustmargin_dim
-}
+\dim_const:Nn \c_@@_inside_cover_textwidth_dim { 145mm }%
+\dim_const:Nn \c_@@_outermargin_inside_frontcover_dim { 15mm }
+\dim_const:Nn \c_@@_outermargin_inside_backcover_dim { 10mm }
 \dim_const:Nn \c_@@_innermargin_backcover_dim { 10mm }
 \dim_const:Nn \c_@@_outermargin_backcover_dim { \c_@@_innermargin_backcover_dim }
 \dim_const:Nn \c_@@_topmargin_backcover_dim { \c_@@_innermargin_backcover_dim }
@@ -1378,35 +1371,24 @@ Running "make install" installs the files in the local TeX tree.
 % We create a constant token list that contains the geometry of the front cover.
 %    \begin{macrocode}
 \bool_if:NTF {\g_@@_cover_bool} {
-  \dim_show:N \c_@@_topmargin_frontcover_dim
-  \dim_show:N \c_@@_headsep_frontcover_dim
-  \dim_show:N \c_@@_headheight_dim
   \tl_const:Nn \c_@@_frontcover_geometry_tl {%
-    ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
-    ,layoutvoffset=\c_@@_potential_layoutoffset_dim
-    ,bindingoffset=\c_@@_potential_bindingoffset_dim
-    ,top=\c_@@_topmargin_frontcover_dim
-    ,top=\c_@@_topmargin_frontcover_dim
-    ,headsep=\c_@@_headsep_frontcover_dim
-    ,headheight=\c_@@_headheight_dim
-    ,bottom=\c_@@_bottom_frontcover_dim
-    ,footskip=\c_@@_footskip_dim
-    ,outer=\c_@@_margin_frontcover_dim
-    ,inner=\c_@@_potential_layoutoffset_dim
+    ,layoutheight=\c_@@_layoutheight_dim
+    ,layoutwidth=\c_@@_layoutwidth_dim
+    ,layoutoffset=\c_@@_potential_layoutoffset_dim
+    ,ignoreall%
     ,nomarginpar%
+    ,noheadfoot%
+    ,margin=\c_zero_dim
   }%
 }{
   \tl_const:Nn \c_@@_frontcover_geometry_tl {%
-    ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
+    ,layoutheight=\c_@@_layoutheight_dim
+    ,layoutwidth=\c_@@_layoutwidth_dim
     ,layoutoffset=\c_@@_potential_layoutoffset_dim
-    ,bindingoffset=\c_@@_potential_bindingoffset_dim
-    ,top=\c_@@_topmargin_frontcover_dim
-    ,headsep=\c_@@_headsep_frontcover_dim
-    ,headheight=\c_@@_headheight_dim
-    ,bottom=\c_@@_bottom_frontcover_dim
-    ,footskip=\c_@@_footskip_dim
-    ,hmargin=\c_@@_margin_frontcover_dim
+    ,ignoreall%
     ,nomarginpar%
+    ,noheadfoot%
+    ,margin=\c_zero_dim
   }%
 }
 %    \end{macrocode}
@@ -1417,32 +1399,26 @@ Running "make install" installs the files in the local TeX tree.
 \bool_if:NTF {\g_@@_cover_bool} {
   \tl_const:Nn \c_@@_inside_cover_geometry_tl {%
     ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
-    ,layoutvoffset=\c_@@_potential_layoutoffset_dim
-    ,bindingoffset=\c_@@_potential_bindingoffset_dim
+    ,layoutoffset=\c_@@_potential_layoutoffset_dim
     ,top=\c_@@_topmargin_inside_cover_dim
     ,headheight=\c_@@_headheight_dim
     ,headsep=\c_@@_headsep_inside_frontcover_dim
     ,bottom=\c_@@_botmargin_dim
     ,footskip=\c_@@_footskip_dim
-    ,inner=\c_@@_innermargin_inside_cover_dim-\c_@@_potential_layoutoffset_dim
-    ,outer=\c_@@_outermargin_inside_cover_dim+\c_@@_potential_layoutoffset_dim
     ,nomarginpar%
+    ,textwidth=\c_@@_inside_cover_textwidth_dim
   }%
 }{
   \tl_const:Nn \c_@@_inside_cover_geometry_tl {%
     ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
     ,layoutoffset=\c_@@_potential_layoutoffset_dim
-    ,bindingoffset=\c_@@_potential_bindingoffset_dim
     ,top=\c_@@_topmargin_inside_cover_dim
     ,headheight=\c_@@_headheight_dim
     ,headsep=\c_@@_headsep_inside_frontcover_dim
     ,bottom=\c_@@_botmargin_dim
     ,footskip=\c_@@_footskip_dim
-    % ,inner=1cm
-    % ,outer=1cm
-    ,inner=\c_@@_innermargin_inside_cover_dim
-    ,outer=\c_@@_outermargin_inside_cover_dim
     ,nomarginpar%
+    ,textwidth=\c_@@_inside_cover_textwidth_dim
   }%
 }
 %    \end{macrocode}
