@@ -25,7 +25,7 @@
 \ProvideDictTranslation{plural-keyword}{mots-cl\'{e}s}
 \ProvideDictTranslation{received}{re\c cu}
 \ProvideDictTranslation{accepted}{accept\'{e}}
-\ProvideDictTranslation{online}{en\space ligne}
+\ProvideDictTranslation{online}{en\c_space_tl ligne}
 \ProvideDictTranslation{hypothesis}{hypoth\`{e}se}
 \ProvideDictTranslation{plural-hypothesis}{hypoth\`{e}ses}
 \ProvideDictTranslation{assertion}{assertion}

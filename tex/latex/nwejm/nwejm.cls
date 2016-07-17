@@ -31,9 +31,16 @@
 \msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
-\msg_new:nnn{nwejm}{Wrong~main~file~name!}{The~ main~ file~ should~ be~ named~
-  `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~ `\jobname.tex'.~ Please~ rename~
+\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{The~ issue's~ main~ file~
+  should~ be~ named~ `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~
+  `\c_sys_jobname_str.tex'.~ Please~ rename~ the~ current~ file~ accordingly.}%
+\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~
+  should~ /not/~ be~ named~ as~ the~ issue's~ main~ file~
+  `\tl_use:N\c__nwejm_main_file_name_tl.tex'.~ Please~ rename~
   the~ current~ file~ accordingly.}%
+\msg_new:nnn{nwejm}{Main~file~needs~to~be~compiled!}{The~ issue's~ main~ file~
+  (`\tl_use:N\c__nwejm_main_file_name_tl.tex')~ should~ be~ compiled~ at~ least~
+  once~ before~ the~ cover~ can~ be~ generated.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
@@ -72,6 +79,7 @@
 \bool_new:N \g__nwejm_cover_bool
 \bool_new:N \g__nwejm_coverpage_bool
 \bool_new:N \g__nwejm_inside_pages_bool
+\bool_new:N \g__nwejm_show_binding_bool
 \keys_define:nn { nwejm }
 {
   pagegrid .dim_gset:N = \g__nwejm_pagegrid_dim,
@@ -94,6 +102,10 @@
     \bool_gset_true:N \g__nwejm_for_printer_bool%
   },%
   output / web .code:n = {%
+  },%
+  binding .dim_gset:N = \g__nwejm_binding_dim,
+  showbinding .code:n = {%
+    \bool_gset_true:N \g__nwejm_show_binding_bool%
   },%
 }%
 \keys_define:nn { nwejm }
@@ -130,7 +142,6 @@
     \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
   }
 \RequirePackage[T1]{fontenc}
-\RequirePackage[group=false,subpreambles,sort]{standalone}%
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
 \RequirePackage{import}%
@@ -143,7 +154,14 @@
 \RequirePackage{currfile}
 \RequirePackage{zref-xr}%
 \RequirePackage[multiple]{footmisc}%
-\RequirePackage[svgnames]{xcolor}%
+\RequirePackage{xcolor}%
+\bool_if:NTF {\g__nwejm_cover_bool} {
+  \RequirePackage{tcolorbox}
+  \RequirePackage{tikzpagenodes}
+  \RequirePackage{tkz-berge}
+}{
+\RequirePackage[group=false,subpreambles,sort]{standalone}%
+}
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage{array}
@@ -188,7 +206,7 @@
 \int_const:Nn \c__nwejm_first_issue_number_int { 1 }
 \int_const:Nn \c__nwejm_first_issue_year_int   { 2015 }
 \int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
-\int_const:Nn \c__nwejm_interval_in_months_int { 6 }
+\int_const:Nn \c__nwejm_interval_in_months_int { 12 }
 \tl_const:Nn \c__nwejm_backcover_tableofcontents_string_tl {Volume's~Contents}
 \tl_const:Nn \c__nwejm_editorinchief_string_tl {Editor~in~Chief}
 \tl_const:Nn \c__nwejm_associate_editors_string_tl {Associate~Editors}
@@ -202,11 +220,16 @@
 \tl_const:Nn \c__nwejm_computer_engineering_string_tl {Computer~engineering~issues}
 \tl_const:Nn \c__nwejm_graphicdesign_string_tl {Graphic~design}
 \tl_const:Nn \c__nwejm_configuration_file_string_tl {nwejm.cfg}
-\tl_const:Nn \c__nwejm_frontcover_header_left_string_tl {
-  \int_use:N\g__nwejm_issue_year_int%
-}
-\tl_const:Nn \c__nwejm_frontcover_header_right_string_tl {
-  Number\space\int_use:N\g__nwejm_issue_number_int%
+\bool_if:NT {\g__nwejm_cover_bool} {
+  \tl_const:Nn \c__nwejm_frontcover_left_string_tl {
+    Number\c_space_tl\c__nwejm_issue_number_tl%
+  }
+  \tl_const:Nn \c__nwejm_frontcover_right_string_tl {
+    \c__nwejm_issue_year_tl%
+  }
+  \tl_const:Nn \c__nwejm_frontcover_string_tl {
+    \c__nwejm_frontcover_left_string_tl\c_space_tl--\c_space_tl\c__nwejm_frontcover_right_string_tl%
+  }
 }
 \tl_const:Nn \c__nwejm_backmatter_directory_string_tl {backmatter}
 \tl_const:Nn \c__nwejm_issue_backcover_text_file_string_tl {backcover}
@@ -224,6 +247,7 @@
   bibliography~of~your~article~to~appear~in~the~next~issue~of~the
   \c__nwejm_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
+\tl_const:Nn \c__nwejm_cover_background_image_tl {abstract-quality_high15255.jpg}
 \tl_const:Nn \c__nwejm_msc_string_tl {\textsc{msc}}
 \tl_const:Nn \c__nwejm_colon_tl {
   \ifcurrentbaselanguage{french}{\FBcolonspace}{}:
@@ -234,6 +258,7 @@
 \tl_const:Nn \c__nwejm_issue_bib_file_suffix_string_tl {__nwejm}
 \tl_const:Nn \c__nwejm_issue_bib_file_string_tl {\c_job_name_tl\c__nwejm_issue_bib_file_suffix_string_tl.bib}
 \tl_const:Nn \c__nwejm_issue_bib_path_string_tl {\c__nwejm_issue_bib_file_string_tl}
+\tl_const:Nn \c__nwejm_issue_number_year_file_string_tl {\c__nwejm_main_file_name_tl.iny}
 \tl_const:Nn \c__nwejm_issue_bib_key_tl {\int_use:N \g__nwejm_issue_number_int}
 \tl_const:Nn \c__nwejm_journal_short_title_string_tl {\textsc{nwejm}}
 \tl_const:Nn \c__nwejm_journal_title_string_tl {
@@ -254,7 +279,7 @@
 \bool_new:N \g__nwejm_date_specified_bool
 \dim_const:Nn \c__nwejm_layoutheight_dim { 240mm}
 \dim_const:Nn \c__nwejm_layoutwidth_dim  { 170mm}
-\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 7.5mm}
+\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 10mm }
 \bool_if:NTF {\g__nwejm_for_printer_bool} {
   \dim_const:Nn \c__nwejm_potential_layoutoffset_dim { \c__nwejm_printer_layoutoffset_dim}
 }{
@@ -266,16 +291,19 @@
 \int_const:Nn \c__nwejm_thresold_d_int {96}
 \int_const:Nn \c__nwejm_thresold_e_int {104}
 \int_const:Nn \c__nwejm_thresold_f_int {120}
-\dim_const:Nn \c__newjm_bindingoffset_a_dim {6mm}
-\dim_const:Nn \c__newjm_bindingoffset_b_dim {7mm}
-\dim_const:Nn \c__newjm_bindingoffset_c_dim {7.8mm}
-\dim_const:Nn \c__newjm_bindingoffset_d_dim {8.2mm}
-\dim_const:Nn \c__newjm_bindingoffset_e_dim {9mm}
-\dim_const:Nn \c__newjm_bindingoffset_f_dim {10mm}
-\zexternaldocument[self]{\jobname}%
+\dim_const:Nn \c__nwejm_bindingoffset_a_dim {6mm}
+\dim_const:Nn \c__nwejm_bindingoffset_b_dim {7mm}
+\dim_const:Nn \c__nwejm_bindingoffset_c_dim {7.8mm}
+\dim_const:Nn \c__nwejm_bindingoffset_d_dim {8.2mm}
+\dim_const:Nn \c__nwejm_bindingoffset_e_dim {9mm}
+\dim_const:Nn \c__nwejm_bindingoffset_f_dim {10mm}
 \int_new:N \g__nwejm_total_pages_number_int%
 \int_new:N \g__nwejm_total_inside_pages_number_int%
-\int_gset:Nn \g__nwejm_total_pages_number_int { \zref@extractdefault{selfLastPage}{abspage}{0} }
+\zexternaldocument[self]{\c__nwejm_main_file_name_tl}
+\int_gset:Nn \g__nwejm_total_pages_number_int
+{
+  \zref@extractdefault{selfLastPage}{abspage}{0}
+}
 \int_gset:Nn \g__nwejm_total_inside_pages_number_int { \g__nwejm_total_pages_number_int - 4 }
 \int_compare:nNnTF {\g__nwejm_total_inside_pages_number_int}<{\c__nwejm_thresold_a_int}
 {
@@ -309,17 +337,26 @@
   }
 }
 \bool_if:NTF {\g__nwejm_cover_bool} {
-  \dim_const:Nn \c__nwejm_potential_bindingoffset_dim { \c__nwejm_printer_bindingoffset_dim }
+  \dim_compare:nTF {\g__nwejm_binding_dim > \c_zero_dim} {%
+    \dim_const:Nn \c__nwejm_potential_bindingoffset_dim { \g__nwejm_binding_dim }
+  }{
+    \dim_const:Nn \c__nwejm_potential_bindingoffset_dim { \c__nwejm_printer_bindingoffset_dim }
+  }
 }{
   \dim_const:Nn \c__nwejm_potential_bindingoffset_dim {\c_zero_dim}
 }
-\dim_const:Nn \c__nwejm_paperheight_dim { \c__nwejm_layoutheight_dim+2\c__nwejm_potential_layoutoffset_dim}
+\dim_const:Nn \c__nwejm_paperheight_dim {
+  \c__nwejm_layoutheight_dim
+  +
+  2\c__nwejm_potential_layoutoffset_dim
+}
 \bool_if:NTF {\g__nwejm_cover_bool} {
   \dim_const:Nn \c__nwejm_paperwidth_dim  {
     \c__nwejm_layoutwidth_dim
     +
     \c__nwejm_potential_layoutoffset_dim
-    +\c__nwejm_potential_bindingoffset_dim
+    +
+    .5\c__nwejm_potential_bindingoffset_dim
   }
 }{
   \dim_const:Nn \c__nwejm_paperwidth_dim  {
@@ -333,11 +370,9 @@
 \dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
 \dim_const:Nn \c__nwejm_topmargin_frontcover_dim {
   \c__nwejm_topmargin_dim
-  % + 30mm
 }
 \dim_const:Nn \c__nwejm_topmargin_inside_cover_dim   {
   \c__nwejm_topmargin_dim
-  % +10mm
 }
 \dim_const:Nn \c__nwejm_topmargin_front_matter_dim   {
   \c__nwejm_topmargin_inside_cover_dim
@@ -345,8 +380,6 @@
 \dim_const:Nn \c__nwejm_headsep_dim     { 9.5mm}
 \dim_const:Nn \c__nwejm_headsep_frontcover_dim {
   \c__nwejm_headsep_dim
-  % +31mm
-  % -\c__nwejm_potential_layoutoffset_dim
 }
 \dim_const:Nn \c__nwejm_headsep_inside_frontcover_dim {
   \c__nwejm_headsep_dim
@@ -364,16 +397,9 @@
 \dim_const:Nn \c__nwejm_right_minipage_frontcover_dim { .6\linewidth }
 \dim_const:Nn \c__nwejm_innermargin_dim { 23mm }
 \dim_const:Nn \c__nwejm_outermargin_dim { 30mm }
-\dim_const:Nn \c__nwejm_inside_cover_box_width_dim { 150mm }%
-\dim_const:Nn \c__nwejm_innermargin_inside_cover_dim {
-  (\c__nwejm_layoutwidth_dim - \c__nwejm_inside_cover_box_width_dim)/2
-  - \c__nwejm_potential_bindingoffset_dim
-  % + \c__nwejm_adjustmargin_dim
-}
-\dim_const:Nn \c__nwejm_outermargin_inside_cover_dim {
-  (\c__nwejm_layoutwidth_dim - \c__nwejm_inside_cover_box_width_dim)/2
-  % - \c__nwejm_adjustmargin_dim
-}
+\dim_const:Nn \c__nwejm_inside_cover_textwidth_dim { 145mm }%
+\dim_const:Nn \c__nwejm_outermargin_inside_frontcover_dim { 15mm }
+\dim_const:Nn \c__nwejm_outermargin_inside_backcover_dim { 10mm }
 \dim_const:Nn \c__nwejm_innermargin_backcover_dim { 10mm }
 \dim_const:Nn \c__nwejm_outermargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
 \dim_const:Nn \c__nwejm_topmargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
@@ -381,70 +407,58 @@
 \dim_const:Nn \c__nwejm_front_matter_extra_innermargin_dim    { \c_zero_dim }
 \dim_const:Nn \c__nwejm_front_matter_extra_outermargin_dim    { \c_zero_dim }
 \dim_const:Nn \c__nwejm_inside_cover_offset_dim { \c_zero_dim }%
+\dim_const:Nn \c__nwejm_logos_rectangle_thickness_dim { 3.1mm }
+\dim_const:Nn \c__nwejm_logos_rectangle_height_dim { 33mm }
 \geometry{%
   papersize={\c__nwejm_paperwidth_dim,\c__nwejm_paperheight_dim}
 }
+\bool_if:NT {\g__nwejm_inside_pages_bool} {
+  \geometry{showcrop}
+}
 \bool_if:NTF {\g__nwejm_cover_bool} {
-  \dim_show:N \c__nwejm_topmargin_frontcover_dim
-  \dim_show:N \c__nwejm_headsep_frontcover_dim
-  \dim_show:N \c__nwejm_headheight_dim
   \tl_const:Nn \c__nwejm_frontcover_geometry_tl {%
-    ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
-    ,layoutvoffset=\c__nwejm_potential_layoutoffset_dim
-    ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
-    ,top=\c__nwejm_topmargin_frontcover_dim
-    ,top=\c__nwejm_topmargin_frontcover_dim
-    ,headsep=\c__nwejm_headsep_frontcover_dim
-    ,headheight=\c__nwejm_headheight_dim
-    ,bottom=\c__nwejm_bottom_frontcover_dim
-    ,footskip=\c__nwejm_footskip_dim
-    ,outer=\c__nwejm_margin_frontcover_dim
-    ,inner=\c__nwejm_potential_layoutoffset_dim
+    ,layoutheight=\c__nwejm_layoutheight_dim
+    ,layoutwidth=\c__nwejm_layoutwidth_dim
+    ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
+    ,ignoreall%
     ,nomarginpar%
+    ,noheadfoot%
+    ,margin=\c_zero_dim
   }%
 }{
   \tl_const:Nn \c__nwejm_frontcover_geometry_tl {%
-    ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
+    ,layoutheight=\c__nwejm_layoutheight_dim
+    ,layoutwidth=\c__nwejm_layoutwidth_dim
     ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
-    ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
-    ,top=\c__nwejm_topmargin_frontcover_dim
-    ,headsep=\c__nwejm_headsep_frontcover_dim
-    ,headheight=\c__nwejm_headheight_dim
-    ,bottom=\c__nwejm_bottom_frontcover_dim
-    ,footskip=\c__nwejm_footskip_dim
-    ,hmargin=\c__nwejm_margin_frontcover_dim
+    ,ignoreall%
     ,nomarginpar%
+    ,noheadfoot%
+    ,margin=\c_zero_dim
   }%
 }
 \bool_if:NTF {\g__nwejm_cover_bool} {
   \tl_const:Nn \c__nwejm_inside_cover_geometry_tl {%
     ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
-    ,layoutvoffset=\c__nwejm_potential_layoutoffset_dim
-    ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
+    ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
     ,top=\c__nwejm_topmargin_inside_cover_dim
     ,headheight=\c__nwejm_headheight_dim
     ,headsep=\c__nwejm_headsep_inside_frontcover_dim
     ,bottom=\c__nwejm_botmargin_dim
     ,footskip=\c__nwejm_footskip_dim
-    ,inner=\c__nwejm_innermargin_inside_cover_dim-\c__nwejm_potential_layoutoffset_dim
-    ,outer=\c__nwejm_outermargin_inside_cover_dim+\c__nwejm_potential_layoutoffset_dim
     ,nomarginpar%
+    ,textwidth=\c__nwejm_inside_cover_textwidth_dim
   }%
 }{
   \tl_const:Nn \c__nwejm_inside_cover_geometry_tl {%
     ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
     ,layoutoffset=\c__nwejm_potential_layoutoffset_dim
-    ,bindingoffset=\c__nwejm_potential_bindingoffset_dim
     ,top=\c__nwejm_topmargin_inside_cover_dim
     ,headheight=\c__nwejm_headheight_dim
     ,headsep=\c__nwejm_headsep_inside_frontcover_dim
     ,bottom=\c__nwejm_botmargin_dim
     ,footskip=\c__nwejm_footskip_dim
-    % ,inner=1cm
-    % ,outer=1cm
-    ,inner=\c__nwejm_innermargin_inside_cover_dim
-    ,outer=\c__nwejm_outermargin_inside_cover_dim
     ,nomarginpar%
+    ,textwidth=\c__nwejm_inside_cover_textwidth_dim
   }%
 }
 \tl_const:Nn \c__nwejm_front_matter_geometry_tl {%
@@ -523,60 +537,18 @@
   }
   \bool_gset_true:N \g__nwejm_tableofcontents_already_used_bool
 }%
-  % \box_new:N \l__nwejm_journal_frontcover_logo_box
-  % \box_new:N \l__nwejm_journal_volume_box
-  % \AfterEndPreamble{%
-  %   \hbox_set:Nn \l__nwejm_journal_volume_box
-  %   {
-  %     \color{Navy}
-  %     \LARGE
-  %     \bfseries
-  %     \sffamily
-  %     \adjustbox{stack=l}{%
-  %       \c__nwejm_frontcover_header_left_string_tl
-  %       \\\c__nwejm_frontcover_header_right_string_tl
-  %     }
-  %   }
-  %   \hbox_set:Nn \l__nwejm_journal_frontcover_logo_box
-  %   {
-  %     \includegraphics[width=3cm]{ nwejm-logo }
-  %   }
-    % \hbox_set_to_wd:Nnn \l__nwejm_journal_frontcover_logo_box { 1cm }
-    % {
-    %   \box_move_down:nn
-    %   {
-    %     \box_ht:N \l__nwejm_journal_frontcover_logo_box / 2
-    %     -
-    %     \box_ht:N \l__nwejm_journal_volume_box / 2
-    %   }
-    %   {
-    %     \box_use:N \l__nwejm_journal_frontcover_logo_box
-    %   }
-    % }
 \newpagestyle{__nwejm_frontcover_ps}[]{%
   \sethead
-  {
-      \color{Navy}
-      \Large
-      \bfseries
-      \sffamily
-      \adjustbox{stack=l}{%
-        \c__nwejm_frontcover_header_left_string_tl
-        \\\c__nwejm_frontcover_header_right_string_tl
-      }
-  }%
   {}%
-  {%
-    % \l__nwejm_journal_frontcover_logo_box
-    {\includegraphics[width=1cm]{ nwejm-logo }}
-  }%
+  {}%
+  {}%
   %
   \setfoot%
   {}%
   {}%
   {}%
 }%
-\newpagestyle{__nwejm_inside_frontcover_ps}[]{%
+\newpagestyle{__nwejm_inside_cover_ps}[]{%
   \sethead%
   {}%
   {}%
@@ -607,28 +579,6 @@
   \setfoot%
   {}%
   {\thepage}%
-  {}%
-}%
-\newpagestyle{__nwejm_inside_backcover_ps}[]{%
-  \sethead%
-  {}%
-  {}%
-  {}%
-  %
-  \setfoot%
-  {}%
-  {}%
-  {}%
-}%
-\newpagestyle{__nwejm_backcover_ps}[]{%
-  \sethead
-  {}%
-  {}%
-  {}%
-  %
-  \setfoot%
-  {}%
-  {}%
   {}%
 }%
 \tl_new:N \l__nwejm_section_header_tl
@@ -676,7 +626,7 @@
       \bfseries%
       \adjustbox{stack=l}{%
         \c__nwejm_journal_title_string_tl
- \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\space\int_use:N \g__nwejm_issue_number_int
+ \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\c_space_tl\int_use:N \g__nwejm_issue_number_int
 }
 }
 \hbox_set:Nn \l__nwejm_journal_logo_box
@@ -863,14 +813,6 @@
     \emph{\c__nwejm_journal_title_string_tl}
   }%
 }
-\tl_new:N \l__nwejm_pdftitle_string_tl
-\tl_new:N \l__nwejm_pdfauthor_string_tl
-\tl_set:Nn \l__nwejm_pdftile_string_tl {
-  \c__nwejm_journal_title_string_tl\space--\space{}N°\int_use:N\g__nwejm_issue_number_int
-}
-\tl_set:Nn \l__nwejm_pdfauthor_string_tl {
-  \g__nwejm_nwejm_string_tl
-}
 \cs_new_protected:Nn \__nwejm_email:n
   {
     \href{mailto:#1}{\nolinkurl{#1}}%
@@ -933,9 +875,9 @@
       \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
       ]
       \l__nwejm_people_affiliation_tl%
-        \space%
+        \c_space_tl%
         (\l__nwejm_people_country_tl)%
-      % ,\space%
+      % ,\c_space_tl%
       % \__nwejm_email:n {\l__nwejm_people_email_tl}
       \DTLiflastrow{%
       }{%
@@ -972,67 +914,172 @@
           \exp_not:V\DTLcurrentindex}%
         \tl_if_empty:NF \l__nwejm_people_email_tl
         {
-          \space(\__nwejm_email:n {\l__nwejm_people_email_tl})
+          \c_space_tl(\__nwejm_email:n {\l__nwejm_people_email_tl})
         }
       }
     }
   }
+}
+\cs_new_protected:Nn \__nwejm_binding_text:n
+{
+  \Large
+  \color{white}
+  \bfseries
+  \sffamily
+  \node[outer~sep=0pt,inner~sep=0pt,rotate=90] at (current~page.#1)
+  {
+    \maxsizebox*{!}{\c__nwejm_potential_bindingoffset_dim}{\c__nwejm_journal_title_string_tl}
+  } ;
+  \node[outer~sep=0pt,inner~sep=0pt,rotate=90,anchor=east] at
+  ($ (current~page.south~#1)!.2!(current~page.north~#1) $)
+  {
+    \maxsizebox*{!}{\c__nwejm_potential_bindingoffset_dim}{\c__nwejm_frontcover_left_string_tl}
+  } ;
+  \node[outer~sep=0pt,inner~sep=0pt,rotate=90,anchor=west] at ($
+  (current~page.south~#1)!.8!(current~page.north~#1) $)
+  {
+    \maxsizebox*{!}{\c__nwejm_potential_bindingoffset_dim}{\c__nwejm_issue_year_tl}
+  } ;
+}
+\cs_new_protected:Nn \__nwejm_grWheelComplete:nn
+{
+  \begingroup%
+  \setkeys[GR]{cl}{#1}%
+  \grStar[#1]{#2}%
+  \pgfmathsetcounter{tkz@gr@a}{#2-1}%
+  \edef\tkz@auxctp{\thetkz@gr@a}%
+  \foreach \ia in {0,...,\tkz@auxctp}%
+  {\foreach \ib in {\ia,...,\tkz@auxctp}%
+    {\Edge(\cmdGR@cl@prefix\ia)(\cmdGR@cl@prefix\ib)}%
+  }%
+  \endgroup%
 }
 \tl_new:N \g__nwejm_display_frontcover_tl%
 \tl_gset:Nn \g__nwejm_display_frontcover_tl {%
   \bool_gset_true:N \g__nwejm_frontcover_bool
   \pagestyle{__nwejm_frontcover_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_frontcover_geometry_tl}%
-  \noindent%
-  \bool_if:NTF {\g__nwejm_cover_bool} {
-    \hspace*{-\c__nwejm_potential_layoutoffset_dim}
-  }{
-    \hspace*{-2\c__nwejm_potential_layoutoffset_dim}
-  }
-  {
-    \mbox{}
-    \vfill
-    \begin{center}
-      \Huge%
-      \bfseries%
-      \sffamily%
-      \itshape%
-      \color{Navy}%
-      \c__nwejm_journal_front_cover_title_string_tl%
-    \end{center}
-  }
-  \vfill%
+  \begin{tikzpicture}[remember~picture,overlay]
+    \NoAutoSpacing
+    \file_if_exist:nT {\c__nwejm_cover_background_image_tl}{
+      \begin{pgfonlayer}{background}
+        \node[anchor=north~east,outer~sep=0pt,inner~sep=0pt] at (current~page.north~east) {
+          \reflectbox{%
+            \includegraphics[width=\paperheight,height=\c__nwejm_paperwidth_dim,angle=90]{
+              \c__nwejm_cover_background_image_tl
+            }%
+          }
+        };
+      \end{pgfonlayer}
+    }
+    \__nwejm_binding_text:n {east}
+  \end{tikzpicture}
+  \begin{tikzpicture}[
+    remember~picture,
+    overlay,
+    shift={(current~page~text~area.center)},
+    scale=0.5,
+    every~node/.style={scale=0.5}
+    ]
+    \SetGraphShadeColor{white}{blue}{white}%
+    \tikzset{%
+      VertexStyle/.style = {%
+        shape        = circle,%
+        fill         = white,%
+        minimum~size = 3.5cm,%
+        draw%
+      }%
+    }%
+    \SetVertexNoLabel%
+    \__nwejm_grWheelComplete:nn {RA=9}{6}
+    \AssignVertexLabel{a}{%
+      \includegraphics[height=25mm]{nwejm-fields-institute-logo},%
+      \includegraphics[height=25mm]{nwejm-federation-recherche-math-npdc-logo},%
+      \includegraphics[height=10mm]{nwejm-kwg-logo},%
+      \includegraphics[height=20mm]{nwejm-smf-logo},%
+      \includegraphics[height=12mm]{nwejm-sml-logo},%
+      \includegraphics[height=25mm]{nwejm-logo}%
+    };%
+  \end{tikzpicture}
+  \begin{tikzpicture}[remember~picture,overlay]
+    % left horizontal lower white rule
+    \fill[white]
+    ([xshift=.95\c__nwejm_layoutwidth_dim,yshift=\c__nwejm_logos_rectangle_height_dim]current~page~text~area.south~west)
+    rectangle
+    ++(-.85\c__nwejm_layoutwidth_dim,\c__nwejm_logos_rectangle_thickness_dim)
+    ;
+    % left vertical white rule
+    \fill[white]
+    ([xshift=10mm,yshift=\c__nwejm_logos_rectangle_height_dim]current~page~text~area.south~west)
+    rectangle
+    ([xshift=10mm-\c__nwejm_logos_rectangle_thickness_dim,yshift=-\c__nwejm_logos_rectangle_height_dim+\c__nwejm_logos_rectangle_thickness_dim]current~page~text~area.north~west) ;
+    % left horizontal upper white rule
+    \fill[white]
+    ([xshift=.95\c__nwejm_layoutwidth_dim,yshift=-\c__nwejm_logos_rectangle_height_dim+\c__nwejm_logos_rectangle_thickness_dim]current~page~text~area.north~west)
+    rectangle
+    ([xshift=.6\c__nwejm_layoutwidth_dim,yshift=-\c__nwejm_logos_rectangle_height_dim]current~page~text~area.north~west) ;
+    % crop marks
+    \draw [white]
+    ([xshift=-2.5mm]current~page~text~area.north~west) --
+    ([xshift=-7.5mm]current~page~text~area.north~west);
+    \draw [white]
+    ([yshift=2.5mm]current~page~text~area.north~west) --
+    ([yshift=7.5mm]current~page~text~area.north~west);
+    \draw [white]
+    ([xshift=-2.5mm]current~page~text~area.south~west) --
+    ([xshift=-7.5mm]current~page~text~area.south~west);
+    \draw [white]
+    ([yshift=-2.5mm]current~page~text~area.south~west) --
+    ([yshift=-7.5mm]current~page~text~area.south~west);
+    % binding limit
+    \bool_if:NT {\g__nwejm_show_binding_bool} {
+      \draw[green]
+      ([xshift=-.5\c__nwejm_potential_bindingoffset_dim]current~page.north~east) --
+      ([xshift=-.5\c__nwejm_potential_bindingoffset_dim]current~page.south~east);
+    }
+  \end{tikzpicture}
   \clearpage%
   \bool_gset_false:N \g__nwejm_frontcover_bool
 }
 \tl_new:N \g__nwejm_display_inside_frontcover_tl%
 \tl_gset:Nn \g__nwejm_display_inside_frontcover_tl {%
   \bool_gset_true:N \g__nwejm_inside_frontcover_bool%
-  \pagestyle{__nwejm_inside_frontcover_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_inside_cover_geometry_tl}%
+  \pagestyle{__nwejm_inside_cover_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{%
+    \c__nwejm_inside_cover_geometry_tl
+    ,outer=\c__nwejm_outermargin_inside_frontcover_dim
+  }%
+  % \tikz[remember~picture,overlay] {%
+  %   \draw [green]
+  %   (current~page~text~area.south~west)
+  %   rectangle
+  %   (current~page~text~area.north~east)
+  %   ;
+  % }
+  \setlist[description,1]{font=\scshape\bfseries}
   \footnotesize%
     \begin{multicols*}{2}
       \setlength{\columnsep}{1mm}
       \begin{description}[leftmargin=2em]
-      \item[\textsc{\c__nwejm_editorinchief_string_tl}] \
+      \item[\c__nwejm_editorinchief_string_tl] \
         \begin{description}[leftmargin=1em]
           \__nwejm_display_people_by_role:n {editorinchief}
         \end{description}
         \bigskip
         \par
-      \item[\textsc{\c__nwejm_associate_editors_string_tl}] \
+      \item[\c__nwejm_associate_editors_string_tl] \
         \begin{description}[leftmargin=1em]
           \__nwejm_display_people_by_role:n {editor}
         \end{description}
         \bigskip
         \par
-      \item[\textsc{\c__nwejm_field_editor_string_tl}] \
+      \item[\c__nwejm_field_editor_string_tl] \
         \begin{description}[leftmargin=1em]
           \__nwejm_display_people_by_role:n {fieldseditor}
         \end{description}
         \bigskip
         \par
-      \item[\textsc{\c__nwejm_managing_editor_string_tl}] \
+      \item[\c__nwejm_managing_editor_string_tl] \
         \begin{description}[leftmargin=1em]
           \__nwejm_display_people_by_role:n {managingeditor}
         \end{description}
@@ -1046,69 +1093,128 @@
 \tl_new:N \g__nwejm_display_inside_backcover_tl%
 \tl_gset:Nn \g__nwejm_display_inside_backcover_tl {%
   \bool_gset_true:N \g__nwejm_inside_backcover_bool%
-  \pagestyle{__nwejm_inside_backcover_ps}%
-  % \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_inside_cover_geometry_tl}%
-  % \file_if_exist:nT { \c__nwejm_authors_instructions_file_tl } {%
-    \bool_if:NTF {\g__nwejm_no_inside_backcover_bool} {
-      \hbox{}
-    }{%
-      % \small%
-      \begin{description}[leftmargin=1em]
-      \item[\c__nwejm_authors_instructions_string_tl{}:] \
-        \g__nwejm_authors_instructions_tl
-      \item[\c__nwejm_editorial_secretariat_string_tl{}:] \ \par%
-        % \l__nwejm_journal_publisher_tl%
-        % \par%
-        % \space\textendash{}\space%
-        \__nwejm_display_people_by_role:n { secretary }\par
-        \l__nwejm_journal_address_tl\par%
-        \c__nwejm_phone_string_tl{}:~\l__nwejm_journal_phone_tl{}\par%
-        \__nwejm_email:n {\l__nwejm_journal_email_tl}
-        \newline%
-        % \space\textendash{}\space
-        \url{\l__nwejm_journal_url_tl}
-        \tl_if_empty:NF \l__nwejm_journal_issn_tl
-        {%
-        \item[\c__nwejm_issn_string_tl{}:] \l__nwejm_journal_issn_tl
-        }
-        \tl_if_empty:NF \l__nwejm_journal_isbn_tl
-        {%
-        \item[\c__nwejm_isbn_string_tl{}:] \l__nwejm_journal_isbn_tl
-        }
-        \item[\c__nwejm_latexclass_string_tl{}:]
-          \__nwejm_display_people_by_role:n { classdesigner }
-        \item[\c__nwejm_computer_engineering_string_tl{}:] %\g__nwejm_printer_text_tl
-          \__nwejm_display_people_by_role:n { computerengineer }
-        \item[\c__nwejm_graphicdesign_string_tl{}:] %\g__nwejm_graphicdesign_text_tl
-          \__nwejm_display_people_by_role:n { graphicdesign }
-      \end{description}
-        \g__nwejm_font_designer_text_tl
-    }
-  % }{%
-  %   \hbox{}
+  \pagestyle{__nwejm_inside_cover_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{%
+    \c__nwejm_inside_cover_geometry_tl
+    ,outer=\c__nwejm_outermargin_inside_backcover_dim
+  }%
+  % \tikz[remember~picture,overlay] {%
+  %   \draw [purple]
+  %   (current~page~text~area.south~west)
+  %   rectangle
+  %   (current~page~text~area.north~east)
+  %   ;
   % }
+  \setlist[description,1]{font=\scshape\bfseries}
+  \begin{description}[leftmargin=1em]
+  \item[\c__nwejm_authors_instructions_string_tl{}:] \
+    \g__nwejm_authors_instructions_tl
+  \item[\c__nwejm_editorial_secretariat_string_tl{}:] \ \par%
+    % \l__nwejm_journal_publisher_tl%
+    % \par%
+    % \c_space_tl\textendash{}\c_space_tl%
+    \__nwejm_display_people_by_role:n { secretary }\par
+    \l__nwejm_journal_address_tl\par%
+    \c__nwejm_phone_string_tl{}:~\l__nwejm_journal_phone_tl{}\par%
+    \__nwejm_email:n {\l__nwejm_journal_email_tl}
+    \newline%
+    % \c_space_tl\textendash{}\c_space_tl
+    \url{\l__nwejm_journal_url_tl}
+    \tl_if_empty:NF \l__nwejm_journal_issn_tl
+    {%
+    \item[\c__nwejm_issn_string_tl{}:] \l__nwejm_journal_issn_tl
+    }
+    \tl_if_empty:NF \l__nwejm_journal_isbn_tl
+    {%
+    \item[\c__nwejm_isbn_string_tl{}:] \l__nwejm_journal_isbn_tl
+    }
+  \item[\c__nwejm_latexclass_string_tl{}:]
+    \__nwejm_display_people_by_role:n { classdesigner }
+  \item[\c__nwejm_computer_engineering_string_tl{}:] %\g__nwejm_printer_text_tl
+    \__nwejm_display_people_by_role:n { computerengineer }
+  \item[\c__nwejm_graphicdesign_string_tl{}:] %\g__nwejm_graphicdesign_text_tl
+    \__nwejm_display_people_by_role:n { graphicdesign }
+  \end{description}
+  \g__nwejm_font_designer_text_tl
   \bool_gset_false:N \g__nwejm_inside_backcover_bool
 }
 \tl_new:N \g__nwejm_short_toc_tl%
-\tl_gset:Nn \g__nwejm_short_toc_tl {%
-  \begingroup
-  \etocstandardlines
-  \etocsetnexttocdepth{chapter}
-  \renewcommand{\etocbkgcolorcmd}{\color{Navy!5}}
-  \renewcommand{\etocbelowtocskip}{0pt\relax}
-  \fboxsep1ex
-  \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c__nwejm_backcover_tableofcontents_string_tl}}}
-  \tableofcontents
-  \endgroup
-}
 \tl_new:N \g__nwejm_display_backcover_tl%
 \tl_gset:Nn \g__nwejm_display_backcover_tl {%
   \bool_gset_true:N \g__nwejm_backcover_bool
-\g__nwejm_short_toc_tl
-\vfill{}
-  \begin{center}
-    \includegraphics[height=.4\textheight]{nwejm-logos-collection.pdf}
-  \end{center}
+  \exp_after:wN\newgeometry\exp_after:wN{%
+    \c__nwejm_frontcover_geometry_tl
+    ,layouthoffset=.5\c__nwejm_potential_bindingoffset_dim
+  }%
+  \bool_gset_true:N \g__nwejm_backcover_bool
+  \begin{tikzpicture}[remember~picture,overlay]
+    \NoAutoSpacing
+    \file_if_exist:nT {\c__nwejm_cover_background_image_tl}{
+      \begin{pgfonlayer}{background}
+        \node[anchor=north~west,outer~sep=0pt,inner~sep=0pt] at (current~page.north~west) {
+          \includegraphics[width=\paperheight,height=\c__nwejm_paperwidth_dim,angle=90]{\c__nwejm_cover_background_image_tl}%
+        };
+      \end{pgfonlayer}
+    }
+    \__nwejm_binding_text:n {west}
+  \end{tikzpicture}
+  \noindent%
+  \begin{tikzpicture}[remember~picture,overlay]
+    % journal title
+    \node [anchor=north,yshift=-\c__nwejm_layoutwidth_dim/20] at (current~page~text~area.north) {
+      \begin{tcolorbox}[__nwejm_title_cover]
+        North-Western~European\\[.5cm]
+        Journal~of~Mathematics
+      \end{tcolorbox}
+    };
+    % circular node for NWEJM logo
+    \node[anchor=center,circle,fill=white,minimum~size=8.2cm] at
+    ([yshift=-\c__nwejm_layoutheight_dim/2]current~page~text~area.north)
+    {\includegraphics[height=5.5cm]{nwejm-logo}};
+    % right vertical white rule
+    \fill[white]
+    ([xshift=-10mm,yshift=\c__nwejm_logos_rectangle_height_dim]current~page~text~area.south~east)
+    rectangle
+    ([xshift=-10mm+\c__nwejm_logos_rectangle_thickness_dim,yshift=\c__nwejm_logos_rectangle_height_dim+14cm]current~page~text~area.south~east) ;
+    % right horizontal white rule
+    \fill[white]
+    ([yshift=\c__nwejm_logos_rectangle_height_dim+\c__nwejm_logos_rectangle_thickness_dim]current~page~text~area.south~west)
+    rectangle
+    ([xshift=.35\c__nwejm_layoutwidth_dim,yshift=\c__nwejm_logos_rectangle_height_dim]current~page~text~area.south~west) ;
+    % number and year node
+    \node[anchor=base~east] at
+    ([xshift=-1.2cm,yshift=\c__nwejm_logos_rectangle_height_dim]current~page~text~area.south~east)
+    {\color{white}\bfseries\sffamily\c__nwejm_frontcover_string_tl} ;
+    % % white rectangle for university and laboratory logos
+    \fill [white]
+    ([yshift=\c__nwejm_logos_rectangle_height_dim-7.5mm]current~page~text~area.south~west)
+    rectangle (current~page.south~east);
+    % laboratory logo
+    \node[anchor=south~east] at ([xshift=-10mm]current~page~text~area.south~east)
+    {\includegraphics[height=.66\c__nwejm_logos_rectangle_height_dim]{logo-painleve}} ;
+    % university logo
+    \node[anchor=south~west] at (current~page~text~area.south~west)
+    {\includegraphics[height=.66\c__nwejm_logos_rectangle_height_dim]{logo-ul1-ufr-math}} ;
+    % crop marks
+    \draw [white]
+    ([xshift=2.5mm]current~page~text~area.north~east) --
+    ([xshift=7.5mm]current~page~text~area.north~east);
+    \draw [white]
+    ([yshift=2.5mm]current~page~text~area.north~east) --
+    ([yshift=7.5mm]current~page~text~area.north~east);
+    \draw
+    ([xshift=2.5mm]current~page~text~area.south~east) --
+    ([xshift=7.5mm]current~page~text~area.south~east);
+    \draw
+    ([yshift=-2.5mm]current~page~text~area.south~east) --
+    ([yshift=-7.5mm]current~page~text~area.south~east);
+    % binding limit
+    \bool_if:NT {\g__nwejm_show_binding_bool} {
+      \draw[green]
+      ([xshift=.5\c__nwejm_potential_bindingoffset_dim]current~page.north~west) --
+      ([xshift=.5\c__nwejm_potential_bindingoffset_dim]current~page.south~west);
+    }
+  \end{tikzpicture}
 }
 \cs_new_protected:Nn \__nwejm_date:nn
 {
@@ -1118,7 +1224,7 @@
     {
       \tl_if_eq:NNF {\c__nwejm_date_received_tl} {#1} { \c__nwejm_dates_separator_tl }
       \tl_mixed_case:n { \exp_args:No \GetTranslation{#1} }
-      \c__nwejm_colon_tl\space
+      \c__nwejm_colon_tl\c_space_tl
       \DTMdate{#2}%
     }
   }
@@ -1133,33 +1239,37 @@
   \tl_gclear:N \g__nwejm_acception_date_tl
   \tl_gclear:N \g__nwejm_online_date_tl
 }
-\tl_new:N \l__nwejm_keywords_tl
+\tl_new:N \g__nwejm_keywords_tl
 \NewDocumentCommand \keywords { O{} m } {
-  \tl_clear:N \l__nwejm_keywords_tl
-  \clist_set:Nn \l_tmpa_clist {#2}
-  \tl_set:Nn \l__nwejm_keywords_tl { \clist_use:Nnnn \l_tmpa_clist { ,~ } { ,~ } { ,~ } }
+  \tl_gclear:N \g__nwejm_keywords_tl
+  \tl_clear:N \l_tmpb_clist
+  \clist_set:Nn \l_tmpb_clist {#2}
+  \tl_set:Nn \g__nwejm_keywords_tl { \clist_use:Nnnn \l_tmpb_clist { ,~ } { ,~ } { ,~ } }
 }
-\seq_new:N \l__nwejm_msc_seq
-\tl_new:N \l__nwejm_msc_tl
+\tl_new:N \g__nwejm_msc_tl
 \NewDocumentCommand \msc { m } {
-  \seq_clear:N \l__nwejm_msc_seq
-  \tl_clear:N \l__nwejm_msc_tl
-  %
-  % does what the name suggests, set a sequence from the clist
-  \seq_set_from_clist:Nn \l_tmpa_seq {#1}
-  % applies final arg to each element of second seq and stores result in first seq
-  \seq_set_map:NNn \l__nwejm_msc_seq \l_tmpa_seq {
-      ##1
-  }
-  %
-  % \seq_use puts the items from the seq back in the input with ",~" as a separator
-  \tl_set:Nn \l__nwejm_msc_tl {\seq_use:Nn \l__nwejm_msc_seq {,~}}
-%%<class-article>    \hypersetup{pdfmsc=\l_@@_msc_tl}
+  \tl_gclear:N \g__nwejm_msc_tl
+  \tl_clear:N \l_tmpa_clist
+  \clist_set:Nn \l_tmpa_clist {#1}
+  \tl_set:Nn \g__nwejm_msc_tl { \clist_use:Nnnn \l_tmpa_clist { ,~ } { ,~ } { ,~ } }
+%%<class-article>    \hypersetup{pdfmsc=\g_@@_msc_tl}
 }
-\tl_new:N \l__nwejm_jobname_tl
-\tl_set:Nn \l__nwejm_jobname_tl {\jobname}
-\str_if_eq_x:nnF \l__nwejm_jobname_tl \c__nwejm_main_file_name_tl { \msg_error:nn{nwejm}{Wrong~main~file~name!} }
-%%   \enquote{R\'{e}dacteur(s) en chef}.
+\str_if_eq_x:nnTF  \c_sys_jobname_str \c__nwejm_main_file_name_tl {
+  \bool_if:NT {\g__nwejm_cover_bool} {
+    \msg_error:nn{nwejm}{Wrong~cover's~main~file~name!}
+  }
+}{
+  \bool_if:NTF {\g__nwejm_cover_bool} {
+    \file_if_exist:nTF { \c__nwejm_issue_number_year_file_string_tl }
+    {
+      \file_input:n {\c__nwejm_issue_number_year_file_string_tl}
+    }{
+      \msg_error:nn{nwejm}{Main~file~needs~to~be~compiled!}
+    }
+  }{
+    \msg_error:nn{nwejm}{Wrong~issue's~main~file~name!}
+  }
+}
 \NewDocumentCommand \editorinchief {mmmm}
 {
   \__nwejm_people:nnnnn {#1}{#2}{#3}{#4}{editorinchief}
@@ -1206,8 +1316,6 @@
 }
 \NewDocumentCommand \issuesetup { m } {
   \keys_set:nn { nwejm/issuesetup } {#1}
-\hypersetup{pdftitle=\l__nwejm_pdftitle_string_tl}
-\hypersetup{pdfauthor=\l__nwejm_pdfauthor_string_tl}
   \int_compare:nNnT {\g__nwejm_issue_number_int}<{1}
   {
     \int_gset:Nn \g__nwejm_issue_number_int { \c__nwejm_first_issue_number_int }
@@ -1242,6 +1350,28 @@
       \g__nwejm_issue_age_in_years_int + \c__nwejm_first_issue_year_int
     }
   }%
+  \bool_if:NT {\g__nwejm_cover_bool} {
+    \hypersetup{
+      pdftitle=\c__nwejm_journal_title_string_tl\c_space_tl--\c_space_tl\c__nwejm_frontcover_left_string_tl\c_space_tl--\c_space_tl\int_use:N\g__nwejm_issue_year_int,
+      pdfauthor=\c__nwejm_journal_title_string_tl\c_space_tl(editor)
+    }
+  }
+  \iow_new:N   \g__nwejm_issue_number_year_out_iow
+  \iow_open:Nn \g__nwejm_issue_number_year_out_iow {\c__nwejm_issue_number_year_file_string_tl}
+  \iow_now:Nx \g__nwejm_issue_number_year_out_iow {
+     \token_to_str:N \ExplSyntaxOn
+    \iow_newline:
+    \tl_const:Nn \token_to_str:N \c__nwejm_issue_number_tl {
+      \int_eval:n {\g__nwejm_issue_number_int}
+    }
+    \iow_newline:
+    \tl_const:Nn \token_to_str:N \c__nwejm_issue_year_tl {
+      \int_eval:n {\g__nwejm_issue_year_int}
+    }
+    \iow_newline:
+    \token_to_str:N \ExplSyntaxOff
+  }
+  \iow_close:N \g__nwejm_issue_number_year_out_iow
 }
 \NewDocumentCommand \journalsetup { m } {
   \keys_set:nn { nwejm/journalsetup } { #1 }
@@ -1288,7 +1418,7 @@
   \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
     {\refpagename\ hiervoor}}%
   \def\reftextcurrent   {op~deze~\refpagename}%
-  \def\reftextfaraway#1{op~\refpagename\space\pageref{#1}}
+  \def\reftextfaraway#1{op~\refpagename\c_space_tl\pageref{#1}}
 }
 \addto\extrasenglish{%
   \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
@@ -1600,11 +1730,11 @@
       \c__nwejm_colon_tl
     }
   }
-  \space\l__nwejm_keywords_tl.
+  \c_space_tl\g__nwejm_keywords_tl.
 }
 \tl_set:Nn \l__nwejm_msc_box_tl
 {%
-  \noindent\textbf{\c__nwejm_msc_string_tl}\c__nwejm_colon_tl\space\l__nwejm_msc_tl.
+  \noindent\textbf{\c__nwejm_msc_string_tl}\c__nwejm_colon_tl\c_space_tl\g__nwejm_msc_tl.
 }
 \tl_set:Nn \l__nwejm_abstract_box_tl
 {%
@@ -1634,7 +1764,7 @@
   }
   \bool_if:nF { \tl_if_empty_p:N \g__nwejm_short_subtitle_tl }
   {
-    .\space\g__nwejm_short_subtitle_tl
+    .\c_space_tl\g__nwejm_short_subtitle_tl
   }
 }
 \tl_set:Nn \g__nwejm_title_for_toc_tl
@@ -1647,10 +1777,10 @@
       {
         \texorpdfstring{%
           \AtNextCitekey{\defcounter{maxnames}{100}}
-          \space\textendash\space\citeauthor{\g__nwejm_article_bib_key_tl}
+          \c_space_tl\textendash\c_space_tl\citeauthor{\g__nwejm_article_bib_key_tl}
         }{}
       }{%
-        \space\textendash\space\citeauthor{\g__nwejm_article_bib_key_tl}
+        \c_space_tl\textendash\c_space_tl\citeauthor{\g__nwejm_article_bib_key_tl}
       }%
     }
   }
@@ -1679,14 +1809,14 @@
   \thispagestyle{__nwejm_article_title_ps}%
 \l__nwejm_abstract_box_tl%
 \normalsize
-\tl_if_empty:NTF \l__nwejm_keywords_tl {
+\tl_if_empty:NTF \g__nwejm_keywords_tl {
   \msg_warning:nn{nwejmart}{No~keyword}
 }{
   \l__nwejm_keywords_box_tl
   \par%
   \vskip .5em%
 }
-\tl_if_empty:NTF \l__nwejm_msc_tl {
+\tl_if_empty:NTF \g__nwejm_msc_tl {
   \msg_warning:nn{nwejmart}{No~MSC}
 }{
   \l__nwejm_msc_box_tl
@@ -1801,10 +1931,10 @@
 }
 \cs_new_protected:Nn \__nwejm_century_suffix:n
 {
-  \space{}
+  \c_space_tl{}
   \GetTranslation{century}%
   \int_compare:nNnT { #1 } < { 0 }{
-    \space
+    \c_space_tl
     \GetTranslation{before-christ}
   }{
   }
@@ -2588,11 +2718,37 @@
       disable%
     }
   }
-  % \bool_if:NF {\g__nwejm_inside_pages_bool} {
-  %   \g__nwejm_display_frontcover_tl
-  %   \g__nwejm_display_inside_frontcover_tl
-  % }
+  \bool_if:NTF {\g__nwejm_cover_bool} {
+    \ExplSyntaxOff
+    \usetikzlibrary{calc}
+    \usetikzlibrary{backgrounds}
+    \ExplSyntaxOn
+    \tcbuselibrary{skins}
+    \tcbset{__nwejm_title_cover/.style={%
+        colback=white,
+        colframe=blue!37!white,
+        colupper=blue,
+        width=14cm,
+        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
+        halign=center,
+        valign=center,
+        % boxsep=3mm,
+        boxrule=3mm,
+        left=\c_zero_dim,
+        right=\c_zero_dim,
+        sharp~corners,
+        rounded~corners=northwest,
+        % draft
+      }
+    }
+    \g__nwejm_display_frontcover_tl
+    \g__nwejm_display_backcover_tl
+    \g__nwejm_display_inside_frontcover_tl
+    \g__nwejm_display_inside_backcover_tl
+    \end{document}
+  }{
   \tableofcontents
+  }
 }
 \AfterEndPreamble{%
   \titleformat{\chapter}[block]
