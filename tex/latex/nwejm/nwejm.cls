@@ -158,6 +158,27 @@
 \bool_if:NTF {\g__nwejm_cover_bool} {
   \RequirePackage{tcolorbox}
   \RequirePackage{tikzpagenodes}
+    \ExplSyntaxOff
+    \usetikzlibrary{calc,backgrounds}
+    \ExplSyntaxOn
+    \tcbuselibrary{skins}
+    \tcbset{__nwejm_title_cover/.style={%
+        colback=white,
+        colframe=blue!37!white,
+        colupper=blue,
+        width=14cm,
+        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
+        halign=center,
+        valign=center,
+        % boxsep=3mm,
+        boxrule=3mm,
+        left=\c_zero_dim,
+        right=\c_zero_dim,
+        sharp~corners,
+        rounded~corners=northwest,
+        % draft
+      }
+    }
   \RequirePackage{tkz-berge}
 }{
 \RequirePackage[group=false,subpreambles,sort]{standalone}%
@@ -247,7 +268,7 @@
   bibliography~of~your~article~to~appear~in~the~next~issue~of~the
   \c__nwejm_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
-\tl_const:Nn \c__nwejm_cover_background_image_tl {abstract-quality_high15255.jpg}
+\tl_const:Nn \c__nwejm_cover_background_image_tl {nwejm-cover-background.jpg}
 \tl_const:Nn \c__nwejm_msc_string_tl {\textsc{msc}}
 \tl_const:Nn \c__nwejm_colon_tl {
   \ifcurrentbaselanguage{french}{\FBcolonspace}{}:
@@ -961,8 +982,8 @@
   \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_frontcover_geometry_tl}%
   \begin{tikzpicture}[remember~picture,overlay]
     \NoAutoSpacing
-    \file_if_exist:nT {\c__nwejm_cover_background_image_tl}{
-      \begin{pgfonlayer}{background}
+    \begin{pgfonlayer}{background}
+      \file_if_exist:nTF {\c__nwejm_cover_background_image_tl}{
         \node[anchor=north~east,outer~sep=0pt,inner~sep=0pt] at (current~page.north~east) {
           \reflectbox{%
             \includegraphics[width=\paperheight,height=\c__nwejm_paperwidth_dim,angle=90]{
@@ -970,8 +991,11 @@
             }%
           }
         };
-      \end{pgfonlayer}
-    }
+      }{
+        \fill[blue] (current~page.north~east) rectangle
+        (current~page.south~west);
+      }
+    \end{pgfonlayer}
     \__nwejm_binding_text:n {east}
   \end{tikzpicture}
   \begin{tikzpicture}[
@@ -1149,11 +1173,14 @@
   \bool_gset_true:N \g__nwejm_backcover_bool
   \begin{tikzpicture}[remember~picture,overlay]
     \NoAutoSpacing
-    \file_if_exist:nT {\c__nwejm_cover_background_image_tl}{
-      \begin{pgfonlayer}{background}
+    \begin{pgfonlayer}{background}
+      \file_if_exist:nTF {\c__nwejm_cover_background_image_tl}{
         \node[anchor=north~west,outer~sep=0pt,inner~sep=0pt] at (current~page.north~west) {
           \includegraphics[width=\paperheight,height=\c__nwejm_paperwidth_dim,angle=90]{\c__nwejm_cover_background_image_tl}%
         };
+      }{
+        \fill[blue] (current~page.north~east) rectangle
+        (current~page.south~west);
       \end{pgfonlayer}
     }
     \__nwejm_binding_text:n {west}
@@ -1359,8 +1386,6 @@
   \iow_new:N   \g__nwejm_issue_number_year_out_iow
   \iow_open:Nn \g__nwejm_issue_number_year_out_iow {\c__nwejm_issue_number_year_file_string_tl}
   \iow_now:Nx \g__nwejm_issue_number_year_out_iow {
-     \token_to_str:N \ExplSyntaxOn
-    \iow_newline:
     \tl_const:Nn \token_to_str:N \c__nwejm_issue_number_tl {
       \int_eval:n {\g__nwejm_issue_number_int}
     }
@@ -1368,8 +1393,6 @@
     \tl_const:Nn \token_to_str:N \c__nwejm_issue_year_tl {
       \int_eval:n {\g__nwejm_issue_year_int}
     }
-    \iow_newline:
-    \token_to_str:N \ExplSyntaxOff
   }
   \iow_close:N \g__nwejm_issue_number_year_out_iow
 }
@@ -2719,28 +2742,6 @@
     }
   }
   \bool_if:NTF {\g__nwejm_cover_bool} {
-    \ExplSyntaxOff
-    \usetikzlibrary{calc}
-    \usetikzlibrary{backgrounds}
-    \ExplSyntaxOn
-    \tcbuselibrary{skins}
-    \tcbset{__nwejm_title_cover/.style={%
-        colback=white,
-        colframe=blue!37!white,
-        colupper=blue,
-        width=14cm,
-        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
-        halign=center,
-        valign=center,
-        % boxsep=3mm,
-        boxrule=3mm,
-        left=\c_zero_dim,
-        right=\c_zero_dim,
-        sharp~corners,
-        rounded~corners=northwest,
-        % draft
-      }
-    }
     \g__nwejm_display_frontcover_tl
     \g__nwejm_display_backcover_tl
     \g__nwejm_display_inside_frontcover_tl

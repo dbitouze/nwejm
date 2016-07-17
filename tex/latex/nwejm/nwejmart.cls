@@ -202,7 +202,7 @@
   bibliography~of~your~article~to~appear~in~the~next~issue~of~the
   \c__nwejm_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
-\tl_const:Nn \c__nwejm_cover_background_image_tl {abstract-quality_high15255.jpg}
+\tl_const:Nn \c__nwejm_cover_background_image_tl {nwejm-cover-background.jpg}
 \tl_const:Nn \c__nwejm_msc_string_tl {\textsc{msc}}
 \tl_const:Nn \c__nwejm_colon_tl {
   \ifcurrentbaselanguage{french}{\FBcolonspace}{}:
