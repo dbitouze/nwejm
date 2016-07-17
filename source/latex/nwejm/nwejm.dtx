@@ -629,7 +629,35 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Extension of \LaTeX{}'s color facilities:
 %    \begin{macrocode}
-\RequirePackage[svgnames]{xcolor}%
+\RequirePackage{xcolor}%
+%    \end{macrocode}
+%
+% Some of the packages are needed only when the cover has to be produced.
+%    \begin{macrocode}
+%<class>\bool_if:NTF {\g_@@_cover_bool} {
+%    \end{macrocode}
+%
+% \item Coloured boxes, for \LaTeX{} examples and theorems, etc.
+%    \begin{macrocode}
+%<class>  \RequirePackage{tcolorbox}
+%    \end{macrocode}
+%
+% \item A single TikZ node for the whole page (used for cover crop marks)
+%    \begin{macrocode}
+%<class>  \RequirePackage{tikzpagenodes}
+%    \end{macrocode}
+%
+% \item Macros for drawing graphs of graph theory (used for the backcover image)
+%    \begin{macrocode}
+%<class>  \RequirePackage{tkz-berge}
+%<class>}{
+%    \end{macrocode}
+%
+% Typically, the \Package{standalone} is not used for the cover.
+% \item Compile \TeX{} pictures stand-alone or as part of a document:
+%    \begin{macrocode}
+%<class>\RequirePackage[group=false,subpreambles,sort]{standalone}%
+%<class>}
 %    \end{macrocode}
 %
 % \item Define commands that appear not to eat spaces:
