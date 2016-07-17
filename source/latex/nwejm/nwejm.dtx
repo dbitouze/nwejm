@@ -951,11 +951,16 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % For the front cover header texts.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_frontcover_header_left_string_tl {
-  \int_use:N\g_@@_issue_year_int%
-}
-\tl_const:Nn \c_@@_frontcover_header_right_string_tl {
-  Number\space\int_use:N\g_@@_issue_number_int%
+\bool_if:NT {\g_@@_cover_bool} {
+  \tl_const:Nn \c_@@_frontcover_left_string_tl {
+    Number\c_space_tl\c_@@_issue_number_tl%
+  }
+  \tl_const:Nn \c_@@_frontcover_right_string_tl {
+    \c_@@_issue_year_tl%
+  }
+  \tl_const:Nn \c_@@_frontcover_string_tl {
+    \c_@@_frontcover_left_string_tl\c_space_tl--\c_space_tl\c_@@_frontcover_right_string_tl%
+  }
 }
 %    \end{macrocode}
 % For the name of the directory containing the 3rd and 4th cover pages.
@@ -1008,6 +1013,10 @@ Running "make install" installs the files in the local TeX tree.
   \c_@@_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
 }
 %    \end{macrocode}
+% For the cover's background image.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_cover_background_image_tl {abstract-quality_high15255.jpg}
+%    \end{macrocode}
 % For the \textsc{msc}.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_msc_string_tl {\textsc{msc}}
@@ -1034,6 +1043,12 @@ Running "make install" installs the files in the local TeX tree.
 \tl_const:Nn \c_@@_issue_bib_file_suffix_string_tl {@@}
 \tl_const:Nn \c_@@_issue_bib_file_string_tl {\c_job_name_tl\c_@@_issue_bib_file_suffix_string_tl.bib}
 \tl_const:Nn \c_@@_issue_bib_path_string_tl {\c_@@_issue_bib_file_string_tl}
+%    \end{macrocode}
+%
+% For the name of the file containing the issue's number and year used by the
+% file that produces the cover.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_issue_number_year_file_string_tl {\c_@@_main_file_name_tl.iny}
 %    \end{macrocode}
 %
 % For the prefix of the bibliographic key of each article.
@@ -1340,6 +1355,8 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_front_matter_extra_innermargin_dim    { \c_zero_dim }
 \dim_const:Nn \c_@@_front_matter_extra_outermargin_dim    { \c_zero_dim }
 \dim_const:Nn \c_@@_inside_cover_offset_dim { \c_zero_dim }%
+\dim_const:Nn \c_@@_logos_rectangle_thickness_dim { 3.1mm }
+\dim_const:Nn \c_@@_logos_rectangle_height_dim { 33mm }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -1508,27 +1525,27 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \bool_if:NF {\g_@@_coverpage_bool} {
   \bool_if:NF {\g_@@_inside_pages_bool} {
-    \preto\@enddocumenthook{
-%    \end{macrocode}
-%
-% The inside front cover and front cover pages are numbered \enquote{i} and
-% \enquote{ii} hence the inside back cover and back cover pages are numbered
-% \enquote{iii} and \enquote{iv}.
-%    \begin{macrocode}
-      \cleardoublepage
-      \pagenumbering{roman}%
-      \setcounter{page}{\c_three}
-%    \end{macrocode}
-%
-% On the backcover, we want the table of contents (displayed as a chapter,
-% therefore by default starting on a right page) to be displayed on a left page.
-%    \begin{macrocode}
-      \bool_gset_true:N \g_@@_backmatter_bool
-      \g_@@_display_inside_backcover_tl
-      \newpage
-      \@openrightfalse
-      \g_@@_display_backcover_tl
-    }%
+%     \preto\@enddocumenthook{
+% %    \end{macrocode}
+% %
+% % The inside front cover and front cover pages are numbered \enquote{i} and
+% % \enquote{ii} hence the inside back cover and back cover pages are numbered
+% % \enquote{iii} and \enquote{iv}.
+% %    \begin{macrocode}
+%       \cleardoublepage
+%       \pagenumbering{roman}%
+%       \setcounter{page}{\c_three}
+% %    \end{macrocode}
+% %
+% % On the backcover, we want the table of contents (displayed as a chapter,
+% % therefore by default starting on a right page) to be displayed on a left page.
+% %    \begin{macrocode}
+%       \bool_gset_true:N \g_@@_backmatter_bool
+%       \g_@@_display_inside_backcover_tl
+%       \newpage
+%       \@openrightfalse
+%       \g_@@_display_backcover_tl
+%     }%
   }%
 }%
 %    \end{macrocode}
@@ -1588,21 +1605,9 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \newpagestyle{@@_frontcover_ps}[]{%
   \sethead
-  {
-      \color{Navy}
-      \Large
-      \bfseries
-      \sffamily
-      \adjustbox{stack=l}{%
-        \c_@@_frontcover_header_left_string_tl
-        \\\c_@@_frontcover_header_right_string_tl
-      }
-  }%
   {}%
-  {%
-    % \l_@@_journal_frontcover_logo_box
-    {\includegraphics[width=1cm]{ nwejm-logo }}
-  }%
+  {}%
+  {}%
   %
   \setfoot%
   {}%
@@ -1611,10 +1616,10 @@ Running "make install" installs the files in the local TeX tree.
 }%
 %    \end{macrocode}
 %
-% \subsection{Inside front cover page style}
+% \subsection{Inside cover page style}
 %
 %    \begin{macrocode}
-\newpagestyle{@@_inside_frontcover_ps}[]{%
+\newpagestyle{@@_inside_cover_ps}[]{%
   \sethead%
   {}%
   {}%
@@ -1658,59 +1663,6 @@ Running "make install" installs the files in the local TeX tree.
   {\thepage}%
   {}%
 }%
-%    \end{macrocode}
-%
-% \subsection{Inside back cover page style}
-%
-%    \begin{macrocode}
-\newpagestyle{@@_inside_backcover_ps}[]{%
-  \sethead%
-  {}%
-  {}%
-  {}%
-  %
-  \setfoot%
-  {}%
-  {}%
-  {}%
-}%
-%    \end{macrocode}
-%
-% \subsection{Back cover page style}
-%
-%    \begin{macrocode}
-\newpagestyle{@@_backcover_ps}[]{%
-  \sethead
-  {}%
-  {}%
-  {}%
-  %
-  \setfoot%
-  {}%
-  {}%
-  {}%
-}%
-%    \end{macrocode}
-%
-% We define crop marks.
-%    \begin{macrocode}
-% \bool_if:NT {\g_@@_for_printer_bool} {%
-%   \AddEverypageHook{%
-%     \tikz[remember~picture,overlay] {%
-%       \draw ([yshift=\c_@@_potential_layoutoffset_dim]current~page.south~west) -- +(0.25,0);
-%       \draw ([xshift=\c_@@_potential_layoutoffset_dim]current~page.south~west) -- +(0,0.25);
-%       %% lower right
-%       \draw ([yshift=\c_@@_potential_layoutoffset_dim]current~page.south~east) -- +(-0.25,0);
-%       \draw ([xshift=-\c_@@_potential_layoutoffset_dim-\c_@@_potential_bindingoffset_dim]current~page.south~east) -- +(0,0.25);
-%       %% upper left
-%       \draw ([yshift=-\c_@@_potential_layoutoffset_dim]current~page.north~west) -- +(0.25,0);
-%       \draw ([xshift=\c_@@_potential_layoutoffset_dim]current~page.north~west) -- +(0,-0.25);
-%       %% upper right
-%       \draw ([yshift=-\c_@@_potential_layoutoffset_dim]current~page.north~east) -- +(-0.25,0);
-%       \draw ([xshift=-\c_@@_potential_layoutoffset_dim-\c_@@_potential_bindingoffset_dim]current~page.north~east) -- +(0,-0.25);
-%     }%
-%   }%
-% }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2309,6 +2261,44 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \section{Displaying the front cover}
 %
+% We create a control sequence for the binding text.
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_binding_text:n
+{
+  \Large
+  \color{white}
+  \bfseries
+  \sffamily
+  \node[outer~sep=0pt,inner~sep=0pt,rotate=90] at (current~page.#1)
+  {
+    \maxsizebox*{!}{\c_@@_potential_bindingoffset_dim}{\c_@@_journal_title_string_tl}
+  } ;
+  \node[outer~sep=0pt,inner~sep=0pt,rotate=90,anchor=east] at
+  ($ (current~page.south~#1)!.2!(current~page.north~#1) $)
+  {
+    \maxsizebox*{!}{\c_@@_potential_bindingoffset_dim}{\c_@@_frontcover_left_string_tl}
+  } ;
+  \node[outer~sep=0pt,inner~sep=0pt,rotate=90,anchor=west] at ($
+  (current~page.south~#1)!.8!(current~page.north~#1) $)
+  {
+    \maxsizebox*{!}{\c_@@_potential_bindingoffset_dim}{\c_@@_issue_year_tl}
+  } ;
+}
+\cs_new_protected:Nn \_@@_grWheelComplete:nn
+{
+  \begingroup%
+  \setkeys[GR]{cl}{#1}%
+  \grStar[#1]{#2}%
+  \pgfmathsetcounter{tkz@gr@a}{#2-1}%
+  \edef\tkz@auxctp{\thetkz@gr@a}%
+  \foreach \ia in {0,...,\tkz@auxctp}%
+  {\foreach \ib in {\ia,...,\tkz@auxctp}%
+    {\Edge(\cmdGR@cl@prefix\ia)(\cmdGR@cl@prefix\ib)}%
+  }%
+  \endgroup%
+}
+%    \end{macrocode}
+%
 % We create the variable that displays the front cover.
 %    \begin{macrocode}
 \tl_new:N \g_@@_display_frontcover_tl%
@@ -2316,25 +2306,85 @@ Running "make install" installs the files in the local TeX tree.
   \bool_gset_true:N \g_@@_frontcover_bool
   \pagestyle{@@_frontcover_ps}%
   \exp_after:wN\newgeometry\exp_after:wN{\c_@@_frontcover_geometry_tl}%
-  \noindent%
-  \bool_if:NTF {\g_@@_cover_bool} {
-    \hspace*{-\c_@@_potential_layoutoffset_dim}
-  }{
-    \hspace*{-2\c_@@_potential_layoutoffset_dim}
-  }
-  {
-    \mbox{}
-    \vfill
-    \begin{center}
-      \Huge%
-      \bfseries%
-      \sffamily%
-      \itshape%
-      \color{Navy}%
-      \c_@@_journal_front_cover_title_string_tl%
-    \end{center}
-  }
-  \vfill%
+  \begin{tikzpicture}[remember~picture,overlay]
+    \NoAutoSpacing
+    \file_if_exist:nT {\c_@@_cover_background_image_tl}{
+      \begin{pgfonlayer}{background}
+        \node[anchor=north~east,outer~sep=0pt,inner~sep=0pt] at (current~page.north~east) {
+          \reflectbox{%
+            \includegraphics[width=\paperheight,height=\c_@@_paperwidth_dim,angle=90]{
+              \c_@@_cover_background_image_tl
+            }%
+          }
+        };
+      \end{pgfonlayer}
+    }
+    \_@@_binding_text:n {east}
+  \end{tikzpicture}
+  \begin{tikzpicture}[
+    remember~picture,
+    overlay,
+    shift={(current~page~text~area.center)},
+    scale=0.5,
+    every~node/.style={scale=0.5}
+    ]
+    \SetGraphShadeColor{white}{blue}{white}%
+    \tikzset{%
+      VertexStyle/.style = {%
+        shape        = circle,%
+        fill         = white,%
+        minimum~size = 3.5cm,%
+        draw%
+      }%
+    }%
+    \SetVertexNoLabel%
+    \_@@_grWheelComplete:nn {RA=9}{6}
+    \AssignVertexLabel{a}{%
+      \includegraphics[height=25mm]{nwejm-fields-institute-logo},%
+      \includegraphics[height=25mm]{nwejm-federation-recherche-math-npdc-logo},%
+      \includegraphics[height=10mm]{nwejm-kwg-logo},%
+      \includegraphics[height=20mm]{nwejm-smf-logo},%
+      \includegraphics[height=12mm]{nwejm-sml-logo},%
+      \includegraphics[height=25mm]{nwejm-logo}%
+    };%
+  \end{tikzpicture}
+  \begin{tikzpicture}[remember~picture,overlay]
+    % left horizontal lower white rule
+    \fill[white]
+    ([xshift=.95\c_@@_layoutwidth_dim,yshift=\c_@@_logos_rectangle_height_dim]current~page~text~area.south~west)
+    rectangle
+    ++(-.85\c_@@_layoutwidth_dim,\c_@@_logos_rectangle_thickness_dim)
+    ;
+    % left vertical white rule
+    \fill[white]
+    ([xshift=10mm,yshift=\c_@@_logos_rectangle_height_dim]current~page~text~area.south~west)
+    rectangle
+    ([xshift=10mm-\c_@@_logos_rectangle_thickness_dim,yshift=-\c_@@_logos_rectangle_height_dim+\c_@@_logos_rectangle_thickness_dim]current~page~text~area.north~west) ;
+    % left horizontal upper white rule
+    \fill[white]
+    ([xshift=.95\c_@@_layoutwidth_dim,yshift=-\c_@@_logos_rectangle_height_dim+\c_@@_logos_rectangle_thickness_dim]current~page~text~area.north~west)
+    rectangle
+    ([xshift=.6\c_@@_layoutwidth_dim,yshift=-\c_@@_logos_rectangle_height_dim]current~page~text~area.north~west) ;
+    % crop marks
+    \draw [white]
+    ([xshift=-2.5mm]current~page~text~area.north~west) --
+    ([xshift=-7.5mm]current~page~text~area.north~west);
+    \draw [white]
+    ([yshift=2.5mm]current~page~text~area.north~west) --
+    ([yshift=7.5mm]current~page~text~area.north~west);
+    \draw [white]
+    ([xshift=-2.5mm]current~page~text~area.south~west) --
+    ([xshift=-7.5mm]current~page~text~area.south~west);
+    \draw [white]
+    ([yshift=-2.5mm]current~page~text~area.south~west) --
+    ([yshift=-7.5mm]current~page~text~area.south~west);
+    % binding limit
+    \bool_if:NT {\g_@@_show_binding_bool} {
+      \draw[green]
+      ([xshift=-.5\c_@@_potential_bindingoffset_dim]current~page.north~east) --
+      ([xshift=-.5\c_@@_potential_bindingoffset_dim]current~page.south~east);
+    }
+  \end{tikzpicture}
   \clearpage%
   \bool_gset_false:N \g_@@_frontcover_bool
 }
@@ -2347,8 +2397,19 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_display_inside_frontcover_tl%
 \tl_gset:Nn \g_@@_display_inside_frontcover_tl {%
   \bool_gset_true:N \g_@@_inside_frontcover_bool%
-  \pagestyle{@@_inside_frontcover_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_inside_cover_geometry_tl}%
+  \pagestyle{_@@_inside_cover_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{%
+    \c_@@_inside_cover_geometry_tl
+    ,outer=\c_@@_outermargin_inside_frontcover_dim
+  }%
+  % \tikz[remember~picture,overlay] {%
+  %   \draw [green]
+  %   (current~page~text~area.south~west)
+  %   rectangle
+  %   (current~page~text~area.north~east)
+  %   ;
+  % }
+  \setlist[description,1]{font=\scshape\bfseries}
   \footnotesize%
     \begin{multicols*}{2}
       \setlength{\columnsep}{1mm}
@@ -2391,47 +2452,49 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_display_inside_backcover_tl%
 \tl_gset:Nn \g_@@_display_inside_backcover_tl {%
   \bool_gset_true:N \g_@@_inside_backcover_bool%
-  \pagestyle{@@_inside_backcover_ps}%
-  % \exp_after:wN\newgeometry\exp_after:wN{\c_@@_inside_cover_geometry_tl}%
-  % \file_if_exist:nT { \c_@@_authors_instructions_file_tl } {%
-    \bool_if:NTF {\g_@@_no_inside_backcover_bool} {
-      \hbox{}
-    }{%
-      % \small%
-      \begin{description}[leftmargin=1em]
-      \item[\c_@@_authors_instructions_string_tl{}:] \
-        \g_@@_authors_instructions_tl
-      \item[\c_@@_editorial_secretariat_string_tl{}:] \ \par%
-        % \l_@@_journal_publisher_tl%
-        % \par%
-        % \space\textendash{}\space%
-        \@@_display_people_by_role:n { secretary }\par
-        \l_@@_journal_address_tl\par%
-        \c_@@_phone_string_tl{}:~\l_@@_journal_phone_tl{}\par%
-        \_@@_email:n {\l_@@_journal_email_tl}
-        \newline%
-        % \space\textendash{}\space
-        \url{\l_@@_journal_url_tl}
-        \tl_if_empty:NF \l_@@_journal_issn_tl
-        {%
-        \item[\c_@@_issn_string_tl{}:] \l_@@_journal_issn_tl
-        }
-        \tl_if_empty:NF \l_@@_journal_isbn_tl
-        {%
-        \item[\c_@@_isbn_string_tl{}:] \l_@@_journal_isbn_tl
-        }
-        \item[\c_@@_latexclass_string_tl{}:]
-          \@@_display_people_by_role:n { classdesigner }
-        \item[\c_@@_computer_engineering_string_tl{}:] %\g_@@_printer_text_tl
-          \@@_display_people_by_role:n { computerengineer }
-        \item[\c_@@_graphicdesign_string_tl{}:] %\g_@@_graphicdesign_text_tl
-          \@@_display_people_by_role:n { graphicdesign }
-      \end{description}
-        \g_@@_font_designer_text_tl
-    }
-  % }{%
-  %   \hbox{}
+  \pagestyle{_@@_inside_cover_ps}%
+  \exp_after:wN\newgeometry\exp_after:wN{%
+    \c_@@_inside_cover_geometry_tl
+    ,outer=\c_@@_outermargin_inside_backcover_dim
+  }%
+  % \tikz[remember~picture,overlay] {%
+  %   \draw [purple]
+  %   (current~page~text~area.south~west)
+  %   rectangle
+  %   (current~page~text~area.north~east)
+  %   ;
   % }
+  \setlist[description,1]{font=\scshape\bfseries}
+  \begin{description}[leftmargin=1em]
+  \item[\c_@@_authors_instructions_string_tl{}:] \
+    \g_@@_authors_instructions_tl
+  \item[\c_@@_editorial_secretariat_string_tl{}:] \ \par%
+    % \l_@@_journal_publisher_tl%
+    % \par%
+    % \c_space_tl\textendash{}\c_space_tl%
+    \_@@_display_people_by_role:n { secretary }\par
+    \l_@@_journal_address_tl\par%
+    \c_@@_phone_string_tl{}:~\l_@@_journal_phone_tl{}\par%
+    \_@@_email:n {\l_@@_journal_email_tl}
+    \newline%
+    % \c_space_tl\textendash{}\c_space_tl
+    \url{\l_@@_journal_url_tl}
+    \tl_if_empty:NF \l_@@_journal_issn_tl
+    {%
+    \item[\c_@@_issn_string_tl{}:] \l_@@_journal_issn_tl
+    }
+    \tl_if_empty:NF \l_@@_journal_isbn_tl
+    {%
+    \item[\c_@@_isbn_string_tl{}:] \l_@@_journal_isbn_tl
+    }
+  \item[\c_@@_latexclass_string_tl{}:]
+    \_@@_display_people_by_role:n { classdesigner }
+  \item[\c_@@_computer_engineering_string_tl{}:] %\g_@@_printer_text_tl
+    \_@@_display_people_by_role:n { computerengineer }
+  \item[\c_@@_graphicdesign_string_tl{}:] %\g_@@_graphicdesign_text_tl
+    \_@@_display_people_by_role:n { graphicdesign }
+  \end{description}
+  \g_@@_font_designer_text_tl
   \bool_gset_false:N \g_@@_inside_backcover_bool
 }
 %    \end{macrocode}
@@ -2442,39 +2505,83 @@ Running "make install" installs the files in the local TeX tree.
 \tl_new:N \g_@@_short_toc_tl%
 %    \end{macrocode}
 %
-% The following code to get a framed TOC is borrowed from \pkg{etoc}'s
-% documentation.
 %    \begin{macrocode}
-\tl_gset:Nn \g_@@_short_toc_tl {%
-  \begingroup
-  \etocstandardlines
-  \etocsetnexttocdepth{chapter}
-  \renewcommand{\etocbkgcolorcmd}{\color{Navy!5}}
-  \renewcommand{\etocbelowtocskip}{0pt\relax}
-  \fboxsep1ex
-  \etocframedstyle [1]{\fbox{\makebox[.5\linewidth]{\etocfontminusone\c_@@_backcover_tableofcontents_string_tl}}}
-  \tableofcontents
-  \endgroup
-}
-%    \end{macrocode}
-%
-% We compute the height of this framed TOC to know the place left on the page
-% for the collection of logos that will be displayed below.
-%    \begin{macrocode}
-% \newlength\toto
-% \setlength{\toto}{ \textheight - \heightof{\g_@@_short_toc_tl} }
 \tl_new:N \g_@@_display_backcover_tl%
 \tl_gset:Nn \g_@@_display_backcover_tl {%
   \bool_gset_true:N \g_@@_backcover_bool
-%    \end{macrocode}
-%
-% The following code is borrowed from \pkg{etoc}'s documentation.
-%    \begin{macrocode}
-\g_@@_short_toc_tl
-\vfill{}
-  \begin{center}
-    \includegraphics[height=.4\textheight]{nwejm-logos-collection.pdf}
-  \end{center}
+  \exp_after:wN\newgeometry\exp_after:wN{%
+    \c_@@_frontcover_geometry_tl
+    ,layouthoffset=.5\c_@@_potential_bindingoffset_dim
+  }%
+  \bool_gset_true:N \g_@@_backcover_bool
+  \begin{tikzpicture}[remember~picture,overlay]
+    \NoAutoSpacing
+    \file_if_exist:nT {\c_@@_cover_background_image_tl}{
+      \begin{pgfonlayer}{background}
+        \node[anchor=north~west,outer~sep=0pt,inner~sep=0pt] at (current~page.north~west) {
+          \includegraphics[width=\paperheight,height=\c_@@_paperwidth_dim,angle=90]{\c_@@_cover_background_image_tl}%
+        };
+      \end{pgfonlayer}
+    }
+    \_@@_binding_text:n {west}
+  \end{tikzpicture}
+  \noindent%
+  \begin{tikzpicture}[remember~picture,overlay]
+    % journal title
+    \node [anchor=north,yshift=-\c_@@_layoutwidth_dim/20] at (current~page~text~area.north) {
+      \begin{tcolorbox}[_@@_title_cover]
+        North-Western~European\\[.5cm]
+        Journal~of~Mathematics
+      \end{tcolorbox}
+    };
+    % circular node for NWEJM logo
+    \node[anchor=center,circle,fill=white,minimum~size=8.2cm] at
+    ([yshift=-\c_@@_layoutheight_dim/2]current~page~text~area.north)
+    {\includegraphics[height=5.5cm]{nwejm-logo}};
+    % right vertical white rule
+    \fill[white]
+    ([xshift=-10mm,yshift=\c_@@_logos_rectangle_height_dim]current~page~text~area.south~east)
+    rectangle
+    ([xshift=-10mm+\c_@@_logos_rectangle_thickness_dim,yshift=\c_@@_logos_rectangle_height_dim+14cm]current~page~text~area.south~east) ;
+    % right horizontal white rule
+    \fill[white]
+    ([yshift=\c_@@_logos_rectangle_height_dim+\c_@@_logos_rectangle_thickness_dim]current~page~text~area.south~west)
+    rectangle
+    ([xshift=.35\c_@@_layoutwidth_dim,yshift=\c_@@_logos_rectangle_height_dim]current~page~text~area.south~west) ;
+    % number and year node
+    \node[anchor=base~east] at
+    ([xshift=-1.2cm,yshift=\c_@@_logos_rectangle_height_dim]current~page~text~area.south~east)
+    {\color{white}\bfseries\sffamily\c_@@_frontcover_string_tl} ;
+    % % white rectangle for university and laboratory logos
+    \fill [white]
+    ([yshift=\c_@@_logos_rectangle_height_dim-7.5mm]current~page~text~area.south~west)
+    rectangle (current~page.south~east);
+    % laboratory logo
+    \node[anchor=south~east] at ([xshift=-10mm]current~page~text~area.south~east)
+    {\includegraphics[height=.66\c_@@_logos_rectangle_height_dim]{logo-painleve}} ;
+    % university logo
+    \node[anchor=south~west] at (current~page~text~area.south~west)
+    {\includegraphics[height=.66\c_@@_logos_rectangle_height_dim]{logo-ul1-ufr-math}} ;
+    % crop marks
+    \draw [white]
+    ([xshift=2.5mm]current~page~text~area.north~east) --
+    ([xshift=7.5mm]current~page~text~area.north~east);
+    \draw [white]
+    ([yshift=2.5mm]current~page~text~area.north~east) --
+    ([yshift=7.5mm]current~page~text~area.north~east);
+    \draw
+    ([xshift=2.5mm]current~page~text~area.south~east) --
+    ([xshift=7.5mm]current~page~text~area.south~east);
+    \draw
+    ([yshift=-2.5mm]current~page~text~area.south~east) --
+    ([yshift=-7.5mm]current~page~text~area.south~east);
+    % binding limit
+    \bool_if:NT {\g_@@_show_binding_bool} {
+      \draw[green]
+      ([xshift=.5\c_@@_potential_bindingoffset_dim]current~page.north~west) --
+      ([xshift=.5\c_@@_potential_bindingoffset_dim]current~page.south~west);
+    }
+  \end{tikzpicture}
 }
 %    \end{macrocode}
 %
@@ -2571,9 +2678,22 @@ Running "make install" installs the files in the local TeX tree.
 % needs the main file name to be fixed (chosen name: \enquote{issue}). If that's
 % not the case an error is thrown.
 %    \begin{macrocode}
-%<class>\tl_new:N \l_@@_jobname_tl
-%<class>\tl_set:Nn \l_@@_jobname_tl {\jobname}
-%<class>\str_if_eq_x:nnF \l_@@_jobname_tl \c_@@_main_file_name_tl { \msg_error:nn{nwejm}{Wrong~main~file~name!} }
+%<class>\str_if_eq_x:nnTF  \c_sys_jobname_str \c_@@_main_file_name_tl {
+%<class>  \bool_if:NT {\g_@@_cover_bool} {
+%<class>    \msg_error:nn{nwejm}{Wrong~cover's~main~file~name!}
+%<class>  }
+%<class>}{
+%<class>  \bool_if:NTF {\g_@@_cover_bool} {
+%<class>    \file_if_exist:nTF { \c_@@_issue_number_year_file_string_tl }
+%<class>    {
+%<class>      \file_input:n {\c_@@_issue_number_year_file_string_tl}
+%<class>    }{
+%<class>      \msg_error:nn{nwejm}{Main~file~needs~to~be~compiled!}
+%<class>    }
+%<class>  }{
+%<class>    \msg_error:nn{nwejm}{Wrong~issue's~main~file~name!}
+%<class>  }
+%<class>}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -2751,6 +2871,37 @@ Running "make install" installs the files in the local TeX tree.
       \g_@@_issue_age_in_years_int + \c_@@_first_issue_year_int
     }
   }%
+%    \end{macrocode}
+%
+% We fix some of the PDF's metadata.
+%    \begin{macrocode}
+  \bool_if:NT {\g_@@_cover_bool} {
+    \hypersetup{
+      pdftitle=\c_@@_journal_title_string_tl\c_space_tl--\c_space_tl\c_@@_frontcover_left_string_tl\c_space_tl--\c_space_tl\int_use:N\g_@@_issue_year_int,
+      pdfauthor=\c_@@_journal_title_string_tl\c_space_tl(editor)
+    }
+  }
+%    \end{macrocode}
+%
+% We write some data to an auxiliary file which be read by the file dedicated to
+% the cover pages production.
+%    \begin{macrocode}
+  \iow_new:N   \g_@@_issue_number_year_out_iow
+  \iow_open:Nn \g_@@_issue_number_year_out_iow {\c_@@_issue_number_year_file_string_tl}
+  \iow_now:Nx \g_@@_issue_number_year_out_iow {
+     \token_to_str:N \ExplSyntaxOn
+    \iow_newline:
+    \tl_const:Nn \token_to_str:N \c_@@_issue_number_tl {
+      \int_eval:n {\g_@@_issue_number_int}
+    }
+    \iow_newline:
+    \tl_const:Nn \token_to_str:N \c_@@_issue_year_tl {
+      \int_eval:n {\g_@@_issue_year_int}
+    }
+    \iow_newline:
+    \token_to_str:N \ExplSyntaxOff
+  }
+  \iow_close:N \g_@@_issue_number_year_out_iow
 }
 %    \end{macrocode}
 % \end{macro}
@@ -4746,11 +4897,43 @@ Running "make install" installs the files in the local TeX tree.
       disable%
     }
   }
-  \bool_if:NF {\g_@@_inside_pages_bool} {
+%    \end{macrocode}
+%
+% If the cover production is asked, we automatically load some libraries, make
+% some configurations and display it (and only it). Otherwise, we automatically
+% display the table of contents.
+%    \begin{macrocode}
+  \bool_if:NTF {\g_@@_cover_bool} {
+    \ExplSyntaxOff
+    \usetikzlibrary{calc}
+    \usetikzlibrary{backgrounds}
+    \ExplSyntaxOn
+    \tcbuselibrary{skins}
+    \tcbset{_@@_title_cover/.style={%
+        colback=white,
+        colframe=blue!37!white,
+        colupper=blue,
+        width=14cm,
+        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
+        halign=center,
+        valign=center,
+        % boxsep=3mm,
+        boxrule=3mm,
+        left=\c_zero_dim,
+        right=\c_zero_dim,
+        sharp~corners,
+        rounded~corners=northwest,
+        % draft
+      }
+    }
     \g_@@_display_frontcover_tl
+    \g_@@_display_backcover_tl
     \g_@@_display_inside_frontcover_tl
-  }
+    \g_@@_display_inside_backcover_tl
+    \end{document}
+  }{
   \tableofcontents
+  }
 }
 %    \end{macrocode}
 %
