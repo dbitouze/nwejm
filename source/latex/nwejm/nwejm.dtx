@@ -645,6 +645,27 @@ Running "make install" installs the files in the local TeX tree.
 % \item A single TikZ node for the whole page (used for cover crop marks)
 %    \begin{macrocode}
 %<class>  \RequirePackage{tikzpagenodes}
+%<class>    \ExplSyntaxOff
+%<class>    \usetikzlibrary{calc,backgrounds}
+%<class>    \ExplSyntaxOn
+%<class>    \tcbuselibrary{skins}
+%<class>    \tcbset{_@@_title_cover/.style={%
+%<class>        colback=white,
+%<class>        colframe=blue!37!white,
+%<class>        colupper=blue,
+%<class>        width=14cm,
+%<class>        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
+%<class>        halign=center,
+%<class>        valign=center,
+%<class>        % boxsep=3mm,
+%<class>        boxrule=3mm,
+%<class>        left=\c_zero_dim,
+%<class>        right=\c_zero_dim,
+%<class>        sharp~corners,
+%<class>        rounded~corners=northwest,
+%<class>        % draft
+%<class>      }
+%<class>    }
 %    \end{macrocode}
 %
 % \item Macros for drawing graphs of graph theory (used for the backcover image)
@@ -4890,28 +4911,6 @@ Running "make install" installs the files in the local TeX tree.
 % display the table of contents.
 %    \begin{macrocode}
   \bool_if:NTF {\g_@@_cover_bool} {
-    \ExplSyntaxOff
-    \usetikzlibrary{calc}
-    \usetikzlibrary{backgrounds}
-    \ExplSyntaxOn
-    \tcbuselibrary{skins}
-    \tcbset{_@@_title_cover/.style={%
-        colback=white,
-        colframe=blue!37!white,
-        colupper=blue,
-        width=14cm,
-        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
-        halign=center,
-        valign=center,
-        % boxsep=3mm,
-        boxrule=3mm,
-        left=\c_zero_dim,
-        right=\c_zero_dim,
-        sharp~corners,
-        rounded~corners=northwest,
-        % draft
-      }
-    }
     \g_@@_display_frontcover_tl
     \g_@@_display_backcover_tl
     \g_@@_display_inside_frontcover_tl
