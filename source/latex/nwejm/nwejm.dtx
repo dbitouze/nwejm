@@ -1802,7 +1802,7 @@ Running "make install" installs the files in the local TeX tree.
       \bfseries%
       \adjustbox{stack=l}{%
         \c_@@_journal_title_string_tl
-%<class> \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\space\int_use:N \g_@@_issue_number_int
+%<class> \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\c_space_tl\int_use:N \g_@@_issue_number_int
 %<class-article> \mbox{}
 }
 }
@@ -2288,9 +2288,9 @@ Running "make install" installs the files in the local TeX tree.
       \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
       ]
       \l_@@_people_affiliation_tl%
-        \space%
+        \c_space_tl%
         (\l_@@_people_country_tl)%
-      % ,\space%
+      % ,\c_space_tl%
       % \_@@_email:n {\l_@@_people_email_tl}
       \DTLiflastrow{%
       }{%
@@ -2327,7 +2327,7 @@ Running "make install" installs the files in the local TeX tree.
           \exp_not:V\DTLcurrentindex}%
         \tl_if_empty:NF \l_@@_people_email_tl
         {
-          \space(\_@@_email:n {\l_@@_people_email_tl})
+          \c_space_tl(\_@@_email:n {\l_@@_people_email_tl})
         }
       }
     }
@@ -2526,7 +2526,7 @@ Running "make install" installs the files in the local TeX tree.
     {
       \tl_if_eq:NNF {\c_@@_date_received_tl} {#1} { \c_@@_dates_separator_tl }
       \tl_mixed_case:n { \exp_args:No \GetTranslation{#1} }
-      \c_@@_colon_tl\space
+      \c_@@_colon_tl\c_space_tl
       \DTMdate{#2}%
     }
   }
@@ -2854,7 +2854,7 @@ Running "make install" installs the files in the local TeX tree.
   \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
     {\refpagename\ hiervoor}}%
   \def\reftextcurrent   {op~deze~\refpagename}%
-  \def\reftextfaraway#1{op~\refpagename\space\pageref{#1}}
+  \def\reftextfaraway#1{op~\refpagename\c_space_tl\pageref{#1}}
 }
 \addto\extrasenglish{%
   \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
@@ -3384,11 +3384,11 @@ Running "make install" installs the files in the local TeX tree.
       \c_@@_colon_tl
     }
   }
-  \space\l_@@_keywords_tl.
+  \c_space_tl\g_@@_keywords_tl.
 }
 \tl_set:Nn \l_@@_msc_box_tl
 {%
-  \noindent\textbf{\c_@@_msc_string_tl}\c_@@_colon_tl\space\l_@@_msc_tl.
+  \noindent\textbf{\c_@@_msc_string_tl}\c_@@_colon_tl\c_space_tl\g_@@_msc_tl.
 }
 \tl_set:Nn \l_@@_abstract_box_tl
 {%
@@ -3421,7 +3421,7 @@ Running "make install" installs the files in the local TeX tree.
   }
   \bool_if:nF { \tl_if_empty_p:N \g_@@_short_subtitle_tl }
   {
-    .\space\g_@@_short_subtitle_tl
+    .\c_space_tl\g_@@_short_subtitle_tl
   }
 }
 %    \end{macrocode}
@@ -3443,10 +3443,10 @@ Running "make install" installs the files in the local TeX tree.
       {
         \texorpdfstring{%
           \AtNextCitekey{\defcounter{maxnames}{100}}
-          \space\textendash\space\citeauthor{\g_@@_article_bib_key_tl}
+          \c_space_tl\textendash\c_space_tl\citeauthor{\g_@@_article_bib_key_tl}
         }{}
       }{%
-        \space\textendash\space\citeauthor{\g_@@_article_bib_key_tl}
+        \c_space_tl\textendash\c_space_tl\citeauthor{\g_@@_article_bib_key_tl}
       }%
     }
   }
@@ -3679,10 +3679,10 @@ Running "make install" installs the files in the local TeX tree.
 %
 \cs_new_protected:Nn \_@@_century_suffix:n
 {
-  \space{}
+  \c_space_tl{}
   \GetTranslation{century}%
   \int_compare:nNnT { #1 } < { 0 }{
-    \space
+    \c_space_tl
     \GetTranslation{before-christ}
   }{
   }
@@ -5099,7 +5099,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 \ProvideDictTranslation{received}{re\c cu}
 \ProvideDictTranslation{accepted}{accept\'{e}}
-\ProvideDictTranslation{online}{en\space ligne}
+\ProvideDictTranslation{online}{en\c_space_tl ligne}
 %
 \ProvideDictTranslation{hypothesis}{hypoth\`{e}se}
 \ProvideDictTranslation{plural-hypothesis}{hypoth\`{e}ses}
@@ -5382,7 +5382,7 @@ Running "make install" installs the files in the local TeX tree.
   \printfield{volume}%
   \setunit*{\addnbthinspace}%
   \printfield{number}%
-  \setunit{\addcomma\space}%
+  \setunit{\addcomma\c_space_tl}%
   \printfield{eid}%
 }
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
@@ -5497,20 +5497,20 @@ Running "make install" installs the files in the local TeX tree.
           \ifnameundef{labelname}%
         }{%
           \usebibmacro{cite:label}%
-          \setunit{\addcomma\space}%
+          \setunit{\addcomma\c_space_tl}%
         }{%
           \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
           }{%
-            \setunit{\addcomma\space}%
+            \setunit{\addcomma\c_space_tl}%
             \usebibmacro{cite:labelyear+extrayear}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
             }{%
-              \setunit{\addcomma\space}%
+              \setunit{\addcomma\c_space_tl}%
               \usebibmacro{cite:title}%
             }%
           }%
@@ -5547,7 +5547,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 {\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
-{\addsemicolon\space}
+{\addsemicolon\c_space_tl}
 %    \end{macrocode}
 %
 % We now declare the definitions for the ×\autocite× and ×\autocites× commands
