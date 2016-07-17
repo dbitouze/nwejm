@@ -1038,6 +1038,10 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_cover_background_image_tl {nwejm-cover-background.jpg}
 %    \end{macrocode}
+% For the cover's background color in case the corresponding image is missing.
+%    \begin{macrocode}
+\definecolor{_@@_cover_background_color_tl}{rgb}{0.16,0.22,0.56}
+%    \end{macrocode}
 % For the \textsc{msc}.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_msc_string_tl {\textsc{msc}}
@@ -2342,7 +2346,7 @@ Running "make install" installs the files in the local TeX tree.
           }
         };
       }{
-        \fill[blue] (current~page.north~east) rectangle
+        \fill[_@@_cover_background_color_tl] (current~page.north~east) rectangle
         (current~page.south~west);
       }
     \end{pgfonlayer}
@@ -2549,7 +2553,7 @@ Running "make install" installs the files in the local TeX tree.
           \includegraphics[width=\paperheight,height=\c_@@_paperwidth_dim,angle=90]{\c_@@_cover_background_image_tl}%
         };
       }{
-        \fill[blue] (current~page.north~east) rectangle
+        \fill[_@@_cover_background_color_tl] (current~page.north~east) rectangle
         (current~page.south~west);
       }
     \end{pgfonlayer}
