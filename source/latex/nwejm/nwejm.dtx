@@ -269,9 +269,16 @@ Running "make install" installs the files in the local TeX tree.
 \msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c_@@_first_issue_number_int'.}%
-\msg_new:nnn{nwejm}{Wrong~main~file~name!}{The~ main~ file~ should~ be~ named~
-  `\tl_use:N\c_@@_main_file_name_tl.tex',~ not~ `\jobname.tex'.~ Please~ rename~
+\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{The~ issue's~ main~ file~
+  should~ be~ named~ `\tl_use:N\c_@@_main_file_name_tl.tex',~ not~
+  `\c_sys_jobname_str.tex'.~ Please~ rename~ the~ current~ file~ accordingly.}%
+\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~
+  should~ /not/~ be~ named~ as~ the~ issue's~ main~ file~
+  `\tl_use:N\c_@@_main_file_name_tl.tex'.~ Please~ rename~
   the~ current~ file~ accordingly.}%
+\msg_new:nnn{nwejm}{Main~file~needs~to~be~compiled!}{The~ issue's~ main~ file~
+  (`\tl_use:N\c_@@_main_file_name_tl.tex')~ should~ be~ compiled~ at~ least~
+  once~ before~ the~ cover~ can~ be~ generated.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
 \msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
