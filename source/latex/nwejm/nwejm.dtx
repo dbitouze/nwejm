@@ -1207,7 +1207,11 @@ Running "make install" installs the files in the local TeX tree.
 % We extract the total pages number thanks to "\zref@extractdefault" from
 % \Package{zref-totpages}.
 %    \begin{macrocode}
-\int_gset:Nn \g_@@_total_pages_number_int { \zref@extractdefault{selfLastPage}{abspage}{0} }
+\zexternaldocument[self]{\c_@@_main_file_name_tl}
+\int_gset:Nn \g_@@_total_pages_number_int
+{
+  \zref@extractdefault{selfLastPage}{abspage}{0}
+}
 \int_gset:Nn \g_@@_total_inside_pages_number_int { \g_@@_total_pages_number_int - 4 }
 %    \end{macrocode}
 %
