@@ -2332,8 +2332,8 @@ Running "make install" installs the files in the local TeX tree.
   \exp_after:wN\newgeometry\exp_after:wN{\c_@@_frontcover_geometry_tl}%
   \begin{tikzpicture}[remember~picture,overlay]
     \NoAutoSpacing
-    \file_if_exist:nT {\c_@@_cover_background_image_tl}{
-      \begin{pgfonlayer}{background}
+    \begin{pgfonlayer}{background}
+      \file_if_exist:nTF {\c_@@_cover_background_image_tl}{
         \node[anchor=north~east,outer~sep=0pt,inner~sep=0pt] at (current~page.north~east) {
           \reflectbox{%
             \includegraphics[width=\paperheight,height=\c_@@_paperwidth_dim,angle=90]{
@@ -2341,8 +2341,11 @@ Running "make install" installs the files in the local TeX tree.
             }%
           }
         };
-      \end{pgfonlayer}
-    }
+      }{
+        \fill[blue] (current~page.north~east) rectangle
+        (current~page.south~west);
+      }
+    \end{pgfonlayer}
     \_@@_binding_text:n {east}
   \end{tikzpicture}
   \begin{tikzpicture}[
@@ -2540,11 +2543,14 @@ Running "make install" installs the files in the local TeX tree.
   \bool_gset_true:N \g_@@_backcover_bool
   \begin{tikzpicture}[remember~picture,overlay]
     \NoAutoSpacing
-    \file_if_exist:nT {\c_@@_cover_background_image_tl}{
-      \begin{pgfonlayer}{background}
+    \begin{pgfonlayer}{background}
+      \file_if_exist:nTF {\c_@@_cover_background_image_tl}{
         \node[anchor=north~west,outer~sep=0pt,inner~sep=0pt] at (current~page.north~west) {
           \includegraphics[width=\paperheight,height=\c_@@_paperwidth_dim,angle=90]{\c_@@_cover_background_image_tl}%
         };
+      }{
+        \fill[blue] (current~page.north~east) rectangle
+        (current~page.south~west);
       \end{pgfonlayer}
     }
     \_@@_binding_text:n {west}
