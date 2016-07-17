@@ -353,11 +353,6 @@ Running "make install" installs the files in the local TeX tree.
 {
   pagegrid .dim_gset:N = \g_@@_pagegrid_dim,
   pagegrid .default:n = {\c_@@_pagegrid_dim},
-  forauthors .code:n = {%
-    \bool_gset_true:N \g_@@_for_authors_bool%
-    \bool_gset_true:N \g_@@_inside_pages_bool%
-  },%
-  forprinter .bool_gset:N = \g_@@_for_printer_bool,
   output .choice:,
   output / frontcover .code:n = {%
     \bool_gset_true:N \g_@@_for_printer_bool%
@@ -366,11 +361,6 @@ Running "make install" installs the files in the local TeX tree.
   output / insidepages .code:n = {%
     \bool_gset_true:N \g_@@_for_printer_bool%
     \bool_gset_true:N \g_@@_inside_pages_bool%
-  },%
-  output / backcover .code:n = {%
-    \bool_gset_true:N \g_@@_for_printer_bool%
-  },%
-  output / web .code:n = {%
   },%
   binding .dim_gset:N = \g_@@_binding_dim,
   showbinding .code:n = {%
