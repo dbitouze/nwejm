@@ -345,6 +345,7 @@ Running "make install" installs the files in the local TeX tree.
 \bool_new:N \g_@@_cover_bool
 \bool_new:N \g_@@_coverpage_bool
 \bool_new:N \g_@@_inside_pages_bool
+\bool_new:N \g_@@_show_binding_bool
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -370,6 +371,10 @@ Running "make install" installs the files in the local TeX tree.
     \bool_gset_true:N \g_@@_for_printer_bool%
   },%
   output / web .code:n = {%
+  },%
+  binding .dim_gset:N = \g_@@_binding_dim,
+  showbinding .code:n = {%
+    \bool_gset_true:N \g_@@_show_binding_bool%
   },%
 }%
 %    \end{macrocode}
@@ -1213,7 +1218,11 @@ Running "make install" installs the files in the local TeX tree.
 % offset ("\g_@@_for_printer_bool" flag equals true).
 %    \begin{macrocode}
 \bool_if:NTF {\g_@@_cover_bool} {
-  \dim_const:Nn \c_@@_potential_bindingoffset_dim { \c_@@_printer_bindingoffset_dim }
+  \dim_compare:nTF {\g_@@_binding_dim > \c_zero_dim} {%
+    \dim_const:Nn \c_@@_potential_bindingoffset_dim { \g_@@_binding_dim }
+  }{
+    \dim_const:Nn \c_@@_potential_bindingoffset_dim { \c_@@_printer_bindingoffset_dim }
+  }
 }{
   \dim_const:Nn \c_@@_potential_bindingoffset_dim {\c_zero_dim}
 }
