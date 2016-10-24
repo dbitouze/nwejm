@@ -3337,7 +3337,7 @@ Running "make install" installs the files in the local TeX tree.
   \tl_gset:Nn \g_@@_citeauthor_tl {%
     \DeclareNameAlias{labelname}{default}%
     \group_begin:
-    \togglefalse{blx@giveninits}%
+    \togglefalse{abx@bool@giveninits}%
     \citeauthor{#1}
     \group_end:
   }%
@@ -3369,7 +3369,7 @@ Running "make install" installs the files in the local TeX tree.
   \AtNextCitekey{\defcounter{maxnames}{100}}
   \group_begin:
   \DeclareNameAlias{labelname}{default}%
-  \togglefalse{blx@giveninits}%
+  \togglefalse{abx@bool@giveninits}%
   \citeauthor{#1}
   \group_end:
   \cs_set_eq:NN \multinamedelim \_@@_orig_multinamedelim
