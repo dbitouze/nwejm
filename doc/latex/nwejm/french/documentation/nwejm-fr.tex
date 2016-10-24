@@ -14,6 +14,11 @@
 \SetWatermarkFontSize{20mm}%
 \SetWatermarkText{\MakeUppercase{travail en cours}}%
 %
+\DeclareBibliographyCategory{examples}
+\DeclareBibliographyCategory{documentation}
+\addtocategory{examples}{shin,laz1,har}
+\addtocategory{documentation}{Bitouze,Bitouze7}
+
 \addbibresource{nwejm-fr.bib}
 %
 \newacronym{nwejm}{nwejm}{North-Western European Journal of Mathematics}
@@ -473,7 +478,7 @@ Par exemple, si le \File{.bib} contient :
   note		= {Graduate Texts in Mathematics, No. 52},
   publisher	= {Springer-Verlag},
   address	= {New York},
-  year		= {1977}
+  date		= {1977}
 }
 @Book{		  laz1,
   author	= {Lazarsfeld, Robert},
@@ -482,7 +487,7 @@ Par exemple, si le \File{.bib} contient :
   note		= {Classical setting: line bundles and linear series},
   publisher	= {Springer-Verlag},
   address	= {Berlin},
-  year		= {2004}
+  date		= {2004}
 }
 @Article{         shin,
   author	= {Shin, Kil-Ho},
@@ -490,7 +495,7 @@ Par exemple, si le \File{.bib} contient :
                   singularities},
   journal	= {Tokyo J. Math.},
   volume	= {12},
-  year		= {1989},
+  date		= {1989},
   number	= {2},
   pages	= {375-385}
 }
@@ -509,23 +514,21 @@ second assertion, see \textcite[theorem~(0.4)]{shin}.
 donne le texte figurant dans l'encadré intitulé \enquote{Exemple de
   bibliographie} \vpageref{biblio}.
 
-\begin{refsegment}
-  \ExplSyntaxOn
-  \makeatletter
-  \defbibheading{origsectionnotintoc}[References]{%
-    \__nwejm_section*{#1}%
-  }
-  \makeatother
-  \ExplSyntaxOff
+\ExplSyntaxOn
+\makeatletter
+\defbibheading{origsectionnotintoc}[References]{%
+  \__nwejm_section*{#1}%
+}
+\makeatother
+\ExplSyntaxOff
 \begin{bodycode}[text only,float,title={Exemple de bibliographie},label=biblio]
 The first assertion is a direct consequence of the Riemann-Roch formula for
 threefolds\autocite[See e.g.][437]{har} and Kawamata-Viehweg
 vanishing\autocite[theorem~4.3.1]{laz1}.  For the second assertion, see
 \textcite[theorem~(0.4)]{shin}.
 %
-\printbibliography[heading=origsectionnotintoc,segment=1]
+\printbibliography[heading=origsectionnotintoc,category=examples]
 \end{bodycode}
-\end{refsegment}
 
 \section{Commandes propres aux mathématiques}
 \label{sec:comm-propr-aux}
@@ -1725,7 +1728,7 @@ Les \meta{valeurs par défaut et initiale} d'une clé sont souvent précisées
 \item[initialement] c'est-à-dire lorsque la clé \emph{n'est pas} employée.
 \end{description}
 %
-\printbibliography
+\printbibliography[category=documentation]
 %
 % \tcblistof{dbwarninglist}{Table des
 %   avertissements\addcontentsline{toc}{section}{Table des avertissements}}%
