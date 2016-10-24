@@ -1616,7 +1616,7 @@
   \tl_gset:Nn \g__nwejm_citeauthor_tl {%
     \DeclareNameAlias{labelname}{default}%
     \group_begin:
-    \togglefalse{blx@giveninits}%
+    \togglefalse{abx@bool@giveninits}%
     \citeauthor{#1}
     \group_end:
   }%
@@ -1637,7 +1637,7 @@
   \AtNextCitekey{\defcounter{maxnames}{100}}
   \group_begin:
   \DeclareNameAlias{labelname}{default}%
-  \togglefalse{blx@giveninits}%
+  \togglefalse{abx@bool@giveninits}%
   \citeauthor{#1}
   \group_end:
   \cs_set_eq:NN \multinamedelim \__nwejm_orig_multinamedelim
