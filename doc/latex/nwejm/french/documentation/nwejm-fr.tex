@@ -47,6 +47,10 @@ affiliation={%
 \DeclareFixedFootnote{\conseilslatex}{Et donne de façon subliminale quelques conseils
   \LaTeX{}. On consultera \autocite{Ensenbach} pour un panorama plus complet des
   commandes et extensions obsolètes (et autres erreurs).}
+\DeclareFixedFootnote{\suitecompilations}{Pour automatiser ces compilations, on
+  pourra recourir au \enquote{compilateur} \program{latexmk}, fourni par toute
+  distribution \TeX{} moderne, en s'aidant du fichier de configuration
+  \file{latexmkrc} joint à la présente classe.}
 
 \section{Introduction}
 \label{sec-introduction}
@@ -236,11 +240,6 @@ suivante. En cas d'auteurs multiples, il suffit de (et il faut) recourir
   \end{enumerate}
 \end{dbwarning}
 
-\begin{dbremark}{Affichage des prénoms et noms du ou des auteurs}{}
-  Pour que les prénoms et noms du ou des auteurs soient affichés, il est
-  nécessaire de recourir à la commande habituelle \refCom{maketitle}.
-\end{dbremark}
-
 La commande \refCom{author} admet un argument optionnel permettant de spécifier
 la ou les affiliations de l'auteur au moyen d'une des clés \refKey{affiliation}
 et \refKey{affiliationtagged} suivantes.
@@ -290,6 +289,20 @@ et \refKey{affiliationtagged} suivantes.
     (relativement) obligatoires}{}
   Au cas (probable) où une valeur \meta{affiliation} contienne une ou plusieurs
   virgules, la paire d'accolades l'entourant est obligatoire.
+\end{dbwarning}
+
+\begin{dbwarning}{Affichage des prénoms et noms du ou des auteurs}{}
+  Pour que les prénoms et noms du ou des auteurs soient affichés, il est
+  nécessaire :
+  \begin{enumerate}
+  \item de recourir à la commande habituelle \refCom{maketitle} ;
+  \item de procéder à une suite de compilations\suitecompilations{} :
+    \begin{enumerate}
+    \item \hologo{pdfLaTeX} ;
+    \item \hologo{biber} ;
+    \item \hologo{pdfLaTeX}.
+    \end{enumerate}
+  \end{enumerate}
 \end{dbwarning}
 
 \subsection{Résumé}
@@ -441,10 +454,7 @@ cf. par exemple][en français]{Bitouze}.
     bibliographiques au moyen de la commande \refCom{printbibliography}.
   \end{enumerate}
 \item Procéder à une suite de compilations \hologo{pdfLaTeX}, \hologo{biber} et
-  \hologo{pdfLaTeX}\footnote{Pour automatiser ces compilations, on pourra
-    recourir au \enquote{compilateur} \program{latexmk}, fourni par toute
-    distribution \TeX{} moderne, en s'aidant du fichier de configuration
-    \file{latexmkrc} joint à la présente classe.}.
+  \hologo{pdfLaTeX}\suitecompilations.
 \end{enumerate}
 
 \begin{docCommand}{printbibliography}{}
