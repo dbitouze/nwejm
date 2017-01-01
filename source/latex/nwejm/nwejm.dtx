@@ -550,7 +550,7 @@ Running "make install" installs the files in the local TeX tree.
 %   convenient for both \hologo{XeLaTeX} and \hologo{LuaLaTeX}, is loaded with
 %   ligatures à la \TeX{} by default enabled.
 %    \begin{macrocode}
-\pdftex_if_engine:TF
+\sys_if_engine_pdftex:TF
   {
     \RequirePackage[utf8]{inputenc}
   }{
@@ -1898,13 +1898,13 @@ Running "make install" installs the files in the local TeX tree.
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
-  publisher .value_required:,
-  address .value_required:,
-  phone .value_required:,
-  email .value_required:,
-  url .value_required:,
-  issn .value_required:,
-  isbn .value_required:,
+  publisher .value_required:n,
+  address .value_required:n,
+  phone .value_required:n,
+  email .value_required:n,
+  url .value_required:n,
+  issn .value_required:n,
+  isbn .value_required:n,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -1952,7 +1952,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
-  volume .value_required:,
+  volume .value_required:n,
 %    \end{macrocode}
 %
 % If "number" option is not used, its initial value is set to $0$.
@@ -1990,9 +1990,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % The following options, when used, must receive a value.
 %    \begin{macrocode}
-  received .value_required:,
-  accepted .value_required:,
-  online   .value_required:,
+  received .value_required:n,
+  accepted .value_required:n,
+  online   .value_required:n,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2052,8 +2052,8 @@ Running "make install" installs the files in the local TeX tree.
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
-  affiliation .value_required:,
-  affiliationtagged .value_required:,
+  affiliation .value_required:n,
+  affiliationtagged .value_required:n,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2070,11 +2070,11 @@ Running "make install" installs the files in the local TeX tree.
   title / english .tl_set:N = \l_@@_newtheorem_english_title_tl,
   title / german .tl_set:N = \l_@@_newtheorem_german_title_tl,
   title / dutch .tl_set:N = \l_@@_newtheorem_dutch_title_tl,
-  title .value_required:,
-  title / french .value_required:,
-  title / english .value_required:,
-  title / german .value_required:,
-  title / dutch .value_required:,
+  title .value_required:n,
+  title / french .value_required:n,
+  title / english .value_required:n,
+  title / german .value_required:n,
+  title / dutch .value_required:n,
   %
   style .choice:,
   style / theorem .code:n = {\_@@_theorem_style:n {theorem}},
