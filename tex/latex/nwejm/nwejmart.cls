@@ -133,7 +133,7 @@
   \__nwejm_language:n {english}
 }
 \RequirePackage[l2tabu,orthodox]{nag}
-\pdftex_if_engine:TF
+\sys_if_engine_pdftex:TF
   {
     \RequirePackage[utf8]{inputenc}
   }{
@@ -439,7 +439,7 @@
 {
   number .int_gset:N = \g__nwejm_issue_number_int,
   volume .int_gset:N = \g__nwejm_issue_volume_int,
-  volume .value_required:,
+  volume .value_required:n,
   volume .initial:n = 0,
 }
 \keys_define:nn { nwejm/dates }
@@ -456,9 +456,9 @@
     \tl_gset:Nn \g__nwejm_online_date_tl {#1}
     \bool_gset_true:N \g__nwejm_date_specified_bool
   },
-  received .value_required:,
-  accepted .value_required:,
-  online   .value_required:,
+  received .value_required:n,
+  accepted .value_required:n,
+  online   .value_required:n,
 }
 \quark_new:N \q__nwejm
 \int_new:N \l_author_int
@@ -492,8 +492,8 @@
       \msg_error:nnn{__nwejm}{Unknown~tag}{#1}
     }
   },
-  affiliation .value_required:,
-  affiliationtagged .value_required:,
+  affiliation .value_required:n,
+  affiliationtagged .value_required:n,
 }
 \tl_new:N \l__nwejm_newtheorem_style_tl
 \keys_define:nn { nwejm / newtheorem }
@@ -503,11 +503,11 @@
   title / english .tl_set:N = \l__nwejm_newtheorem_english_title_tl,
   title / german .tl_set:N = \l__nwejm_newtheorem_german_title_tl,
   title / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_tl,
-  title .value_required:,
-  title / french .value_required:,
-  title / english .value_required:,
-  title / german .value_required:,
-  title / dutch .value_required:,
+  title .value_required:n,
+  title / french .value_required:n,
+  title / english .value_required:n,
+  title / german .value_required:n,
+  title / dutch .value_required:n,
   %
   style .choice:,
   style / theorem .code:n = {\__nwejm_theorem_style:n {theorem}},
@@ -1936,7 +1936,7 @@
   {(0,0)\hfuzz=\maxdimen\begin}
     {}{}
 %% 
-%% Copyright (C) 2015, 2016 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
+%% Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
