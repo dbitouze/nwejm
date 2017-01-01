@@ -77,11 +77,6 @@ Running "make install" installs the files in the local TeX tree.
 \def\NWEJM@addons{addons}
 \def\NWEJM@documentation{documentation}
 %
-\usedir{/}
-\generate{
-  \nopreamble\nopostamble
-  \file{README.md}{\from{\jobname.dtx}{readme}}
-}%
 \usedir{tex/latex/\NWEJM@classname}
 \generate{%
   \file{\NWEJM@classname.cls}{\from{\jobname.dtx}{class}}
@@ -111,10 +106,10 @@ Running "make install" installs the files in the local TeX tree.
   \file{\NWEJM@classname.drv}{\from{\jobname.dtx}{driver}}%
 }%
 \nopreamble\nopostamble
-% \usedir{doc/latex/\NWEJM@classname}
-% \generate{
-%   \file{README.md}{\from{\jobname.dtx}{readme}}
-% }
+\usedir{doc/latex/\NWEJM@classname}
+\generate{
+  \file{README.md}{\from{\jobname.dtx}{readme}}
+}
 \usedir{doc/latex/\NWEJM@classname/french/\NWEJM@documentation}
 \generate{
   \file{latexmkrc}{\from{\jobname.dtx}{latexmkrc}}
