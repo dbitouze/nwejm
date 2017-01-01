@@ -54,7 +54,7 @@ License:| Released under the LaTeX Project Public License v1.3c or later
 \endpreamble
 \postamble
 
-Copyright (C) 2015, 2016 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
+Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
 
 This work may be distributed and/or modified under the
 conditions of the LaTeX Project Public License (LPPL), either
@@ -5523,7 +5523,7 @@ Running "make install" installs the files in the local TeX tree.
   \printfield{volume}%
   \setunit*{\addnbthinspace}%
   \printfield{number}%
-  \setunit{\addcomma\space}%
+  \setunit{\addcomma\c_space_tl}%
   \printfield{eid}%
 }
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
@@ -5638,20 +5638,20 @@ Running "make install" installs the files in the local TeX tree.
           \ifnameundef{labelname}%
         }{%
           \usebibmacro{cite:label}%
-          \setunit{\addcomma\space}%
+          \setunit{\addcomma\c_space_tl}%
         }{%
           \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
           }{%
-            \setunit{\addcomma\space}%
+            \setunit{\addcomma\c_space_tl}%
             \usebibmacro{cite:labelyear+extrayear}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
             }{%
-              \setunit{\addcomma\space}%
+              \setunit{\addcomma\c_space_tl}%
               \usebibmacro{cite:title}%
             }%
           }%
@@ -5688,7 +5688,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 {\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
-{\addsemicolon\space}
+{\addsemicolon\c_space_tl}
 %    \end{macrocode}
 %
 % We now declare the definitions for the ×\autocite× and ×\autocites× commands
