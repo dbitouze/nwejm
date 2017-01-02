@@ -1902,13 +1902,13 @@ Running "make install" installs the files in the local TeX tree.
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
-  publisher .value_required:n,
-  address .value_required:n,
-  phone .value_required:n,
-  email .value_required:n,
-  url .value_required:n,
-  issn .value_required:n,
-  isbn .value_required:n,
+  publisher .value_required:n = true,
+  address .value_required:n = true,
+  phone .value_required:n = true,
+  email .value_required:n = true,
+  url .value_required:n = true,
+  issn .value_required:n = true,
+  isbn .value_required:n = true,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -1956,7 +1956,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
-  volume .value_required:n,
+  volume .value_required:n = true,
 %    \end{macrocode}
 %
 % If "number" option is not used, its initial value is set to $0$.
@@ -1994,9 +1994,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % The following options, when used, must receive a value.
 %    \begin{macrocode}
-  received .value_required:n,
-  accepted .value_required:n,
-  online   .value_required:n,
+  received .value_required:n = true,
+  accepted .value_required:n = true,
+  online   .value_required:n = true,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2056,8 +2056,8 @@ Running "make install" installs the files in the local TeX tree.
 %
 % All these options, when used, must receive a value.
 %    \begin{macrocode}
-  affiliation .value_required:n,
-  affiliationtagged .value_required:n,
+  affiliation .value_required:n = true,
+  affiliationtagged .value_required:n = true,
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2074,11 +2074,11 @@ Running "make install" installs the files in the local TeX tree.
   title / english .tl_set:N = \l_@@_newtheorem_english_title_tl,
   title / german .tl_set:N = \l_@@_newtheorem_german_title_tl,
   title / dutch .tl_set:N = \l_@@_newtheorem_dutch_title_tl,
-  title .value_required:n,
-  title / french .value_required:n,
-  title / english .value_required:n,
-  title / german .value_required:n,
-  title / dutch .value_required:n,
+  title .value_required:n = true,
+  title / french .value_required:n = true,
+  title / english .value_required:n = true,
+  title / german .value_required:n = true,
+  title / dutch .value_required:n = true,
   %
   style .choice:,
   style / theorem .code:n = {\_@@_theorem_style:n {theorem}},
