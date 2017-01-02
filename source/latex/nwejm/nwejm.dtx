@@ -831,6 +831,14 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{cleveref}%
 %    \end{macrocode}
 %
+% Due to a recent addition in (earlier loaded)) \package{etoolbox} of |\listdel|
+% and |\listgdel| also defined by \package{etextools} (loaded by the following
+% \package{autonum}), we need to undefine these comands:
+%    \begin{macrocode}
+\let\listdel\relax
+\let\listgdel\relax
+%    \end{macrocode}
+%
 % \item Automatic equation references:
 %    \begin{macrocode}
 \RequirePackage{autonum}
