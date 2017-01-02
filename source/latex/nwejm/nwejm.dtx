@@ -5527,7 +5527,7 @@ Running "make install" installs the files in the local TeX tree.
   \printfield{volume}%
   \setunit*{\addnbthinspace}%
   \printfield{number}%
-  \setunit{\addcomma\c_space_tl}%
+  \setunit{\addcomma\space}%
   \printfield{eid}%
 }
 \DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
@@ -5642,20 +5642,20 @@ Running "make install" installs the files in the local TeX tree.
           \ifnameundef{labelname}%
         }{%
           \usebibmacro{cite:label}%
-          \setunit{\addcomma\c_space_tl}%
+          \setunit{\addcomma\space}%
         }{%
           \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
           }{%
-            \setunit{\addcomma\c_space_tl}%
+            \setunit{\addcomma\space}%
             \usebibmacro{cite:labelyear+extrayear}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
             }{%
-              \setunit{\addcomma\c_space_tl}%
+              \setunit{\addcomma\space}%
               \usebibmacro{cite:title}%
             }%
           }%
