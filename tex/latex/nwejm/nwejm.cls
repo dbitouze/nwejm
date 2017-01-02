@@ -207,6 +207,8 @@
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
+\let\listdel\relax
+\let\listgdel\relax
 \RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
@@ -698,13 +700,13 @@
   url .tl_set:N = \l__nwejm_journal_url_tl,
   issn .tl_set:N = \l__nwejm_journal_issn_tl,
   isbn .tl_set:N = \l__nwejm_journal_isbn_tl,
-  publisher .value_required:n,
-  address .value_required:n,
-  phone .value_required:n,
-  email .value_required:n,
-  url .value_required:n,
-  issn .value_required:n,
-  isbn .value_required:n,
+  publisher .value_required:n = true,
+  address .value_required:n = true,
+  phone .value_required:n = true,
+  email .value_required:n = true,
+  url .value_required:n = true,
+  issn .value_required:n = true,
+  isbn .value_required:n = true,
 }
 \int_new:N \g__nwejm_issue_number_int
 \int_new:N \g__nwejm_issue_month_int
@@ -714,7 +716,7 @@
 {
   number .int_gset:N = \g__nwejm_issue_number_int,
   volume .int_gset:N = \g__nwejm_issue_volume_int,
-  volume .value_required:n,
+  volume .value_required:n = true,
   volume .initial:n = 0,
 }
 \keys_define:nn { nwejm/dates }
@@ -731,9 +733,9 @@
     \tl_gset:Nn \g__nwejm_online_date_tl {#1}
     \bool_gset_true:N \g__nwejm_date_specified_bool
   },
-  received .value_required:n,
-  accepted .value_required:n,
-  online   .value_required:n,
+  received .value_required:n = true,
+  accepted .value_required:n = true,
+  online   .value_required:n = true,
 }
 \quark_new:N \q__nwejm
 \int_new:N \l_author_int
@@ -767,8 +769,8 @@
       \msg_error:nnn{__nwejm}{Unknown~tag}{#1}
     }
   },
-  affiliation .value_required:n,
-  affiliationtagged .value_required:n,
+  affiliation .value_required:n = true,
+  affiliationtagged .value_required:n = true,
 }
 \tl_new:N \l__nwejm_newtheorem_style_tl
 \keys_define:nn { nwejm / newtheorem }
@@ -778,11 +780,11 @@
   title / english .tl_set:N = \l__nwejm_newtheorem_english_title_tl,
   title / german .tl_set:N = \l__nwejm_newtheorem_german_title_tl,
   title / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_tl,
-  title .value_required:n,
-  title / french .value_required:n,
-  title / english .value_required:n,
-  title / german .value_required:n,
-  title / dutch .value_required:n,
+  title .value_required:n = true,
+  title / french .value_required:n = true,
+  title / english .value_required:n = true,
+  title / german .value_required:n = true,
+  title / dutch .value_required:n = true,
   %
   style .choice:,
   style / theorem .code:n = {\__nwejm_theorem_style:n {theorem}},
@@ -2048,7 +2050,6 @@
 \cs_set_eq:NN \__nwejm_orig_newtheorem \newtheorem
 \cs_new_protected:Nn \__nwejm_new_theorem:nnnnn
 {
-  \AtBeginDocument{%
     \IfTranslation{English}{#1}{%
     }{%
       \DeclareTranslation{English}{#1}{\tl_mixed_case:n{#2}}%
@@ -2065,80 +2066,71 @@
     }{%
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
-  }
-  \__nwejm_orig_newtheorem{#1}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#1} }}
-  \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-    \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\protect\tl_mixed_case:n{ \protect\GetTranslation{#1} }}
-  }
+    \__nwejm_orig_newtheorem{#1}{\tl_mixed_case:n{ \GetTranslation{#1} }}
+    \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
+      \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\tl_mixed_case:n{ \GetTranslation{#1} }}
+    }
 }
 \cs_generate_variant:Nn \__nwejm_new_theorem:nnnnn { nVVVV }
 \RenewDocumentCommand \newtheorem { O{} m }
 {
-  \tl_clear:N \l__nwejm_newtheorem_style_tl
-  \tl_clear:N \l__nwejm_newtheorem_title_tl
-  \tl_clear:N \l__nwejm_newtheorem_french_title_tl
-  \tl_clear:N \l__nwejm_newtheorem_english_title_tl
-  \tl_clear:N \l__nwejm_newtheorem_german_title_tl
-  \tl_clear:N \l__nwejm_newtheorem_dutch_title_tl
-  %
-  \tl_set:Nn \l__nwejm_newtheorem_english_title_tl {
-    #2
-  }
-  \tl_set:Nf \l__nwejm_newtheorem_french_title_tl {
-    \l__nwejm_newtheorem_english_title_tl
-  }
-  \tl_set:Nf \l__nwejm_newtheorem_german_title_tl {
-    \l__nwejm_newtheorem_english_title_tl
-  }
-  \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl {
-    \l__nwejm_newtheorem_english_title_tl
-  }
-  \tl_set:Nn \l__nwejm_newtheorem_style_tl {
-    theorem
-  }
-  \__nwejm_theorem_style:n {theorem}
-  \IfNoValueF {#1}
-  {
-    \keys_set:nn { nwejm / newtheorem } { #1 }
-    \tl_if_empty:NF \l__nwejm_newtheorem_title_tl {%
-      \tl_set:Nf \l__nwejm_newtheorem_english_title_tl
-      {
-        \l__nwejm_newtheorem_title_tl
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_french_title_tl
-      {
-        \l__nwejm_newtheorem_title_tl
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_german_title_tl
-      {
-        \l__nwejm_newtheorem_title_tl
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl
-      {
-        \l__nwejm_newtheorem_title_tl
+  \AtBeginDocument{
+    \tl_clear:N \l__nwejm_newtheorem_style_tl
+    \tl_clear:N \l__nwejm_newtheorem_title_tl
+    \tl_clear:N \l__nwejm_newtheorem_french_title_tl
+    \tl_clear:N \l__nwejm_newtheorem_english_title_tl
+    \tl_clear:N \l__nwejm_newtheorem_german_title_tl
+    \tl_clear:N \l__nwejm_newtheorem_dutch_title_tl
+    %
+    \tl_set:Nn \l__nwejm_newtheorem_english_title_tl {
+      #2
+    }
+    \tl_set:Nf \l__nwejm_newtheorem_french_title_tl {
+      \l__nwejm_newtheorem_english_title_tl
+    }
+    \tl_set:Nf \l__nwejm_newtheorem_german_title_tl {
+      \l__nwejm_newtheorem_english_title_tl
+    }
+    \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl {
+      \l__nwejm_newtheorem_english_title_tl
+    }
+    \tl_set:Nn \l__nwejm_newtheorem_style_tl {
+      theorem
+    }
+    \__nwejm_theorem_style:n {theorem}
+    \IfNoValueF {#1}
+    {
+      \keys_set:nn { nwejm / newtheorem } { #1 }
+      \tl_if_empty:NF \l__nwejm_newtheorem_title_tl {%
+        \tl_set:Nf \l__nwejm_newtheorem_english_title_tl
+        {
+          \l__nwejm_newtheorem_title_tl
+        }
+        \tl_set:Nf \l__nwejm_newtheorem_french_title_tl
+        {
+          \l__nwejm_newtheorem_title_tl
+        }
+        \tl_set:Nf \l__nwejm_newtheorem_german_title_tl
+        {
+          \l__nwejm_newtheorem_title_tl
+        }
+        \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl
+        {
+          \l__nwejm_newtheorem_title_tl
+        }
       }
     }
-  }
-  %
-  \__nwejm_new_theorem:nVVVV
-  {#2}
-  {\l__nwejm_newtheorem_english_title_tl}
-  {\l__nwejm_newtheorem_french_title_tl}
-  {\l__nwejm_newtheorem_german_title_tl}
-  {\l__nwejm_newtheorem_dutch_title_tl}
-  \makesavenoteenv{#2}
-  \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-    \ifcsmacro{#2*}{%
-      \RenewDocumentEnvironment{#2*}{o}
-      {
-        \IfNoValueTF {##1}
-        { \begin{#2__nwejm_nonumbered} }
-          { \begin{#2__nwejm_nonumbered}[##1] }
-          }{
-          \end{#2__nwejm_nonumbered}
-        }
-      }{
-        \NewDocumentEnvironment{#2*}{o}
+    %
+    \__nwejm_new_theorem:nVVVV
+    {#2}
+    {\l__nwejm_newtheorem_english_title_tl}
+    {\l__nwejm_newtheorem_french_title_tl}
+    {\l__nwejm_newtheorem_german_title_tl}
+    {\l__nwejm_newtheorem_dutch_title_tl}
+    \makesavenoteenv{#2}
+    \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
+      \ifcsmacro{#2*}{%
+        \RenewDocumentEnvironment{#2*}{o}
         {
           \IfNoValueTF {##1}
           { \begin{#2__nwejm_nonumbered} }
@@ -2146,9 +2138,19 @@
             }{
             \end{#2__nwejm_nonumbered}
           }
+        }{
+          \NewDocumentEnvironment{#2*}{o}
+          {
+            \IfNoValueTF {##1}
+            { \begin{#2__nwejm_nonumbered} }
+              { \begin{#2__nwejm_nonumbered}[##1] }
+              }{
+              \end{#2__nwejm_nonumbered}
+            }
+          }
         }
-      }
-  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
+    \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
+  }
 }
 \newtheorem{theorem}
 \newtheorem{corollary}
