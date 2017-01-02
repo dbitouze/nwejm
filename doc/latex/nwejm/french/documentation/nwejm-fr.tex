@@ -1083,11 +1083,11 @@ pas, la commande \refCom{newtheorem} permet d'en créer de nouveaux.
     de \meta{Nom} pour la langue correspondante.
   \end{docKey}
 
-\begin{preamblecode}[listing options={deletekeywords={[1]{title,subtitle,definition}},morekeywords={[2]{title,subtitle}},morekeywords={[3]{definition}}}]
+\begin{preamblecode}[listing options={deletekeywords={[2]article,title},deletekeywords={[1]definition},morekeywords={[2]{title}},morekeywords={[3]{definition}}}]
 \newtheorem{article}
 \newtheorem[title/french=Fait,style=definition]{fact}
 \end{preamblecode}
-\begin{bodycode}[listing and text]
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]article}}]
 \begin{article}[dit premier]
 Les hommes naissent et demeurent libres et égaux en droits [...]
 \end{article}
