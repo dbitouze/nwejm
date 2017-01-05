@@ -207,8 +207,6 @@
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
-\let\listdel\relax
-\let\listgdel\relax
 \RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
@@ -2431,12 +2429,6 @@
 }
 \bool_new:N \g__nwejm_grad_used_bool
 \NewDocumentCommand \grad {} {%
-  \bool_if:NTF \g__nwejm_gradient_nabla_bool {
-    \operatorname{\nabla}
-  }{
-    \operatorname{grad}
-  }%
-  \peek_after:Nw \__nwejm_opx_check:
   \bool_if:NTF \g__nwejm_grad_used_bool {
     \bool_if:nT { (\g__nwejm_gradient_nabla_bool && !\g__nwejm_gradient_nabla_control_bool)
       || ( !\g__nwejm_gradient_nabla_bool && \g__nwejm_gradient_nabla_control_bool) } {
@@ -2446,6 +2438,12 @@
     \bool_gset_eq:NN \g__nwejm_gradient_nabla_control_bool \g__nwejm_gradient_nabla_bool
     \bool_gset_true:N \g__nwejm_grad_used_bool
   }
+  \bool_if:NTF \g__nwejm_gradient_nabla_bool {
+    \operatorname{\nabla}
+  }{
+    \operatorname{grad}
+  }%
+  \peek_after:Nw \__nwejm_opx_check:
 }
 \DeclareMathOperator{\Div}{div}
 \NewDocumentCommand \curl {} {%
