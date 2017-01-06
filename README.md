@@ -52,11 +52,11 @@ This work has the LPPL maintenance status "maintained".
 `nwejm` is provided with an extensive documentation (in French) in the
 `doc/latex/nwejm/french/documentation` directory in the distribution, also
 available
-[on CTAN](http://mirrors.ctan.org/macros/latex/contrib/nwejm/doc/nwejm-fr.pdf).
+[on CTAN](http://mirrors.ctan.org/macros/latex/contrib/nwejm/doc/documentation/french/nwejm-fr.pdf).
 
 ## Templates and samples
 
-`yathesis` comes with template and samples in the `doc/latex/nwejm/examples`
+`nwejm` comes with template and samples in the `doc/latex/nwejm/examples`
 directory in the distribution.
 
 ## Questions and answers
