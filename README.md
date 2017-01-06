@@ -1,7 +1,8 @@
 # Overview
 
-The purpose of the current LaTeX bundle, `nwejm`, is to provide two classes for
-the
+The purpose of the current LaTeX bundle, `nwejm`, is to provide two classes and
+`biblatex styles` for
+the (new)
 [North-Western European Journal of Mathematics (NWEJM)](http://math.univ-lille1.fr/~nwejm/):
 
 - `nwejm` for the complete issues of the journal, aimed for the NWEJM's team,
