@@ -8,6 +8,7 @@
 \tcbset{index format=off}
 %
 \lstMakeShortInline[style=dbtex]|
+%
 \tcbset{listing options={escapechar=+}}
 %
 \SetWatermarkColor{gray!10}%
@@ -30,7 +31,7 @@
 \newtheorem[title=Fait,style=definition]{fact}
 %
 \DeclareMathOperator{\cat}{Cat}
-\newcommand{\mybinop}{\mathbin{@}}
+\newcommand{\mybinop}{\mathbin{*}}
 %
 \begin{document}
 \title[Documentation de la classe \LaTeX{} du
@@ -41,7 +42,7 @@
 \author[%
 affiliation={%
   Université du Littoral Côte d'Opale, Laboratoire de mathématiques pures et
-  appliquées (\nolinkurl{denis.bitouze@lmpa.univ-littoral.fr})%
+  appliquées (\nolinkurl{denis.bitouze@univ-littoral.fr})%
 },%
 ]{Bitouzé, Denis}
 %
@@ -164,8 +165,14 @@ options de classe suivantes.
 
 \begin{docCommand}{articlesetup}{\marg{options}}
   Cette commande permet de configurer les \meta{options} de l'article en cours
-  sous la forme clés/valeurs. La seule clé fournie pour l'instant est
-  \refKey{gradient} (mais ceci peut être amené à changer).
+  sous la forme clés/valeurs.
+
+  La seule clé fournie pour l'instant est \refKey{gradient}.
+  \begin{docKey}{gradient}{=\docValue{grad}\textbar\docValue{nabla}}{pas
+      de valeur par défaut, initialement \docValue{grad}}
+    Cette clé permet de spécifier la façon dont est affiché le gradient grâce
+    à la commande \refCom{grad}.
+  \end{docKey}
 \end{docCommand}
 
 \begin{dbwarning}{Commande \protect\refCom{articlesetup} : pas en préambule !}{}
@@ -205,7 +212,7 @@ optionnel permettant de spécifier un \meta{(sous-)titre court} de l'article qui
 figure alors à la place du (sous-)titre \enquote{normal} en titre courant et
 dans la table des matières.
 
-\begin{bodycode}[listing options={deletekeywords={title,subtitle}}]
+\begin{bodycode}
 \title[Le Traité du calcul des probabilités]{Le Traité du calcul des
   probabilités et de ses applications}
 \subtitle[Étendue et limites d'un projet borélien]{Étendue et limites
@@ -278,7 +285,7 @@ et \refKey{affiliationtagged} suivantes.
 % ]{"\meta{Nom$_2$}", "\meta{Prénom$_2$}"}
 % \end{bodycode}
 
-\begin{bodycode}[listing options={deletekeywords={author}}]
+\begin{bodycode}
 \author[
   affiliation={Laboratoire \textsc{sphere}, Université Paris Diderot}
   ]{Bustamante, Martha-Cecilia}
@@ -331,7 +338,7 @@ et \refKey{affiliationtagged} suivantes.
   \meta{variante des mots clés} ne contenant que des caractères autorisés.
 \end{docCommand}
 
-\begin{bodycode}[listing options={deletekeywords={keywords}}]
+\begin{bodycode}[listing options={deletekeywords={[5]keywords}}]
 \keywords[N\string_p-space]{$\mathcal{N}_p$-space}
 \end{bodycode}
 
@@ -363,7 +370,7 @@ Le titre proprement dit de l'article, regroupant tous les éléments saisis à l
   \end{itemize}
 \end{docCommand}
 
-\begin{bodycode}[listing options={deletekeywords={title,subtitle,author,keywords},deletekeywords={[2]{first}}}]
+\begin{bodycode}[listing options={deletekeywords={[5]keywords}}]
 \title[Le Traité du calcul des probabilités]{Le Traité du calcul des
   probabilités et de ses applications}
 \subtitle[Étendue et limites d'un projet borélien]{Étendue et limites
@@ -398,10 +405,10 @@ Le titre proprement dit de l'article, regroupant tous les éléments saisis à l
   un article.
 \end{docCommand}
 
-\begin{bodycode}[listing options={deletekeywords={author},deletekeywords={[2]{first,and}}}]
+\begin{bodycode}
 \acknowledgments{%
   The first author's research was supported by the Hungarian National
-  Science Foundation Grants K81658 and K104183.  Research conducted
+  Science Foundation Grants K81658 and K104183. Research conducted
   while the second author enjoyed the hospitality of the Alfréd Rényi
   Institute of  Mathematics, and benefited from the \textsc{otka}
   grant K109789.%
@@ -442,7 +449,7 @@ cf. par exemple][en français]{Bitouze}.
   \begin{enumerate}
   \item \emph{En préambule}, utiliser la commande \docAuxCommand{addbibresource}
     pour indiquer le \meta{fichier bibliographique} à considérer :
-\begin{preamblecode}
+\begin{preamblecode}[listing options={alsolanguage={[biblatex]TeX}}]
 \addbibresource{"\meta{fichier bibliographique}".bib}
 \end{preamblecode}
   \item Dans le corps du document, utiliser la commande
@@ -452,7 +459,7 @@ cf. par exemple][en français]{Bitouze}.
       référence est alors affichée au fil du texte, mais avec moins de détails.}
     du \Package*{biblatex} pour citer les références bibliographiques (pourvue
     d'une \meta{clé}) :
-\begin{bodycode}
+\begin{bodycode}[listing options={alsolanguage={[biblatex]TeX}}]
 \autocite{"\meta{clé}"}
 \textcite{"\meta{clé}"}
 \end{bodycode}
@@ -472,7 +479,7 @@ cf. par exemple][en français]{Bitouze}.
 
 Par exemple, si le \File{.bib} contient :
 
-\begin{bodycode}[listing only,listing options={morekeywords={Book,Article}}]
+\begin{bodycode}[listing only,listing options={alsolanguage={[biblatex]TeX},deletekeywords={[2]series}}]
 @Book{            har,
   author	= {Hartshorne, Robin},
   title		= {Algebraic geometry},
@@ -483,7 +490,7 @@ Par exemple, si le \File{.bib} contient :
 }
 @Book{		  laz1,
   author	= {Lazarsfeld, Robert},
-  title		= {Positivity in algebraic geometry. {I}},
+  title		= {Positivity in algebraic geometry. I},
   volume	= {48},
   note		= {Classical setting: line bundles and linear series},
   publisher	= {Springer-Verlag},
@@ -492,18 +499,18 @@ Par exemple, si le \File{.bib} contient :
 }
 @Article{         shin,
   author	= {Shin, Kil-Ho},
-  title		= {{$3$}-dimensional {F}ano varieties with canonical
+  title		= {$3$-dimensional Fano varieties with canonical
                   singularities},
   journal	= {Tokyo J. Math.},
   volume	= {12},
   date		= {1989},
   number	= {2},
-  pages	= {375-385}
+  pages		= {375-385}
 }
 \end{bodycode}
 
 alors, le source \file{.tex} suivant :
-\begin{bodycode}[listing only,listing options={deletekeywords={[1]{theorem},[2]{first,and,see}}}]
+\begin{bodycode}[listing only,listing options={alsolanguage={[biblatex]TeX},deletekeywords={[1]theorem},deletekeywords={[2]first,and,see,theorem},deletekeywords={[3]theorem}}]
 The first assertion is a direct consequence of the Riemann-Roch
 formula for threefolds\autocite[See e.g.][437]{har} and
 Kawamata-Viehweg vanishing\autocite[theorem~4.3.1]{laz1}. For the
@@ -600,7 +607,7 @@ La \nwejmauthorcl{} :
 
 \subsection{Ensembles}
 
-\subsection{Ensembles courants}
+\subsubsection{Ensembles courants}
 
 \begin{docCommand}{bbN}{}
   Cette commande affiche l'ensemble des nombres entiers positifs :
@@ -633,7 +640,7 @@ La \nwejmauthorcl{} :
   affiche \enquote{$\bbK$}.
 \end{docCommand}
 
-\subsection{Ensembles définis}
+\subsubsection{Ensembles définis}
 
 \begin{docCommand}{set}{\marg{définition}\oarg{caractérisation}}
   Cette commande affiche l'ensemble défini par \meta{définition}, avec une
@@ -641,8 +648,8 @@ La \nwejmauthorcl{} :
       que}.}.
 \begin{bodycode}[listing and text]
 \begin{align}
-  \bbN & = \set{0,1,2,3,\dots}            \\
-  \bbZ & = \bbN\cup\set{-n}[n\in\bbN]     \\
+  \bbN & = \set{0,1,2,3,\dots}              \\
+  \bbZ & = \bbN\cup\set{-n}[n\in\bbN]       \\
   \bbQ & = \set{p/q}[p\in\bbZ,\ q\in\bbN^*] \\
   \bbQ & = \set{\frac{p}{q}}[p\in\bbZ,\ q\in\bbN^*]
 \end{align}
@@ -800,18 +807,18 @@ de délimiteurs au moyen de la commande \refCom{NewPairedDelimiter}.
   \refKey{right} et \refKey{subscript}.
   \begin{docKey}{left}{=\meta{délimiteur}}{pas de valeur par défaut,
       initialement vide}
-    Cette clé permet de spécifier le délimiteur gauche de la \meta{commande}
-    créée par \refCom{NewPairedDelimiter}.
+    Cette clé permet de spécifier le \meta{délimiteur} gauche de la \meta{commande} ainsi
+    créée.
   \end{docKey}
   \begin{docKey}{right}{=\meta{délimiteur}}{pas de valeur par défaut,
       initialement vide}
-    Cette clé permet de spécifier le délimiteur droit de la \meta{commande}
-    créée par \refCom{NewPairedDelimiter}.
+    Cette clé permet de spécifier le \meta{délimiteur} droit de la
+    \meta{commande} ainsi créée.
   \end{docKey}
   \begin{docKey}{subscript}{=\meta{indice}}{pas de valeur par défaut,
       initialement vide}
-    Cette clé permet de spécifier l'indice de la \meta{commande} créée par
-    \refCom{NewPairedDelimiter}.
+    Cette clé permet de spécifier l'\meta{indice} de la \meta{commande} ainsi
+    créée.
   \end{docKey}
 \end{docCommand}
 
@@ -855,11 +862,6 @@ de délimiteurs au moyen de la commande \refCom{NewPairedDelimiter}.
     passée à la clé \refKey{gradient} en argument de la commande
     \refCom{articlesetup}.
   \end{itemize}
-  \begin{docKey}{gradient}{=\docValue{grad}\textbar\docValue{nabla}}{pas
-      de valeur par défaut, initialement \docValue{grad}}
-    Cette clé permet de spécifier la façon dont est affiché le gradient grâce
-    à la commande \refCom{grad}.
-  \end{docKey}
 \end{docCommand}
 
 \begin{docCommand}{Div}{}
@@ -900,7 +902,7 @@ usuelle \refCom{DeclareMathOperator}.
 \begin{preamblecode}
 \DeclareMathOperator{\cat}{Cat}
 \end{preamblecode}
-\begin{bodycode}[listing and text,listing options={deletekeywords={[1]{example}},deletekeywords={[2]{all}}}]
+\begin{bodycode}[listing and text,listing options={deletekeywords={example},deletekeywords={[4]all}}]
 A standard example is $\cat$, the $2$-category of all (small)
 categories.
 \end{bodycode}
@@ -923,15 +925,14 @@ le déclarer au moyen de la commande \refCom{BinaryOperators}.
   des opérateurs les précédant.
 \end{docCommand}
 
-\begin{preamblecode}
-\newcommand{\mybinop}{\mathbin{@}}
+\begin{preamblecode}[listing options={moretexcs={mybinop}}]
+\newcommand{\mybinop}{\mathbin{*}}
 \end{preamblecode}
-\begin{bodycode}[listing and text]
-\begin{tabular}{l@{ : }l}
-  $\grad \cdot F$    & bon     \\
-  $\grad \mybinop F$ & mauvais \\
-  \BinaryOperators{\mybinop}%
-  $\grad \mybinop F$ & bon (grâce à \verb|\BinaryOperators{\mybinop}|)
+\begin{bodycode}[listing and text,listing options={moretexcs={mybinop}}]
+\begin{tabular}{>{$}l<{$}@{ : }l}
+  \grad \cdot    F & bon     \\
+  \grad \mybinop F & mauvais \\ \BinaryOperators{\mybinop}%
+  \grad \mybinop F & bon (grâce à \verb|\BinaryOperators{\mybinop}|)
 \end{tabular}
 \end{bodycode}
 
@@ -1083,11 +1084,11 @@ pas, la commande \refCom{newtheorem} permet d'en créer de nouveaux.
     de \meta{Nom} pour la langue correspondante.
   \end{docKey}
 
-\begin{preamblecode}[listing options={deletekeywords={[2]article,title},deletekeywords={[1]definition},morekeywords={[2]{title}},morekeywords={[3]{definition}}}]
+\begin{preamblecode}
 \newtheorem{article}
 \newtheorem[title/french=Fait,style=definition]{fact}
 \end{preamblecode}
-\begin{bodycode}[listing and text,listing options={deletekeywords={[2]article}}]
+\begin{bodycode}[listing and text]
 \begin{article}[dit premier]
 Les hommes naissent et demeurent libres et égaux en droits [...]
 \end{article}
@@ -1117,15 +1118,15 @@ hypothèse est introduite par la commande \docAuxCommand{item}.
   Cet environnement compose une liste d'hypothèses.
 \end{docEnvironment}
 
-\begin{bodycode}[listing and text,listing options={deletekeywords={[1]{label}}}]
-\begin{axiom}\label{mon-axiom}
+\begin{bodycode}[listing and text]
+\begin{axiom}\label{mon-axiome}
   Chaque assertion suivante est admise.
   \begin{assertions}
   \item\label{rare-cher} Tout ce qui est rare est cher.
   \item\label{cheval} Un cheval bon marché est rare.
   \end{assertions}
 \end{axiom}
-En vertu des \vref{rare-cher,cheval} de l'\vref{mon-axiom},
+En vertu des \vref{rare-cher,cheval} de l'\vref{mon-axiome},
 un cheval bon marché est cher.
 \end{bodycode}
 
@@ -1168,7 +1169,7 @@ Au \century{-1}, [...]. Plus tard, au \century{8}, [...]
   négatif). Ainsi :
 \begin{bodycode}[listing and text]
 L'agriculture au \century*{-1} était [...].
-La poésie du \century*{19} aura marqué [...]
+La poésie du \century*{19} aura marqué [...].
 \end{bodycode}
 \end{docCommand}
 
@@ -1229,7 +1230,7 @@ commande \refCom{vref} de ce dernier très puissante.
 \begin{docCommand}{vref}{\marg{label}}
   Cette commande affiche le numéro d'un objet\footnote{Section, équation,
     théorème, figure, tableau, etc.} labellisé par la commande
-  \lstinline[deletekeywords={label}]+\label{+\meta{label}|}| et :
+  |\label{|\meta{label}|}| et :
   \begin{itemize}
   \item affiche (ou pas selon le contexte) le numéro de la page où se situe cet
     objet\footnote{Fonctionnalité fournie par le \Package{varioref}.} ;
@@ -1242,7 +1243,7 @@ commande \refCom{vref} de ce dernier très puissante.
       \Package{hyperref}.}.
   \end{itemize}
 \begin{bodycode}[listing and text]
-[...] on se reportera à la \vref{sec-canevas-de-fichier} pour un
+[...] on se reportera à l'\vref{sec-canevas-de-fichier} pour un
 canevas de fichier source [...]
 \end{bodycode}
 \end{docCommand}
@@ -1256,37 +1257,38 @@ canevas de fichier source [...]
 \subsection{\enquote{Équations} (non-)numérotées}
 \label{sec:equat-non-numer}
 
-Pour les \enquote{équations}, le \Package*{amsmath} fournit les environnements
-mathématiques :
+Le lecteur, rompu à la composition de formules de mathématiques, connaît
+certainement le \Package*{amsmath} et les environnements qu'il fournit :
 \begin{itemize}
 \item |equation|, |align|, |gather|, |multline| et |flalign| qui numérotent
   leur contenu ;
 \item |equation*|, |align*|, |gather*|, |multline*| et |flalign*| qui \emph{ne}
   numérotent \emph{pas} leur contenu ;
 \end{itemize}
-les premiers étant à utiliser si (et seulement si, théoriquement) les contenus
+et utilise les premiers si (et seulement si, théoriquement) les contenus
 correspondants font l'objet de références croisées.
 
-Avoir à choisir entre les versions étoilées ou pas présente au moins deux
+Avoir à choisir entre les versions numérotées ou pas présente au moins deux
 inconvénients pour l'utilisateur :
 \begin{enumerate}
-\item cela l'oblige à se poser à chaque fois la question de la
-  numérotation de son équation ;
+\item cela l'oblige à se poser à chaque fois la question de la pertinence de la
+  numérotation de sa formule ;
 \item son choix peut ultérieurement s'avérer caduc\footnote{Et donc nécessiter
     de passer par exemple d'un environnement étoilé à un non-étoilé \aside*{donc
-      avec ajout d'un label}.}
+      avec ajout d'un label}.}.
 \end{enumerate}
-Pour pallier cela, le \Package{autonum} :
+Pour pallier cela, la \nwejmauthorcl{} charge automatiquement le
+\Package{autonum} qui :
 \begin{enumerate}
 \item permet de ne recourir qu'aux environnements non-étoilés ;
-\item assure automatiquement que les \enquote{équations} effectivement
-  numérotées seront celles, et seulement celles, s'avérant faire l'objet de
-  références croisées au sein du document.
+\item assure automatiquement que les formules effectivement numérotées seront
+  celles, et seulement celles, s'avérant faire l'objet de références croisées au
+  sein du document.
 \end{enumerate}
 
-\begin{bodycode}[listing and text,listing options={deletekeywords={label}}]
-L'\vref{euler-identy} mérite une référence croisée.
-\begin{equation}\label{euler-identy}
+\begin{bodycode}[listing and text]
+L'\vref{euler-identity} mérite une référence croisée.
+\begin{equation}\label{euler-identity}
   \E[\I\pi]+1=0
 \end{equation}
 C'est bien la seule ici.
@@ -1305,10 +1307,10 @@ Malheureusement.
 Il est fréquent que des acronymes doivent figurer dans un article de
 mathématiques et le \Package{glossaries} propose pour cela une fonctionnalité
 à la fois très efficace et très simple : il suffit de recourir à ses commandes :
-\begin{description}
-\item[\refCom{newacronym}] pour \emph{définir} un acronyme :
-\item[\refCom{gls} (ou \refCom{acrshort})] pour \emph{afficher} un acronyme.
-\end{description}
+\begin{itemize}
+\item \refCom{newacronym} pour \emph{définir} un acronyme :
+\item \refCom{gls} (ou \refCom{acrshort}) pour \emph{afficher} un acronyme.
+\end{itemize}
 
 \begin{docCommand}{newacronym}{\marg{clé}\marg{forme courte}\marg{forme longue}}
   Cette commande, à utiliser de préférence en préambule, définit un acronyme
@@ -1338,10 +1340,10 @@ mathématiques et le \Package{glossaries} propose pour cela une fonctionnalité
   \end{enumerate}
 \end{docCommand}
 
-\begin{preamblecode}
+\begin{preamblecode}[listing options={alsolanguage={[glossaries]TeX}}]
 \newacronym{bap}{bap}{bounded approximation property}
 \end{preamblecode}
-\begin{bodycode}[listing and text]
+\begin{bodycode}[listing and text,listing options={alsolanguage={[glossaries]TeX}}]
 \begin{enumerate}
 \item \gls{bap},
 \item \gls{bap}.
@@ -1380,7 +1382,7 @@ suivante, simple d'emploi.
     pourra donc également l'utiliser dès que du texte est à citer de façon
     informelle.
   \end{itemize}
-\begin{bodycode}[listing and text]
+\begin{bodycode}[listing and text,listing options={alsolanguage={[csquotes]TeX}}]
 Il lui répondit : \enquote{Courteline disait: \enquote{Passer
     pour un idiot aux yeux d'un imbécile est une volupté de fin
     gourmet.}}
@@ -1394,7 +1396,7 @@ Il lui répondit : \enquote{Courteline disait: \enquote{Passer
   ajoutés\footnote{Au moyen de la commande \docAuxCommand{addbibresource}} et
   y étant identifiée par la clé \meta{clé}.
 
-\begin{bodycode}[listing and text]
+\begin{bodycode}[listing and text,listing options={alsolanguage={[biblatex]TeX},alsolanguage={[csquotes]TeX},deletekeywords={[3]footnote}}]
 \citeauthor{Bitouze} précise que :
 \blockcquote{Bitouze}{%
   \textins{Cette} commande compose les citations en détachant
@@ -1423,7 +1425,7 @@ permet de facilement afficher des adresses Web, aussi appelées
 %
 |_|, |~|, |&|, etc.) : ces caractères peuvent donc être saisis tels quels, sauf
 si la commande \refCom{url} est utilisée dans l'argument d'une autre
-commande\footnote{Par exemple \protect\docAuxCommand*{foonote}.} auquel cas les
+commande\footnote{Par exemple \protect\docAuxCommand*{footnote}.} auquel cas les
 caractères |#| et
 %
 \lstinline[commentstyle={}]+%+
@@ -1434,7 +1436,7 @@ sont alors à faire précéder de la commande \enquote{d'échappement} |\|
 \begin{docCommand}{url}{\marg{adresse Web}}
   Cette commande affiche l'\meta{adresse Web} saisie \emph{telle quelle} et fait
   d'elle un lien hypertexte.
-\begin{bodycode}[listing and text,listing options={deletekeywords={url,math,nwejm,exemple,pdf}}]
+\begin{bodycode}[listing and text,listing options={alsolanguage={[hyperref]TeX},deletekeywords={[2]url}}]
 Nous renvoyons aux instructions aux auteurs sur notre site Web
 \url{http://math.univ-lille1.fr/~nwejm/#Authors}.
 \end{bodycode}
@@ -1464,7 +1466,7 @@ versions étoilées de ces environnements qui composent ces listes \enquote{en
   Cet environnement compose une liste \enquote{de description} en ligne.
 \end{docEnvironment}
 
-\begin{bodycode}[listing and text,listing options={deletekeywords={url,math,url,pages}}]
+\begin{bodycode}[listing and text,listing options={alsolanguage={[hyperref]TeX},deletekeywords={math},deletekeywords={[2]url}}]
 \begin{enumerate}
 \item Les données que j’ai rassemblées [...]
 \item Les données que j’ai recueillies sont
@@ -1501,7 +1503,7 @@ attaché au fichier \file{PDF} de la présente documentation\footnote{Pour
   listing only,
   listing file=../../examples/\attachfilename,
   title={\attachfiletextlink\ \attachfile{../../examples/\attachfilename}},%
-  listing options={deletekeywords={title,subtitle,author,keywords},deletekeywords={[2]{first}}}
+  listing options={alsolanguage={[biblatex]TeX},deletekeywords={[2]title,author,keywords},deletekeywords={[5]keywords}}
 }
 
 \section{Packages chargés (ou pas) par la
