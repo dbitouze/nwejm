@@ -31,13 +31,18 @@
 \msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
 {Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
   ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
-\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{The~ issue's~ main~ file~
-  should~ be~ named~ `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~
-  `\c_sys_jobname_str.tex'.~ Please~ rename~ the~ current~ file~ accordingly.}%
-\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~
-  should~ /not/~ be~ named~ as~ the~ issue's~ main~ file~
-  `\tl_use:N\c__nwejm_main_file_name_tl.tex'.~ Please~ rename~
-  the~ current~ file~ accordingly.}%
+\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{You~ are~ using~ the~
+  `nwejm'~ class~ designed~ for~ the~ complete~ issues~ of~ the~ NWEJM~ and~
+  aimed~ for~ the~ NWEJM's~ team,~ not~ for~ authors~ of~ articles:~ if~ you're~
+  an~ author~ of~ an~ article~,~ you~ should~ use~ the~ `nwejmart'~ class~
+  instead.~ Otherwise,~ if~ you're~ from~ the~ NWEJM's~ team,~ please~ note~
+  that~ the~ issue's~ main~ file~ should~ be~ named~
+  `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~ `\c_sys_jobname_str.tex'.~
+  Please~ rename~ the~ current~ file~ accordingly.}%
+\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~ should~
+  /not/~ be~ named~ as~ the~ issue's~ main~ file~
+  `\tl_use:N\c__nwejm_main_file_name_tl.tex'.~ Please~ rename~ the~ current~ file~
+  accordingly.}%
 \msg_new:nnn{nwejm}{Main~file~needs~to~be~compiled!}{The~ issue's~ main~ file~
   (`\tl_use:N\c__nwejm_main_file_name_tl.tex')~ should~ be~ compiled~ at~ least~
   once~ before~ the~ cover~ can~ be~ generated.}%
@@ -268,7 +273,7 @@
 \tl_const:Nn \c__nwejm_aside_string_tl {--}
 \tl_const:Nn \c__nwejm_draftwatermark_string_tl {draft}
 \tl_const:Nn \c__nwejm_issue_bib_file_suffix_string_tl {__nwejm}
-\tl_const:Nn \c__nwejm_issue_bib_file_string_tl {\c_job_name_tl\c__nwejm_issue_bib_file_suffix_string_tl.bib}
+\tl_const:Nn \c__nwejm_issue_bib_file_string_tl {\c_sys_jobname_str\c__nwejm_issue_bib_file_suffix_string_tl.bib}
 \tl_const:Nn \c__nwejm_issue_bib_path_string_tl {\c__nwejm_issue_bib_file_string_tl}
 \tl_const:Nn \c__nwejm_issue_number_year_file_string_tl {\c__nwejm_main_file_name_tl.iny}
 \tl_const:Nn \c__nwejm_issue_bib_key_tl {\int_use:N \g__nwejm_issue_number_int}
@@ -2689,7 +2694,7 @@
   \SetWatermarkText{\MakeUppercase{\c__nwejm_draftwatermark_string_tl}}%
 }{%
 }
-\pdftex_if_engine:T
+\sys_if_engine_pdftex:T
   {
     \renewcommand{\ttdefault}{lmtt}
   }
