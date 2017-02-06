@@ -37,7 +37,7 @@ documenting the classes I've written.
 \input l3docstrip.tex
 \Msg{********************************************************}
 \Msg{* Installation}
-\Msg{* Class: nwejm 2017/01/06 v0.98a}
+\Msg{* Class: nwejm 2017/02/06 v0.98b}
 \Msg{* for the journal}
 \Msg{* "North-Western European Journal of Mathematics" (DB)}
 \Msg{********************************************************}
@@ -154,9 +154,17 @@ Running "make install" installs the files in the local TeX tree.
 %
 %\maketitle
 %
-% \changes{v0.98a}{2017/01/06}{Adjustments because of deprecated functions removed from \Package{expl3}.}%
+% \changes{v0.98b}{2017/02/06}{Adjustments because of deprecated functions
+% removed from \Package{expl3}.}%
+% \changes{v0.98b}{2017/02/06}{Better error message that warns the author of an
+% article in case he's using the ×nwejm× class instead of the ×nwejmart× one.}%
+% \changes{v0.98b}{2017/02/06}{Fix wrong behavior in case bib field ×year× used
+% instead of ×date×.}%
+% \changes{v0.98a}{2017/01/06}{Adjustments because of deprecated functions
+% removed from \Package{expl3}.}%
 % \changes{v0.98a}{2017/01/06}{Fix wrong behavior of ×\grad× command.}%
-% \changes{v0.98a}{2017/01/06}{Fix theorems recurrent titles weren't displayed anymore.}%
+% \changes{v0.98a}{2017/01/06}{Fix theorems recurrent titles weren't displayed
+% anymore.}%
 % \changes{v0.98}{2016/10/24}{Some bug fixes.}%
 % \changes{v0.98}{2016/10/24}{Cover pages handling.}%
 % \changes{v0.97}{2016/06/10}{\Package{xy} declared incompatible with the
@@ -251,8 +259,8 @@ Running "make install" installs the files in the local TeX tree.
 \ProvidesExplClass
 %<class>  {nwejm}
 %<class-article>  {nwejmart}
-  {2015/09/30}
-  {1.00}
+  {2017/02/06}
+  {0.98b}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
