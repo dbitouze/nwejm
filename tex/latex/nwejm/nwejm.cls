@@ -14,10 +14,6 @@
 %% 
 \RequirePackage{xparse}
 \RequirePackage{l3keys2e}
-\IfFileExists{l3sort.sty}{
-  \RequirePackage{l3sort}
-}{
-}
 \RequirePackage{etoolbox}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
@@ -1660,8 +1656,8 @@
   \seq_sort:Nn \l_tmpa_seq
   {
     \int_compare:nNnTF { ##1 } > { ##2 }
-    { \sort_reversed: }
-    { \sort_ordered: }
+    { \sort_return_swapped: }
+    { \sort_return_same: }
   }
   \mbox{%
     \__nwejm_citeauthor_no_giveninits:n {\c__nwejm_issue_bib_key_tl -author-art- \int_use:N \g__nwejm_articles_int-#1}
