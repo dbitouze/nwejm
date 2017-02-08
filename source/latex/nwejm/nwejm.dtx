@@ -221,14 +221,14 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \RequirePackage{l3keys2e}
 %    \end{macrocode}
-% \item Sorting lists (since \Pkg{l3sort} is about to move from `experimental'
-% to `stable' status, the \File{l3sort.sty} will be removed soonish):
-%    \begin{macrocode}
-\IfFileExists{l3sort.sty}{
-  \RequirePackage{l3sort}
-}{
-}
-%    \end{macrocode}
+% % \item Sorting lists (since \Pkg{l3sort} is about to move from `experimental'
+% % to `stable' status, the \File{l3sort.sty} will be removed soonish):
+% %    \begin{macrocode}
+% \IfFileExists{l3sort.sty}{
+%   \RequirePackage{l3sort}
+% }{
+% }
+% %    \end{macrocode}
 % \item e-\TeX{} tools for \LaTeX:
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
@@ -3400,8 +3400,8 @@ Running "make install" installs the files in the local TeX tree.
   \seq_sort:Nn \l_tmpa_seq
   {
     \int_compare:nNnTF { ##1 } > { ##2 }
-    { \sort_reversed: }
-    { \sort_ordered: }
+    { \sort_return_swapped: }
+    { \sort_return_same: }
   }
   \mbox{%
     \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -author-art- \int_use:N \g_@@_articles_int-#1}
