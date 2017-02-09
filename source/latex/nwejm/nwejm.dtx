@@ -76,6 +76,7 @@ Running "make install" installs the files in the local TeX tree.
 \def\NWEJM@classname{\jobname}
 \def\NWEJM@addons{addons}
 \def\NWEJM@documentation{documentation}
+\def\NWEJM@examplestemplate{\jobname-examples-template}
 %
 \usedir{tex/latex/\NWEJM@classname}
 \generate{%
@@ -114,6 +115,18 @@ Running "make install" installs the files in the local TeX tree.
 \generate{
   \file{latexmkrc}{\from{\jobname.dtx}{latexmkrc}}
 }
+\usedir{doc/latex/\NWEJM@classname/examples}
+\generate{
+  \nopreamble\nopostamble
+  \file{article-in-dutch.tex}{\from{\NWEJM@examplestemplate.dtx}{dutch}}
+  \file{article-in-english.tex}{\from{\NWEJM@examplestemplate.dtx}{english}}
+  \file{article-in-french.tex}{\from{\NWEJM@examplestemplate.dtx}{french}}
+  \file{article-in-german.tex}{\from{\NWEJM@examplestemplate.dtx}{german}}
+  \file{sample.tex}{\from{\NWEJM@examplestemplate.dtx}{example}}
+  \file{template.tex}{\from{\NWEJM@examplestemplate.dtx}{template}}
+  \file{issue.tex}{\from{\NWEJM@examplestemplate.dtx}{issue}}
+  \file{sample.bib}{\from{\NWEJM@examplestemplate.dtx}{sample-bib}}
+}%
 \usedir{doc/latex/\NWEJM@classname/\NWEJM@addons/completion}
 \generate{%
   \file{\NWEJM@classname.cwl}{\from{\jobname.dtx}{class-cwl}}
