@@ -37,7 +37,7 @@ documenting the classes I've written.
 \input l3docstrip.tex
 \Msg{********************************************************}
 \Msg{* Installation}
-\Msg{* Class: nwejm 2017/02/06 v0.98b}
+\Msg{* Class: nwejm 2017/02/09 v0.98c}
 \Msg{* for the journal}
 \Msg{* "North-Western European Journal of Mathematics" (DB)}
 \Msg{********************************************************}
@@ -167,6 +167,12 @@ Running "make install" installs the files in the local TeX tree.
 %
 %\maketitle
 %
+% \changes{v0.98c}{2017/02/09}{Example and template files now from `.dtx' and
+% not sharing the same input file.}
+% \changes{v0.98c}{2017/02/09}{Drop \Package{l3sort}' loading since it is
+% integrated in available directly on loading \Package{expl3}. ×\sort_ordered×
+% and ×\sort_reversed× renamed to ×\sort_return_same× and
+% ×\sort_return_swapped×.}%
 % \changes{v0.98b}{2017/02/06}{Adjustments because of deprecated functions
 % removed from \Package{expl3}.}%
 % \changes{v0.98b}{2017/02/06}{Better error message that warns the author of an
@@ -272,8 +278,8 @@ Running "make install" installs the files in the local TeX tree.
 \ProvidesExplClass
 %<class>  {nwejm}
 %<class-article>  {nwejmart}
-  {2017/02/06}
-  {0.98b}
+  {2017/02/09}
+  {0.98c}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
