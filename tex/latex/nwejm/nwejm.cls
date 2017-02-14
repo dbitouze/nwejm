@@ -8,7 +8,7 @@
 %% -------:| -----------------------------------------------------------------
 %%   nwejm:| Class for the journal "North-Western European Journal of Mathematics"
 %%  Author:| Denis Bitouze
-%%  E-mail:| denis.bitouze@lmpa.univ-littoral.fr
+%%  E-mail:| denis.bitouze@univ-littoral.fr
 %% License:| Released under the LaTeX Project Public License v1.3c or later
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
-  {2017/02/09}
-  {0.98c}
+  {2017/02/14}
+  {0.98d}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -2762,7 +2762,7 @@
   {(0,0)\hfuzz=\maxdimen\begin}
     {}{}
 %% 
-%% Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@lmpa.univ-littoral.fr>
+%% Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
