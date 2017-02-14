@@ -1,4 +1,8 @@
 \documentclass[french,nolocaltoc]{nwejmart}
+%
+\DTMsavedate{release-date}{2017-02-14}
+\newcommand{\releaseversion}{0.98d}
+%
 \usepackage{denisbdoc}
 \usepackage{tabulary}
 \usepackage[firstpage]{draftwatermark}
@@ -36,8 +40,10 @@
 \begin{document}
 \title[Documentation de la classe \LaTeX{} du
 \texorpdfstring{\nwejm}{NWEJM}]{Documentation de la classe \LaTeX{} du \nwejm*{}
-  destinée aux auteurs} \subtitle[short=Version 0.98c (09/02/2017)]{\small
-  Version 0.98c en date du 9 février 2017}
+  destinée aux auteurs}%
+%
+\subtitle[Version \releaseversion{} (\DTMusedate{release-date})]{\small Version \releaseversion{} en
+  date du \DTMusedate{release-date}}%
 %
 \author[%
 affiliation={%
