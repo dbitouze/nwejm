@@ -13,7 +13,7 @@ new journal "North-Western European Journal of Mathematics".
 
 Release
 -------
-Release 2017/02/14 v0.98d
+2017/02/14 v0.98d
 
 Development
 -----------
@@ -4191,7 +4191,7 @@ Running "make install" installs the files in the local TeX tree.
     \GetTranslation{plural-#1}
   }
   \Crefname{#1}{
-    \tl_mixed_case:n{ \protect
+    \tl_mixed_case:n{
       \GetTranslation{#1}
     }
   }{%
@@ -5748,8 +5748,9 @@ Running "make install" installs the files in the local TeX tree.
      {\bibcloseparen\global\boolfalse{cbx:parens}}
      {}}
   {\usebibmacro{textcite:postnote}}
-
-
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \ExecuteBibliographyOptions{autocite=nwejmfootcite}
 %    \end{macrocode}
 %
@@ -5818,6 +5819,7 @@ $clean_ext = "synctex.gz* run.xml tex.bak bbl bcf fdb_latexmk run tdo listing"
 #include:booktabs
 #include:varioref
 #include:mathtools
+#include:subcaption
 #include:mathrsfs
 #include:esvect
 #include:kpfonts
