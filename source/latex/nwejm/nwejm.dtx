@@ -457,6 +457,9 @@ Running "make install" installs the files in the local TeX tree.
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
+  draft .code:n = {%
+    \PassOptionsToClass{draft}{book}
+  },%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -805,7 +808,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Subliminal refinements towards typographical perfection:
 %    \begin{macrocode}
-\RequirePackage[babel=true]{microtype}%
+\RequirePackage[babel=true,final]{microtype}%
 %    \end{macrocode}
 %
 % \item Current date and time formatting:
@@ -853,7 +856,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Hypertext marks:
 %    \begin{macrocode}
-\RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
+\RequirePackage[hyperfootnotes=false,pdfencoding=unicode,final]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false}%
 }%
