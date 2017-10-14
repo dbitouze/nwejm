@@ -4211,10 +4211,26 @@ Running "make install" installs the files in the local TeX tree.
   proof%
 }
 \clist_map_inline:Nn \l_tmpa_clist {
-  \crefname{#1}{
-    \GetTranslation{#1}
-  }{%
-    \GetTranslation{plural-#1}
+  \ifcurrentbaselanguage{french}{
+    \crefname{#1}{
+      \tl_lower_case:n{
+        \GetTranslation{#1}
+      }
+    }{%
+      \tl_lower_case:n{
+        \GetTranslation{plural-#1}
+      }
+    }
+  }{
+    \crefname{#1}{
+      \tl_mixed_case:n{
+        \GetTranslation{#1}
+        }
+    }{%
+      \tl_mixed_case:n{
+        \GetTranslation{plural-#1}
+      }
+    }
   }
   \Crefname{#1}{
     \tl_mixed_case:n{
@@ -4226,6 +4242,30 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
 }
+% \ifcurrentbaselanguage{french}{
+%   \crefname@preamble{equation}{{\'e}quation}{{\'e}quations}%
+%   \crefname@preamble{figure}{figure}{figures}%
+%   \crefname@preamble{table}{tableau}{tableaux}%
+%   \crefname@preamble{page}{page}{pages}%
+%   \crefname@preamble{part}{partie}{parties}%
+%   \crefname@preamble{chapter}{chapitre}{chapitres}%
+%   \crefname@preamble{section}{section}{sections}%
+%   \crefname@preamble{appendix}{annexe}{annexes}%
+%   \crefname@preamble{enumi}{point}{points}%
+%   \crefname@preamble{footnote}{note}{notes}%
+%   \crefname@preamble{theorem}{th\'eor\`eme}{th\'eor\`emes}%
+%   \crefname@preamble{lemma}{lemme}{lemmes}%
+%   \crefname@preamble{corollary}{corollaire}{corollaires}%
+%   \crefname@preamble{proposition}{proposition}{propositions}%
+%   \crefname@preamble{definition}{d\'efinition}{d\'efinitions}%
+%   \crefname@preamble{result}{r\'esultat}{r\'esultats}%
+%   \crefname@preamble{example}{exemple}{exemples}%
+%   \crefname@preamble{remark}{remarque}{remarques}%
+%   \crefname@preamble{note}{commentaire}{commentaires}%
+%   \crefname@preamble{algorithm}{algorithme}{algorithmes}%
+%   \crefname@preamble{listing}{liste}{listes}%
+%   \crefname@preamble{line}{ligne}{lignes}%
+% }
 %    \end{macrocode}
 %
 % \subsection{Assertions and hypotheses enumerations}
