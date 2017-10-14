@@ -3040,7 +3040,7 @@ Running "make install" installs the files in the local TeX tree.
   \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
     {\refpagename\ hiervoor}}%
   \def\reftextcurrent   {op~deze~\refpagename}%
-  \def\reftextfaraway#1{op~\refpagename\c_space_tl\pageref{#1}}
+  \def\reftextfaraway#1{op~\refpagename\nobreakspace\pageref{#1}}
 }
 \vref@addto\extrasenglish{%
   \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
