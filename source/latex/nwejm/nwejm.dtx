@@ -2715,7 +2715,7 @@ Running "make install" installs the files in the local TeX tree.
   \tl_gclear:N \g_@@_keywords_tl
   \tl_clear:N \l_tmpb_clist
   \clist_set:Nn \l_tmpb_clist {#2}
-  \tl_set:Nn \g_@@_keywords_tl { \clist_use:Nnnn \l_tmpb_clist { ,~ } { ,~ } { ,~ } }
+  \tl_set:Nx \g_@@_keywords_tl { \clist_use:Nnnn \l_tmpb_clist { ,~ } { ,~ } { ,~ } }
 %<class-article>  \tl_if_empty:nTF {#1} {%
 %<class-article>    \hypersetup{pdfkeywords={\g_@@_keywords_tl}}
 %<class-article>  }{
