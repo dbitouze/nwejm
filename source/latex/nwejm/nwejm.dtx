@@ -3015,9 +3015,9 @@ Running "make install" installs the files in the local TeX tree.
   {page~pr\’ec\’edente}%
   \def\reftextcurrent
   {de~la~pr\’esente~page}%
-  \def\reftextfaraway#1{page~\pageref{#1}}%
-  \def\reftextpagerange#1#2{pages~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~\‘a~\ref{#2}}%
+  \def\reftextfaraway#1{p.\nobreakspace\pageref{#1}}%
+  \def\reftextpagerange#1#2{p.\nobreakspace\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~\‘a\nobreakspace\ref{#2}}%
 }
 \vref@addto\extrasngerman{%
   \def\reftextfaceafter {auf~der~n\"achsten~Seite}%
@@ -3025,9 +3025,9 @@ Running "make install" installs the files in the local TeX tree.
   \let\reftextafter     \reftextfaceafter
   \let\reftextbefore    \reftextfacebefore
   \def\reftextcurrent   {auf~dieser~Seite}%
-  \def\reftextfaraway#1{auf~Seite~\pageref{#1}}%
-  \def\reftextpagerange#1#2{auf~den~Seiten~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~bis~\ref{#2}}%
+  \def\reftextfaraway#1{auf~S.\nobreakspace\pageref{#1}}%
+  \def\reftextpagerange#1#2{auf~den~S.\nobreakspace\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~bis\nobreakspace\ref{#2}}%
 }
 \vref@addto\extrasdutch{%
   \def\refpagename{pagina}%
@@ -3048,9 +3048,9 @@ Running "make install" installs the files in the local TeX tree.
   \def\reftextafter     {on~the~\reftextvario{following}{next}~page}%
   \def\reftextbefore    {on~the~\reftextvario{preceding}{previous}~page}%
   \def\reftextcurrent   {on~\reftextvario{this}{the~current}~page}%
-  \def\reftextfaraway#1{on~page~\pageref{#1}}%
-  \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
+  \def\reftextfaraway#1{on~p.\nobreakspace\pageref{#1}}%
+  \def\reftextpagerange#1#2{on~pp.\nobreakspace\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~to\nobreakspace\ref{#2}}%
 }
 %    \end{macrocode}
 % \end{macro}
