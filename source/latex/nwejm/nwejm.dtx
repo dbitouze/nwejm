@@ -4758,6 +4758,13 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% We let page breaks fall where they may, even in the middle of a multi-line
+% equation. If needed, the ×\\*× command can be used to prohibit a pagebreak
+% after a given line.
+%    \begin{macrocode}
+\AtEndPreamble{\allowdisplaybreaks}
+%    \end{macrocode}
+%
 % \section{Packages settings, libraries loading, etc.}
 %
 % We gather here miscellaneous settings.
