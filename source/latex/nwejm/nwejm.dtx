@@ -3875,6 +3875,16 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+% \section{Miscellaneous for captions}
+%
+% We set the caption label separator to make it the same as theorems separator.
+%    \begin{macrocode}
+\DeclareCaptionLabelSeparator{dash}{\nobreakspace--\nobreakspace}
+\captionsetup{
+   labelsep=dash
+ }
+%    \end{macrocode}
+%
 % \section{Miscellaneous (re)definitions}
 %
 % We gather here miscellaneous redefinitions.
