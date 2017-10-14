@@ -5725,8 +5725,7 @@ Running "make install" installs the files in the local TeX tree.
 % ×cite:title× defined in ×authortitle× but not in ×authoryear×.
 %    \begin{macrocode}
 \newbibmacro*{cite:title}{%
-  \printtext[bibhyperref]{%
-    \printfield[citetitle]{labeltitle}}}
+    \printfield[citetitle]{labeltitle}}
 %    \end{macrocode}
 %
 % Because we want to replace autocite redundant consecutive citations by
@@ -5753,13 +5752,14 @@ Running "make install" installs the files in the local TeX tree.
           \usebibmacro{cite:label}%
           \setunit{\addcomma\space}%
         }{%
-          \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
+            \printtext[bibhyperref]{\printnames{labelname}}%
           }{%
+            \printtext[bibhyperref]{\printnames{labelname}%
             \setunit{\addcomma\space}%
-            \usebibmacro{cite:labelyear+extrayear}%
+            \usebibmacro{cite:labelyear+extrayear}}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
@@ -5816,7 +5816,7 @@ Running "make install" installs the files in the local TeX tree.
      {\setcounter{textcitetotal}{1}}
      {\stepcounter{textcitetotal}%
       \textcitedelim}%
-    \iffootnote{\usebibmacro{nwejm:cite}}{\usebibmacro{textcite}}}
+    \iffootnote{\usebibmacro{nwejm:cite}}{\printtext[bibhyperref]{\usebibmacro{textcite}}}}
   {\ifbool{cbx:parens}
      {\bibcloseparen\global\boolfalse{cbx:parens}}
      {}}
