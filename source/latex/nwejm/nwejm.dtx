@@ -1388,8 +1388,8 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \dim_const:Nn \c_@@_paperheight_dim {
   \c_@@_layoutheight_dim
-  +
-  2\c_@@_potential_layoutoffset_dim
+%<class>  +
+%<class>  2\c_@@_potential_layoutoffset_dim
 }
 %    \end{macrocode}
 %
@@ -1405,23 +1405,23 @@ Running "make install" installs the files in the local TeX tree.
 %   \end{description}
 % \end{itemize}
 %    \begin{macrocode}
-\bool_if:NTF {\g_@@_cover_bool} {
+%<class>\bool_if:NTF {\g_@@_cover_bool} {
+%<class>  \dim_const:Nn \c_@@_paperwidth_dim  {
+%<class>    \c_@@_layoutwidth_dim
+%<class>    +
+%<class>    \c_@@_potential_layoutoffset_dim
+%<class>    +
+%<class>    .5\c_@@_potential_bindingoffset_dim
+%<class>  }
+%<class>}{
   \dim_const:Nn \c_@@_paperwidth_dim  {
     \c_@@_layoutwidth_dim
-    +
-    \c_@@_potential_layoutoffset_dim
-    +
-    .5\c_@@_potential_bindingoffset_dim
+%<class>    +
+%<class>    2\c_@@_potential_layoutoffset_dim
+%<class>    +
+%<class>    \c_@@_potential_bindingoffset_dim
   }
-}{
-  \dim_const:Nn \c_@@_paperwidth_dim  {
-    \c_@@_layoutwidth_dim
-    +
-    2
-    \c_@@_potential_layoutoffset_dim
-    +\c_@@_potential_bindingoffset_dim
-  }
-}
+%<class>}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1609,7 +1609,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_main_geometry_tl {%
   ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
-  ,layoutoffset=\c_@@_potential_layoutoffset_dim
+%<class>  ,layoutoffset=\c_@@_potential_layoutoffset_dim
   ,textwidth=\c_@@_layoutwidth_dim*3/4
   ,textheight=\c_@@_layoutheight_dim*3/4
   % ,marginratio={4\string :6,5\string :7}
