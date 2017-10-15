@@ -1374,6 +1374,14 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
 % The paper height is rather simple: it is always the layout height dimension
 % plus 2 times (top and bottom) the layout offset dimension (which turns to be
 % non-zero iff the output is prepared for the printer).
@@ -3163,9 +3171,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We reset setup possibly chosen in previous articles.
 %    \begin{macrocode}
-%<class>      \bool_gset_false:N \g_@@_gradient_nabla_bool
-%<class>      \bool_gset_false:N \g_@@_gradient_nabla_control_bool
-%<class>      \bool_gset_false:N \g_@@_grad_used_bool
+%<class>  \bool_gset_false:N \g_@@_gradient_nabla_bool
+%<class>  \bool_gset_false:N \g_@@_gradient_nabla_control_bool
+%<class>  \bool_gset_false:N \g_@@_grad_used_bool
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3515,9 +3523,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We enforce all the previous floats to be processed before a new article starts
 % (this is already done in "acknowledgments"environment but is repeated here if
-% what is before provides floats but  not acknowledgments).
+% what is before provides floats but not acknowledgments).
 %    \begin{macrocode}
-%<class>      \FloatBarrier%
+%<class>  \FloatBarrier%
 %    \end{macrocode}
 %
 % We store the unique bibliographic key of the current article in the
