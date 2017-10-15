@@ -3090,14 +3090,11 @@ Running "make install" installs the files in the local TeX tree.
   \def\reftextlabelrange#1#2{\ref{#1}~to\nobreakspace\ref{#2}}%
 }
 %    \end{macrocode}
-% \end{macro}
 %
+% We don't want randomization in the \package{varioref} expressions in order to
+% reduce discrepancies between the whole issue and the individual articles.
 %    \begin{macrocode}
-%</class>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*class|class-article>
+\def\reftextvario#1#2{#2}
 %    \end{macrocode}
 %
 % \subsection{Article setup}
