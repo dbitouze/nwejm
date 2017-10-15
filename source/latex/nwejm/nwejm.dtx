@@ -383,6 +383,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 \bool_new:N \g_@@_for_authors_bool
+\bool_new:N \g_@@_for_printer_bool
 \bool_new:N \g_@@_cover_bool
 \bool_new:N \g_@@_coverpage_bool
 \bool_new:N \g_@@_inside_pages_bool
@@ -435,6 +436,10 @@ Running "make install" installs the files in the local TeX tree.
     \selectlanguage{#1}
   }
 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\bool_new:N \g_@@_nolocaltoc_bool
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -616,28 +621,9 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{graphicx}%
 %    \end{macrocode}
 %
-% \item Establish input relative to a directory:
-%    \begin{macrocode}
-%<class>\RequirePackage{import}%
-%    \end{macrocode}
-%
-% \item Put a grey textual watermark on document pages (loaded only if
-% "forauthors" \nwejm{}'s option is on):
-%    \begin{macrocode}
-%<class>\bool_if:nT { \g_@@_for_authors_bool } {
-%<class>  \RequirePackage{draftwatermark}[2006/06/30]%
-%<class>}
-%    \end{macrocode}
-%
 % \item Graphics package-alike macros for \enquote{general} boxes:
 %    \begin{macrocode}
 \RequirePackage{adjustbox}%
-%    \end{macrocode}
-%
-% \item A new reference scheme for \LaTeX{}, giving the total number of pages in
-%   the document:
-%    \begin{macrocode}
-%<class>\RequirePackage{zref-totpages}
 %    \end{macrocode}
 %
 % \item References to other \LaTeX{} documents:
@@ -650,12 +636,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{currfile}
 %    \end{macrocode}
 %
-% \item A new reference scheme for \LaTeX{}, providing the facilities of the
-%   \package{xr} and \package{xr-hyper} packages:
-%    \begin{macrocode}
-%<class>\RequirePackage{zref-xr}%
-%    \end{macrocode}
-%
 % \item A range of footnote options
 %    \begin{macrocode}
 \RequirePackage[multiple]{footmisc}%
@@ -666,53 +646,119 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{xcolor}%
 %    \end{macrocode}
 %
+% \item Execute command after the next page break:
+%    \begin{macrocode}
+\RequirePackage{afterpage}%
+%    \end{macrocode}
+%
+% \item Determine if the current page is odd or even:
+%    \begin{macrocode}
+\RequirePackage{ifoddpage}%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
+% \item Establish input relative to a directory:
+%    \begin{macrocode}
+\RequirePackage{import}%
+%    \end{macrocode}
+%
+% \item Put a grey textual watermark on document pages (loaded only if
+% "forauthors" \nwejm{}'s option is on):
+%    \begin{macrocode}
+\bool_if:nT { \g_@@_for_authors_bool } {
+  \RequirePackage{draftwatermark}[2006/06/30]%
+}
+%    \end{macrocode}
+%
+% \item A new reference scheme for \LaTeX{}, giving the total number of pages in
+%   the document:
+%    \begin{macrocode}
+\RequirePackage{zref-totpages}
+%    \end{macrocode}
+%
+% \item A new reference scheme for \LaTeX{}, providing the facilities of the
+%   \package{xr} and \package{xr-hyper} packages:
+%    \begin{macrocode}
+\RequirePackage{zref-xr}%
+%    \end{macrocode}
+%
 % Some of the packages are needed only when the cover has to be produced.
 %    \begin{macrocode}
-%<class>\bool_if:NTF {\g_@@_cover_bool} {
+\bool_if:NTF {\g_@@_cover_bool} {
 %    \end{macrocode}
 %
 % \item Coloured boxes, for \LaTeX{} examples and theorems, etc.
 %    \begin{macrocode}
-%<class>  \RequirePackage{tcolorbox}
+  \RequirePackage{tcolorbox}
 %    \end{macrocode}
 %
 % \item A single TikZ node for the whole page (used for cover crop marks)
 %    \begin{macrocode}
-%<class>  \RequirePackage{tikzpagenodes}
-%<class>    \ExplSyntaxOff
-%<class>    \usetikzlibrary{calc,backgrounds}
-%<class>    \ExplSyntaxOn
-%<class>    \tcbuselibrary{skins}
-%<class>    \tcbset{_@@_title_cover/.style={%
-%<class>        colback=white,
-%<class>        colframe=blue!37!white,
-%<class>        colupper=blue,
-%<class>        width=14cm,
-%<class>        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
-%<class>        halign=center,
-%<class>        valign=center,
-%<class>        % boxsep=3mm,
-%<class>        boxrule=3mm,
-%<class>        left=\c_zero_dim,
-%<class>        right=\c_zero_dim,
-%<class>        sharp~corners,
-%<class>        rounded~corners=northwest,
-%<class>        % draft
-%<class>      }
-%<class>    }
+  \RequirePackage{tikzpagenodes}
+    \ExplSyntaxOff
+    \usetikzlibrary{calc,backgrounds}
+    \ExplSyntaxOn
+    \tcbuselibrary{skins}
+    \tcbset{_@@_title_cover/.style={%
+        colback=white,
+        colframe=blue!37!white,
+        colupper=blue,
+        width=14cm,
+        fontupper=\fontsize{9mm}{9mm}\fontseries{bx}\selectfont\sffamily,
+        halign=center,
+        valign=center,
+        % boxsep=3mm,
+        boxrule=3mm,
+        left=\c_zero_dim,
+        right=\c_zero_dim,
+        sharp~corners,
+        rounded~corners=northwest,
+        % draft
+      }
+    }
 %    \end{macrocode}
 %
 % \item Macros for drawing graphs of graph theory (used for the backcover image)
 %    \begin{macrocode}
-%<class>  \RequirePackage{tkz-berge}
-%<class>}{
+  \RequirePackage{tkz-berge}
+}{
 %    \end{macrocode}
 %
 % Typically, the \Package{standalone} is not used for the cover.
 % \item Compile \TeX{} pictures stand-alone or as part of a document:
 %    \begin{macrocode}
-%<class>\RequirePackage[group=false,subpreambles,sort]{standalone}%
-%<class>}
+\RequirePackage[group=false,subpreambles,sort]{standalone}%
+}
+%    \end{macrocode}
+%
+% \item Print page grid in background:
+%    \begin{macrocode}
+\RequirePackage[foreground]{pagegrid}%
+%    \end{macrocode}
+%
+% \item Tools to load and manipulate data:
+%    \begin{macrocode}
+\RequirePackage{datatool}%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
+% \item Control float placement:
+%    \begin{macrocode}
+\RequirePackage{placeins}%
 %    \end{macrocode}
 %
 % \item Define commands that appear not to eat spaces:
@@ -824,21 +870,6 @@ Running "make install" installs the files in the local TeX tree.
 % \item A couple of things involving environments:
 %    \begin{macrocode}
 \RequirePackage{environ}
-%    \end{macrocode}
-%
-% \item Print page grid in background:
-%    \begin{macrocode}
-%<class>\RequirePackage[foreground]{pagegrid}%
-%    \end{macrocode}
-%
-% \item Tools to load and manipulate data:
-%    \begin{macrocode}
-%<class>\RequirePackage{datatool}%
-%    \end{macrocode}
-%
-% \item Control float placement:
-%    \begin{macrocode}
-%<class>\RequirePackage{placeins}%
 %    \end{macrocode}
 %
 % \item Improve on \LaTeX{}'s footnote handling (useful for its ×\savenotes× and
@@ -1210,6 +1241,14 @@ Running "make install" installs the files in the local TeX tree.
 \dim_const:Nn \c_@@_printer_layoutoffset_dim { 10mm }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
 % We define a \enquote{potential} layout offset dimension which is non-zero (and
 % the equal to \enquote{printer} layout offset dimension) iff the output is
 % prepared for the printer ("\g_@@_for_printer_bool" flag equals true).
@@ -1219,14 +1258,6 @@ Running "make install" installs the files in the local TeX tree.
 }{
   \dim_const:Nn \c_@@_potential_layoutoffset_dim {\c_zero_dim}
 }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%</class|class-article>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*class>
 %    \end{macrocode}
 %
 % We define a \enquote{printer} binding dimension
@@ -1320,14 +1351,6 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
 }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%</class>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-%<*class|class-article>
 %    \end{macrocode}
 %
 % The binding offset is applied iff the front cover is required ("frontcover"
@@ -1456,19 +1479,19 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% When the inside pages are produced, the crop marks are shown.
-%    \begin{macrocode}
-\bool_if:NT {\g_@@_inside_pages_bool} {
-  \geometry{showcrop}
-}
-%    \end{macrocode}
-%
 %    \begin{macrocode}
 %</class|class-article>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 %<*class>
+%    \end{macrocode}
+%
+% When the inside pages are produced, the crop marks are shown.
+%    \begin{macrocode}
+\bool_if:NT {\g_@@_inside_pages_bool} {
+  \geometry{showcrop}
+}
 %    \end{macrocode}
 %
 % We create a constant token list that contains the geometry of the front cover.
@@ -2998,6 +3021,14 @@ Running "make install" installs the files in the local TeX tree.
   }
 }
 %    \end{macrocode}
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
 % \end{macro}
 %
 % \subsection{\Pkg{Varioref}}
