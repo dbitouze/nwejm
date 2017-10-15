@@ -1153,6 +1153,12 @@ Running "make install" installs the files in the local TeX tree.
 \tl_const:Nn \c_@@_issue_number_year_file_string_tl {\c_@@_main_file_name_tl.iny}
 %    \end{macrocode}
 %
+% % For the name of the file containing the informations needed to separate the
+% % PDF files for both the individual articles and for the issue for the printer.
+% %    \begin{macrocode}
+% \tl_const:Nn \c_@@_issue_informations_separate_file_string_tl {\c_@@_main_file_name_tl.ipr}
+% %    \end{macrocode}
+%
 % For the prefix of the bibliographic key of each article.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_issue_bib_key_tl {\int_use:N \g_@@_issue_number_int}
@@ -3732,6 +3738,17 @@ Running "make install" installs the files in the local TeX tree.
   \tl_gclear:N \g_@@_people_affiliation_tl
   \tl_gclear:N \g_@@_people_email_tl
   \tl_clear:N \l_@@_people_first_last_names_tl%
+% %    \end{macrocode}
+% %
+% % We insert an invisible local table of contents that will take in account all
+% % the sections, subsections, etc. of the article. This local TOC has a label
+% % that will be used to display this TOC at the end of the article.
+% %    \begin{macrocode}
+%   \etocarticlestyle
+%   \tl_set:Nn \l_@@_localtableofcontents_label_tl {%
+%     localtableofcontents-\int_use:N \g_@@_articles_int
+%   }
+%   \invisiblelocaltableofcontents \label{\l_@@_localtableofcontents_label_tl}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -4872,7 +4889,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \begin{macro}{\printbibliography}
 %    \begin{macrocode}
-\int_new:N \l_@@_section_int
+% \newcounter{lastpagearticle}
 \cs_set_eq:NN \_@@_printbibliography \printbibliography
 \RenewDocumentCommand \printbibliography { O{} } {
 %    \end{macrocode}
@@ -4905,6 +4922,7 @@ Running "make install" installs the files in the local TeX tree.
 % The independant articles contain their (local) table of contents at their end.
 %    \begin{macrocode}
    \bool_if:NF \g_@@_nolocaltoc_bool {
+%    \setcounter{lastpagearticle}{\value{page}}
      \newpage
      \setcounter{page}{\c_zero}
      \pagenumbering{roman}%
@@ -4914,8 +4932,26 @@ Running "make install" installs the files in the local TeX tree.
 % We don't want the article's title (chapter's title) in the (local) table of
 % contents.
 %    \begin{macrocode}
+% %<class> \group_begin:
+% %<class> \hypersetup{bookmarksdepth=-2}
+% %<class> \etocsetnexttocdepth{subsection}
+% %<class> \etocsettocdepth.toc{chapter}
+% %<class> \tableofcontents\ref{\l_@@_localtableofcontents_label_tl}
+% %<class> \etocsettocdepth.toc {subsection}
+% %<class> \group_end:
     \etocsetlevel{chapter}{6}
     \tableofcontents
+%      \afterpage{
+%        \pagenumbering{arabic}%
+%        \setcounter{page}{\value{lastpagearticle}}
+%        \addtocounter{page}{1}
+%        \checkoddpage
+%        \ifoddpage
+%        \newpage
+%        % \else
+%        % \setcounter{page}{\value{lastpagearticle}}
+%        \fi
+%      }
   }
 %    \end{macrocode}
 % \end{macro}
