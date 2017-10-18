@@ -22,6 +22,7 @@
 #include:booktabs
 #include:varioref
 #include:mathtools
+#include:subcaption
 #include:mathrsfs
 #include:esvect
 #include:kpfonts

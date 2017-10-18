@@ -17,7 +17,7 @@
 
 \RequireCitationStyle{authoryear}
 
-\ExecuteBibliographyOptions{giveninits,ibidtracker=constrict}
+\ExecuteBibliographyOptions{giveninits,ibidtracker=constrict,pagetracker=page}
 
 \renewrobustcmd{\blx@mkbibfootnote}[2]{%
   \iftoggle{blx@footnote}%
@@ -47,8 +47,7 @@
   \footnote{#1}%
 }
 \newbibmacro*{cite:title}{%
-  \printtext[bibhyperref]{%
-    \printfield[citetitle]{labeltitle}}}
+    \printfield[citetitle]{labeltitle}}
 \providecommand*{\mkibid}[1]{#1}
 \newbibmacro*{cite:ibid}{%
   \printtext[bibhyperref]{\bibstring[\mkibid]{ibidem}}%
@@ -64,13 +63,14 @@
           \usebibmacro{cite:label}%
           \setunit{\addcomma\space}%
         }{%
-          \printnames{labelname}%
           \ifthenelse{%
             \iffieldundef{labelyear}%
           }{%
+            \printtext[bibhyperref]{\printnames{labelname}}%
           }{%
+            \printtext[bibhyperref]{\printnames{labelname}%
             \setunit{\addcomma\space}%
-            \usebibmacro{cite:labelyear+extrayear}%
+            \usebibmacro{cite:labelyear+extrayear}}%
             \ifthenelse{%
               \iffieldundef{labeltitle}%
             }{%
@@ -111,12 +111,11 @@
      {\setcounter{textcitetotal}{1}}
      {\stepcounter{textcitetotal}%
       \textcitedelim}%
-    \iffootnote{\usebibmacro{nwejm:cite}}{\usebibmacro{textcite}}}
+    \iffootnote{\usebibmacro{nwejm:cite}}{\printtext[bibhyperref]{\usebibmacro{textcite}}}}
   {\ifbool{cbx:parens}
      {\bibcloseparen\global\boolfalse{cbx:parens}}
      {}}
   {\usebibmacro{textcite:postnote}}
-
 \ExecuteBibliographyOptions{autocite=nwejmfootcite}
 %% 
 %% Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
