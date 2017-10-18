@@ -1805,15 +1805,15 @@ Running "make install" installs the files in the local TeX tree.
     \thesection.~%
   }{%
   }
-  \sectiontitle
+  \g_@@_header_section_title_tl
 }%
 \newpagestyle{@@_mainmatter_ps}[]{%
   \sethead%
   [
-  \tl_if_exist:NT {\g_@@_short_title_tl}
+  \tl_if_exist:NT {\g_@@_header_title_tl}
   {
-    \tl_if_empty:NF \g_@@_short_title_tl {%
-      \slshape\g_@@_short_title_tl
+    \tl_if_empty:NF \g_@@_header_title_tl {%
+      \slshape\g_@@_header_title_tl
     }
   }
   ]%
@@ -3259,7 +3259,7 @@ Running "make install" installs the files in the local TeX tree.
 %   title} is store in "\g_@@_title_tl" for later use.
 %    \begin{macrocode}
 \tl_new:N \g_@@_title_tl
-\RenewDocumentCommand \title { o m } {
+\RenewDocumentCommand \title { o o m } {
 %    \end{macrocode}
 %
 % We don't want the (next) title to appear in the headers of the preceding
@@ -3273,15 +3273,23 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \int_gincr:N \g_@@_articles_int
   \tl_gclear:N \g_@@_short_title_tl
+  \tl_gclear:N \g_@@_header_title_tl
   \tl_gclear:N \g_@@_short_subtitle_tl
   %
   \IfNoValueF {#1}
   {
     \tl_gset:Nn \g_@@_short_title_tl {#1}
   }
-  \tl_gset:Nn \g_@@_title_tl {#2}
+  \IfNoValueF {#2}
+  {
+    \tl_gset:Nn \g_@@_header_title_tl {#2}
+  }
+  \tl_gset:Nn \g_@@_title_tl {#3}
   \tl_if_empty:NT \g_@@_short_title_tl {%
     \tl_gset_eq:NN \g_@@_short_title_tl \g_@@_title_tl
+  }
+  \tl_if_empty:NT \g_@@_header_title_tl {%
+    \tl_gset_eq:NN \g_@@_header_title_tl \g_@@_short_title_tl
   }
 }
 %    \end{macrocode}
@@ -3834,7 +3842,9 @@ Running "make install" installs the files in the local TeX tree.
 \cs_set_eq:NN \_@@_subsection \subsection
 \cs_set_eq:NN \_@@_subsubsection \subsubsection
 \AfterPreamble{%
-  \RenewDocumentCommand \section { s o m } {%
+  \RenewDocumentCommand \section { s o o m } {%
+    \tl_clear:N \g_@@_short_section_title_tl
+    \tl_clear:N \g_@@_header_section_title_tl
     \IfBooleanTF {#1}
     {
       \setsecnumdepth{none}%
@@ -3842,7 +3852,23 @@ Running "make install" installs the files in the local TeX tree.
     {
       \resetsecnumdepth*%
     }
-    \IfNoValueTF{#2}{\_@@_section{#3}}{\_@@_section[#2]{#3}}
+    \tl_gset:Nn \g_@@_section_title_tl {#4}
+    \IfNoValueTF{#2}{
+      \tl_gset_eq:NN \g_@@_short_section_title_tl \g_@@_section_title_tl
+    }{
+      \tl_gset:Nn \g_@@_short_section_title_tl {#2}
+    }
+    \IfNoValueF {#3}
+    {
+      \tl_gset:Nn \g_@@_header_section_title_tl {#3}
+    }
+    \tl_if_empty:NT \g_@@_short_section_title_tl {%
+      \tl_gset_eq:NN \g_@@_short_section_title_tl \g_@@_section_title_tl
+    }
+    \tl_if_empty:NT \g_@@_header_section_title_tl {%
+      \tl_gset_eq:NN \g_@@_header_section_title_tl \g_@@_short_section_title_tl
+    }
+    \_@@_section[\g_@@_short_section_title_tl]{\g_@@_section_title_tl}
   }
   \RenewDocumentCommand \subsection { s o m } {%
     \IfBooleanT {#1}
