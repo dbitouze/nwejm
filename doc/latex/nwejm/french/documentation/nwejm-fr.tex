@@ -30,6 +30,7 @@
 \newacronym{bap}{bap}{bounded approximation property}
 \newacronym{msc}{msc}{Mathematical Subject Classification}
 \newacronym{url}{url}{Uniform Resource Locator}
+\newacronym{tdm}{tdm}{table des matières}
 %
 \newtheorem{article}
 \newtheorem[title=Fait,style=definition]{fact}
@@ -210,25 +211,66 @@ finale.
 \subsection{Titre, sous-titre}
 \label{sec-titre}
 
-\begin{docCommand}[doc description=\mandatory]{title}{\oarg{titre court}\marg{titre}}
-  Cette commande définit le \meta{titre} de l'article qui apparaît :
+\begin{docCommand}[doc new=2017-10-23]{title}{\oarg{titre alternatif {\normalfont\ttfamily\acrshort*{tdm}}}\oarg{titre alternatif entête}\marg{titre}}
+  Cette commande définit, pour l'article en cours :
   \begin{itemize}
-  \item en début d'article ;
-  \item en titre courant\footnote{En entête.} sur les pages paires ;
-  \item comme métadonnée \enquote{Titre} du fichier \textsc{pdf} correspondant ;
-  \item dans la table des matières du volume où sera publié l'article.
+  \item son \meta{titre} figurant en 1\iere{} page ;
+  \item son \emph{éventuel} \meta{titre alternatif
+      {\normalfont\ttfamily\acrshort*{tdm}}} figurant :
+    \begin{itemize}
+    \item dans le volume où l'article sera publié :
+      \begin{itemize}
+      \item en \gls{tdm} ;
+      \item en signet ;
+      \end{itemize}
+    \item dans le fichier \textsc{pdf} de l'article autonome, en métadonnée
+      \enquote{Titre} ;
+    \end{itemize}
+  \item son \emph{éventuel} \meta{titre alternatif entête} figurant en
+    entête\footnote{\Ie{} en titre courant.} sur les pages paires.
+  \end{itemize}
+  L'usage précis de cette commande est synthétisé au \vref{tab-commande-title}.
+\end{docCommand}
+
+\begin{table}[htb]
+  \centering
+  \caption{Usage (des deux arguments optionnels) de la commande
+    \protect\refCom{title} }
+  \label{tab-commande-title}
+\footnotesize%
+\lstset{%
+  deletekeywords={title},deletekeywords={[3]title},%
+}
+\begin{tabular}{|l|c|c|c|}
+  \cline{2-4}
+  \multicolumn{1}{c|}{}                                                                                                                             & 1\iere{} page                     & \gls{tdm}                                            & entête                \\\hline
+  \lstinline+\title{+\meta{titre}\lstinline+}+                                                                                                      & \multicolumn{3}{c|}{\meta{titre}}                                                                                       \\\hline
+  \lstinline+\title[+\meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}}\lstinline+]{+\meta{titre}\lstinline+}+                                    & \meta{titre}                      & \multicolumn{2}{c|}{\meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}}}    \\\hline
+  \lstinline+\title[][+\meta{alt. entête}\lstinline+]{+\meta{titre}\lstinline+}+                                                                 & \multicolumn{2}{c|}{\meta{titre}} & \meta{alt. entête}                                                        \\\hline
+  \lstinline+\title[+\meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}}\lstinline+][+\meta{alt. entête}\lstinline+]{+\meta{titre}\lstinline+}+ & \meta{titre}                      & \meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}} & \meta{alt. entête} \\\hline
+\end{tabular}
+\end{table}
+
+\begin{docCommand}{subtitle}{\oarg{sous-titre alternatif {\normalfont\ttfamily\acrshort*{tdm}}}\marg{sous-titre}}
+  Cette commande définit \emph{éventuellement}, pour l'article en cours :
+  \begin{itemize}
+  \item son \meta{sous-titre} figurant en 1\iere{} page à la suite
+    du \meta{titre} ;
+  \item son \emph{éventuel} \meta{sous-titre alternatif
+      {\normalfont\ttfamily\acrshort*{tdm}}} figurant à la suite du
+    \meta{titre}\footnote{Ou éventuel \meta{titre alternatif
+        {\normalfont\ttfamily\acrshort*{tdm}}}.} :
+    \begin{itemize}
+    \item dans le volume où l'article sera publié :
+      \begin{itemize}
+      \item en \gls{tdm} ;
+      \item en signet ;
+      \end{itemize}
+    \item dans le fichier \textsc{pdf} de l'article autonome, en métadonnée
+      \enquote{Titre}.
+    \end{itemize}
   \end{itemize}
 \end{docCommand}
-
-\begin{docCommand}{subtitle}{\oarg{sous-titre court}\marg{sous-titre}}
-  Cette commande définit l'éventuel \meta{sous-titre} de l'article. Celui-ci
-  est automatiquement ajouté au titre.
-\end{docCommand}
-
-Les commandes \refCom{title} et \refCom{subtitle} admettent un argument
-optionnel permettant de spécifier un \meta{(sous-)titre court} de l'article qui
-figure alors à la place du (sous-)titre \enquote{normal} en titre courant et
-dans la table des matières.
 
 \begin{bodycode}
 \title[Le Traité du calcul des probabilités]{Le Traité du calcul des
@@ -437,6 +479,49 @@ Le titre proprement dit de l'article, regroupant tous les éléments saisis à l
   Pour que les remerciements soient affichés, il est nécessaire de recourir à la
   commande \refCom{printbibliography} destinée à être utilisée en fin d'article.
 \end{dbremark}
+
+\section{Commandes de structuration}
+
+La \nwejmauthorcl{} modifie la commande usuelle de structuration
+\docAuxCommand{section} pour permettre d'en différencier le titre alternatif
+figurant en \gls{tdm} de celui figurant en entête\footnote{On notera, de ce
+  point de vue, la similitude avec la commande \protect\refCom{title}.}.
+
+\begin{docCommand}[doc new=2017-10-23]{section}{\oarg{titre alternatif {\normalfont\ttfamily\acrshort*{tdm}}}\oarg{titre alternatif entête}\marg{titre}}
+  Cette commande définit, pour la section en cours :
+  \begin{itemize}
+  \item son \meta{titre} figurant au fil du texte ;
+  \item son \emph{éventuel} \meta{titre alternatif
+      {\normalfont\ttfamily\acrshort*{tdm}}} figurant, dans le volume où
+    l'article sera publié :
+    \begin{itemize}
+    \item en \gls{tdm} ;
+    \item en signet.
+    \end{itemize}
+  \item son \emph{éventuel} \meta{titre alternatif entête} figurant en
+    entête\footnote{\Ie{} en titre courant.} sur les pages impaires.
+  \end{itemize}
+  L'usage précis de cette commande est synthétisé au \vref{tab-commande-section}.
+\end{docCommand}
+
+\begin{table}[htb]
+  \centering
+  \caption{Usage (des deux arguments optionnels) de la commande
+    \protect\refCom{section} }
+  \label{tab-commande-section}
+\footnotesize%
+\lstset{%
+  deletekeywords={section},deletekeywords={[3]section},%
+}
+\begin{tabular}{|l|c|c|c|}
+  \cline{2-4}
+  \multicolumn{1}{c|}{}                                                                                                                             & fil du texte                     & \gls{tdm}                                            & entête                \\\hline
+  \lstinline+\section{+\meta{titre}\lstinline+}+                                                                                                      & \multicolumn{3}{c|}{\meta{titre}}                                                                                       \\\hline
+  \lstinline+\section[+\meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}}\lstinline+]{+\meta{titre}\lstinline+}+                                    & \meta{titre}                      & \multicolumn{2}{c|}{\meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}}}    \\\hline
+  \lstinline+\section[][+\meta{alt. entête}\lstinline+]{+\meta{titre}\lstinline+}+                                                                 & \multicolumn{2}{c|}{\meta{titre}} & \meta{alt. entête}                                                        \\\hline
+  \lstinline+\section[+\meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}}\lstinline+][+\meta{alt. entête}\lstinline+]{+\meta{titre}\lstinline+}+ & \meta{titre}                      & \meta{alt. {\normalfont\ttfamily\acrshort*{tdm}}} & \meta{alt. entête} \\\hline
+\end{tabular}
+\end{table}
 
 \section{Bibliographie}
 \label{sec-bibliographie}
@@ -1546,9 +1631,10 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
   \end{description}
 \item[\package{kpfonts} :] police principale du document :
   \begin{description}
-  \item[option par défaut :] \docAuxKey{noDcommand} ;
+  \item[options par défaut :] \docAuxKey{noDcommand}, \docAuxKey{easyscsl} ;
   \end{description}
 \item[\package{graphicx} :] inclusion d'images ;
+\item[\package{subcaption} :] sous-figures et sous-tableaux ;
 \item[\package{adjustbox} :] ajustement de la position de boîtes, par exemple
   d'images ;
 \item[\package{xspace} :] définition de commandes qui ne \enquote{mangent} pas
@@ -1561,7 +1647,8 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
     cf. \vref{sec-guillemets-citations}.} :
     \begin{description}
     \item[option par défaut :] \docAuxKey{autostyle} ;
-    \item[réglage par défaut] |\SetCiteCommand{\autocite}| ;
+    \item[réglage par défaut :]
+      \lstinline[alsolanguage={[csquotes]TeX},alsolanguage={[biblatex]TeX}]|\SetCiteCommand{\autocite}| ;
   \end{description}
 \item[\package{biblatex} :] gestion puissante de la bibliographie ;
 \item[\package{datetime2} :] formats de dates et de (zones de) temps :
@@ -1572,14 +1659,21 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
   hypertextes\footnote{Cf. \vref{sec-url}.} :
   \begin{description}
   \item[option par défaut :] \docAuxKey{hidelinks},
+    \docAuxKey{pdfencoding}|=unicode|, \docAuxKey{final}, \docAuxKey{breaklinks},
     \docAuxKey{hypertexnames}(|=false|) ;
   \end{description}
 \item[\package{glossaries} :] création de glossaires et (listes d')acronymes :
   \begin{description}
   \item[option par défaut :] \docAuxKey{nowarn} ;
   \end{description}
-\item[\package{varioref} et \package{cleveref} :] références croisées
-  intelligentes\footnote{Cf. \vref{sec-references-croisees}.}.
+\item[\package{varioref} :] références de pages intelligentes.
+\item[\package{cleveref} :] références croisées
+  intelligentes\footnote{Cf. \vref{sec-references-croisees}.} ;
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{french}, \docAuxKey{ngerman},
+    \docAuxKey{dutch}, \docAuxKey{english}, \docAuxKey{noabbrev},
+    \docAuxKey{capitalize}.
+  \end{description}
 \end{description}
 
 \subsection{Packages non  chargés par la classe}\label{sec:packages-non-charges}
