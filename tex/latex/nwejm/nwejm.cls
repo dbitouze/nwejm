@@ -30,7 +30,7 @@
 \msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{You~ are~ using~ the~
   `nwejm'~ class~ designed~ for~ the~ complete~ issues~ of~ the~ NWEJM~ and~
   aimed~ for~ the~ NWEJM's~ team,~ not~ for~ authors~ of~ articles:~ if~ you're~
-  an~ author~ of~ an~ article~,~ you~ should~ use~ the~ `nwejmart'~ class~
+  an~ author~ of~ an~ article,~ you~ should~ use~ the~ `nwejmart'~ class~
   instead.~ Otherwise,~ if~ you're~ from~ the~ NWEJM's~ team,~ please~ note~
   that~ the~ issue's~ main~ file~ should~ be~ named~
   `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~ `\c_sys_jobname_str.tex'.~
@@ -77,6 +77,7 @@
   `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
 \dim_const:Nn \c__nwejm_pagegrid_dim { 1mm}
 \bool_new:N \g__nwejm_for_authors_bool
+\bool_new:N \g__nwejm_for_printer_bool
 \bool_new:N \g__nwejm_cover_bool
 \bool_new:N \g__nwejm_coverpage_bool
 \bool_new:N \g__nwejm_inside_pages_bool
@@ -110,12 +111,15 @@
   12pt .code:n = {%
     \PassOptionsToClass{12pt}{book}
   },%
+  draft .code:n = {%
+    \PassOptionsToClass{draft}{book}
+  },%
 }%
 \ProcessKeysOptions { nwejm }
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
-\PassOptionsToPackage{fleqn}{mathtools}%
-\PassOptionsToPackage{french,ngerman,dutch,english,noabbrev}{cleveref}
+\PassOptionsToPackage{fleqn}{amsmath}%
+\PassOptionsToPackage{french,ngerman,dutch,english,noabbrev,capitalize}{cleveref}
 \AtBeginDocument{
   \LoadDictionaryFor{french}{nwejm}
   \LoadDictionaryFor{english}{nwejm}
@@ -135,17 +139,19 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
+\RequirePackage{adjustbox}%
+\RequirePackage{xr}
+\RequirePackage{currfile}
+\RequirePackage[multiple]{footmisc}%
+\RequirePackage{xcolor}%
+\RequirePackage{afterpage}%
+\RequirePackage{ifoddpage}%
 \RequirePackage{import}%
 \bool_if:nT { \g__nwejm_for_authors_bool } {
   \RequirePackage{draftwatermark}[2006/06/30]%
 }
-\RequirePackage{adjustbox}%
 \RequirePackage{zref-totpages}
-\RequirePackage{xr}
-\RequirePackage{currfile}
 \RequirePackage{zref-xr}%
-\RequirePackage[multiple]{footmisc}%
-\RequirePackage{xcolor}%
 \bool_if:NTF {\g__nwejm_cover_bool} {
   \RequirePackage{tcolorbox}
   \RequirePackage{tikzpagenodes}
@@ -174,6 +180,9 @@
 }{
 \RequirePackage[group=false,subpreambles,sort]{standalone}%
 }
+\RequirePackage[foreground]{pagegrid}%
+\RequirePackage{datatool}%
+\RequirePackage{placeins}%
 \RequirePackage{xspace}%
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage{array}
@@ -188,26 +197,26 @@
 \RequirePackage{fmtcount}%
 \RequirePackage{babel}%
 \RequirePackage{varioref}
+\RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
 \RequirePackage{etoc}%
-\RequirePackage[babel=true]{microtype}%
+\RequirePackage[babel=true,final]{microtype}%
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
-\RequirePackage[foreground]{pagegrid}%
-\RequirePackage{datatool}%
-\RequirePackage{placeins}%
 \RequirePackage{footnote}%
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
 \ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
-\RequirePackage[hyperfootnotes=false,pdfencoding=unicode]{hyperref}%
+\RequirePackage[hyperfootnotes=false,pdfencoding=unicode,final]{hyperref}%
 \AtBeginDocument{%
-  \hypersetup{hidelinks,hypertexnames=false}%
+  \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
 \RequirePackage[all]{hypcap}
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
+\expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}
+\let\globcount\newcount
 \RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
@@ -266,7 +275,7 @@
   \ifcurrentbaselanguage{french}{\FBcolonspace}{}:
   % \ifundef{\Fcolonspace}{\FBcolonspace}{\Fcolonspace}:
 }
-\tl_const:Nn \c__nwejm_aside_string_tl {--}
+\tl_const:Nn \c__nwejm_aside_string_tl {---}
 \tl_const:Nn \c__nwejm_draftwatermark_string_tl {draft}
 \tl_const:Nn \c__nwejm_issue_bib_file_suffix_string_tl {__nwejm}
 \tl_const:Nn \c__nwejm_issue_bib_file_string_tl {\c_sys_jobname_str\c__nwejm_issue_bib_file_suffix_string_tl.bib}
@@ -375,9 +384,9 @@
   \dim_const:Nn \c__nwejm_paperwidth_dim  {
     \c__nwejm_layoutwidth_dim
     +
-    2
-    \c__nwejm_potential_layoutoffset_dim
-    +\c__nwejm_potential_bindingoffset_dim
+    2\c__nwejm_potential_layoutoffset_dim
+    +
+    \c__nwejm_potential_bindingoffset_dim
   }
 }
 \dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
@@ -600,15 +609,15 @@
     \thesection.~%
   }{%
   }
-  \sectiontitle
+  \g__nwejm_header_section_title_tl
 }%
 \newpagestyle{__nwejm_mainmatter_ps}[]{%
   \sethead%
   [
-  \tl_if_exist:NT {\g__nwejm_short_title_tl}
+  \tl_if_exist:NT {\g__nwejm_header_title_tl}
   {
-    \tl_if_empty:NF \g__nwejm_short_title_tl {%
-      \slshape\g__nwejm_short_title_tl
+    \tl_if_empty:NF \g__nwejm_header_title_tl {%
+      \slshape\g__nwejm_header_title_tl
     }
   }
   ]%
@@ -1074,7 +1083,8 @@
   % }
   \setlist[description,1]{font=\scshape\bfseries}
   \footnotesize%
-    \begin{multicols*}{2}
+  \begin{multicols*}{2}
+    \raggedright
       \setlength{\columnsep}{1mm}
       \begin{description}[leftmargin=2em]
       \item[\c__nwejm_editorinchief_string_tl] \
@@ -1263,7 +1273,7 @@
   \tl_gclear:N \g__nwejm_keywords_tl
   \tl_clear:N \l_tmpb_clist
   \clist_set:Nn \l_tmpb_clist {#2}
-  \tl_set:Nn \g__nwejm_keywords_tl { \clist_use:Nnnn \l_tmpb_clist { ,~ } { ,~ } { ,~ } }
+  \tl_set:Nx \g__nwejm_keywords_tl { \clist_use:Nnnn \l_tmpb_clist { ,~ } { ,~ } { ,~ } }
 }
 \tl_new:N \g__nwejm_msc_tl
 \NewDocumentCommand \msc { m } {
@@ -1398,31 +1408,30 @@
     \tl_gset:Nn \g__nwejm_authors_instructions_tl {#1}
   }
 }
-\addto\extrasfrench{%
+\vref@addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
   \def\reftextfacebefore{page~\reftextvario{ci-contre}%
-    {pr\’ec\’edente}}%
+    {pr\'ec\'edente}}%
   \def\reftextafter
   {page~suivante}%
   \def\reftextbefore
-  {page~pr\’ec\’edente}%
-  \def\reftextcurrent
-  {de~la~pr\’esente~page}%
-  \def\reftextfaraway#1{page~\pageref{#1}}%
-  \def\reftextpagerange#1#2{pages~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~\‘a~\ref{#2}}%
+  {page~pr\'ec\'edente}%
+  \def\reftextcurrent {de~la~pr\'esente~page}%
+  \def\reftextfaraway#1{p.\nobreakspace\pageref{#1}}%
+  \def\reftextpagerange#1#2{p.\nobreakspace\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~\‘a\nobreakspace\ref{#2}}%
 }
-\addto\extrasngerman{%
+\vref@addto\extrasngerman{%
   \def\reftextfaceafter {auf~der~n\"achsten~Seite}%
   \def\reftextfacebefore{auf~der~vorherigen~Seite}%
   \let\reftextafter     \reftextfaceafter
   \let\reftextbefore    \reftextfacebefore
   \def\reftextcurrent   {auf~dieser~Seite}%
-  \def\reftextfaraway#1{auf~Seite~\pageref{#1}}%
-  \def\reftextpagerange#1#2{auf~den~Seiten~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~bis~\ref{#2}}%
+  \def\reftextfaraway#1{auf~S.\nobreakspace\pageref{#1}}%
+  \def\reftextpagerange#1#2{auf~den~S.\nobreakspace\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~bis\nobreakspace\ref{#2}}%
 }
-\addto\extrasdutch{%
+\vref@addto\extrasdutch{%
   \def\refpagename{pagina}%
   \def\reftextfaceafter {op~de~\reftextvario{rechter~\refpagename}%
     {\refpagename\ hiernaast}}%
@@ -1433,18 +1442,19 @@
   \def\reftextbefore    {op~de~\reftextvario{vorige~\refpagename}%
     {\refpagename\ hiervoor}}%
   \def\reftextcurrent   {op~deze~\refpagename}%
-  \def\reftextfaraway#1{op~\refpagename\c_space_tl\pageref{#1}}
+  \def\reftextfaraway#1{op~\refpagename\nobreakspace\pageref{#1}}
 }
-\addto\extrasenglish{%
+\vref@addto\extrasenglish{%
   \def\reftextfaceafter {on~the~\reftextvario{facing}{next}~page}%
   \def\reftextfacebefore{on~the~\reftextvario{facing}{preceding}~page}%
   \def\reftextafter     {on~the~\reftextvario{following}{next}~page}%
   \def\reftextbefore    {on~the~\reftextvario{preceding}{previous}~page}%
   \def\reftextcurrent   {on~\reftextvario{this}{the~current}~page}%
-  \def\reftextfaraway#1{on~page~\pageref{#1}}%
-  \def\reftextpagerange#1#2{on~pages~\pageref{#1}--\pageref{#2}}%
-  \def\reftextlabelrange#1#2{\ref{#1}~to~\ref{#2}}%
+  \def\reftextfaraway#1{on~p.\nobreakspace\pageref{#1}}%
+  \def\reftextpagerange#1#2{on~pp.\nobreakspace\pageref{#1}--\pageref{#2}}%
+  \def\reftextlabelrange#1#2{\ref{#1}~to\nobreakspace\ref{#2}}%
 }
+\def\reftextvario#1#2{#2}
 \cs_new_protected:Nn \__nwejm_command_only_in_body:n
 {
   \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {
@@ -1472,9 +1482,9 @@
   }{%
     \StandardFootnotes
   }
-      \bool_gset_false:N \g__nwejm_gradient_nabla_bool
-      \bool_gset_false:N \g__nwejm_gradient_nabla_control_bool
-      \bool_gset_false:N \g__nwejm_grad_used_bool
+  \bool_gset_false:N \g__nwejm_gradient_nabla_bool
+  \bool_gset_false:N \g__nwejm_gradient_nabla_control_bool
+  \bool_gset_false:N \g__nwejm_grad_used_bool
   \inputfrom{./}{#2}
   \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
     footnote,
@@ -1515,19 +1525,27 @@
   }%
 }
 \tl_new:N \g__nwejm_title_tl
-\RenewDocumentCommand \title { o m } {
+\RenewDocumentCommand \title { o o m } {
   \cleardoublepage
   \int_gincr:N \g__nwejm_articles_int
   \tl_gclear:N \g__nwejm_short_title_tl
+  \tl_gclear:N \g__nwejm_header_title_tl
   \tl_gclear:N \g__nwejm_short_subtitle_tl
   %
   \IfNoValueF {#1}
   {
     \tl_gset:Nn \g__nwejm_short_title_tl {#1}
   }
-  \tl_gset:Nn \g__nwejm_title_tl {#2}
+  \IfNoValueF {#2}
+  {
+    \tl_gset:Nn \g__nwejm_header_title_tl {#2}
+  }
+  \tl_gset:Nn \g__nwejm_title_tl {#3}
   \tl_if_empty:NT \g__nwejm_short_title_tl {%
     \tl_gset_eq:NN \g__nwejm_short_title_tl \g__nwejm_title_tl
+  }
+  \tl_if_empty:NT \g__nwejm_header_title_tl {%
+    \tl_gset_eq:NN \g__nwejm_header_title_tl \g__nwejm_short_title_tl
   }
 }
 \tl_new:N \g__nwejm_subtitle_tl
@@ -1680,7 +1698,7 @@
 \tl_new:N \l__nwejm_title_box_tl
 \tl_new:N \g__nwejm_title_for_toc_tl
 \RenewDocumentCommand \maketitle { } {
-      \FloatBarrier%
+  \FloatBarrier%
 \tl_gset:Nn \g__nwejm_article_bib_key_tl {%
   \c__nwejm_issue_bib_key_tl
   -art-
@@ -1872,7 +1890,9 @@
 \cs_set_eq:NN \__nwejm_subsection \subsection
 \cs_set_eq:NN \__nwejm_subsubsection \subsubsection
 \AfterPreamble{%
-  \RenewDocumentCommand \section { s o m } {%
+  \RenewDocumentCommand \section { s o o m } {%
+    \tl_clear:N \g__nwejm_short_section_title_tl
+    \tl_clear:N \g__nwejm_header_section_title_tl
     \IfBooleanTF {#1}
     {
       \setsecnumdepth{none}%
@@ -1880,7 +1900,23 @@
     {
       \resetsecnumdepth*%
     }
-    \IfNoValueTF{#2}{\__nwejm_section{#3}}{\__nwejm_section[#2]{#3}}
+    \tl_gset:Nn \g__nwejm_section_title_tl {#4}
+    \IfNoValueTF{#2}{
+      \tl_gset_eq:NN \g__nwejm_short_section_title_tl \g__nwejm_section_title_tl
+    }{
+      \tl_gset:Nn \g__nwejm_short_section_title_tl {#2}
+    }
+    \IfNoValueF {#3}
+    {
+      \tl_gset:Nn \g__nwejm_header_section_title_tl {#3}
+    }
+    \tl_if_empty:NT \g__nwejm_short_section_title_tl {%
+      \tl_gset_eq:NN \g__nwejm_short_section_title_tl \g__nwejm_section_title_tl
+    }
+    \tl_if_empty:NT \g__nwejm_header_section_title_tl {%
+      \tl_gset_eq:NN \g__nwejm_header_section_title_tl \g__nwejm_short_section_title_tl
+    }
+    \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
   }
   \RenewDocumentCommand \subsection { s o m } {%
     \IfBooleanT {#1}
@@ -1954,6 +1990,10 @@
   }{
   }
 }
+\DeclareCaptionLabelSeparator{dash}{\nobreakspace--\nobreakspace}
+\captionsetup{
+   labelsep=dash
+ }
 \NewDocumentCommand \century { s m } {%
   \__nwejm_ordinalnum_suffix:n {#2}%
   \IfBooleanTF {#1}
@@ -2202,13 +2242,29 @@
   proof%
 }
 \clist_map_inline:Nn \l_tmpa_clist {
-  \crefname{#1}{
-    \GetTranslation{#1}
-  }{%
-    \GetTranslation{plural-#1}
+  \ifcurrentbaselanguage{french}{
+    \crefname{#1}{
+      \tl_lower_case:n{
+        \GetTranslation{#1}
+      }
+    }{%
+      \tl_lower_case:n{
+        \GetTranslation{plural-#1}
+      }
+    }
+  }{
+    \crefname{#1}{
+      \tl_mixed_case:n{
+        \GetTranslation{#1}
+        }
+    }{%
+      \tl_mixed_case:n{
+        \GetTranslation{plural-#1}
+      }
+    }
   }
   \Crefname{#1}{
-    \tl_mixed_case:n{ \protect
+    \tl_mixed_case:n{
       \GetTranslation{#1}
     }
   }{%
@@ -2632,6 +2688,7 @@
   left=<,
   right=>
 }
+\AtEndPreamble{\allowdisplaybreaks}
 \AfterEndPreamble{
   \autonum@generatePatchedReferenceCSL{vref}
   \clist_set:Nn \l_tmpa_clist {equation,align,gather,multline,flalign}
@@ -2659,7 +2716,6 @@
   }%
   \SetCiteCommand{\autocite}%
 }%
-\int_new:N \l__nwejm_section_int
 \cs_set_eq:NN \__nwejm_printbibliography \printbibliography
 \RenewDocumentCommand \printbibliography { O{} } {
   \FloatBarrier%
