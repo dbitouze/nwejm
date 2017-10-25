@@ -105,7 +105,7 @@ classe a pour but :
   \begin{itemize}
   \item elle charge le \Package{inputenc}\footnote{%
       Il convient donc de \emph{ne pas} charger ce package : on se reportera
-      à la \vref{sec-canevas-de-fichier} pour un canevas de fichier source
+      à l'\vref{sec-canevas-de-fichier} pour un canevas de fichier source
       destiné à la \nwejm{} et notamment pour un préambule typique.%
       %
     }
@@ -229,7 +229,8 @@ finale.
   \item son \emph{éventuel} \meta{titre alternatif entête} figurant en
     entête\footnote{\Ie{} en titre courant.} sur les pages paires.
   \end{itemize}
-  L'usage précis de cette commande est synthétisé au \vref{tab-commande-title}.
+  L'usage précis de cette commande est synthétisé à la
+  \vref{tab-commande-title}.
 \end{docCommand}
 
 \begin{table}[htb]
@@ -501,7 +502,8 @@ figurant en \gls{tdm} de celui figurant en entête\footnote{On notera, de ce
   \item son \emph{éventuel} \meta{titre alternatif entête} figurant en
     entête\footnote{\Ie{} en titre courant.} sur les pages impaires.
   \end{itemize}
-  L'usage précis de cette commande est synthétisé au \vref{tab-commande-section}.
+  L'usage précis de cette commande est synthétisé à la
+  \vref{tab-commande-section}.
 \end{docCommand}
 
 \begin{table}[htb]
@@ -824,7 +826,7 @@ La \nwejmauthorcl{} :
 
 \subsubsection{Commandes prédéfinies}
 
-La classe offre un certain nombre de commandes listées dans le \vref{com-paired}
+La classe offre un certain nombre de commandes listées \vref{com-paired},
 facilitant la saisie de paires de délimiteurs courants, par exemple pour les
 normes, les valeurs absolues, etc.
 
@@ -1062,7 +1064,7 @@ créer de nouveaux si besoin est (cf. commande \refCom{newtheorem}).
 \subsubsection{Environnements de type \enquote{théorème} prédéfinis}
 \label{sec:envir-de-type}
 
-Le \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis par la
+La \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis par la
 \nwejmauthorcl{} avec :
 \begin{description}
 \item[en colonne~1] le nom des environnements correspondants ;
@@ -1091,7 +1093,7 @@ Le \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis pa
 \end{table}
 
 \begin{dbremark}{\enquote{Théorèmes} non numérotés}{}
-  Chacun des environnements du \vref{env-theorems} admet une version étoilée
+  Chacun des environnements de la \vref{env-theorems} admet une version étoilée
   créant une version non numérotée de l'objet de type \enquote{théorème}
   correspondant.
 \end{dbremark}
@@ -1119,7 +1121,7 @@ Le \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis pa
 On remarque dans l'exemple précédent que les \enquote{théorèmes} ont des mises
 en forme variables. La \nwejmauthorcl{} fournit effectivement trois styles de
 \enquote{théorèmes}, \docValue{theorem}, \docValue{definition} et
-\docValue{proof}, dont les caractéristiques sont indiquées au
+\docValue{proof}, dont les caractéristiques sont indiquées à la
 \vref{env-theorems-styles}.
 
 \begin{table}
@@ -1308,9 +1310,9 @@ On soupçonne que non \aside*{par exemple on s'attend à ce que
 \section{Sélection d'outils fournis par des packages tiers}
 
 Cette section donne une liste d'outils (commandes et environnements) fournis par
-des packages automatiquement chargés par la \nwejmauthorcl\footnote{La
-  \vref{sec-packages-charges-ou-pas} liste ceux dont les fonctionnalités peuvent
-  être utiles aux auteurs.}.
+des packages automatiquement chargés par la
+\nwejmauthorcl\footnote{L'\vref{sec-packages-charges-ou-pas} liste ceux dont les
+  fonctionnalités peuvent être utiles aux auteurs.}.
 
 \begin{dbwarning}{Liste des fonctionnalités des packages tiers non exhaustive}{}
   Cette liste est \emph{non exhaustive} :
@@ -1659,8 +1661,9 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
   hypertextes\footnote{Cf. \vref{sec-url}.} :
   \begin{description}
   \item[option par défaut :] \docAuxKey{hidelinks},
-    \docAuxKey{pdfencoding}|=unicode|, \docAuxKey{final}, \docAuxKey{breaklinks},
-    \docAuxKey{hypertexnames}(|=false|) ;
+    \docAuxKey{pdfencoding}\lstinline[alsolanguage={[hyperref]TeX}]|=unicode|,
+    \docAuxKey{final}, \docAuxKey{breaklinks},
+    \docAuxKey{hypertexnames}|=false| ;
   \end{description}
 \item[\package{glossaries} :] création de glossaires et (listes d')acronymes :
   \begin{description}
@@ -1687,7 +1690,7 @@ notables sont précisés.
 \begin{description}
 \item[\package{tikz-cd} :] création simple de diagrammes commutatifs de très
   haute qualité\footnote{Le \Package{xy}, souvent utilisé pour de tels
-    diagrammes, est incomptible avec la présente :
+    diagrammes, est incomptible avec la présente classe :
     cf. \vref{sec-incompatibilites}.} ;
 \item[\package{pgfplots} :] création simple de graphiques (de dimensions~$2$
   ou~$3$) de très haute qualité pour représenter des fonctions ou des données
