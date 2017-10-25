@@ -1411,13 +1411,12 @@
 \vref@addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
   \def\reftextfacebefore{page~\reftextvario{ci-contre}%
-    {pr\’ec\’edente}}%
+    {pr\'ec\'edente}}%
   \def\reftextafter
   {page~suivante}%
   \def\reftextbefore
-  {page~pr\’ec\’edente}%
-  \def\reftextcurrent
-  {de~la~pr\’esente~page}%
+  {page~pr\'ec\'edente}%
+  \def\reftextcurrent {de~la~pr\'esente~page}%
   \def\reftextfaraway#1{p.\nobreakspace\pageref{#1}}%
   \def\reftextpagerange#1#2{p.\nobreakspace\pageref{#1}--\pageref{#2}}%
   \def\reftextlabelrange#1#2{\ref{#1}~\‘a\nobreakspace\ref{#2}}%
@@ -1471,12 +1470,65 @@
 \NewDocumentCommand \dates { m } {
   \keys_set:nn { nwejm/dates } { #1 }
 }
+\tl_gset:Nn \g__nwejm_french_crefname_tl {
+  \clist_set:Nn \l_tmpa_clist {%
+    theorem,
+    corollary,
+    conjecture,
+    proposition,
+    lemma,
+    axiom,
+    definition,
+    remark,
+    example,
+    notation,
+    proof%
+  }
+  \clist_map_inline:Nn \l_tmpa_clist {
+    \crefname{#1}{
+      \tl_lower_case:n{
+        \GetTranslationFor{french}{#1}
+      }
+    }{%
+      \tl_lower_case:n{
+        \GetTranslationFor{french}{plural-#1}
+      }
+    }
+  }
+  \crefname{equation}{{\'e}quation}{{\'e}quations}%
+  \crefname{figure}{figure}{figures}%
+  \crefname{table}{table}{tables}%
+  \crefname{page}{page}{pages}%
+  \crefname{part}{partie}{parties}%
+  \crefname{chapter}{chapitre}{chapitres}%
+  \crefname{section}{section}{sections}%
+  \crefname{appendix}{annexe}{annexes}%
+  \crefname{enumi}{point}{points}%
+  \crefname{footnote}{note}{notes}%
+  \crefname{theorem}{th\'eor\`eme}{th\'eor\`emes}%
+  \crefname{lemma}{lemme}{lemmes}%
+  \crefname{corollary}{corollaire}{corollaires}%
+  \crefname{proposition}{proposition}{propositions}%
+  \crefname{definition}{d\'efinition}{d\'efinitions}%
+  \crefname{result}{r\'esultat}{r\'esultats}%
+  \crefname{example}{exemple}{exemples}%
+  \crefname{remark}{remarque}{remarques}%
+  \crefname{note}{commentaire}{commentaires}%
+  \crefname{algorithm}{algorithme}{algorithmes}%
+  \crefname{listing}{liste}{listes}%
+  \crefname{line}{ligne}{lignes}%
+}
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
   \tl_if_eq:nnTF { #1 } { german } {%
     \selectlanguage{ngerman}
   }{
-    \selectlanguage{#1}
+    \tl_if_eq:nnTF { #1 } { french } {%
+      \selectlanguage{french}
+      \g__nwejm_french_crefname_tl
+    }{
+      \selectlanguage{#1}
+    }
   }%
   \tl_if_eq:nnTF { #1 } { french } {%
     \FrenchFootnotes
@@ -2243,25 +2295,13 @@
   proof%
 }
 \clist_map_inline:Nn \l_tmpa_clist {
-  \ifcurrentbaselanguage{french}{
-    \crefname{#1}{
-      \tl_lower_case:n{
-        \GetTranslation{#1}
-      }
-    }{%
-      \tl_lower_case:n{
-        \GetTranslation{plural-#1}
-      }
+  \crefname{#1}{
+    \tl_mixed_case:n{
+      \GetTranslation{#1}
     }
   }{
-    \crefname{#1}{
-      \tl_mixed_case:n{
-        \GetTranslation{#1}
-        }
-    }{%
-      \tl_mixed_case:n{
-        \GetTranslation{plural-#1}
-      }
+    \tl_mixed_case:n{
+      \GetTranslation{plural-#1}
     }
   }
   \Crefname{#1}{
@@ -2273,6 +2313,9 @@
       \GetTranslation{plural-#1}
     }
   }
+}
+\AfterEndPreamble{
+  \ifcurrentbaselanguage{french}{\g__nwejm_french_crefname_tl}{}
 }
 \clist_set:Nn \l_tmpa_clist {%
   hypothesis,

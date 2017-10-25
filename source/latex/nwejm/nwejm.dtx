@@ -836,7 +836,7 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{varioref}
 %    \end{macrocode}
 %
-% \item :
+% \item Support for sub-captions (rather sub-floats):
 %    \begin{macrocode}
 \RequirePackage{subcaption}
 %    \end{macrocode}
@@ -3053,13 +3053,12 @@ Running "make install" installs the files in the local TeX tree.
 \vref@addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
   \def\reftextfacebefore{page~\reftextvario{ci-contre}%
-    {pr\’ec\’edente}}%
+    {pr\'ec\'edente}}%
   \def\reftextafter
   {page~suivante}%
   \def\reftextbefore
-  {page~pr\’ec\’edente}%
-  \def\reftextcurrent
-  {de~la~pr\’esente~page}%
+  {page~pr\'ec\'edente}%
+  \def\reftextcurrent {de~la~pr\'esente~page}%
   \def\reftextfaraway#1{p.\nobreakspace\pageref{#1}}%
   \def\reftextpagerange#1#2{p.\nobreakspace\pageref{#1}--\pageref{#2}}%
   \def\reftextlabelrange#1#2{\ref{#1}~\‘a\nobreakspace\ref{#2}}%
@@ -3144,6 +3143,64 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 %
+% Because of the ×capitalize× option passed to \Package{cleveref}, the names of
+% the references (\enquote{chapter}, \enquote{theorem}, etc.) have their first
+% letter capitalised (even with ×\cref×), which fit the English/Amercian
+% typographic rules, but not the French ones. Hence, we redefine these
+% references' names in French in order ×\cref× gives their lower case
+% version. Because this redefinition is needed more than once, we store it in
+% the ×\g_@@_french_crefname_tl× token list.
+%    \begin{macrocode}
+\tl_gset:Nn \g_@@_french_crefname_tl {
+  \clist_set:Nn \l_tmpa_clist {%
+    theorem,
+    corollary,
+    conjecture,
+    proposition,
+    lemma,
+    axiom,
+    definition,
+    remark,
+    example,
+    notation,
+    proof%
+  }
+  \clist_map_inline:Nn \l_tmpa_clist {
+    \crefname{#1}{
+      \tl_lower_case:n{
+        \GetTranslationFor{french}{#1}
+      }
+    }{%
+      \tl_lower_case:n{
+        \GetTranslationFor{french}{plural-#1}
+      }
+    }
+  }
+  \crefname{equation}{{\'e}quation}{{\'e}quations}%
+  \crefname{figure}{figure}{figures}%
+  \crefname{table}{table}{tables}%
+  \crefname{page}{page}{pages}%
+  \crefname{part}{partie}{parties}%
+  \crefname{chapter}{chapitre}{chapitres}%
+  \crefname{section}{section}{sections}%
+  \crefname{appendix}{annexe}{annexes}%
+  \crefname{enumi}{point}{points}%
+  \crefname{footnote}{note}{notes}%
+  \crefname{theorem}{th\'eor\`eme}{th\'eor\`emes}%
+  \crefname{lemma}{lemme}{lemmes}%
+  \crefname{corollary}{corollaire}{corollaires}%
+  \crefname{proposition}{proposition}{propositions}%
+  \crefname{definition}{d\'efinition}{d\'efinitions}%
+  \crefname{result}{r\'esultat}{r\'esultats}%
+  \crefname{example}{exemple}{exemples}%
+  \crefname{remark}{remarque}{remarques}%
+  \crefname{note}{commentaire}{commentaires}%
+  \crefname{algorithm}{algorithme}{algorithmes}%
+  \crefname{listing}{liste}{listes}%
+  \crefname{line}{ligne}{lignes}%
+}
+%    \end{macrocode}
+%
 % \subsection{Input variant}
 %
 % We create a variant of the "\input" macro to be use for the input of each
@@ -3155,7 +3212,12 @@ Running "make install" installs the files in the local TeX tree.
   \tl_if_eq:nnTF { #1 } { german } {%
     \selectlanguage{ngerman}
   }{
-    \selectlanguage{#1}
+    \tl_if_eq:nnTF { #1 } { french } {%
+      \selectlanguage{french}
+      \g_@@_french_crefname_tl
+    }{
+      \selectlanguage{#1}
+    }
   }%
 %    \end{macrocode}
 %
@@ -4290,25 +4352,13 @@ Running "make install" installs the files in the local TeX tree.
   proof%
 }
 \clist_map_inline:Nn \l_tmpa_clist {
-  \ifcurrentbaselanguage{french}{
-    \crefname{#1}{
-      \tl_lower_case:n{
-        \GetTranslation{#1}
-      }
-    }{%
-      \tl_lower_case:n{
-        \GetTranslation{plural-#1}
-      }
+  \crefname{#1}{
+    \tl_mixed_case:n{
+      \GetTranslation{#1}
     }
   }{
-    \crefname{#1}{
-      \tl_mixed_case:n{
-        \GetTranslation{#1}
-        }
-    }{%
-      \tl_mixed_case:n{
-        \GetTranslation{plural-#1}
-      }
+    \tl_mixed_case:n{
+      \GetTranslation{plural-#1}
     }
   }
   \Crefname{#1}{
@@ -4321,30 +4371,9 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
 }
-% \ifcurrentbaselanguage{french}{
-%   \crefname@preamble{equation}{{\'e}quation}{{\'e}quations}%
-%   \crefname@preamble{figure}{figure}{figures}%
-%   \crefname@preamble{table}{tableau}{tableaux}%
-%   \crefname@preamble{page}{page}{pages}%
-%   \crefname@preamble{part}{partie}{parties}%
-%   \crefname@preamble{chapter}{chapitre}{chapitres}%
-%   \crefname@preamble{section}{section}{sections}%
-%   \crefname@preamble{appendix}{annexe}{annexes}%
-%   \crefname@preamble{enumi}{point}{points}%
-%   \crefname@preamble{footnote}{note}{notes}%
-%   \crefname@preamble{theorem}{th\'eor\`eme}{th\'eor\`emes}%
-%   \crefname@preamble{lemma}{lemme}{lemmes}%
-%   \crefname@preamble{corollary}{corollaire}{corollaires}%
-%   \crefname@preamble{proposition}{proposition}{propositions}%
-%   \crefname@preamble{definition}{d\'efinition}{d\'efinitions}%
-%   \crefname@preamble{result}{r\'esultat}{r\'esultats}%
-%   \crefname@preamble{example}{exemple}{exemples}%
-%   \crefname@preamble{remark}{remarque}{remarques}%
-%   \crefname@preamble{note}{commentaire}{commentaires}%
-%   \crefname@preamble{algorithm}{algorithme}{algorithmes}%
-%   \crefname@preamble{listing}{liste}{listes}%
-%   \crefname@preamble{line}{ligne}{lignes}%
-% }
+\AfterEndPreamble{
+  \ifcurrentbaselanguage{french}{\g_@@_french_crefname_tl}{}
+}
 %    \end{macrocode}
 %
 % \subsection{Assertions and hypotheses enumerations}
@@ -5997,6 +6026,7 @@ $clean_ext = "synctex.gz* run.xml tex.bak bbl bcf fdb_latexmk run tdo listing"
 #include:translations
 #include:fmtcount
 #include:geometry
+#include:subcaption
 #include:babel
 #include:tocvsec2
 #include:etoc

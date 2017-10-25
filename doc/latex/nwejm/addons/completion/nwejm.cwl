@@ -29,6 +29,7 @@
 #include:translations
 #include:fmtcount
 #include:geometry
+#include:subcaption
 #include:babel
 #include:tocvsec2
 #include:etoc
