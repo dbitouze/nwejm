@@ -636,9 +636,19 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{currfile}
 %    \end{macrocode}
 %
-% \item A range of footnote options
+% \item A range of footnote options:
 %    \begin{macrocode}
 \RequirePackage[multiple]{footmisc}%
+%    \end{macrocode}
+%
+% \item Notes in the margin, even where ×\marginpar× fails:
+%    \begin{macrocode}
+\RequirePackage{marginnote}%
+%    \end{macrocode}
+%
+% \item Counter operations with label references:
+%    \begin{macrocode}
+\RequirePackage{refcount}%
 %    \end{macrocode}
 %
 % \item Extension of \LaTeX{}'s color facilities:
@@ -4866,13 +4876,286 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% We let page breaks fall where they may, even in the middle of a multi-line
-% equation. If needed, the ×\\*× command can be used to prohibit a pagebreak
-% after a given line.
+% \section{Multiline equations}
+%
+% Thanks to the \package{amsmath}'s ×\allowdisplaybreaks× macro, we let page
+% breaks fall where they may, even in the middle of a multi-line equation. If
+% needed, the ×\\*× command can be used to prohibit a pagebreak after a given line.
 %    \begin{macrocode}
 \AtEndPreamble{\allowdisplaybreaks}
 %    \end{macrocode}
 %
+% The  drawback of ×\allowdisplaybreaks× macro is it may happen we haven't
+% a view on all the multiline equation. In order to reduce this drawback,
+% a solution is to add a marginal note notifying the equation continues next
+% page if a page break occurs within it. Here is a solution for this (at least
+% for ×multline(*)× and ×align(*)× environments) that requires to make use of
+% \package{marginnote}'s ×\marginnote× macro, because the usual ×\marginpar×
+% doesn't work within math mode.
+%
+% Each multiline equation will have a unique number.
+%    \begin{macrocode}
+\newcounter{multilineeq}
+%    \end{macrocode}
+%
+% Each line of a multiline equation will have a unique number (local
+% to the multiline equation).
+%    \begin{macrocode}
+\newcounter{lineofmultilineeq}[multilineeq]
+%    \end{macrocode}
+%
+% We globally store the original double backslash in a macro.
+%    \begin{macrocode}
+\global\let\original@double@backslash\\
+%    \end{macrocode}
+%
+% We define the content of the marginal note.
+%    \begin{macrocode}
+\tl_gset:Nn \g_@@_equation_continues_next_page_tl {
+  \tiny
+  \sffamily
+  \slshape
+  (
+  \GetTranslation{equation-continues-next-page}
+  )
+}
+%    \end{macrocode}
+%
+% We define the patched macro of the double backslash one.
+%    \begin{macrocode}
+\newcommand{\patched@double@backslash}{%
+%    \end{macrocode}
+%
+% We increment the counter of the current line.
+%    \begin{macrocode}
+  \stepcounter{lineofmultilineeq}%
+%    \end{macrocode}
+%
+% We set the label of the current line.
+%    \begin{macrocode}
+  \ltx@label{\lineofmultilineeq@label}%
+%    \end{macrocode}
+%
+% If (and only if) the pageref of the next line if greater than the
+% current line's one, we insert a marginal note telling the equation
+% continues on next page.
+%    \begin{macrocode}
+  \ifnumcomp{%
+    \getpagerefnumber{\nextlineofmultilineeq@label}%
+  }{>}{%
+    \getpagerefnumber{\lineofmultilineeq@label}%
+  }{%
+        \reversemarginpar
+        \marginnote[\g_@@_equation_continues_next_page_tl]{}
+        \normalmarginpar
+        \marginnote[\g_@@_equation_continues_next_page_tl]{}
+  }{}
+%    \end{macrocode}
+%
+% We break the line with the original local double backslash macro.
+%    \begin{macrocode}
+  \original@local@double@backslash%
+}
+%    \end{macrocode}
+%
+% We define a hack to be applied at the beginning of each multiline equation
+% environment.
+%    \begin{macrocode}
+\def\beginhack{%
+%    \end{macrocode}
+%
+% We set the unique number that has the current multiline equation.
+%    \begin{macrocode}
+  \stepcounter{multilineeq}
+%    \end{macrocode}
+%
+% The number that has the 1st line of the current multiline equation is 1.
+%    \begin{macrocode}
+  \stepcounter{lineofmultilineeq}
+% \end{macrocode}
+%
+% We globally define the strings of the labels identfying:
+% \begin{itemize}
+% \item the current line,
+% \item the line following the current one,
+% \end{itemize}
+% of the current multiline equation.
+%    \begin{macrocode}
+  \gdef\lineofmultilineeq@label{multilineeq-\themultilineeq-line-\thelineofmultilineeq}
+  \gdef\nextlineofmultilineeq@label{multilineeq-\themultilineeq-line-\the\numexpr\thelineofmultilineeq+1}
+%    \end{macrocode}
+%
+% We set the label of the current line.
+%    \begin{macrocode}
+  \ltx@label{\lineofmultilineeq@label}
+%    \end{macrocode}
+%
+% Within the current multiline equation, we patch the double backslash macro
+% (for more details, see https://tex.stackexchange.com/a/59117/18401).
+%    \begin{macrocode}
+  \ifundef{\original@local@double@backslash}{%
+    \global\let\original@local@double@backslash\\%
+    \global\let\\\patched@double@backslash%
+%     \gdef\\{%
+% %    \end{macrocode}
+% %
+% % We increment the counter of the current line.
+% %    \begin{macrocode}
+%       \stepcounter{lineofmultilineeq}%
+% %    \end{macrocode}
+% %
+% % We set the label of the current line.
+% %    \begin{macrocode}
+%       \ltx@label{\lineofmultilineeq@label}%
+% %    \end{macrocode}
+% %
+% % If (and only if) the pageref of the next line if greater than the
+% % current line's one, we insert a marginal note telling the equation
+% % continues on next page.
+% %    \begin{macrocode}
+%       \ifnumcomp{%
+%         \getpagerefnumber{\nextlineofmultilineeq@label}
+%       }{>}{
+%         \getpagerefnumber{\lineofmultilineeq@label}
+%       }{
+%         \reversemarginpar
+%         \marginnote[\g_@@_equation_continues_next_page_tl]{}
+%         \normalmarginpar
+%         \marginnote[\g_@@_equation_continues_next_page_tl]{}
+%       }{
+%       }
+% %    \end{macrocode}
+% %
+% % We break the line with the original double backslash macro.
+% %    \begin{macrocode}
+%       \original@double@backslash%
+%     }%
+  }{}
+}
+%    \end{macrocode}
+%
+% We define a hack to be applied at the end of each multiline equation
+% environment (currently, only `align(*)' and `multline(*)').
+%    \begin{macrocode}
+\def\endhack{%
+%    \end{macrocode}
+%
+% We globally unpatch the double backslash macro
+%    \begin{macrocode}
+  \global\let\\\original@double@backslash%
+  \global\undef\original@local@double@backslash
+}
+%    \end{macrocode}
+%
+% We apply these patches to the  ×multline(*)× and ×align(*)× environments.
+%    \begin{macrocode}
+\appto\align{\beginhack}
+\csappto{align*}{\beginhack}
+\appto\endalign{\endhack}
+%
+\appto\multline{\beginhack}
+\csappto{multline*}{\beginhack}
+\appto\endmultline{\endhack}
+%    \end{macrocode}
+%
+% We use a patch from Gonzalo Medina in order marginal notes ×\marginnote×
+% always are on right side of the page (see
+% \url{https://tex.stackexchange.com/a/69624/18401}).
+%    \begin{macrocode}
+\newcommand*{\nwejm@marginnote}{%
+  \@dblarg\NWEJM@mn@marginnote
+}
+\newcommand{\NWEJM@mn@marginnote}[2][]{%
+  \ifhmode
+    \@bsphack
+    \begingroup
+    \ifdim\@savsk>\z@\else
+      \def\:{\@xifnch}\expandafter\def\: { \futurelet\@let@token\@ifnch}%
+    \fi
+  \else
+    \begingroup
+  \fi
+  \@ifnextchar [{\NWEJM@mn@@marginnote[{#1}]{#2}}{\NWEJM@mn@@marginnote[{#1}]{#2}[\z@]}%
+}
+\newcommand{\NWEJM@mn@@marginnote}{}
+\long\def\NWEJM@mn@@marginnote[#1]#2[#3]{%
+  \endgroup
+  \ifhmode
+    \NWEJM@mn@@@marginnote[{#1}]{#2}[{#3}]%
+    \@esphack
+  \else
+    \NWEJM@mn@@@marginnote[{#1}]{#2}[{#3}]%
+  \fi
+}
+
+\long\def\NWEJM@mn@@@marginnote[#1]#2[#3]{%
+  \begingroup
+    \ifmmode\mn@strut\let\@tempa\mn@vadjust\else
+      \if@inlabel\leavevmode\fi
+      \ifhmode\mn@strut\let\@tempa\mn@vadjust\else\let\@tempa\mn@vlap\fi
+    \fi
+    \@tempa{%
+      \vbox to\z@{%
+        \vss
+        \@mn@margintest
+        \if@reversemargin\if@tempswa
+            \@tempswafalse
+          \else
+            \@tempswatrue
+        \fi\fi
+          \rlap{%
+            \ifx\@mn@currxpos\relax
+              \kern\marginnoterightadjust
+              \if@mn@verbose
+                \PackageInfo{marginnote}{%
+                  xpos not known,\MessageBreak
+                  using \string\marginnoterightadjust}%
+              \fi
+            \else\ifx\@mn@currxpos\@empty
+                \kern\marginnoterightadjust
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos not known,\MessageBreak
+                    using \string\marginnoterightadjust}%
+                \fi
+              \else
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos seems to be \@mn@currxpos,\MessageBreak
+                    \string\marginnoterightadjust
+                    \space ignored}%
+                \fi
+                \begingroup
+                  \setlength{\@tempdima}{\@mn@currxpos}%
+                  \kern-\@tempdima
+                  \if@twoside\ifodd\@mn@currpage\relax
+                      \kern\oddsidemargin
+                    \else
+                      \kern\evensidemargin
+                    \fi
+                  \else
+                    \kern\oddsidemargin
+                  \fi
+                  \kern 1in
+                \endgroup
+              \fi
+            \fi
+            \kern\marginnotetextwidth\kern\marginparsep
+            \vbox to\z@{\kern\marginnotevadjust\kern #3
+              \vbox to\z@{%
+                \hsize\marginparwidth
+                \linewidth\hsize
+                \kern-\parskip
+                \marginfont\raggedrightmarginnote\strut\hspace{\z@}%
+                \ignorespaces#2\endgraf
+                \vss}%
+              \vss}%
+          }%
+      }%
+    }%
+  \endgroup
+}
+%    \end{macrocode}
 % \section{Packages settings, libraries loading, etc.}
 %
 % We gather here miscellaneous settings.
@@ -5437,6 +5720,9 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{ie}{i.e}
 \ProvideDictTranslation{Idest}{Id~est}
 \ProvideDictTranslation{Ie}{I.e}
+%
+% For the note in the margin notifying when the equation continues next page.
+\ProvideDictTranslation{equation-continues-next-page}{Cont. ~next ~page}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -5496,6 +5782,9 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{ie}{c.-\`{a}-d}
 \ProvideDictTranslation{Idest}{C'est-\`{a}-dire}
 \ProvideDictTranslation{Ie}{C.-\`{a}-d}
+%
+% For the note in the margin notifying when the equation continues next page.
+\ProvideDictTranslation{equation-continues-next-page}{Cont. ~page ~suiv.}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -5555,6 +5844,9 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{ie}{d.~h}
 \ProvideDictTranslation{Idest}{Das~heißt}
 \ProvideDictTranslation{Ie}{D~h}
+%
+% For the note in the margin notifying when the equation continues next page.
+\ProvideDictTranslation{equation-continues-next-page}{Weiter~ nächste~ Seite}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -5614,6 +5906,9 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{ie}{d.w.z}
 \ProvideDictTranslation{Idest}{Dat~wil~zeggen}
 \ProvideDictTranslation{Ie}{D.w.z}
+%
+% For the note in the margin notifying when the equation continues next page.
+\ProvideDictTranslation{equation-continues-next-page}{op~ de~ volgende~ pagina}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
