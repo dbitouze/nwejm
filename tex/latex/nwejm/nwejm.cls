@@ -143,6 +143,8 @@
 \RequirePackage{xr}
 \RequirePackage{currfile}
 \RequirePackage[multiple]{footmisc}%
+\RequirePackage{marginnote}%
+\RequirePackage{refcount}%
 \RequirePackage{xcolor}%
 \RequirePackage{afterpage}%
 \RequirePackage{ifoddpage}%
@@ -2733,6 +2735,146 @@
   right=>
 }
 \AtEndPreamble{\allowdisplaybreaks}
+\newcounter{multilineeq}
+\newcounter{lineofmultilineeq}[multilineeq]
+\global\let\original@double@backslash\\
+\tl_gset:Nn \g__nwejm_equation_continues_next_page_tl {
+  \tiny
+  \sffamily
+  \slshape
+  (
+  \GetTranslation{equation-continues-next-page}
+  )
+}
+\newcommand{\patched@double@backslash}{%
+  \stepcounter{lineofmultilineeq}%
+  \ltx@label{\lineofmultilineeq@label}%
+  \ifnumcomp{%
+    \getpagerefnumber{\nextlineofmultilineeq@label}%
+  }{>}{%
+    \getpagerefnumber{\lineofmultilineeq@label}%
+  }{%
+        \reversemarginpar
+        \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
+        \normalmarginpar
+        \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
+  }{}
+  \original@local@double@backslash%
+}
+\def\beginhack{%
+  \stepcounter{multilineeq}
+  \stepcounter{lineofmultilineeq}
+  \gdef\lineofmultilineeq@label{multilineeq-\themultilineeq-line-\thelineofmultilineeq}
+  \gdef\nextlineofmultilineeq@label{multilineeq-\themultilineeq-line-\the\numexpr\thelineofmultilineeq+1}
+  \ltx@label{\lineofmultilineeq@label}
+  \ifundef{\original@local@double@backslash}{%
+    \global\let\original@local@double@backslash\\%
+    \global\let\\\patched@double@backslash%
+  }{}
+}
+\def\endhack{%
+  \global\let\\\original@double@backslash%
+  \global\undef\original@local@double@backslash
+}
+\appto\align{\beginhack}
+\csappto{align*}{\beginhack}
+\appto\endalign{\endhack}
+\appto\multline{\beginhack}
+\csappto{multline*}{\beginhack}
+\appto\endmultline{\endhack}
+\newcommand*{\nwejm@marginnote}{%
+  \@dblarg\NWEJM@mn@marginnote
+}
+\newcommand{\NWEJM@mn@marginnote}[2][]{%
+  \ifhmode
+    \@bsphack
+    \begingroup
+    \ifdim\@savsk>\z@\else
+      \def\:{\@xifnch}\expandafter\def\: { \futurelet\@let@token\@ifnch}%
+    \fi
+  \else
+    \begingroup
+  \fi
+  \@ifnextchar [{\NWEJM@mn__nwejmmarginnote[{#1}]{#2}}{\NWEJM@mn__nwejmmarginnote[{#1}]{#2}[\z@]}%
+}
+\newcommand{\NWEJM@mn__nwejmmarginnote}{}
+\long\def\NWEJM@mn__nwejmmarginnote[#1]#2[#3]{%
+  \endgroup
+  \ifhmode
+    \NWEJM@mn__nwejm@marginnote[{#1}]{#2}[{#3}]%
+    \@esphack
+  \else
+    \NWEJM@mn__nwejm@marginnote[{#1}]{#2}[{#3}]%
+  \fi
+}
+
+\long\def\NWEJM@mn__nwejm@marginnote[#1]#2[#3]{%
+  \begingroup
+    \ifmmode\mn@strut\let\@tempa\mn@vadjust\else
+      \if@inlabel\leavevmode\fi
+      \ifhmode\mn@strut\let\@tempa\mn@vadjust\else\let\@tempa\mn@vlap\fi
+    \fi
+    \@tempa{%
+      \vbox to\z@{%
+        \vss
+        \@mn@margintest
+        \if@reversemargin\if@tempswa
+            \@tempswafalse
+          \else
+            \@tempswatrue
+        \fi\fi
+          \rlap{%
+            \ifx\@mn@currxpos\relax
+              \kern\marginnoterightadjust
+              \if@mn@verbose
+                \PackageInfo{marginnote}{%
+                  xpos not known,\MessageBreak
+                  using \string\marginnoterightadjust}%
+              \fi
+            \else\ifx\@mn@currxpos\@empty
+                \kern\marginnoterightadjust
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos not known,\MessageBreak
+                    using \string\marginnoterightadjust}%
+                \fi
+              \else
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos seems to be \@mn@currxpos,\MessageBreak
+                    \string\marginnoterightadjust
+                    \space ignored}%
+                \fi
+                \begingroup
+                  \setlength{\@tempdima}{\@mn@currxpos}%
+                  \kern-\@tempdima
+                  \if@twoside\ifodd\@mn@currpage\relax
+                      \kern\oddsidemargin
+                    \else
+                      \kern\evensidemargin
+                    \fi
+                  \else
+                    \kern\oddsidemargin
+                  \fi
+                  \kern 1in
+                \endgroup
+              \fi
+            \fi
+            \kern\marginnotetextwidth\kern\marginparsep
+            \vbox to\z@{\kern\marginnotevadjust\kern #3
+              \vbox to\z@{%
+                \hsize\marginparwidth
+                \linewidth\hsize
+                \kern-\parskip
+                \marginfont\raggedrightmarginnote\strut\hspace{\z@}%
+                \ignorespaces#2\endgraf
+                \vss}%
+              \vss}%
+          }%
+      }%
+    }%
+  \endgroup
+}
 \AfterEndPreamble{
   \autonum@generatePatchedReferenceCSL{vref}
   \clist_set:Nn \l_tmpa_clist {equation,align,gather,multline,flalign}
