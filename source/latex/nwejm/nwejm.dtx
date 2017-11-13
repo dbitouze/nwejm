@@ -5067,6 +5067,19 @@ Running "make install" installs the files in the local TeX tree.
   }
 }
 %    \end{macrocode}
+%
+% We define the content of the marginal note.
+%    \begin{macrocode}
+\tl_gset:Nn \g_@@_equation_continues_next_page_tl {
+  \tiny
+  \sffamily
+  \slshape
+  (
+  \GetTranslation{equation-continues-next-page}
+  )
+}
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 \cs_new_protected:Nn \db_add_multiline_eq_label:
 {

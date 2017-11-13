@@ -2847,6 +2847,14 @@
     \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
   }
 }
+\tl_gset:Nn \g__nwejm_equation_continues_next_page_tl {
+  \tiny
+  \sffamily
+  \slshape
+  (
+  \GetTranslation{equation-continues-next-page}
+  )
+}
 \cs_new_protected:Nn \db_add_multiline_eq_label:
 {
    \ifmeasuring@\else
