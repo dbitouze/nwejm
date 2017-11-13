@@ -4885,90 +4885,85 @@ Running "make install" installs the files in the local TeX tree.
 % a view on all the multiline equation. In order to reduce this drawback,
 % a solution is to add a marginal note notifying the equation continues next
 % page if a page break occurs within it. Here is a solution for this (at least
-% for ×multline(*)× and ×align(*)× environments) that requires to make use of
-% \package{marginnote}'s ×\marginnote× macro, because the usual ×\marginpar×
-% doesn't work within math mode.
+% for ×align(*)×, ×gather(*)× and ×multline(*)× environments) that requires to
+% make use of \package{marginnote}'s ×\marginnote× macro, because the usual
+% ×\marginpar× doesn't work within math mode.
 %
 % Each multiline equation will have a unique number.
 %    \begin{macrocode}
-\newcounter{multilineeq}
+\int_new:N \g_multiline_eq_int
 %    \end{macrocode}
-%
 % Each line of a multiline equation will have a unique number (local
 % to the multiline equation).
 %    \begin{macrocode}
-\newcounter{lineofmultilineeq}[multilineeq]
+\int_new:N \g_line_of_multiline_eq_int
 %    \end{macrocode}
-%
-% We globally store the original double backslash in a macro.
 %    \begin{macrocode}
-\global\let\original@double@backslash\\
+\tl_new:N \g_line_of_multiline_eq_label_tl
+\tl_new:N \g_next_line_of_multiline_eq_label_tl
 %    \end{macrocode}
-%
-% We define the content of the marginal note.
+% We save the original environments
 %    \begin{macrocode}
-\tl_gset:Nn \g_@@_equation_continues_next_page_tl {
-  \tiny
-  \sffamily
-  \slshape
-  (
-  \GetTranslation{equation-continues-next-page}
-  )
+\clist_set:Nn \l_tmpa_clist {align,gather,multline}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \cs_set_eq:cc {db_#1_start:} {#1}
+  \cs_set_eq:cc {db_#1_end:} {end#1}
+  \cs_set_eq:cc {db_#1_star_start:} {#1*}
+  \NewDocumentEnvironment{amsmath#1}{}
+  {\cs:w db_#1_start:\cs_end:}
+  {\cs:w db_#1_end:\cs_end:}
+  \NewDocumentEnvironment{amsmath#1*}{}
+  {\cs:w db_#1_star_start:\cs_end:}
+  {\cs:w db_#1_end:\cs_end:}
+%    \end{macrocode}
+% ... and create their new versions.
+%    \begin{macrocode}
+  \RenewEnviron{#1}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {#1} \BODY
+  }
+  \RenewEnviron{#1*}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {#1*} \BODY
+  }
+}
+%    \end{macrocode}
+% The environments ×flalign(*)× and ×alignat(*)× cannot be patched when
+% ×align(*)× is patched as above (see
+% \url{https://tex.stackexchange.com/q/399979/18401}). As a workaround, we make
+% these environments the same as ×align(*)×.
+%    \begin{macrocode}
+\clist_set:Nn \l_tmpa_clist {flalign,alignat}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \RenewEnviron{#1}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+  }
+  \RenewEnviron{#1*}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
+  }
 }
 %    \end{macrocode}
 %
-% We define the patched macro of the double backslash one.
+% The new versions of ×align(*)×, ×gather(*)× and ×multline(*)× are defined
+% thanks to the following ×\db_multiline_eq× control sequence.
 %    \begin{macrocode}
-\newcommand{\patched@double@backslash}{%
+\seq_new:N \l_db_multiline_eq_seq
+\cs_new_protected:Nn \db_multiline_eq:nn
+{
 %    \end{macrocode}
 %
-% We increment the counter of the current line.
+% We set the unique number of the current multiline equation.
 %    \begin{macrocode}
-  \stepcounter{lineofmultilineeq}%
+  \int_gincr:N \g_multiline_eq_int
 %    \end{macrocode}
 %
-% We set the label of the current line.
+% The number of the 1st line of the current multiline equation is $1$.
 %    \begin{macrocode}
-  \ltx@label{\lineofmultilineeq@label}%
+  \int_zero:N \g_line_of_multiline_eq_int
+  \int_gincr:N \g_line_of_multiline_eq_int
 %    \end{macrocode}
-%
-% If (and only if) the pageref of the next line if greater than the
-% current line's one, we insert a marginal note telling the equation
-% continues on next page.
-%    \begin{macrocode}
-  \ifnumcomp{%
-    \getpagerefnumber{\nextlineofmultilineeq@label}%
-  }{>}{%
-    \getpagerefnumber{\lineofmultilineeq@label}%
-  }{%
-        \reversemarginpar
-        \marginnote[\g_@@_equation_continues_next_page_tl]{}
-        \normalmarginpar
-        \marginnote[\g_@@_equation_continues_next_page_tl]{}
-  }{}
-%    \end{macrocode}
-%
-% We break the line with the original local double backslash macro.
-%    \begin{macrocode}
-  \original@local@double@backslash%
-}
-%    \end{macrocode}
-%
-% We define a hack to be applied at the beginning of each multiline equation
-% environment.
-%    \begin{macrocode}
-\def\beginhack{%
-%    \end{macrocode}
-%
-% We set the unique number that has the current multiline equation.
-%    \begin{macrocode}
-  \stepcounter{multilineeq}
-%    \end{macrocode}
-%
-% The number that has the 1st line of the current multiline equation is 1.
-%    \begin{macrocode}
-  \stepcounter{lineofmultilineeq}
-% \end{macrocode}
 %
 % We globally define the strings of the labels identfying:
 % \begin{itemize}
@@ -4977,85 +4972,174 @@ Running "make install" installs the files in the local TeX tree.
 % \end{itemize}
 % of the current multiline equation.
 %    \begin{macrocode}
-  \gdef\lineofmultilineeq@label{multilineeq-\themultilineeq-line-\thelineofmultilineeq}
-  \gdef\nextlineofmultilineeq@label{multilineeq-\themultilineeq-line-\the\numexpr\thelineofmultilineeq+1}
+  \tl_gset:Nx \g_tmpa_tl {
+    multilineeq
+    -
+    \int_use:N \g_multiline_eq_int
+    -
+    line
+    -
+  }
+  \tl_gset:Nx \g_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_use:N \g_line_of_multiline_eq_int
+  }
+  \tl_gset:Nx \g_next_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_eval:n {\g_line_of_multiline_eq_int + 1}
+  }
 %    \end{macrocode}
 %
 % We set the label of the current line.
 %    \begin{macrocode}
-  \ltx@label{\lineofmultilineeq@label}
+  \ltx@label{\g_line_of_multiline_eq_label_tl}
+  %
+  \seq_set_split:Nnn \l_db_multiline_eq_seq { \\ } { #2 }
+  \tl_if_in:nnTF {#1} {multline} {
+    \begin{amsmath#1}
+      \seq_use:Nnnn \l_db_multiline_eq_seq
+      { \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@double@space }
+      \hfill
+    \end{amsmath#1}
+  }{
+    \begin{amsmath#1}
+    \seq_use:Nn \l_db_multiline_eq_seq { \multiline@double@backslash }
+    \end{amsmath#1}
+  }
+ }
 %    \end{macrocode}
 %
-% Within the current multiline equation, we patch the double backslash macro
-% (for more details, see https://tex.stackexchange.com/a/59117/18401).
+% We create a variant of ×\db_multiline_eq× which returns a value.
 %    \begin{macrocode}
-  \ifundef{\original@local@double@backslash}{%
-    \global\let\original@local@double@backslash\\%
-    \global\let\\\patched@double@backslash%
-%     \gdef\\{%
-% %    \end{macrocode}
-% %
-% % We increment the counter of the current line.
-% %    \begin{macrocode}
-%       \stepcounter{lineofmultilineeq}%
-% %    \end{macrocode}
-% %
-% % We set the label of the current line.
-% %    \begin{macrocode}
-%       \ltx@label{\lineofmultilineeq@label}%
-% %    \end{macrocode}
-% %
-% % If (and only if) the pageref of the next line if greater than the
-% % current line's one, we insert a marginal note telling the equation
-% % continues on next page.
-% %    \begin{macrocode}
-%       \ifnumcomp{%
-%         \getpagerefnumber{\nextlineofmultilineeq@label}
-%       }{>}{
-%         \getpagerefnumber{\lineofmultilineeq@label}
-%       }{
-%         \reversemarginpar
-%         \marginnote[\g_@@_equation_continues_next_page_tl]{}
-%         \normalmarginpar
-%         \marginnote[\g_@@_equation_continues_next_page_tl]{}
-%       }{
-%       }
-% %    \end{macrocode}
-% %
-% % We break the line with the original double backslash macro.
-% %    \begin{macrocode}
-%       \original@double@backslash%
-%     }%
-  }{}
+\cs_generate_variant:Nn \db_multiline_eq:nn { nV }
+%    \end{macrocode}
+%
+% We create the control sequences involved in ×\db_multiline_eq×.
+%    \begin{macrocode}
+\cs_new_protected:Nn \db_multiline_double_backslash:nn
+{
+  \db_add_marginal_note:
+  \IfValueTF{#2}{%
+    \IfBooleanTF{#1}{\\*[#2]}{\\[#2]}%
+  }{%
+    \IfBooleanTF{#1}{\\*}{\\}%
+  }%
+  %
+  \db_add_multiline_eq_label:
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\NewDocumentCommand{\multiline@double@backslash}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+}
+\NewDocumentCommand{\multiline@double@backslash@add@space}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+  \hspace{\mathindent}
+}
+\NewDocumentCommand{\multiline@double@backslash@add@double@space}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+  \hspace{2\mathindent}
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\cs_new_protected:Nn \db_add_marginal_note:
+{
+%    \end{macrocode}
+%
+% If (and only if) the pageref of the next line if greater than the
+% current line's one, we insert a marginal note telling the equation
+% continues on next page.
+%    \begin{macrocode}
+  \int_compare:nNnT {
+    \getpagerefnumber{\g_next_line_of_multiline_eq_label_tl}%
+  }>{
+    \getpagerefnumber{\g_line_of_multiline_eq_label_tl}%
+  }{
+    \reversemarginpar
+    \marginnote[\g_@@_equation_continues_next_page_tl]{}
+    \normalmarginpar
+    \marginnote[\g_@@_equation_continues_next_page_tl]{}
+  }
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\cs_new_protected:Nn \db_add_multiline_eq_label:
+{
+%    \end{macrocode}
+%
+% Do nothing on first pass.
+%    \begin{macrocode}
+   \ifmeasuring@\else
+%    \end{macrocode}
+%
+% We set the unique number of the current multiline equation.
+%    \begin{macrocode}
+  \int_gincr:N \g_line_of_multiline_eq_int
+%    \end{macrocode}
+%
+% We set the label of the current line.
+%    \begin{macrocode}
+  \tl_gset:Nx \g_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_use:N \g_line_of_multiline_eq_int
+  }
+  \tl_gset:Nx \g_next_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_eval:n {\g_line_of_multiline_eq_int + 1}
+  }
+  \ltx@label{\g_line_of_multiline_eq_label_tl}%
+  \fi
+}
+%    \end{macrocode}
+% We need to redefine the ×\intertext× and  ×\shortintertext× macros (re)defined
+% by \Pkg{amsmath} and \Pkg{mathtools} in order they display the marginal note
+% notifying the equation continues next page if a page break occurs at their level.
+%    \begin{macrocode}
+\def\MT_intertext: {%
+  \def\intertext##1{%
+    \db_add_marginal_note:
+    \ifvmode\else\\\@empty\fi
+    \noalign{%
+      \penalty\postdisplaypenalty\vskip\belowdisplayskip
+      \vskip-\lineskiplimit      % CCS
+      \vskip\normallineskiplimit % CCS
+      \vskip\l_MT_above_intertext_sep
+       \vbox{\normalbaselines
+         \ifdim
+           \ifdim\@totalleftmargin=\z@
+             \linewidth
+           \else
+             -\maxdimen
+           \fi
+         =\columnwidth
+        \else \parshape\@ne \@totalleftmargin \linewidth
+        \fi
+        \noindent\ignorespaces##1\par}%
+      \penalty\predisplaypenalty\vskip\abovedisplayskip%
+      \vskip-\lineskiplimit      % CCS
+      \vskip\normallineskiplimit % CCS
+      \vskip\l_MT_above_intertext_sep
+   }%
+   \db_add_multiline_eq_label:
+ }%
+ \MH_let:NwN \shortintertext \shortintertext@
+}
+%    \end{macrocode}
+%    \begin{macrocode}
+\pretocmd{\MT_orig_shortintertext:n}{\db_add_marginal_note:}{}{}
+\apptocmd{\MT_orig_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
+\pretocmd{\MT_shortintertext:n}{\db_add_marginal_note:}{}{}
+\apptocmd{\MT_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
+%    \end{macrocode}
+%    \begin{macrocode}
+\setkeys{\MT_options_name:}{
+  original-intertext=false,
+  original-shortintertext=false
 }
 %    \end{macrocode}
 %
-% We define a hack to be applied at the end of each multiline equation
-% environment (currently, only `align(*)' and `multline(*)').
-%    \begin{macrocode}
-\def\endhack{%
-%    \end{macrocode}
-%
-% We globally unpatch the double backslash macro
-%    \begin{macrocode}
-  \global\let\\\original@double@backslash%
-  \global\undef\original@local@double@backslash
-}
-%    \end{macrocode}
-%
-% We apply these patches to the  ×multline(*)× and ×align(*)× environments.
-%    \begin{macrocode}
-\appto\align{\beginhack}
-\csappto{align*}{\beginhack}
-\appto\endalign{\endhack}
-%
-\appto\multline{\beginhack}
-\csappto{multline*}{\beginhack}
-\appto\endmultline{\endhack}
-%    \end{macrocode}
-%
-% We use a patch from Gonzalo Medina in order marginal notes ×\marginnote×
-% always are on right side of the page (see
+% We adapt a patch from Gonzalo Medina in order marginal notes ×\marginnote×
+% always are on leeft side of the page (see
 % \url{https://tex.stackexchange.com/a/69624/18401}).
 %    \begin{macrocode}
 \newcommand*{\nwejm@marginnote}{%
