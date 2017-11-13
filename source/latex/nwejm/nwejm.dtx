@@ -1811,7 +1811,12 @@ Running "make install" installs the files in the local TeX tree.
     \thesection.~%
   }{%
   }
-  \g_@@_header_section_title_tl
+  \tl_if_exist:NT { \g_@@_header_section_title_tl }
+  {
+    \tl_if_empty:NF \g_@@_header_section_title_tl {%
+      \g_@@_header_section_title_tl
+    }
+  }
 }%
 \newpagestyle{@@_mainmatter_ps}[]{%
   \sethead%
