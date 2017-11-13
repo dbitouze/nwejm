@@ -163,7 +163,7 @@
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
-\RequirePackage[thmmarks,amsmath]{ntheorem}
+\RequirePackage[thmmarks,amsmath,fleqn]{ntheorem}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
@@ -192,7 +192,6 @@
 \RequirePackage{cleveref}%
 \expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}
 \let\globcount\newcount
-\RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -326,7 +325,12 @@
     \thesection.~%
   }{%
   }
-  \g__nwejm_header_section_title_tl
+  \tl_if_exist:NT { \g__nwejm_header_section_title_tl }
+  {
+    \tl_if_empty:NF \g__nwejm_header_section_title_tl {%
+      \g__nwejm_header_section_title_tl
+    }
+  }
 }%
 \newpagestyle{__nwejm_mainmatter_ps}[]{%
   \sethead%
@@ -1937,53 +1941,166 @@
   right=>
 }
 \AtEndPreamble{\allowdisplaybreaks}
-\newcounter{multilineeq}
-\newcounter{lineofmultilineeq}[multilineeq]
-\global\let\original@double@backslash\\
-\tl_gset:Nn \g__nwejm_equation_continues_next_page_tl {
-  \tiny
-  \sffamily
-  \slshape
-  (
-  \GetTranslation{equation-continues-next-page}
-  )
+\int_new:N \g_multiline_eq_int
+\int_new:N \g_line_of_multiline_eq_int
+\tl_new:N \g_line_of_multiline_eq_label_tl
+\tl_new:N \g_next_line_of_multiline_eq_label_tl
+\clist_set:Nn \l_tmpa_clist {align,gather,multline}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \cs_set_eq:cc {db_#1_start:} {#1}
+  \cs_set_eq:cc {db_#1_end:} {end#1}
+  \cs_set_eq:cc {db_#1_star_start:} {#1*}
+  \NewDocumentEnvironment{amsmath#1}{}
+  {\cs:w db_#1_start:\cs_end:}
+  {\cs:w db_#1_end:\cs_end:}
+  \NewDocumentEnvironment{amsmath#1*}{}
+  {\cs:w db_#1_star_start:\cs_end:}
+  {\cs:w db_#1_end:\cs_end:}
+  \RenewEnviron{#1}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {#1} \BODY
+  }
+  \RenewEnviron{#1*}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {#1*} \BODY
+  }
 }
-\newcommand{\patched@double@backslash}{%
-  \stepcounter{lineofmultilineeq}%
-  \ltx@label{\lineofmultilineeq@label}%
-  \ifnumcomp{%
-    \getpagerefnumber{\nextlineofmultilineeq@label}%
-  }{>}{%
-    \getpagerefnumber{\lineofmultilineeq@label}%
+\clist_set:Nn \l_tmpa_clist {flalign,alignat}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \RenewEnviron{#1}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+  }
+  \RenewEnviron{#1*}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
+  }
+}
+\seq_new:N \l_db_multiline_eq_seq
+\cs_new_protected:Nn \db_multiline_eq:nn
+{
+  \int_gincr:N \g_multiline_eq_int
+  \int_zero:N \g_line_of_multiline_eq_int
+  \int_gincr:N \g_line_of_multiline_eq_int
+  \tl_gset:Nx \g_tmpa_tl {
+    multilineeq
+    -
+    \int_use:N \g_multiline_eq_int
+    -
+    line
+    -
+  }
+  \tl_gset:Nx \g_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_use:N \g_line_of_multiline_eq_int
+  }
+  \tl_gset:Nx \g_next_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_eval:n {\g_line_of_multiline_eq_int + 1}
+  }
+  \ltx@label{\g_line_of_multiline_eq_label_tl}
+  %
+  \seq_set_split:Nnn \l_db_multiline_eq_seq { \\ } { #2 }
+  \tl_if_in:nnTF {#1} {multline} {
+    \begin{amsmath#1}
+      \seq_use:Nnnn \l_db_multiline_eq_seq
+      { \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@double@space }
+      \hfill
+    \end{amsmath#1}
+  }{
+    \begin{amsmath#1}
+    \seq_use:Nn \l_db_multiline_eq_seq { \multiline@double@backslash }
+    \end{amsmath#1}
+  }
+ }
+\cs_generate_variant:Nn \db_multiline_eq:nn { nV }
+\cs_new_protected:Nn \db_multiline_double_backslash:nn
+{
+  \db_add_marginal_note:
+  \IfValueTF{#2}{%
+    \IfBooleanTF{#1}{\\*[#2]}{\\[#2]}%
   }{%
-        \reversemarginpar
-        \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
-        \normalmarginpar
-        \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
-  }{}
-  \original@local@double@backslash%
+    \IfBooleanTF{#1}{\\*}{\\}%
+  }%
+  %
+  \db_add_multiline_eq_label:
 }
-\def\beginhack{%
-  \stepcounter{multilineeq}
-  \stepcounter{lineofmultilineeq}
-  \gdef\lineofmultilineeq@label{multilineeq-\themultilineeq-line-\thelineofmultilineeq}
-  \gdef\nextlineofmultilineeq@label{multilineeq-\themultilineeq-line-\the\numexpr\thelineofmultilineeq+1}
-  \ltx@label{\lineofmultilineeq@label}
-  \ifundef{\original@local@double@backslash}{%
-    \global\let\original@local@double@backslash\\%
-    \global\let\\\patched@double@backslash%
-  }{}
+\NewDocumentCommand{\multiline@double@backslash}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
 }
-\def\endhack{%
-  \global\let\\\original@double@backslash%
-  \global\undef\original@local@double@backslash
+\NewDocumentCommand{\multiline@double@backslash@add@space}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+  \hspace{\mathindent}
 }
-\appto\align{\beginhack}
-\csappto{align*}{\beginhack}
-\appto\endalign{\endhack}
-\appto\multline{\beginhack}
-\csappto{multline*}{\beginhack}
-\appto\endmultline{\endhack}
+\NewDocumentCommand{\multiline@double@backslash@add@double@space}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+  \hspace{2\mathindent}
+}
+\cs_new_protected:Nn \db_add_marginal_note:
+{
+  \int_compare:nNnT {
+    \getpagerefnumber{\g_next_line_of_multiline_eq_label_tl}%
+  }>{
+    \getpagerefnumber{\g_line_of_multiline_eq_label_tl}%
+  }{
+    \reversemarginpar
+    \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
+    \normalmarginpar
+    \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
+  }
+}
+\cs_new_protected:Nn \db_add_multiline_eq_label:
+{
+   \ifmeasuring@\else
+  \int_gincr:N \g_line_of_multiline_eq_int
+  \tl_gset:Nx \g_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_use:N \g_line_of_multiline_eq_int
+  }
+  \tl_gset:Nx \g_next_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_eval:n {\g_line_of_multiline_eq_int + 1}
+  }
+  \ltx@label{\g_line_of_multiline_eq_label_tl}%
+  \fi
+}
+\def\MT_intertext: {%
+  \def\intertext##1{%
+    \db_add_marginal_note:
+    \ifvmode\else\\\@empty\fi
+    \noalign{%
+      \penalty\postdisplaypenalty\vskip\belowdisplayskip
+      \vskip-\lineskiplimit      % CCS
+      \vskip\normallineskiplimit % CCS
+      \vskip\l_MT_above_intertext_sep
+       \vbox{\normalbaselines
+         \ifdim
+           \ifdim\@totalleftmargin=\z@
+             \linewidth
+           \else
+             -\maxdimen
+           \fi
+         =\columnwidth
+        \else \parshape\@ne \@totalleftmargin \linewidth
+        \fi
+        \noindent\ignorespaces##1\par}%
+      \penalty\predisplaypenalty\vskip\abovedisplayskip%
+      \vskip-\lineskiplimit      % CCS
+      \vskip\normallineskiplimit % CCS
+      \vskip\l_MT_above_intertext_sep
+   }%
+   \db_add_multiline_eq_label:
+ }%
+ \MH_let:NwN \shortintertext \shortintertext@
+}
+\pretocmd{\MT_orig_shortintertext:n}{\db_add_marginal_note:}{}{}
+\apptocmd{\MT_orig_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
+\pretocmd{\MT_shortintertext:n}{\db_add_marginal_note:}{}{}
+\apptocmd{\MT_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
+\setkeys{\MT_options_name:}{
+  original-intertext=false,
+  original-shortintertext=false
+}
 \newcommand*{\nwejm@marginnote}{%
   \@dblarg\NWEJM@mn@marginnote
 }
@@ -2076,15 +2193,6 @@
       }%
     }%
   \endgroup
-}
-\AfterEndPreamble{
-  \autonum@generatePatchedReferenceCSL{vref}
-  \clist_set:Nn \l_tmpa_clist {equation,align,gather,multline,flalign}
-  \clist_map_inline:Nn \l_tmpa_clist {
-    \cs_set_eq:cc {#1*} {#1}
-    \cs_set_eq:cc {end#1*} {end#1}
-  }
-  % \msg_warning:nnn{nwejmart}{Starred~AMS~environments}{#1}
 }
 \etocsettocdepth{subsection}
 \@ifpackageloaded{pgfplots}{%
@@ -2188,10 +2296,6 @@
   }
 }
 \ExplSyntaxOff
-\patchcmd{\autonum@saveEnvironmentSubcommands}
-  {(0,0)\begin}
-  {(0,0)\hfuzz=\maxdimen\begin}
-    {}{}
 %% 
 %% Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
