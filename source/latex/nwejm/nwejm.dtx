@@ -1725,6 +1725,10 @@ Running "make install" installs the files in the local TeX tree.
   }
   \bool_gset_true:N \g_@@_tableofcontents_already_used_bool
 }%
+\renewcommand\etocaftercontentshook
+{%
+  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+}%
 %    \end{macrocode}
 %
 % \section{Page styles}
