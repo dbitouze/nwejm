@@ -802,7 +802,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Extensions to theorem environments:
 %    \begin{macrocode}
-\RequirePackage[thmmarks,amsmath,fleqn]{ntheorem}
+\RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
 %    \end{macrocode}
 %
 % \item Support for using RSFS fonts in maths:
@@ -4134,8 +4134,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Usual theorems and the like}
 %
-% Some usual theorems and the like are defined, thanks to \Pkg{thmtools}. First,
-% we define a private function "\_@@_new_theorem" that defines:
+% Some usual theorems and the like are defined, thanks to \Pkg{thmtools} build
+% upon \Pkg{ntheorem}. First, we define a private function "\_@@_new_theorem"
+% that defines:
 % \begin{enumerate}
 % \item a new (private, \pkg{thmtools}) theorem with 4 arguments:
 %   \begin{enumerate}
