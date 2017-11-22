@@ -190,7 +190,7 @@
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
-\RequirePackage[thmmarks,amsmath,fleqn]{ntheorem}
+\RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
 \RequirePackage{mathrsfs}
 \RequirePackage{esvect}
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
@@ -531,10 +531,6 @@
   % ,inner=\c__nwejm_innermargin_dim
   % ,outer=\c__nwejm_outermargin_dim
 }%
-\bool_if:NF {\g__nwejm_coverpage_bool} {
-  \bool_if:NF {\g__nwejm_inside_pages_bool} {
-  }%
-}%
 \bool_new:N \g__nwejm_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
@@ -559,6 +555,10 @@
     }
   }
   \bool_gset_true:N \g__nwejm_tableofcontents_already_used_bool
+}%
+\renewcommand\etocaftercontentshook
+{%
+  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }%
 \newpagestyle{__nwejm_frontcover_ps}[]{%
   \sethead
@@ -2603,19 +2603,31 @@
   #1
 }
 \NewDocumentCommand \set { m O{} } {
-  \if@display
-  \tl_if_empty:nTF {#2} {%
-    \__nwejm_set*{#1}
-  }{
-    \__nwejm_set*{#1\l__nwejm_given_tl #2}
+  \mathchoice{%
+    \tl_if_empty:nTF {#2} {%
+      \__nwejm_set*{#1}
+    }{
+      \__nwejm_set*{#1\l__nwejm_given_tl #2}
+    }
+  }{%
+    \tl_if_empty:nTF {#2} {%
+      \__nwejm_set{#1}
+    }{
+      \__nwejm_set{#1\l__nwejm_given_tl #2}
+    }
+  }{%
+    \tl_if_empty:nTF {#2} {%
+      \__nwejm_set{#1}
+    }{
+      \__nwejm_set{#1\l__nwejm_given_tl #2}
+    }
+  }{%
+    \tl_if_empty:nTF {#2} {%
+      \__nwejm_set{#1}
+    }{
+      \__nwejm_set{#1\l__nwejm_given_tl #2}
+    }
   }
-  \else
-  \tl_if_empty:nTF {#2} {%
-    \__nwejm_set{#1}
-  }{
-    \__nwejm_set{#1\l__nwejm_given_tl #2}
-  }
-  \fi
 }
 \DeclareDocumentCommand{\NewPairedDelimiter}{mm}
  {
@@ -2743,7 +2755,7 @@
 \int_new:N \g_line_of_multiline_eq_int
 \tl_new:N \g_line_of_multiline_eq_label_tl
 \tl_new:N \g_next_line_of_multiline_eq_label_tl
-\clist_set:Nn \l_tmpa_clist {align,gather,multline}
+\clist_set:Nn \l_tmpa_clist {align,multline}
 \clist_map_inline:Nn \l_tmpa_clist {
   \cs_set_eq:cc {db_#1_start:} {#1}
   \cs_set_eq:cc {db_#1_end:} {end#1}
@@ -2763,6 +2775,7 @@
     \cs:w db_multiline_eq:nV\cs_end: {#1*} \BODY
   }
 }
+\bool_new:N \g__nwejm_within_patched_amsmath_env_bool
 \clist_set:Nn \l_tmpa_clist {flalign,alignat}
 \clist_map_inline:Nn \l_tmpa_clist {
   \RenewEnviron{#1}
@@ -2801,14 +2814,18 @@
   \seq_set_split:Nnn \l_db_multiline_eq_seq { \\ } { #2 }
   \tl_if_in:nnTF {#1} {multline} {
     \begin{amsmath#1}
+      \bool_gset_true:N \g__nwejm_within_patched_amsmath_env_bool
       \seq_use:Nnnn \l_db_multiline_eq_seq
       { \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@double@space }
       \hfill
     \end{amsmath#1}
+    \bool_gset_false:N \g__nwejm_within_patched_amsmath_env_bool
   }{
     \begin{amsmath#1}
-    \seq_use:Nn \l_db_multiline_eq_seq { \multiline@double@backslash }
+      \bool_gset_true:N \g__nwejm_within_patched_amsmath_env_bool
+      \seq_use:Nn \l_db_multiline_eq_seq { \multiline@double@backslash }
     \end{amsmath#1}
+    \bool_gset_false:N \g__nwejm_within_patched_amsmath_env_bool
   }
  }
 \cs_generate_variant:Nn \db_multiline_eq:nn { nV }
@@ -2899,9 +2916,17 @@
  }%
  \MH_let:NwN \shortintertext \shortintertext@
 }
-\pretocmd{\MT_orig_shortintertext:n}{\db_add_marginal_note:}{}{}
+\pretocmd{\MT_orig_shortintertext:n}{%
+  \bool_if:NT \g__nwejm_within_patched_amsmath_env_bool {
+    \db_add_marginal_note:
+  }
+}{}{}
 \apptocmd{\MT_orig_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
-\pretocmd{\MT_shortintertext:n}{\db_add_marginal_note:}{}{}
+\pretocmd{\MT_shortintertext:n}{%
+  \bool_if:NT \g__nwejm_within_patched_amsmath_env_bool {
+    \db_add_marginal_note:
+  }
+}{}{}
 \apptocmd{\MT_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
 \setkeys{\MT_options_name:}{
   original-intertext=false,
