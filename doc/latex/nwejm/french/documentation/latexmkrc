@@ -1,7 +1,7 @@
 $pdf_mode = 1;
 
 $bibtex_use = 1;
-$bibtex = 'biber %O %B';
+$bibtex = 'biber -U %O %B';
 
 $makeindex = 'texindy -L french';
 
