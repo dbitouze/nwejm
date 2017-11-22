@@ -4906,7 +4906,7 @@ Running "make install" installs the files in the local TeX tree.
 % a view on all the multiline equation. In order to reduce this drawback,
 % a solution is to add a marginal note notifying the equation continues next
 % page if a page break occurs within it. Here is a solution for this (at least
-% for ×align(*)×, ×gather(*)× and ×multline(*)× environments) that requires to
+% for ×align(*)× and ×multline(*)× environments) that requires to
 % make use of \package{marginnote}'s ×\marginnote× macro, because the usual
 % ×\marginpar× doesn't work within math mode.
 %
@@ -4925,7 +4925,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % We save the original environments
 %    \begin{macrocode}
-\clist_set:Nn \l_tmpa_clist {align,gather,multline}
+\clist_set:Nn \l_tmpa_clist {align,multline}
 \clist_map_inline:Nn \l_tmpa_clist {
   \cs_set_eq:cc {db_#1_start:} {#1}
   \cs_set_eq:cc {db_#1_end:} {end#1}
@@ -4967,7 +4967,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% The new versions of ×align(*)×, ×gather(*)× and ×multline(*)× are defined
+% The new versions of ×align(*)× and ×multline(*)× are defined
 % thanks to the following ×\db_multiline_eq× control sequence.
 %    \begin{macrocode}
 \seq_new:N \l_db_multiline_eq_seq
