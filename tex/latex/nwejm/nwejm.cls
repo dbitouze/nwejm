@@ -610,12 +610,7 @@
     \thesection.~%
   }{%
   }
-  \tl_if_exist:NT { \g__nwejm_header_section_title_tl }
-  {
-    \tl_if_empty:NF \g__nwejm_header_section_title_tl {%
-      \g__nwejm_header_section_title_tl
-    }
-  }
+  \sectiontitle
 }%
 \newpagestyle{__nwejm_mainmatter_ps}[]{%
   \sethead%
@@ -1950,8 +1945,7 @@
 \cs_set_eq:NN \__nwejm_subsubsection \subsubsection
 \AfterPreamble{%
   \RenewDocumentCommand \section { s o o m } {%
-    \tl_clear:N \g__nwejm_short_section_title_tl
-    \tl_clear:N \g__nwejm_header_section_title_tl
+    \tl_gclear:N \g__nwejm_short_section_title_tl
     \IfBooleanTF {#1}
     {
       \setsecnumdepth{none}%
@@ -1961,21 +1955,16 @@
     }
     \tl_gset:Nn \g__nwejm_section_title_tl {#4}
     \IfNoValueTF{#2}{
-      \tl_gset_eq:NN \g__nwejm_short_section_title_tl \g__nwejm_section_title_tl
+      \tl_gset:Nn \g__nwejm_short_section_title_tl {#4}
     }{
       \tl_gset:Nn \g__nwejm_short_section_title_tl {#2}
     }
-    \IfNoValueF {#3}
-    {
-      \tl_gset:Nn \g__nwejm_header_section_title_tl {#3}
+    \IfNoValueTF {#3}{
+      \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
+    }{
+      \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl\sectionmark{#3}}
+      \sectionmark{#3}
     }
-    \tl_if_empty:NT \g__nwejm_short_section_title_tl {%
-      \tl_gset_eq:NN \g__nwejm_short_section_title_tl \g__nwejm_section_title_tl
-    }
-    \tl_if_empty:NT \g__nwejm_header_section_title_tl {%
-      \tl_gset_eq:NN \g__nwejm_header_section_title_tl \g__nwejm_short_section_title_tl
-    }
-    \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
   }
   \RenewDocumentCommand \subsection { s o m } {%
     \IfBooleanT {#1}
@@ -2603,30 +2592,10 @@
   #1
 }
 \NewDocumentCommand \set { m O{} } {
-  \mathchoice{%
-    \tl_if_empty:nTF {#2} {%
-      \__nwejm_set*{#1}
-    }{
-      \__nwejm_set*{#1\l__nwejm_given_tl #2}
-    }
-  }{%
-    \tl_if_empty:nTF {#2} {%
-      \__nwejm_set{#1}
-    }{
-      \__nwejm_set{#1\l__nwejm_given_tl #2}
-    }
-  }{%
-    \tl_if_empty:nTF {#2} {%
-      \__nwejm_set{#1}
-    }{
-      \__nwejm_set{#1\l__nwejm_given_tl #2}
-    }
-  }{%
-    \tl_if_empty:nTF {#2} {%
-      \__nwejm_set{#1}
-    }{
-      \__nwejm_set{#1\l__nwejm_given_tl #2}
-    }
+  \tl_if_empty:nTF {#2} {%
+    \__nwejm_set*{#1}
+  }{
+    \__nwejm_set*{#1\l__nwejm_given_tl #2}
   }
 }
 \DeclareDocumentCommand{\NewPairedDelimiter}{mm}
