@@ -1815,12 +1815,7 @@ Running "make install" installs the files in the local TeX tree.
     \thesection.~%
   }{%
   }
-  \tl_if_exist:NT { \g_@@_header_section_title_tl }
-  {
-    \tl_if_empty:NF \g_@@_header_section_title_tl {%
-      \g_@@_header_section_title_tl
-    }
-  }
+  \sectiontitle
 }%
 \newpagestyle{@@_mainmatter_ps}[]{%
   \sethead%
@@ -3920,8 +3915,7 @@ Running "make install" installs the files in the local TeX tree.
 \cs_set_eq:NN \_@@_subsubsection \subsubsection
 \AfterPreamble{%
   \RenewDocumentCommand \section { s o o m } {%
-    \tl_clear:N \g_@@_short_section_title_tl
-    \tl_clear:N \g_@@_header_section_title_tl
+    \tl_gclear:N \g_@@_short_section_title_tl
     \IfBooleanTF {#1}
     {
       \setsecnumdepth{none}%
@@ -3931,21 +3925,16 @@ Running "make install" installs the files in the local TeX tree.
     }
     \tl_gset:Nn \g_@@_section_title_tl {#4}
     \IfNoValueTF{#2}{
-      \tl_gset_eq:NN \g_@@_short_section_title_tl \g_@@_section_title_tl
+      \tl_gset:Nn \g_@@_short_section_title_tl {#4}
     }{
       \tl_gset:Nn \g_@@_short_section_title_tl {#2}
     }
-    \IfNoValueF {#3}
-    {
-      \tl_gset:Nn \g_@@_header_section_title_tl {#3}
+    \IfNoValueTF {#3}{
+      \_@@_section[\g_@@_short_section_title_tl]{\g_@@_section_title_tl}
+    }{
+      \_@@_section[\g_@@_short_section_title_tl]{\g_@@_section_title_tl\sectionmark{#3}}
+      \sectionmark{#3}
     }
-    \tl_if_empty:NT \g_@@_short_section_title_tl {%
-      \tl_gset_eq:NN \g_@@_short_section_title_tl \g_@@_section_title_tl
-    }
-    \tl_if_empty:NT \g_@@_header_section_title_tl {%
-      \tl_gset_eq:NN \g_@@_header_section_title_tl \g_@@_short_section_title_tl
-    }
-    \_@@_section[\g_@@_short_section_title_tl]{\g_@@_section_title_tl}
   }
   \RenewDocumentCommand \subsection { s o m } {%
     \IfBooleanT {#1}
