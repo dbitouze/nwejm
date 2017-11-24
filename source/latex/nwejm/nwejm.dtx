@@ -4717,30 +4717,10 @@ Running "make install" installs the files in the local TeX tree.
   #1
 }
 \NewDocumentCommand \set { m O{} } {
-  \mathchoice{%
-    \tl_if_empty:nTF {#2} {%
-      \_@@_set*{#1}
-    }{
-      \_@@_set*{#1\l_@@_given_tl #2}
-    }
-  }{%
-    \tl_if_empty:nTF {#2} {%
-      \_@@_set{#1}
-    }{
-      \_@@_set{#1\l_@@_given_tl #2}
-    }
-  }{%
-    \tl_if_empty:nTF {#2} {%
-      \_@@_set{#1}
-    }{
-      \_@@_set{#1\l_@@_given_tl #2}
-    }
-  }{%
-    \tl_if_empty:nTF {#2} {%
-      \_@@_set{#1}
-    }{
-      \_@@_set{#1\l_@@_given_tl #2}
-    }
+  \tl_if_empty:nTF {#2} {%
+    \_@@_set*{#1}
+  }{
+    \_@@_set*{#1\l_@@_given_tl #2}
   }
 }
 %    \end{macrocode}
