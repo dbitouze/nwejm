@@ -1161,10 +1161,8 @@
     }{
       \tl_gset:Nn \g__nwejm_short_section_title_tl {#2}
     }
-    \IfNoValueTF {#3}{
-      \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
-    }{
-      \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl\sectionmark{#3}}
+    \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
+    \IfNoValueF {#3}{
       \sectionmark{#3}
     }
   }
