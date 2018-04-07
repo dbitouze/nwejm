@@ -312,6 +312,9 @@ suivante. En cas d'auteurs multiples, il suffit de (et il faut) recourir
     ou les majuscules)\footnote{Dans les articles en français, ce nom sera
       automatiquement composé en petites capitales.}.
   \end{enumerate}
+
+  La métadonnée \enquote{Auteur} du \File{PDF} produit contient automatiquement
+  le ou les auteurs spécifiés.
 \end{dbwarning}
 
 La commande \refCom{author} admet un argument optionnel permettant de spécifier
@@ -392,11 +395,11 @@ et \refKey{affiliationtagged} suivantes.
   Cette commande permet de spécifier les \meta{mots clés} de l'article sous la
   forme d'une liste séparée par des virgules.
 
-  La propriété \enquote{\texttt{pdfkeywords}} du \File{PDF} produit contient
-  automatiquement les \meta{mots clés} spécifiés. Dans le cas où ceux-ci
-  contiennent des caractères non admis en propriétés des fichiers \file{PDF}
-  (notamment des mathématiques), on spécifiera en argument optionnel une
-  \meta{variante des mots clés} ne contenant que des caractères autorisés.
+  La métadonnée \enquote{Mots-clés} du \File{PDF} produit contient
+  automatiquement les \meta{mots clés} spécifiés. % Dans le cas où ceux-ci
+  % contiennent des caractères non admis en métadonnées des fichiers \file{PDF}
+  % (notamment des mathématiques), on spécifiera en argument optionnel une
+  % \meta{variante des mots clés} ne contenant que des caractères autorisés.
 \end{docCommand}
 
 \begin{bodycode}[listing options={deletekeywords={[5]keywords}}]
@@ -655,7 +658,7 @@ La \nwejmauthorcl{} :
   \item \package*{mathtools} qui lui-même charge \package*{amsmath} (mais en
     l'étendant et en corrigeant certains de ses défauts), si bien que toutes les
     commandes de ces deux packages sont disponibles ;
-  \item \package*{mathrsfs} qui fournit de jolies lettres calligraphiques (via
+  \item \package*{rsfso} qui fournit de jolies lettres calligraphiques (via
     la commande \docAuxCommand{mathscr}) ;
   \end{itemize}
 \item redéfinit certaines commandes et en fournit quelques nouvelles, listées
