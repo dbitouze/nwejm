@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
-  {2017/02/14}
-  {0.98d}
+  {2018/04/07}
+  {0.98e}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -3108,7 +3108,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015, 2016, 2017 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2018 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
