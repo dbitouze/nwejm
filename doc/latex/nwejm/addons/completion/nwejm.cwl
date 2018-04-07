@@ -16,7 +16,7 @@
 #include:booktabs
 #include:mathtools
 #include:ntheorem
-#include:mathrsfs
+#include:rsfso
 #include:esvect
 #include:kpfonts
 #include:translations

@@ -191,7 +191,7 @@
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
 \RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
-\RequirePackage{mathrsfs}
+\RequirePackage{rsfso}
 \RequirePackage{esvect}
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
 \RequirePackage{geometry}
