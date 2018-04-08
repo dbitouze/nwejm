@@ -192,7 +192,6 @@
 \RequirePackage{cleveref}%
 \expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}
 \let\globcount\newcount
-\RequirePackage{autonum}
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -2195,15 +2194,6 @@
     }%
   \endgroup
 }
-\AfterEndPreamble{
-  \autonum@generatePatchedReferenceCSL{vref}
-  \clist_set:Nn \l_tmpa_clist {equation,align,gather,multline,flalign}
-  \clist_map_inline:Nn \l_tmpa_clist {
-    \cs_set_eq:cc {#1*} {#1}
-    \cs_set_eq:cc {end#1*} {end#1}
-  }
-  % \msg_warning:nnn{nwejmart}{Starred~AMS~environments}{#1}
-}
 \etocsettocdepth{subsection}
 \@ifpackageloaded{pgfplots}{%
   \ifcurrentbaselanguage{french}{%
@@ -2306,10 +2296,6 @@
   }
 }
 \ExplSyntaxOff
-\patchcmd{\autonum@saveEnvironmentSubcommands}
-  {(0,0)\begin}
-  {(0,0)\hfuzz=\maxdimen\begin}
-    {}{}
 %% 
 %% Copyright (C) 2015-2018 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
