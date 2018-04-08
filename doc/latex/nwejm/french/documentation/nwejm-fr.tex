@@ -1362,52 +1362,52 @@ canevas de fichier source [...]
 %   à \refCom{vref}.
 % \end{dbremark}
 
-\subsection{\enquote{Équations} (non-)numérotées}
-\label{sec:equat-non-numer}
-
-Le lecteur, rompu à la composition de formules de mathématiques, connaît
-certainement le \Package*{amsmath} et les environnements qu'il fournit :
-\begin{itemize}
-\item |equation|, |align|, |gather|, |multline| et |flalign| qui numérotent
-  leur contenu ;
-\item |equation*|, |align*|, |gather*|, |multline*| et |flalign*| qui \emph{ne}
-  numérotent \emph{pas} leur contenu ;
-\end{itemize}
-et utilise les premiers si (et seulement si, théoriquement) les contenus
-correspondants font l'objet de références croisées.
-
-Avoir à choisir entre les versions numérotées ou pas présente au moins deux
-inconvénients pour l'utilisateur :
-\begin{enumerate}
-\item cela l'oblige à se poser à chaque fois la question de la pertinence de la
-  numérotation de sa formule ;
-\item son choix peut ultérieurement s'avérer caduc\footnote{Et donc nécessiter
-    de passer par exemple d'un environnement étoilé à un non-étoilé \aside*{donc
-      avec ajout d'un label}.}.
-\end{enumerate}
-Pour pallier cela, la \nwejmauthorcl{} charge automatiquement le
-\Package{autonum} qui :
-\begin{enumerate}
-\item permet de ne recourir qu'aux environnements non-étoilés ;
-\item assure automatiquement que les formules effectivement numérotées seront
-  celles, et seulement celles, s'avérant faire l'objet de références croisées au
-  sein du document.
-\end{enumerate}
-
-\begin{bodycode}[listing and text]
-L'\vref{euler-identity} mérite une référence croisée.
-\begin{equation}\label{euler-identity}
-  \E[\I\pi]+1=0
-\end{equation}
-C'est bien la seule ici.
-\begin{equation}\label{not-interesting}
-  0=0
-\end{equation}
-Malheureusement.
-\begin{equation}
-  1=1
-\end{equation}
-\end{bodycode}
+% \subsection{\enquote{Équations} (non-)numérotées}
+% \label{sec:equat-non-numer}
+%
+% Le lecteur, rompu à la composition de formules de mathématiques, connaît
+% certainement le \Package*{amsmath} et les environnements qu'il fournit :
+% \begin{itemize}
+% \item |equation|, |align|, |gather|, |multline| et |flalign| qui numérotent
+%   leur contenu ;
+% \item |equation*|, |align*|, |gather*|, |multline*| et |flalign*| qui \emph{ne}
+%   numérotent \emph{pas} leur contenu ;
+% \end{itemize}
+% et utilise les premiers si (et seulement si, théoriquement) les contenus
+% correspondants font l'objet de références croisées.
+%
+% Avoir à choisir entre les versions numérotées ou pas présente au moins deux
+% inconvénients pour l'utilisateur :
+% \begin{enumerate}
+% \item cela l'oblige à se poser à chaque fois la question de la pertinence de la
+%   numérotation de sa formule ;
+% \item son choix peut ultérieurement s'avérer caduc\footnote{Et donc nécessiter
+%     de passer par exemple d'un environnement étoilé à un non-étoilé \aside*{donc
+%       avec ajout d'un label}.}.
+% \end{enumerate}
+% Pour pallier cela, la \nwejmauthorcl{} charge automatiquement le
+% \Package{autonum} qui :
+% \begin{enumerate}
+% \item permet de ne recourir qu'aux environnements non-étoilés ;
+% \item assure automatiquement que les formules effectivement numérotées seront
+%   celles, et seulement celles, s'avérant faire l'objet de références croisées au
+%   sein du document.
+% \end{enumerate}
+%
+% \begin{bodycode}[listing and text]
+% L'\vref{euler-identity} mérite une référence croisée.
+% \begin{equation}\label{euler-identity}
+%   \E[\I\pi]+1=0
+% \end{equation}
+% C'est bien la seule ici.
+% \begin{equation}\label{not-interesting}
+%   0=0
+% \end{equation}
+% Malheureusement.
+% \begin{equation}
+%   1=1
+% \end{equation}
+% \end{bodycode}
 
 \subsection{Acronymes}
 \label{sec:acronymes}
