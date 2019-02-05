@@ -4603,13 +4603,17 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We borrow the following code provided by Enrico Gregorio (see
 % \url{http://tex.stackexchange.com/q/289913/18401}) in order to improve the
-% operators defined with ×\DeclareMathOperator×.
+% operators defined with ×\DeclareMathOperator×. We still provide a starred
+% version of this command for new operators that should have subscripts and
+% superscripts placed in ‘limits’ position above and below.
 %    \begin{macrocode}
-\RenewDocumentCommand{\DeclareMathOperator}{mm}
+\RenewDocumentCommand{\DeclareMathOperator}{smm}
 {
-  \NewDocumentCommand{#1}{}
+  \NewDocumentCommand{#2}{}
   {
-    \operatorname{#2}
+    \IfBooleanTF {#1}
+    {\operatorname*{#3}}
+    {\operatorname{#3}}
     \peek_after:Nw \@@_opx_check:
   }
 }
