@@ -2179,6 +2179,17 @@ Running "make install" installs the files in the local TeX tree.
   title / german .value_required:n = true,
   title / dutch .value_required:n = true,
   %
+  title-plural .tl_set:N = \l_@@_newtheorem_title_plural_tl,
+  title-plural / french .tl_set:N = \l_@@_newtheorem_french_title_plural_tl,
+  title-plural / english .tl_set:N = \l_@@_newtheorem_english_title_plural_tl,
+  title-plural / german .tl_set:N = \l_@@_newtheorem_german_title_plural_tl,
+  title-plural / dutch .tl_set:N = \l_@@_newtheorem_dutch_title_plural_tl,
+  title-plural .value_required:n = true,
+  title-plural / french .value_required:n = true,
+  title-plural / english .value_required:n = true,
+  title-plural / german .value_required:n = true,
+  title-plural / dutch .value_required:n = true,
+  %
   style .choice:,
   style / theorem .code:n = {\_@@_theorem_style:n {theorem}},
   style / definition .code:n = {\_@@_theorem_style:n {definition}},
@@ -4174,7 +4185,7 @@ Running "make install" installs the files in the local TeX tree.
   }
 }
 \cs_set_eq:NN \_@@_orig_newtheorem \newtheorem
-\cs_new_protected:Nn \_@@_new_theorem:nnnnn
+\cs_new_protected:Nn \_@@_new_theorem:nnnnnnnnn
 {
     \IfTranslation{English}{#1}{%
     }{%
@@ -4192,12 +4203,30 @@ Running "make install" installs the files in the local TeX tree.
     }{%
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
+    %
+    \IfTranslation{English}{#1-plural}{%
+    }{%
+      \DeclareTranslation{English}{#1-plural}{\tl_mixed_case:n{#6}}%
+    }
+    \IfTranslation{French}{#1-plural}{%
+    }{%
+      \DeclareTranslation{French}{#1-plural}{\tl_mixed_case:n{#7}}%
+    }
+    \IfTranslation{German}{#1-plural}{%
+    }{%
+      \DeclareTranslation{German}{#1-plural}{\tl_mixed_case:n{#8}}%
+    }
+    \IfTranslation{Dutch}{#1-plural}{%
+    }{%
+      \DeclareTranslation{Dutch}{#1-plural}{\tl_mixed_case:n{#9}}%
+    }
     \_@@_orig_newtheorem{#1}{\tl_mixed_case:n{ \GetTranslation{#1} }}
     \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
       \_@@_orig_newtheorem*{#1_@@_nonumbered}{\tl_mixed_case:n{ \GetTranslation{#1} }}
     }
+    
 }
-\cs_generate_variant:Nn \_@@_new_theorem:nnnnn { nVVVV }
+\cs_generate_variant:Nn \_@@_new_theorem:nnnnnnnnn { nVVVVVVVV }
 %    \end{macrocode}
 %
 % Then, we define a public command, similar to "\newtheorem", based on
@@ -4213,6 +4242,12 @@ Running "make install" installs the files in the local TeX tree.
     \tl_clear:N \l_@@_newtheorem_german_title_tl
     \tl_clear:N \l_@@_newtheorem_dutch_title_tl
     %
+    \tl_clear:N \l_@@_newtheorem_title_plural_tl
+    \tl_clear:N \l_@@_newtheorem_french_title_plural_tl
+    \tl_clear:N \l_@@_newtheorem_english_title_plural_tl
+    \tl_clear:N \l_@@_newtheorem_german_title_plural_tl
+    \tl_clear:N \l_@@_newtheorem_dutch_title_plural_tl
+    %
     \tl_set:Nn \l_@@_newtheorem_english_title_tl {
       #2
     }
@@ -4225,13 +4260,26 @@ Running "make install" installs the files in the local TeX tree.
     \tl_set:Nf \l_@@_newtheorem_dutch_title_tl {
       \l_@@_newtheorem_english_title_tl
     }
-    \tl_set:Nn \l_@@_newtheorem_style_tl {
-      theorem
+    %
+    \tl_set:Nf \l_@@_newtheorem_english_title_plural_tl {
+      \l_@@_newtheorem_english_title_tl s
     }
+    \tl_set:Nf \l_@@_newtheorem_french_title_plural_tl {
+      \l_@@_newtheorem_english_title_plural_tl
+    }
+    \tl_set:Nf \l_@@_newtheorem_german_title_plural_tl {
+      \l_@@_newtheorem_english_title_plural_tl
+    }
+    \tl_set:Nf \l_@@_newtheorem_dutch_title_plural_tl {
+      \l_@@_newtheorem_english_title_plural_tl
+    }
+    %
     \_@@_theorem_style:n {theorem}
+    %
     \IfNoValueF {#1}
     {
       \keys_set:nn { nwejm / newtheorem } { #1 }
+      %
       \tl_if_empty:NF \l_@@_newtheorem_title_tl {%
         \tl_set:Nf \l_@@_newtheorem_english_title_tl
         {
@@ -4250,14 +4298,47 @@ Running "make install" installs the files in the local TeX tree.
           \l_@@_newtheorem_title_tl
         }
       }
+      %
+      \tl_if_empty:NT \l_@@_newtheorem_title_plural_tl {%
+        \tl_if_empty:NTF \l_@@_newtheorem_title_tl {%
+          \tl_set:Nn \l_@@_newtheorem_title_plural_tl { #2 s }
+        }{%
+          \tl_set:Nf \l_@@_newtheorem_title_plural_tl { \l_@@_newtheorem_title_tl s }
+        }
+      }
+      \tl_set:Nf \l_@@_newtheorem_english_title_plural_tl
+      {
+        \l_@@_newtheorem_title_plural_tl
+      }
+      \tl_set:Nf \l_@@_newtheorem_french_title_plural_tl
+      {
+        \l_@@_newtheorem_title_plural_tl
+      }
+      \tl_set:Nf \l_@@_newtheorem_german_title_plural_tl
+      {
+        \l_@@_newtheorem_title_plural_tl
+      }
+      \tl_set:Nf \l_@@_newtheorem_dutch_title_plural_tl
+      {
+        \l_@@_newtheorem_title_plural_tl
+      }
+      %
+      % \tl_set:Nn \l_@@_newtheorem_style_tl {
+      %   theorem
+      % }
     }
     %
-    \_@@_new_theorem:nVVVV
+    \_@@_new_theorem:nVVVVVVVV
     {#2}
     {\l_@@_newtheorem_english_title_tl}
     {\l_@@_newtheorem_french_title_tl}
     {\l_@@_newtheorem_german_title_tl}
     {\l_@@_newtheorem_dutch_title_tl}
+    {\l_@@_newtheorem_english_title_plural_tl}
+    {\l_@@_newtheorem_french_title_plural_tl}
+    {\l_@@_newtheorem_german_title_plural_tl}
+    {\l_@@_newtheorem_dutch_title_plural_tl}
+    {\l_@@_newtheorem_style_tl}
 %    \end{macrocode}
 % The following line ensures footnotes and, more specifically, autocitations
 % (which are in footnotes) are handled in theorems' notes (i.e. in their
@@ -4296,6 +4377,12 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
     \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
   }
+  \ifcurrentbaselanguage{french}{%
+    \crefname{#2}{\tl_lower_case:n{ \GetTranslation{#2} }}{\tl_lower_case:n{ \GetTranslation{#2-plural} }}
+  }{%
+    \crefname{#2}{\GetTranslation{#2}}{\GetTranslation{#2-plural}}
+  }
+  \Crefname{#2}{\tl_mixed_case:n{ \GetTranslation{#2} }}{\tl_mixed_case:n{ \GetTranslation{#2-plural} }}
 }
 %    \end{macrocode}
 %
