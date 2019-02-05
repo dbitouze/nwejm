@@ -4510,6 +4510,77 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
 }
+%    \end{macrocode}
+%
+% Public command for easily create new environments of enumerations. The mandatory
+% argument is the singular form of the name of the enumeration; the optional argument
+% is the plural form if it is not obtained by appending a "s" to the signular form.
+%    \begin{macrocode}
+\cs_new_protected:Npn \_@@_tl_pop_right:n #1
+ {
+  \tl_reverse:f
+   {
+    \tl_tail:f
+     {
+      \tl_reverse:n { #1 }
+     }
+   }
+ }
+\cs_generate_variant:Nn \tl_reverse:n { f }
+\cs_generate_variant:Nn \_@@_tl_pop_right:n { v }
+
+\NewDocumentCommand{\newenumeration}{O{}m}
+{
+  \keys_define:nn { nwejm/newenumeration }
+  {
+    singular .tl_set:c = {l_@@_newenumeration_#2_singular_tl},
+    plural   .tl_set:c =   {l_@@_newenumeration_#2_plural_tl},
+  }
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm/newenumeration } { #1 }
+  }
+  \tl_if_empty:cT {l_@@_newenumeration_#2_plural_tl} {
+    \tl_set:cn {l_@@_newenumeration_#2_plural_tl} {#2}
+  }
+  \tl_if_empty:cT {l_@@_newenumeration_#2_singular_tl} {
+    \tl_set:cV {l_@@_newenumeration_#2_singular_tl} {\_@@_tl_pop_right:v {l_@@_newenumeration_#2_plural_tl}}
+  }
+  \newlist{#2}{enumerate}{1}
+  \tl_set:cn {l_@@_newenumeration_#2_reference_tl} {
+    \textsf{
+      \tl_upper_case:n {\tl_head:f {\tl_use:c {l_@@_newenumeration_#2_singular_tl}}}
+    }
+  }
+  \setlist[#2]{%
+    label=
+    \normalfont
+    (
+    \tl_use:c {l_@@_newenumeration_#2_reference_tl}
+    $\c_math_subscript_token{\mathsf{\arabic*}}$
+    ),
+    ref=
+    (
+    \tl_use:c {l_@@_newenumeration_#2_reference_tl}
+    $_\mathsf{\arabic*}$
+    )
+  }
+  \crefname{#2i}{
+    \tl_use:c {l_@@_newenumeration_#2_singular_tl}
+  }{%
+    \tl_use:c {l_@@_newenumeration_#2_plural_tl}
+  }
+  \Crefname{#2i}{
+    \tl_mixed_case:n{
+      \tl_use:c {l_@@_newenumeration_#2_singular_tl}
+    }
+  }{%
+    \tl_mixed_case:n{
+      \tl_use:c {l_@@_newenumeration_#2_plural_tl}
+    }
+  }
+}
+%
 \NewDocumentEnvironment{hypotheses}{}
 {
   \begin{hypothesis}
