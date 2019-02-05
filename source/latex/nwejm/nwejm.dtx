@@ -6478,7 +6478,15 @@ Running "make install" installs the files in the local TeX tree.
 }
 {\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
-{\addsemicolon\space}
+{%
+  \ifcurrentbaselanguage{french}{%
+    \parindent=\parindentFFN%
+    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
+  }{%
+    \parindent=\footnotemargin%
+  }%
+  \multicitedelim\newline\indent%
+}
 %    \end{macrocode}
 %
 % We now declare the definitions for the ×\autocite× and ×\autocites× commands
