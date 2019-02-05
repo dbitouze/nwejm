@@ -6333,6 +6333,13 @@ Running "make install" installs the files in the local TeX tree.
 \renewcommand*\bibnamedelimd{\addnbspace}
 %    \end{macrocode}
 %
+% A temporary trick in order to avoid inappropriate capitalization of the
+% initial after periods abbreviating journals (see
+% \url{https://github.com/plk/biblatex/issues/851}).
+%    \begin{macrocode}
+\DeclareFieldFormat{journaltitle}{\mkbibemph{#1\isdot}}
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 %</bibstyle>
 %    \end{macrocode}
