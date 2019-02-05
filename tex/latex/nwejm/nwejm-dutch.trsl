@@ -30,6 +30,8 @@
 \ProvideDictTranslation{plural-hypothesis}{hypotheses}
 \ProvideDictTranslation{assertion}{aanname}
 \ProvideDictTranslation{plural-assertion}{aannames}
+\ProvideDictTranslation{condition}{voorwaarde}
+\ProvideDictTranslation{plural-condition}{voorwaarden}
 \ProvideDictTranslation{century}{eeuw}
 \ProvideDictTranslation{before-christ}{v.Chr}
 \ProvideDictTranslation{Acknowledgments}{Dankwoord}

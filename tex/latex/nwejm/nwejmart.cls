@@ -181,8 +181,8 @@
 \RequirePackage{environ}
 \RequirePackage{footnote}%
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
-\RequirePackage[hyperfootnotes=false,pdfencoding=unicode,final]{hyperref}%
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,autopunct=true}
+\RequirePackage[pdfencoding=unicode,final]{hyperref}%
 \AtBeginDocument{%
   \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
@@ -486,6 +486,17 @@
   title / english .value_required:n = true,
   title / german .value_required:n = true,
   title / dutch .value_required:n = true,
+  %
+  title-plural .tl_set:N = \l__nwejm_newtheorem_title_plural_tl,
+  title-plural / french .tl_set:N = \l__nwejm_newtheorem_french_title_plural_tl,
+  title-plural / english .tl_set:N = \l__nwejm_newtheorem_english_title_plural_tl,
+  title-plural / german .tl_set:N = \l__nwejm_newtheorem_german_title_plural_tl,
+  title-plural / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_plural_tl,
+  title-plural .value_required:n = true,
+  title-plural / french .value_required:n = true,
+  title-plural / english .value_required:n = true,
+  title-plural / german .value_required:n = true,
+  title-plural / dutch .value_required:n = true,
   %
   style .choice:,
   style / theorem .code:n = {\__nwejm_theorem_style:n {theorem}},
@@ -1335,7 +1346,7 @@
   }
 }
 \cs_set_eq:NN \__nwejm_orig_newtheorem \newtheorem
-\cs_new_protected:Nn \__nwejm_new_theorem:nnnnn
+\cs_new_protected:Nn \__nwejm_new_theorem:nnnnnnnnn
 {
     \IfTranslation{English}{#1}{%
     }{%
@@ -1353,12 +1364,30 @@
     }{%
       \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
     }
+    %
+    \IfTranslation{English}{#1-plural}{%
+    }{%
+      \DeclareTranslation{English}{#1-plural}{\tl_mixed_case:n{#6}}%
+    }
+    \IfTranslation{French}{#1-plural}{%
+    }{%
+      \DeclareTranslation{French}{#1-plural}{\tl_mixed_case:n{#7}}%
+    }
+    \IfTranslation{German}{#1-plural}{%
+    }{%
+      \DeclareTranslation{German}{#1-plural}{\tl_mixed_case:n{#8}}%
+    }
+    \IfTranslation{Dutch}{#1-plural}{%
+    }{%
+      \DeclareTranslation{Dutch}{#1-plural}{\tl_mixed_case:n{#9}}%
+    }
     \__nwejm_orig_newtheorem{#1}{\tl_mixed_case:n{ \GetTranslation{#1} }}
     \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
       \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\tl_mixed_case:n{ \GetTranslation{#1} }}
     }
+
 }
-\cs_generate_variant:Nn \__nwejm_new_theorem:nnnnn { nVVVV }
+\cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnnnnn { nVVVVVVVV }
 \RenewDocumentCommand \newtheorem { O{} m }
 {
   \AtBeginDocument{
@@ -1368,6 +1397,12 @@
     \tl_clear:N \l__nwejm_newtheorem_english_title_tl
     \tl_clear:N \l__nwejm_newtheorem_german_title_tl
     \tl_clear:N \l__nwejm_newtheorem_dutch_title_tl
+    %
+    \tl_clear:N \l__nwejm_newtheorem_title_plural_tl
+    \tl_clear:N \l__nwejm_newtheorem_french_title_plural_tl
+    \tl_clear:N \l__nwejm_newtheorem_english_title_plural_tl
+    \tl_clear:N \l__nwejm_newtheorem_german_title_plural_tl
+    \tl_clear:N \l__nwejm_newtheorem_dutch_title_plural_tl
     %
     \tl_set:Nn \l__nwejm_newtheorem_english_title_tl {
       #2
@@ -1381,13 +1416,26 @@
     \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl {
       \l__nwejm_newtheorem_english_title_tl
     }
-    \tl_set:Nn \l__nwejm_newtheorem_style_tl {
-      theorem
+    %
+    \tl_set:Nf \l__nwejm_newtheorem_english_title_plural_tl {
+      \l__nwejm_newtheorem_english_title_tl s
     }
+    \tl_set:Nf \l__nwejm_newtheorem_french_title_plural_tl {
+      \l__nwejm_newtheorem_english_title_plural_tl
+    }
+    \tl_set:Nf \l__nwejm_newtheorem_german_title_plural_tl {
+      \l__nwejm_newtheorem_english_title_plural_tl
+    }
+    \tl_set:Nf \l__nwejm_newtheorem_dutch_title_plural_tl {
+      \l__nwejm_newtheorem_english_title_plural_tl
+    }
+    %
     \__nwejm_theorem_style:n {theorem}
+    %
     \IfNoValueF {#1}
     {
       \keys_set:nn { nwejm / newtheorem } { #1 }
+      %
       \tl_if_empty:NF \l__nwejm_newtheorem_title_tl {%
         \tl_set:Nf \l__nwejm_newtheorem_english_title_tl
         {
@@ -1406,14 +1454,47 @@
           \l__nwejm_newtheorem_title_tl
         }
       }
+      %
+      \tl_if_empty:NT \l__nwejm_newtheorem_title_plural_tl {%
+        \tl_if_empty:NTF \l__nwejm_newtheorem_title_tl {%
+          \tl_set:Nn \l__nwejm_newtheorem_title_plural_tl { #2 s }
+        }{%
+          \tl_set:Nf \l__nwejm_newtheorem_title_plural_tl { \l__nwejm_newtheorem_title_tl s }
+        }
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_english_title_plural_tl
+      {
+        \l__nwejm_newtheorem_title_plural_tl
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_french_title_plural_tl
+      {
+        \l__nwejm_newtheorem_title_plural_tl
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_german_title_plural_tl
+      {
+        \l__nwejm_newtheorem_title_plural_tl
+      }
+      \tl_set:Nf \l__nwejm_newtheorem_dutch_title_plural_tl
+      {
+        \l__nwejm_newtheorem_title_plural_tl
+      }
+      %
+      % \tl_set:Nn \l__nwejm_newtheorem_style_tl {
+      %   theorem
+      % }
     }
     %
-    \__nwejm_new_theorem:nVVVV
+    \__nwejm_new_theorem:nVVVVVVVV
     {#2}
     {\l__nwejm_newtheorem_english_title_tl}
     {\l__nwejm_newtheorem_french_title_tl}
     {\l__nwejm_newtheorem_german_title_tl}
     {\l__nwejm_newtheorem_dutch_title_tl}
+    {\l__nwejm_newtheorem_english_title_plural_tl}
+    {\l__nwejm_newtheorem_french_title_plural_tl}
+    {\l__nwejm_newtheorem_german_title_plural_tl}
+    {\l__nwejm_newtheorem_dutch_title_plural_tl}
+    {\l__nwejm_newtheorem_style_tl}
     \makesavenoteenv{#2}
     \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
       \ifcsmacro{#2*}{%
@@ -1438,6 +1519,12 @@
         }
     \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
   }
+  \ifcurrentbaselanguage{french}{%
+    \crefname{#2}{\tl_lower_case:n{ \GetTranslation{#2} }}{\tl_lower_case:n{ \GetTranslation{#2-plural} }}
+  }{%
+    \crefname{#2}{\GetTranslation{#2}}{\GetTranslation{#2-plural}}
+  }
+  \Crefname{#2}{\tl_mixed_case:n{ \GetTranslation{#2} }}{\tl_mixed_case:n{ \GetTranslation{#2-plural} }}
 }
 \newtheorem{theorem}
 \newtheorem{corollary}
@@ -1514,7 +1601,8 @@
 }
 \clist_set:Nn \l_tmpa_clist {%
   hypothesis,
-  assertion%
+  assertion,%
+  condition%
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \newlist{#1}{enumerate}{1}
@@ -1548,6 +1636,70 @@
     }
   }
 }
+\cs_new_protected:Npn \__nwejm_tl_pop_right:n #1
+ {
+  \tl_reverse:f
+   {
+    \tl_tail:f
+     {
+      \tl_reverse:n { #1 }
+     }
+   }
+ }
+\cs_generate_variant:Nn \tl_reverse:n { f }
+\cs_generate_variant:Nn \__nwejm_tl_pop_right:n { v }
+
+\NewDocumentCommand{\newenumeration}{O{}m}
+{
+  \keys_define:nn { nwejm/newenumeration }
+  {
+    singular .tl_set:c = {l__nwejm_newenumeration_#2_singular_tl},
+    plural   .tl_set:c =   {l__nwejm_newenumeration_#2_plural_tl},
+  }
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm/newenumeration } { #1 }
+  }
+  \tl_if_empty:cT {l__nwejm_newenumeration_#2_plural_tl} {
+    \tl_set:cn {l__nwejm_newenumeration_#2_plural_tl} {#2}
+  }
+  \tl_if_empty:cT {l__nwejm_newenumeration_#2_singular_tl} {
+    \tl_set:cV {l__nwejm_newenumeration_#2_singular_tl} {\__nwejm_tl_pop_right:v {l__nwejm_newenumeration_#2_plural_tl}}
+  }
+  \newlist{#2}{enumerate}{1}
+  \tl_set:cn {l__nwejm_newenumeration_#2_reference_tl} {
+    \textsf{
+      \tl_upper_case:n {\tl_head:f {\tl_use:c {l__nwejm_newenumeration_#2_singular_tl}}}
+    }
+  }
+  \setlist[#2]{%
+    label=
+    \normalfont
+    (
+    \tl_use:c {l__nwejm_newenumeration_#2_reference_tl}
+    $\c_math_subscript_token{\mathsf{\arabic*}}$
+    ),
+    ref=
+    (
+    \tl_use:c {l__nwejm_newenumeration_#2_reference_tl}
+    $_\mathsf{\arabic*}$
+    )
+  }
+  \crefname{#2i}{
+    \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
+  }{%
+    \tl_use:c {l__nwejm_newenumeration_#2_plural_tl}
+  }
+  \Crefname{#2i}{
+    \tl_mixed_case:n{
+      \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
+    }
+  }{%
+    \tl_mixed_case:n{
+      \tl_use:c {l__nwejm_newenumeration_#2_plural_tl}
+    }
+  }
+}
 \NewDocumentEnvironment{hypotheses}{}
 {
   \begin{hypothesis}
@@ -1560,11 +1712,19 @@
   }{
   \end{assertion}
 }
-\RenewDocumentCommand{\DeclareMathOperator}{mm}
+\NewDocumentEnvironment{conditions}{}
 {
-  \NewDocumentCommand{#1}{}
+  \begin{condition}
+  }{
+  \end{condition}
+}
+\RenewDocumentCommand{\DeclareMathOperator}{smm}
+{
+  \NewDocumentCommand{#2}{}
   {
-    \operatorname{#2}
+    \IfBooleanTF {#1}
+    {\operatorname*{#3}}
+    {\operatorname{#3}}
     \peek_after:Nw \__nwejm_opx_check:
   }
 }
@@ -1783,7 +1943,7 @@
 \cs_set_eq:NN \emptyset \varnothing
 \tl_new:N \l__nwejm_given_tl
 \tl_set:Nn \l__nwejm_given_tl {
-  \nonscript\:\delimsize\slash
+  \nonscript\:\delimsize\vert
   \allowbreak
   \nonscript\:
   \mathopen{}
@@ -2297,7 +2457,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2018 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2019 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either

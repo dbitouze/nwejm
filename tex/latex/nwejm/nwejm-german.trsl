@@ -30,6 +30,8 @@
 \ProvideDictTranslation{plural-hypothesis}{Hypothesen}
 \ProvideDictTranslation{assertion}{Behauptung}
 \ProvideDictTranslation{plural-assertion}{Behauptungen}
+\ProvideDictTranslation{condition}{Voraussetzung}
+\ProvideDictTranslation{plural-condition}{Voraussetzungen}
 \ProvideDictTranslation{century}{Jhdt}
 \ProvideDictTranslation{before-christ}{v.~Chr}
 \ProvideDictTranslation{Acknowledgments}{Bestätigungen}

@@ -15,7 +15,7 @@
 \ProvidesFile{nwejm.cbx}
 [2016/04/01 v 0.1 nwejm citation style (DB)]
 
-\RequireCitationStyle{authoryear}
+\RequireCitationStyle{authoryear-comp}
 
 \ExecuteBibliographyOptions{giveninits,ibidtracker=constrict,pagetracker=page}
 
@@ -101,24 +101,51 @@
 }
 {\usebibmacro{postnote}}%
 \DeclareMultiCiteCommand{\nwejmfootcites}[\mkbibfootnote]{\nwejmfootcite}
-{\addsemicolon\space}
+{%
+  \ifcurrentbaselanguage{french}{%
+    \parindent=\parindentFFN%
+    \addtolength{\parindent}{\widthof{\dotFFN\kernFFN}}%
+  }{%
+    \parindent=\footnotemargin%
+  }%
+  \multicitedelim\newline\indent%
+}
 \DeclareAutoCiteCommand{nwejmfootcite}{\nwejmfootcite}{\nwejmfootcites}
 
-\DeclareCiteCommand{\textcite}
-  {\boolfalse{cbx:parens}}
-  {\usebibmacro{citeindex}%
-   \iffirstcitekey
-     {\setcounter{textcitetotal}{1}}
+\DeclareCiteCommand{\textcite}[\cbx@textcite@init\cbx@textcite]
+  {\gdef\cbx@savedkeys{}%
+   \citetrackerfalse%
+   \pagetrackerfalse%
+   \DeferNextCitekeyHook%
+   \usebibmacro{cite:init}}
+  {\ifthenelse{\iffirstcitekey\AND\value{multicitetotal}>0}
+     {\protected@xappto\cbx@savedcites{()(\thefield{multipostnote})}%
+      \global\clearfield{multipostnote}}
+     {}%
+   \xappto\cbx@savedkeys{\thefield{entrykey},}%
+   \iffieldequals{namehash}{\cbx@lasthash}
+     {}
      {\stepcounter{textcitetotal}%
-      \textcitedelim}%
-    \iffootnote{\usebibmacro{nwejm:cite}}{\printtext[bibhyperref]{\usebibmacro{textcite}}}}
-  {\ifbool{cbx:parens}
-     {\bibcloseparen\global\boolfalse{cbx:parens}}
-     {}}
-  {\usebibmacro{textcite:postnote}}
+      \savefield{namehash}{\cbx@lasthash}}}
+  {}
+  {\protected@xappto\cbx@savedcites{%
+     [\thefield{prenote}][\thefield{postnote}]{\cbx@savedkeys}}}
+
+      % \DeclareCiteCommand{\textcite}
+ %  {\boolfalse{cbx:parens}}
+ %  {\usebibmacro{citeindex}%
+ %   \iffirstcitekey
+ %     {\setcounter{textcitetotal}{1}}
+ %     {\stepcounter{textcitetotal}%
+ %      \textcitedelim}%
+ %    \iffootnote{\usebibmacro{nwejm:cite}}{\printtext[bibhyperref]{\usebibmacro{textcite}}}}
+ %  {\ifbool{cbx:parens}
+ %     {\bibcloseparen\global\boolfalse{cbx:parens}}
+ %     {}}
+ %  {\usebibmacro{textcite:postnote}}
 \ExecuteBibliographyOptions{autocite=nwejmfootcite}
 %% 
-%% Copyright (C) 2015-2018 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2019 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
