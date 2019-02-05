@@ -4468,14 +4468,15 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% \subsection{Assertions and hypotheses enumerations}
+% \subsection{Assertions, hypotheses and conditions enumerations}
 %
 % An environment for assertions' and hypotheses enumerations are provided in
 % order to display them homogeneously:
 %    \begin{macrocode}
 \clist_set:Nn \l_tmpa_clist {%
   hypothesis,
-  assertion%
+  assertion,%
+  condition%
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \newlist{#1}{enumerate}{1}
@@ -4520,6 +4521,12 @@ Running "make install" installs the files in the local TeX tree.
   \begin{assertion}
   }{
   \end{assertion}
+}
+\NewDocumentEnvironment{conditions}{}
+{
+  \begin{condition}
+  }{
+  \end{condition}
 }
 %    \end{macrocode}
 %
@@ -5866,6 +5873,9 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{assertion}{assertion}
 \ProvideDictTranslation{plural-assertion}{assertions}
 %
+\ProvideDictTranslation{condition}{condition}
+\ProvideDictTranslation{plural-condition}{conditions}
+%
 \ProvideDictTranslation{century}{century}
 \ProvideDictTranslation{before-christ}{BC}
 %
@@ -5927,6 +5937,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 \ProvideDictTranslation{assertion}{assertion}
 \ProvideDictTranslation{plural-assertion}{assertions}
+%
+\ProvideDictTranslation{condition}{condition}
+\ProvideDictTranslation{plural-condition}{conditions}
 %
 \ProvideDictTranslation{century}{si\`{e}cle}
 \ProvideDictTranslation{before-christ}{av.~J.-C}
@@ -5990,6 +6003,9 @@ Running "make install" installs the files in the local TeX tree.
 \ProvideDictTranslation{assertion}{Behauptung}
 \ProvideDictTranslation{plural-assertion}{Behauptungen}
 %
+\ProvideDictTranslation{condition}{Voraussetzung}
+\ProvideDictTranslation{plural-condition}{Voraussetzungen}
+%
 \ProvideDictTranslation{century}{Jhdt}
 \ProvideDictTranslation{before-christ}{v.~Chr}
 %
@@ -6051,6 +6067,9 @@ Running "make install" installs the files in the local TeX tree.
 %
 \ProvideDictTranslation{assertion}{aanname}
 \ProvideDictTranslation{plural-assertion}{aannames}
+%
+\ProvideDictTranslation{condition}{voorwaarde}
+\ProvideDictTranslation{plural-condition}{voorwaarden}
 %
 \ProvideDictTranslation{century}{eeuw}
 \ProvideDictTranslation{before-christ}{v.Chr}
