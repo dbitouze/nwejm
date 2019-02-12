@@ -369,19 +369,7 @@ Running "make install" installs the files in the local TeX tree.
 %<*class>
 %    \end{macrocode}
 %
-% \begin{macro}{\c_@@_pagegrid_dim}
-%   We declare the constant dimension of the pagegrid, when enabled.
-%    \begin{macrocode}
-\dim_const:Nn \c_@@_pagegrid_dim { 1mm}
-%    \end{macrocode}
-% \end{macro}
-%
-% We define some class options:
-% \begin{itemize}
-% \item "pagegrid" in order to draw a grid on each page, in order to check the
-%   layout (most debugging purpose),
-% \item ...
-% \end{itemize}
+% We define some class options.
 %
 %    \begin{macrocode}
 \bool_new:N \g_@@_for_authors_bool
@@ -395,8 +383,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \keys_define:nn { nwejm }
 {
-  pagegrid .dim_gset:N = \g_@@_pagegrid_dim,
-  pagegrid .default:n = {\c_@@_pagegrid_dim},
   output .choice:,
   output / cover .code:n = {%
     \bool_gset_true:N \g_@@_for_printer_bool%
@@ -748,11 +734,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \RequirePackage[group=false,subpreambles,sort]{standalone}%
 }
-%    \end{macrocode}
-%
-% \item Print page grid in background:
-%    \begin{macrocode}
-\RequirePackage[foreground]{pagegrid}%
 %    \end{macrocode}
 %
 % \item Tools to load and manipulate data:
@@ -5663,20 +5644,6 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %<*class>
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\AtBeginDocument{%
-  \dim_if_exist:NTF \g_@@_pagegrid_dim {%
-    \pagegridsetup{%
-      enable,%
-      step=\g_@@_pagegrid_dim%
-    }
-  }{%
-    \pagegridsetup{%
-      disable%
-    }
-  }
 %    \end{macrocode}
 %
 % If the cover production is asked, we automatically load some libraries, make
