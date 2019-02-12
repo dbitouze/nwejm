@@ -1913,10 +1913,16 @@ Running "make install" installs the files in the local TeX tree.
 %   version of the class (the first pages are for the table of contents which
 %   was decided to be in frontmatter),
 % \item mainmatter\footnote{Page numbers in arabic, right page style, right
-%   geometry of the page.} in the \enquote{article} version of the class.
+%   geometry of the page.} in the \enquote{article} version of the class. In
+%   this case, we also use the \enquote{main geometry} of the \enquote{issue}
+%   version of the class, otherwise, the layouts of the two versions are likely
+%   to be different.
 % \end{itemize}
 %    \begin{macrocode}
-%<class-article>    \AtBeginDocument{\g_@@_mainmatter_switch_tl}
+%<class-article>      \AtBeginDocument{%
+%<class-article>        \g_@@_mainmatter_switch_tl
+%<class-article>        \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+%<class-article>      }
 %    \end{macrocode}
 %
 % \section{Options}
@@ -5644,6 +5650,10 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %<*class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\AtBeginDocument{%
 %    \end{macrocode}
 %
 % If the cover production is asked, we automatically load some libraries, make
