@@ -1,11 +1,17 @@
 \documentclass[french,nolocaltoc]{nwejmart}
 %
-\DTMsavedate{release-date}{2018-04-07}
-\newcommand{\releaseversion}{0.98e}
+\DTMsavedate{release-date}{2019-03-17}
+\newcommand{\releaseversion}{0.98f}
 %
 \usepackage{denisbdoc}
 \usepackage{tabulary}
 \usepackage[firstpage]{draftwatermark}
+%
+\makeatletter
+\patchcmd{\@mn@margintest}{\@tempswafalse}{\@tempswatrue}{}{}
+\patchcmd{\@mn@margintest}{\@tempswafalse}{\@tempswatrue}{}{}
+\reversemarginpar
+\makeatother
 %
 \indexsetup{level=\section*,toclevel=section,noclearpage}
 \makeindex[columns=2]
@@ -33,7 +39,14 @@
 \newacronym{tdm}{tdm}{table des matières}
 %
 \newtheorem{article}
-\newtheorem[title=Fait,style=definition]{fact}
+\newtheorem[style=definition]{fait}
+\newtheorem[title=expérience]{experience}
+\newtheorem[title-plural=anneaux]{anneau}
+\newtheorem[title=idéal,title-plural=idéaux]{ideal}
+%
+\newenumeration{conventions}
+\newenumeration[singular=cas]{cas}
+\newenumeration[singular=règle,plural=règles]{regles}
 %
 \DeclareMathOperator{\cat}{Cat}
 \newcommand{\mybinop}{\mathbin{*}}
@@ -58,9 +71,9 @@ affiliation={%
 \etocarticlestylenomarks
 \localtableofcontents
 %
-\DeclareFixedFootnote{\conseilslatex}{Et donne de façon subliminale quelques conseils
-  \LaTeX{}. On consultera \autocite{Ensenbach} pour un panorama plus complet des
-  commandes et extensions obsolètes (et autres erreurs).}
+\DeclareFixedFootnote{\conseilslatex}{Et donne de façon subliminale quelques
+  conseils \LaTeX{}. On consultera \autocite{Ensenbach} pour un panorama plus
+  complet des commandes et extensions obsolètes (et autres erreurs).}
 \DeclareFixedFootnote{\suitecompilations}{Pour automatiser ces compilations, on
   pourra recourir au \enquote{compilateur} \program{latexmk}, fourni par toute
   distribution \TeX{} moderne, en s'aidant du fichier de configuration
@@ -158,10 +171,10 @@ options de classe suivantes.
 \begin{docKey}{english}{}{pas de valeur, option par défaut}
   Cette option définit l'anglais comme langue de l'article.
 \end{docKey}
-\begin{docKey}{french}{}{}
+\begin{docKey}{french}{}{pas de valeur}
   Cette option définit le français comme langue de l'article.
 \end{docKey}
-\begin{docKey}{german}{}{}
+\begin{docKey}{german}{}{pas de valeur}
   Cette option définit l'allemand comme langue de l'article. Elle a pour alias
   \docAuxKey{ngerman}.
   \begin{dbremark}{Option de \package*{babel} sous-jacente à l'option
@@ -169,9 +182,9 @@ options de classe suivantes.
     L'option de langue \refKey{german} de la \nwejmauthorcl{} appelle en
     sous-main l'option \docAuxKey*{ngerman} du \Package*{babel}.
   \end{dbremark}
-  \begin{docKey}{dutch}{}{}
-  Cette option définit le néerlandais comme langue de l'article.
 \end{docKey}
+\begin{docKey}{dutch}{}{pas de valeur}
+  Cette option définit le néerlandais comme langue de l'article.
 \end{docKey}
 
 \begin{dbremark}{Langue par défaut de l'article}{}
@@ -273,7 +286,7 @@ finale.
   \end{itemize}
 \end{docCommand}
 
-\begin{bodycode}
+\begin{bodycode}[listing options={deletekeywords={[2]title}}]
 \title[Le Traité du calcul des probabilités]{Le Traité du calcul des
   probabilités et de ses applications}
 \subtitle[Étendue et limites d'un projet borélien]{Étendue et limites
@@ -321,8 +334,7 @@ La commande \refCom{author} admet un argument optionnel permettant de spécifier
 la ou les affiliations de l'auteur au moyen d'une des clés \refKey{affiliation}
 et \refKey{affiliationtagged} suivantes.
 
-\begin{docKey}{affiliation}{={\oarg{tag}\marg{affiliation}}}{pas de valeur par défaut,
-    initialement vide}
+\begin{docKey}{affiliation}{={\oarg{tag}\marg{affiliation}}}{pas de valeur par défaut,\\initialement vide}
   Cette clé permet de définir une (unique) \meta{affiliation}. Pour un auteur
   ayant plusieurs affiliations, cette clé est utilisée autant de fois que
   nécessaire.
@@ -396,10 +408,10 @@ et \refKey{affiliationtagged} suivantes.
   forme d'une liste séparée par des virgules.
 
   La métadonnée \enquote{Mots-clés} du \File{PDF} produit contient
-  automatiquement les \meta{mots clés} spécifiés. % Dans le cas où ceux-ci
-  % contiennent des caractères non admis en métadonnées des fichiers \file{PDF}
-  % (notamment des mathématiques), on spécifiera en argument optionnel une
-  % \meta{variante des mots clés} ne contenant que des caractères autorisés.
+  automatiquement les \meta{mots clés} spécifiés.  Dans le cas où ceux-ci
+  contiennent des caractères (notamment des mathématiques) non admis en
+  métadonnées des fichiers \file{PDF} , on spécifiera en argument optionnel une
+  \meta{variante des mots clés} ne contenant que des caractères autorisés.
 \end{docCommand}
 
 \begin{bodycode}[listing options={deletekeywords={[5]keywords}}]
@@ -434,7 +446,7 @@ Le titre proprement dit de l'article, regroupant tous les éléments saisis à l
   \end{itemize}
 \end{docCommand}
 
-\begin{bodycode}[listing options={deletekeywords={[5]keywords}}]
+\begin{bodycode}[listing options={deletekeywords={[2]title,article},deletekeywords={[5]keywords}}]
 \title[Le Traité du calcul des probabilités]{Le Traité du calcul des
   probabilités et de ses applications}
 \subtitle[Étendue et limites d'un projet borélien]{Étendue et limites
@@ -469,7 +481,7 @@ Le titre proprement dit de l'article, regroupant tous les éléments saisis à l
   un article.
 \end{docCommand}
 
-\begin{bodycode}
+\begin{bodycode}[listing options={deletekeywords={[2]first}}]
 \acknowledgments{%
   The first author's research was supported by the Hungarian National
   Science Foundation Grants K81658 and K104183. Research conducted
@@ -539,20 +551,23 @@ cf. par exemple][en français]{Bitouze}.
 \item Construire, dans un \meta{fichier bibliographique}\footnote{De tels
     fichiers sont d'extension \file{.bib}.}, une base bibliographique.
 
-  Nous conseillons pour ce faire de recourir à un logiciel dédié, par exemple
-  \href{http://jabref.sourceforge.net/}{\program{JabRef}} à configurer en se
-  rendant dans le menu \menuentry{Options>Preferences} et, dans l'onglet :
-  \begin{itemize}
-  \item \menuentry{Général}\footnote{On pourra en profiter pour changer la langue de
-      l'interface dans la liste déroulante \menuentry{Language}.}, en choisissant
-    \menuentry{UTF8} dans la liste déroulante \menuentry{Default encoding} ;
-  \item \menuentry{Advanced}, en cochant l'option \menuentry{BibLaTeX mode} ;
-  \end{itemize}
+  Pour ce faire, nous recommandons de recourir à un logiciel dédié, par exemple
+  \href{http://jabref.sourceforge.net/}{\program{JabRef}} que nous conseillons
+  de configurer en visitant le menu
+  \menuentry{Options>Preferences>General} et en choisissant dans les listes
+  déroulantes :
+  \begin{description}
+  \item[\menuentry{Default encoding} :] \menuentry{UTF8} ;
+  \item[\menuentry{Default bibliography mode} :] \menuentry{biblatex}.
+  \end{description}
+  On pourra en profiter pour changer la langue de l'interface dans la liste
+  déroulante \menuentry{Language}.
 
   On n'oubliera pas de donner à chaque référence bibliographique une \meta{clé}
   permettant de l'identifier de façon unique dans la base
-  bibliographique\footnote{Sous \program{JabRef}, on pourra se faire aider pour
-    cela par l'icône en forme de \enquote{baguette magique} ou de clé.}.
+  bibliographique\footnote{Sous \program{JabRef}, l'icône en forme de
+    \enquote{baguette magique} ou de clé aide à générer ladite
+    \meta{clé}.}.
 \item Dans le fichier source \file{.tex} :
   \begin{enumerate}
   \item \emph{En préambule}, utiliser la commande \docAuxCommand{addbibresource}
@@ -565,11 +580,11 @@ cf. par exemple][en français]{Bitouze}.
       \docAuxCommand{cite}.}\footnote{La référence est alors détaillée en note
       de bas de page.}  ou, éventuellement, \docAuxCommand{textcite}\footnote{La
       référence est alors affichée au fil du texte, mais avec moins de détails.}
-    du \Package*{biblatex} pour citer les références bibliographiques (pourvue
-    d'une \meta{clé}) :
+    du \Package*{biblatex} pour citer des références bibliographiques (chacune
+    pourvue d'une \meta{clé}) :
 \begin{bodycode}[listing options={alsolanguage={[biblatex]TeX}}]
-\autocite{"\meta{clé}"}
-\textcite{"\meta{clé}"}
+...\autocite{"\meta{clé1}"}... \textcite{"\meta{clé2}"} ...
+...\autocite{"\meta{clé3,clé4}"}... \textcite{"\meta{clé5,clé6}"} ...
 \end{bodycode}
   \item À la fin du document, faire figurer la liste des références
     bibliographiques au moyen de la commande \refCom{printbibliography}.
@@ -587,7 +602,7 @@ cf. par exemple][en français]{Bitouze}.
 
 Par exemple, si le \File{.bib} contient :
 
-\begin{bodycode}[listing only,listing options={alsolanguage={[biblatex]TeX},deletekeywords={[2]series}}]
+\begin{bodycode}[listing only,listing options={alsolanguage={[biblatex]TeX},deletekeywords={[2]series,geometry}}]
 @Book{            har,
   author	= {Hartshorne, Robin},
   title		= {Algebraic geometry},
@@ -621,8 +636,8 @@ alors, le source \file{.tex} suivant :
 \begin{bodycode}[listing only,listing options={alsolanguage={[biblatex]TeX},deletekeywords={[1]theorem},deletekeywords={[2]first,and,see,theorem},deletekeywords={[3]theorem}}]
 The first assertion is a direct consequence of the Riemann-Roch
 formula for threefolds\autocite[See e.g.][437]{har} and
-Kawamata-Viehweg vanishing\autocite[theorem~4.3.1]{laz1}. For the
-second assertion, see \textcite[theorem~(0.4)]{shin}.
+Kawamata-Viehweg vanishing\autocite[Theorem~4.3.1]{laz1}. For the
+second assertion, see \textcite[Theorem~(0.4)]{shin}.
 %
 \printbibliography
 \end{bodycode}
@@ -637,14 +652,19 @@ donne le texte figurant dans l'encadré intitulé \enquote{Exemple de
 }
 \makeatother
 \ExplSyntaxOff
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+%
 \begin{bodycode}[text only,float,title={Exemple de bibliographie},label=biblio]
+\StandardFootnotes
 The first assertion is a direct consequence of the Riemann-Roch formula for
 threefolds\autocite[See e.g.][437]{har} and Kawamata-Viehweg
-vanishing\autocite[theorem~4.3.1]{laz1}.  For the second assertion, see
-\textcite[theorem~(0.4)]{shin}.
+vanishing\autocite[Theorem~4.3.1]{laz1}. For the second assertion, see
+\textcite[Theorem~(0.4)]{shin}.
 %
 \printbibliography[heading=origsectionnotintoc,category=examples]
 \end{bodycode}
+%
+\renewcommand{\thempfootnote}{\alph{mpfootnote}}
 
 \section{Commandes propres aux mathématiques}
 \label{sec:comm-propr-aux}
@@ -750,7 +770,7 @@ La \nwejmauthorcl{} :
 
 \subsubsection{Ensembles définis}
 
-\begin{docCommand}{set}{\marg{définition}\oarg{caractérisation}}
+\begin{docCommand}[doc updated=2019-02-05]{set}{\marg{définition}\oarg{caractérisation}}
   Cette commande affiche l'ensemble défini par \meta{définition}, avec une
   éventuelle \meta{caractérisation}\footnote{Partie suivant \enquote{tels
       que}.}.
@@ -935,7 +955,7 @@ de délimiteurs au moyen de la commande \refCom{NewPairedDelimiter}.
   right=\rfloor,
   subscript=\text{eff}
 }
-\begin{preamblecode}
+\begin{preamblecode}[listing options={morekeywords={[2]left,right,subscript}}]
 \NewPairedDelimiter{\floor}{
   left=\lfloor,
   right=\rfloor,
@@ -1011,8 +1031,7 @@ usuelle \refCom{DeclareMathOperator}.
 \DeclareMathOperator{\cat}{Cat}
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={example},deletekeywords={[4]all}}]
-A standard example is $\cat$, the $2$-category of all (small)
-categories.
+A standard example is $\cat$, the $2$-category of all (small) ideals.
 \end{bodycode}
 
 \subsubsection{(Usage avancé) Précautions en cas d'opérations binaires non
@@ -1047,7 +1066,7 @@ le déclarer au moyen de la commande \refCom{BinaryOperators}.
 \subsection{Divers}
 
 \begin{dbremark}{Commandes propres au français (bis)}{}
-  Les commandes suivantes ne sont définies redéfinies que pour les articles en
+  Les commandes suivantes ne sont redéfinies que pour les articles en
   français.
 \end{dbremark}
 
@@ -1064,7 +1083,7 @@ Pour faciliter la composition des théorèmes et objets analogues, la
 \nwejmauthorcl{} fournit des environnements prêts à l'emploi et permet d'en
 créer de nouveaux si besoin est (cf. commande \refCom{newtheorem}).
 
-\subsubsection{Environnements de type \enquote{théorème} prédéfinis}
+\subsubsection{Environnements prédéfinis}
 \label{sec:envir-de-type}
 
 La \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis par la
@@ -1107,13 +1126,10 @@ La \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis pa
 \end{theorem}
 \begin{definition}[congruence modulo $n$]
   Soit $n$ un entier supérieur ou égal à $2$. Deux entiers $a$ et $b$
-  sont dits congruents modulo $n$ si $a - b \in n\bbZ$
+  sont dits congruents modulo $n$ si $a - b \in n\bbZ$.
 \end{definition}
 \begin{remark*}
-  Une des plus belles relations mathématiques est :
-  \[
-  e^{i\pi}+1=0.
-  \]
+  Une des plus belles relations mathématiques est $\E[i\pi]+1=0$.
 \end{remark*}
 \begin{proof}
   Tout ce qui est rare est cher. Or un cheval bon marché est rare.
@@ -1141,7 +1157,7 @@ Style                 & Titre récurrent                  & Contenu             
   \label{env-theorems-styles}
 \end{table}
 
-\subsubsection{Environnements de type \enquote{théorème} personnels}
+\subsubsection{Environnements définis par l'utilisateur}
 \label{sec:envir-de-type-1}
 
 Si les environnements de \enquote{théorème} fournis par la classe ne suffisent
@@ -1159,65 +1175,138 @@ pas, la commande \refCom{newtheorem} permet d'en créer de nouveaux.
   Cette commande crée également l'environnement étoilé \meta{nom}|*| produisant
   des occurrences \emph{non} numérotées de ce \enquote{théorème}.
 
-  Si les valeurs par défaut du titre récurrent (\meta{Nom}) ou du style
-  (\docValue{theorem}) ne conviennent pas, il suffit spécifier celles souhaitées
-  en \meta{option(s)} au moyen des clés \refKey{title} et \refKey{style}
-  suivantes.
-  \begin{docKey}{title}{={\meta{titre récurrent}}}{pas de
-      valeur par défaut, initialement vide}
-    Cette clé permet de spécifier un \meta{titre récurrent} différent de
-    \meta{Nom}, valable quelle que soit la langue de l'article.
-  \end{docKey}
+\begin{preamblecode}[listing options={deletekeywords={[2]article}}]
+\newtheorem{article}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]article,label}}]
+\begin{article*}[dit premier]
+Les hommes naissent et demeurent libres et égaux en droits [...]
+\end{article*}
+\begin{article}[dit premier]\label{premier}
+Les hommes naissent et demeurent libres et égaux en droits [...]
+\end{article}
+L'\vref{premier} est le plus célèbre.
+\end{bodycode}
+
+  Si la valeur par défaut du style (\docValue{theorem}) ne convient pas, il
+  suffit de spécifier en \meta{option(s)} celle souhaitée au moyen de la clé
+  \refKey{style} suivante.
   \begin{docKey}{style}{=\docValue{theorem}\textbar\docValue{definition}\textbar\docValue{proof}}{pas
       de valeur par défaut,\\initialement \docValue{theorem}}
     Cette clé permet de spécifier le style du \enquote{théorème} à créer, au
     moyen des valeurs \docValue{theorem}, \docValue{definition} et
     \docValue{proof}.
   \end{docKey}
+\begin{preamblecode}
+\newtheorem[style=definition]{fait}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{fait}\label{majeure}
+Tout ce qui est rare est cher.
+\end{fait}
+\begin{fait}\label{mineure}
+Un cheval bon marché est rare.
+\end{fait}
+En vertu des \cref{mineure,majeure}, un cheval bon marché est
+cher.
+\end{bodycode}
 
-  Si besoin est, il est même possible de spécifier des titres récurrents
-  différents selon la langue utilisée au moyen des clés suivantes :
-  \begin{docKey}{title/english}{={\meta{titre récurrent en anglais}}}{pas de
-      valeur par défaut,\\initialement vide}
+  Si la valeur par défaut du titre récurrent (\meta{Nom}) ne convient pas, il
+  suffit de spécifier en \meta{option(s)} celle souhaitée au moyen de la clé
+  \refKey{title} suivante.
+  \begin{docKey}{title}{={\meta{titre récurrent}}}{pas de
+      valeur par défaut, initialement vide}
+    Cette clé permet de spécifier un \meta{titre récurrent} différent de
+    \meta{Nom}, valable quelle que soit la langue de l'article.
   \end{docKey}
-  \begin{docKey}{title/french}{={\meta{titre récurrent en français}}}{pas de
-      valeur par défaut,\\initialement vide}
+\begin{preamblecode}
+\newtheorem[title=expérience]{experience}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{experience}\label{un}
+On lance un dé à 6 faces [...]
+\end{experience}
+\begin{experience}\label{deux}
+On lance deux dés à 6 faces [...]
+\end{experience}
+Les \vref{un,deux} mettent en évidence [...]
+\end{bodycode}
+
+  On remarque que, en cas de références croisées au moyen de la commande
+  recommandée\footnote{Cf. \vref{sec-references-croisees}} \refCom{vref} (ou
+  \refCom{cref}), le titre récurrent du ou des \enquote{théorèmes} référencés
+  est automatiquement ajouté à la référence et ce, éventuellement sous sa forme
+  plurielle. Par défaut, cette dernière est obtenue en ajoutant un \enquote{s}
+  final à \meta{nom} ou au \meta{titre récurrent} fixée par l'option
+  \refKey{title}. Si cette forme plurielle doit être construite différemment, il
+  convient de le spécifier en \meta{option(s)} au moyen de la clé
+  \refKey{title-plural} suivante.
+  \begin{docKey}{title-plural}{={\meta{forme plurielle du titre récurrent}}}{pas de
+      valeur\\par défaut, initialement vide}
+    Cette clé permet de spécifier la forme plurielle du titre récurrent.
   \end{docKey}
-  \begin{docKey}{title/german}{={\meta{titre récurrent en allemand}}}{pas de
-      valeur par défaut,\\initialement vide}
-  \end{docKey}
-  \begin{docKey}{title/dutch}{={\meta{titre récurrent en néerlandais}}}{pas de
-      valeur par défaut,\\initialement vide}
-    Ces clés permettent de spécifier un \meta{titre récurrent} différent
-    de \meta{Nom} pour la langue correspondante.
-  \end{docKey}
+\begin{preamblecode}
+\newtheorem[title-plural=anneaux]{anneau}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{anneau}\label{anneau}
+Considérons un anneau : [...]
+\end{anneau}
+\begin{anneau}\label{anneau-bis}
+Considérons un autre anneau : [...]
+\end{anneau}
+Les \vref{anneau,anneau-bis} admettent [...]
+\end{bodycode}
 
 \begin{preamblecode}
-\newtheorem{article}
-\newtheorem[title/french=Fait,style=definition]{fact}
+\newtheorem[title=idéal,title-plural=idéaux]{ideal}
 \end{preamblecode}
-\begin{bodycode}[listing and text]
-\begin{article}[dit premier]
-Les hommes naissent et demeurent libres et égaux en droits [...]
-\end{article}
-\begin{fact*}
-Tout ce qui est rare est cher.
-\end{fact*}
-\begin{fact}
-Un cheval bon marché est rare.
-\end{fact}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{ideal}\label{ideal}
+Considérons un idéal : [...]
+\end{ideal}
+\begin{ideal}\label{ideal-bis}
+Considérons un autre idéal : [...]
+\end{ideal}
+Les \vref{ideal,ideal-bis} admettent [...]
 \end{bodycode}
+
+  % Si besoin est, il est même possible de spécifier des titres récurrents
+  % différents selon la langue utilisée au moyen des clés suivantes :
+  % \begin{docKey}{title/english}{={\meta{titre récurrent en anglais}}}{pas de
+  %     valeur par défaut,\\initialement vide}
+  % \end{docKey}
+  % \begin{docKey}{title/french}{={\meta{titre récurrent en français}}}{pas de
+  %     valeur par défaut,\\initialement vide}
+  % \end{docKey}
+  % \begin{docKey}{title/german}{={\meta{titre récurrent en allemand}}}{pas de
+  %     valeur par défaut,\\initialement vide}
+  % \end{docKey}
+  % \begin{docKey}{title/dutch}{={\meta{titre récurrent en néerlandais}}}{pas de
+  %     valeur par défaut,\\initialement vide}
+  %   Ces clés permettent de spécifier un \meta{titre récurrent} différent
+  %   de \meta{Nom} pour la langue correspondante.
+  % \end{docKey}
 \end{docCommand}
 
-\subsection{Listes d'hypothèses ou d'assertions}
+\subsection{Énumérations}
 \label{sec:list-dhyp-ou}
 
-Dans les articles en mathématiques, il est fréquent que les auteurs aient
-à lister des assertions ou des hypothèses et à s'y référer. Pour ce faire, la
-\nwejmauthorcl{} fournit deux environnements qui s'emploient comme l'habituel
-environnement \docAuxEnvironment{enumerate} de listes ordonnées (numérotées) :
-\refEnv{assertions} et \refEnv{hypotheses}, dans lesquels chaque assertion ou
-hypothèse est introduite par la commande \docAuxCommand{item}.
+Pour faciliter la composition des énumérations (d'hypothèses, d'assertions, de
+conditions, etc.), la \nwejmauthorcl{} fournit des environnements prêts
+à l'emploi et permet d'en créer de nouveaux si besoin est (cf. commande
+\refCom{newenumeration}).
+
+\subsubsection{Énumérations prédéfinies}
+\label{sec:predefinies-:-listes}
+
+Dans les articles en mathématiques, il est fréquent d'énumérer des assertions,
+hypothèses ou conditions et de s'y référer. Pour ce faire, la \nwejmauthorcl{}
+fournit trois environnements qui s'emploient comme l'habituel environnement
+\docAuxEnvironment{enumerate} de listes ordonnées (numérotées) :
+\refEnv{assertions}, \refEnv{hypotheses} et \refEnv{conditions}, dans lesquels
+chaque assertion, hypothèse ou condition est introduite par la commande
+\docAuxCommand{item}.
 
 \begin{docEnvironment}[doclang/environment content=assertions]{assertions}{}
   Cet environnement compose une liste d'assertions.
@@ -1225,10 +1314,13 @@ hypothèse est introduite par la commande \docAuxCommand{item}.
 \begin{docEnvironment}[doclang/environment content=hypothèses]{hypotheses}{}
   Cet environnement compose une liste d'hypothèses.
 \end{docEnvironment}
+\begin{docEnvironment}[doc new=2019-02-07,doclang/environment content=conditions]{conditions}{}
+  Cet environnement compose une liste de conditions.
+\end{docEnvironment}
 
-\begin{bodycode}[listing and text]
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
 \begin{axiom}\label{mon-axiome}
-  Chacune des assertions suivantes est admise.
+  Chaque assertion suivante est admise.
   \begin{assertions}
   \item\label{rare-cher} Tout ce qui est rare est cher.
   \item\label{cheval} Un cheval bon marché est rare.
@@ -1237,6 +1329,103 @@ hypothèse est introduite par la commande \docAuxCommand{item}.
 En vertu des \vref{rare-cher,cheval} de l'\vref{mon-axiome},
 un cheval bon marché est cher.
 \end{bodycode}
+
+\subsubsection{Énumérations définies par l'utilisateur}
+
+Si les énumérations fournies par la classe ne suffisent pas, il est possible
+d'en créer de nouvelles au moyen de la commande \refCom{newenumeration}.
+
+\begin{docCommand}[doc new=2019-02-07]{newenumeration}{\oarg{option(s)}\marg{nom}}
+  Cette commande crée un nouvel environnement \LaTeX{}, \meta{nom}, qui
+  s'emploie comme l'habituel environnement \docAuxEnvironment{enumerate} de
+  listes ordonnées (numérotées) dans lequel chaque item à énumérer
+  est introduit par la commande \docAuxCommand{item}.
+
+\begin{preamblecode}
+\newenumeration{conventions}
+\end{preamblecode}
+\begin{bodycode}[listing and text]
+\begin{conventions}
+\item Le cheval est bon marché.
+\item Le cheval est cher.
+\end{conventions}
+\end{bodycode}
+
+  On constate que chaque item énuméré est introduit par un label par défaut
+  constitué de l'initiale du \meta{nom} et indexé par un chiffre arabe, le tout
+  entre parenthèses. Si ce label ne convient pas, il suffit de spécifier celui
+  souhaité en \meta{option(s)} au moyen de la clé \refKey{label}.
+  \begin{docKey}{label}{={\meta{label}}}{pas de
+      valeur par défaut, initialement initiale du \meta{nom}}
+    Cette clé permet de spécifier un \meta{label} différent de l'initiale du
+    \meta{nom} de l'environnement.
+  \end{docKey}
+\renewenumeration[label=K]{conventions}
+\begin{preamblecode}
+\newenumeration[label=K]{conventions}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{conventions}
+\item\label{k-one} Le cheval est bon marché.
+\item\label{k-two} Le cheval est cher.
+\end{conventions}
+Cf. \vref{k-one}. Cf. \vref{k-one,k-two}.
+\end{bodycode}
+
+On remarque que, en cas de références croisées au moyen de la commande
+recommandée\footnote{Cf. \vref{sec-references-croisees}} \refCom{vref} (ou
+\refCom{cref}), le \meta{nom} de la ou des énumérations référencées est
+automatiquement ajouté à la référence et ce, sous ses formes singulière ou
+plurielle selon les cas. Par défaut, la forme :
+\begin{description}
+\item[plurielle] est le \meta{nom} ;
+\item[singulière] est obtenue en supprimant la dernière lettre\footnote{Supposée être
+  souvent un \enquote{s}.} du \meta{nom}.
+\end{description}
+Si ces formes singulière ou plurielle doivent être construites différemment, il
+convient de le spécifier en \meta{option(s)} au moyen des clés
+\refKey{singular} et \refKey{plural} suivantes.
+  \begin{docKey}{singular}{={\meta{forme singulière de l'énumération}}}{pas de
+      valeurpar défaut,\\initialement vide}
+    Cette clé permet de spécifier la forme singulière de l'énumération.
+  \end{docKey}
+  \begin{docKey}{plural}{={\meta{forme plurielle de l'énumération}}}{pas de
+      valeur par défaut,\\initialement vide}
+    Cette clé permet de spécifier la forme plurielle de l'énumération.
+  \end{docKey}
+\begin{preamblecode}
+\newenumeration[singular=cas]{cas} % Sinon, forme sing. = « ca ».
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{cas}
+\item\label{case-one} Le cheval est bon marché.
+\item\label{case-two} Le cheval est cher.
+\end{cas}
+Cf. \vref{case-one}. Cf. \vref{case-one,case-two}.
+\end{bodycode}
+
+\begin{preamblecode}
+\newenumeration[singular=règle,plural=règles]{regles}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{regles}
+\item\label{regle-one} Le cheval est bon marché.
+\item\label{regle-two} Le cheval est cher.
+\end{regles}
+Cf. \vref{regle-one}. Cf. \vref{regle-one,regle-two}.
+\end{bodycode}
+%
+\end{docCommand}
+
+Au besoin, la commande \refCom{renewenumeration} permet de redéfinir une
+énumération préalablement définie au moyen de la commande
+\refCom{newenumeration}.
+
+\begin{docCommand}[doc new=2019-02-07]{renewenumeration}{\oarg{option(s)}\marg{nom}}
+  Cette commande reféfinit l'environnement d'énumération \meta{nom}. Ses
+  \meta{option(s)} sont les mêmes que celles de la commande
+  \refCom{newenumeration}.
+\end{docCommand}
 
 \section{Commandes généralistes}
 \label{sec:comm-gener}
@@ -1312,8 +1501,8 @@ On soupçonne que non \aside*{par exemple on s'attend à ce que
 
 \section{Sélection d'outils fournis par des packages tiers}
 
-Cette section donne une liste d'outils (commandes et environnements) fournis par
-des packages automatiquement chargés par la
+Cette section liste un certain nombre d'outils (commandes et environnements)
+fournis par des packages automatiquement chargés par la
 \nwejmauthorcl\footnote{L'\vref{sec-packages-charges-ou-pas} liste ceux dont les
   fonctionnalités peuvent être utiles aux auteurs.}.
 
@@ -1332,29 +1521,51 @@ des packages automatiquement chargés par la
 \subsection{Références croisées}
 \label{sec-references-croisees}
 
-Le \Package*{cleveref}, utilisé conjointement avec le \Package*{varioref}, rend la
-commande \refCom{vref} de ce dernier très puissante.
+\DeclareFixedFootnote{\objets}{Section, équation, théorème, figure, tableau,
+  etc.}
 
-\begin{docCommand}{vref}{\marg{label}}
-  Cette commande affiche le numéro d'un objet\footnote{Section, équation,
-    théorème, figure, tableau, etc.} labellisé par la commande
-  |\label{|\meta{label}|}| et :
+Le \Package*{cleveref} rend puissante la gestion des références croisées. Il
+fournit notamment les commandes \refCom{cref} et \refCom{vref} suivantes.
+
+\begin{docCommand}{cref}{\brackets{\meta{label$_1$},...,\meta{label$_n$}}}
+  Si un ou plusieurs objets\objets{} sont labellisés au moyen de
+  \lstinline[deletekeywords={[2]label}]|\label{|\meta{label$_1$}|}|,...,
+  \lstinline[deletekeywords={[2]label}]|\label{|\meta{label$_n$}|}|, la commande
+  \refCom{cref} :
   \begin{itemize}
-  \item affiche (ou pas selon le contexte) le numéro de la page où se situe cet
-    objet\footnote{Fonctionnalité fournie par le \Package{varioref}.} ;
-  \item détecte la nature de cet objet et fait précéder le numéro de celui-ci du
-    mot clé correspondant\footnote{Fonctionnalité fournie par le
-      \Package{cleveref}.} automatiquement traduit dans la langue de
-    l'article\footnote{Fonctionnalité fournie par la \nwejmauthorcl.} ;
-  \item fait de la référence à l'objet (numéro et éventuel numéro de page) un
-    lien hypertexte vers l'objet\footnote{Fonctionnalité fournie par le
-      \Package{hyperref}.}.
+  \item en affiche les numéros\footnote{Entourés de parenthèses quand c'est
+      l'usage, p. ex. pour les équations.} ;
+  \item en détecte les natures\objets{} et affiche avant leurs numéros les mots clés
+    correspondants\footnote{Fonctionnalité fournie par le \Package{cleveref}.},
+    automatiquement traduit dans la langue de l'article\footnote{Fonctionnalité
+      fournie par la \nwejmauthorcl.}.
   \end{itemize}
+  %
 \begin{bodycode}[listing and text]
-[...] on se reportera à l'\vref{sec-canevas-de-fichier} pour un
-canevas de fichier source [...]
+On se reportera aux \cref{sec-titre,sec-auteurs} [...]
 \end{bodycode}
 \end{docCommand}
+
+\begin{docCommand}{vref}{\brackets{\meta{label$_1$},...,\meta{label$_n$}}}
+  Cette commande :
+  \begin{itemize}
+  \item reprend les fonctionnalités de \refCom{cref} ;
+  \item affiche\footnote{Ou pas selon le contexte.} après les numéros des objets
+    référencés les (numéros de) pages où ils se situent\footnote{Fonctionnalité
+      fournie par le \Package{varioref}.}.
+  \end{itemize}
+
+  %
+\begin{bodycode}[listing and text]
+On se reportera aux \vref{sec-titre,sec-auteurs} [...]
+\end{bodycode}
+\end{docCommand}
+
+\begin{dbremark}{Liens hypertextes vers l'objet référencé}{}
+  Les numéros et éventuels \aside{numéros de} pages des références croisées
+  créées avec \refCom{cref} et \refCom{vref} sont des liens hypertextes vers les
+  objets référencés\footnote{Fonctionnalité fournie par le \Package{hyperref}.}.
+\end{dbremark}
 
 % \begin{dbremark}{\docAuxCommand{ref} et \docAuxCommand{eqref} : clones de \protect\refCom{vref}}{}
 %   Les traditionnelles commandes \docAuxCommand{ref} et \docAuxCommand{eqref} ont
@@ -1504,6 +1715,7 @@ Il lui répondit : \enquote{Courteline disait: \enquote{Passer
   ajoutés\footnote{Au moyen de la commande \docAuxCommand{addbibresource}} et
   y étant identifiée par la clé \meta{clé}.
 
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
 \begin{bodycode}[listing and text,listing options={alsolanguage={[biblatex]TeX},alsolanguage={[csquotes]TeX},deletekeywords={[3]footnote}}]
 \citeauthor{Bitouze} précise que :
 \blockcquote{Bitouze}{%
@@ -1513,6 +1725,7 @@ Il lui répondit : \enquote{Courteline disait: \enquote{Passer
     dépassant 3~lignes.}.%
 }.
 \end{bodycode}
+\renewcommand{\thempfootnote}{\alph{mpfootnote}}
 \end{docCommand}
 
 La commande \refCom{blockcquote} admet des arguments optionnels permettant
@@ -1574,10 +1787,10 @@ versions étoilées de ces environnements qui composent ces listes \enquote{en
   Cet environnement compose une liste \enquote{de description} en ligne.
 \end{docEnvironment}
 
-\begin{bodycode}[listing and text,listing options={alsolanguage={[hyperref]TeX},deletekeywords={math},deletekeywords={[2]url}}]
+\begin{bodycode}[listing and text,listing options={alsolanguage={[hyperref]TeX},deletekeywords={math},deletekeywords={[2]url,math}}]
 \begin{enumerate}
-\item Les données que j’ai rassemblées [...]
-\item Les données que j’ai recueillies sont
+\item Les données que j'ai rassemblées [...]
+\item Les données que j'ai recueillies sont
   \begin{enumerate*}
   \item disponibles publiquement sur internet : pages Web et CV des
     conférenciers ;
