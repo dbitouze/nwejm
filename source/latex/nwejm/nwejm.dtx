@@ -881,7 +881,7 @@ Running "make install" installs the files in the local TeX tree.
 % \item Hypertext marks:
 %    \begin{macrocode}
 \RequirePackage[pdfencoding=unicode,final]{hyperref}%
-\AtBeginDocument{%
+\AtEndPreamble{%
   \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
 %    \end{macrocode}
@@ -1919,10 +1919,7 @@ Running "make install" installs the files in the local TeX tree.
 %   to be different.
 % \end{itemize}
 %    \begin{macrocode}
-%<class-article>      \AtBeginDocument{%
-%<class-article>        \g_@@_mainmatter_switch_tl
-%<class-article>        \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
-%<class-article>      }
+%<class-article>      \AfterEndPreamble{\g_@@_mainmatter_switch_tl}
 %    \end{macrocode}
 %
 % \section{Options}
@@ -5737,7 +5734,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\AtBeginDocument{%
+\AfterEndPreamble{%
 %    \end{macrocode}
 %
 % If the cover production is asked, we automatically load some libraries, make
@@ -5751,7 +5748,7 @@ Running "make install" installs the files in the local TeX tree.
     \g_@@_display_inside_backcover_tl
     \end{document}
   }{
-  \tableofcontents
+    \tableofcontents
   }
 }
 %    \end{macrocode}
