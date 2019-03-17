@@ -16,7 +16,6 @@
 [2016/04/01 v 0.1 nwejm bibliographic style (DB)]
 
 \RequireBibliographyStyle{authoryear-comp}
-\DeclareFieldFormat{journaltitle}{\mkbibemph{#1\isdot}}
 \DeclareNameFormat{giveninits-last}{%
   \nameparts{#1}
   \usebibmacro{name:given-family}
@@ -95,6 +94,7 @@
 }
 \renewcommand*\bibnamedelimc{\addnbspace}
 \renewcommand*\bibnamedelimd{\addnbspace}
+\DeclareFieldFormat{journaltitle}{\mkbibemph{#1\isdot}}
 %% 
 %% Copyright (C) 2015-2019 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 

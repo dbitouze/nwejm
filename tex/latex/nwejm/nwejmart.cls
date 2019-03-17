@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejmart}
-  {2018/04/07}
-  {0.98e}
+  {2019/03/17}
+  {0.98f}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -170,7 +170,7 @@
 \RequirePackage{geometry}
 \RequirePackage{translations}%
 \RequirePackage{fmtcount}%
-\RequirePackage{babel}%
+\RequirePackage[french,ngerman,dutch,english]{babel}%
 \RequirePackage{varioref}
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
@@ -181,9 +181,9 @@
 \RequirePackage{environ}
 \RequirePackage{footnote}%
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
-\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc,autopunct=true}
+\ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \RequirePackage[pdfencoding=unicode,final]{hyperref}%
-\AtBeginDocument{%
+\AtEndPreamble{%
   \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
 \RequirePackage[all]{hypcap}
@@ -408,7 +408,7 @@
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
-    \AtBeginDocument{\g__nwejm_mainmatter_switch_tl}
+      \AfterEndPreamble{\g__nwejm_mainmatter_switch_tl}
 \int_new:N \g__nwejm_issue_number_int
 \int_new:N \g__nwejm_issue_month_int
 \int_new:N \g__nwejm_issue_year_int
@@ -624,6 +624,9 @@
 {\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
   \AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
 }
+\NewDocumentCommand \fixpagenumber { m } {
+\setcounter{page}{#1}
+}
 \vref@addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
   \def\reftextfacebefore{page~\reftextvario{ci-contre}%
@@ -736,14 +739,57 @@
 }
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
-  \tl_if_eq:nnTF { #1 } { german } {%
-    \selectlanguage{ngerman}
-  }{
-    \tl_if_eq:nnTF { #1 } { french } {%
+  \renewcommand*{\glspluralsuffix}{s}
+  \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
+  \renewcommand*{\glsupacrpluralsuffix}{\glstextup{\glsacrpluralsuffix}}
+  \str_case:nnTF {#1} {
+    {english} {
+      \selectlanguage{english}
+      \renewcommand*{\glossaryname}{Glossary}%
+      \renewcommand*{\acronymname}{Acronyms}%
+      \renewcommand*{\entryname}{Notation}%
+      \renewcommand*{\descriptionname}{Description}%
+      \renewcommand*{\symbolname}{Symbol}%
+      \renewcommand*{\pagelistname}{Page List}%
+      \renewcommand*{\glssymbolsgroupname}{Symbols}%
+      \renewcommand*{\glsnumbersgroupname}{Numbers}%
+    }
+    {german} {
+      \selectlanguage{ngerman}
+      \renewcommand*{\glossaryname}{Glossar}%
+      \renewcommand*{\acronymname}{Akronyme}%
+      \renewcommand*{\entryname}{Bezeichnung}%
+      \renewcommand*{\descriptionname}{Beschreibung}%
+      \renewcommand*{\symbolname}{Symbol}%
+      \renewcommand*{\pagelistname}{Seiten}%
+      \renewcommand*{\glssymbolsgroupname}{Symbole}%
+      \renewcommand*{\glsnumbersgroupname}{Zahlen}%
+    }
+    {french} {
       \selectlanguage{french}
       \g__nwejm_french_crefname_tl
-    }{
-      \selectlanguage{#1}
+      \renewcommand*{\glossaryname}{Glossaire}%
+      \renewcommand*{\acronymname}{Acronymes}%
+      \renewcommand*{\entryname}{Terme}%
+      \renewcommand*{\descriptionname}{Description}%
+      \renewcommand*{\symbolname}{Symbole}%
+      \renewcommand*{\pagelistname}{Pages}%
+      \renewcommand*{\glssymbolsgroupname}{Symboles}%
+      \renewcommand*{\glsnumbersgroupname}{Nombres}%
+      \renewcommand*{\glspluralsuffix}{s}
+      \renewcommand*{\glsacrpluralsuffix}{}
+      \renewcommand*{\glsupacrpluralsuffix}{}
+    }
+    {dutch} {
+      \selectlanguage{dutch}
+      \renewcommand*{\glossaryname}{Woordenlijst}%
+      \renewcommand*{\acronymname}{Acroniemen}%
+      \renewcommand*{\entryname}{Benaming}%
+      \renewcommand*{\descriptionname}{Beschrijving}%
+      \renewcommand*{\symbolname}{Symbool}%
+      \renewcommand*{\pagelistname}{Pagina's}%
+      \renewcommand*{\glssymbolsgroupname}{Symbolen}%
+      \renewcommand*{\glsnumbersgroupname}{Cijfers}%
     }
   }%
   \tl_if_eq:nnTF { #1 } { french } {%
@@ -782,7 +828,6 @@
   \iow_now:Nx \g__nwejm_bib_out_iow {%
     @periodical{\c__nwejm_issue_bib_key_tl,\iow_newline:
       issuetitle   = {\exp_not:f\c__nwejm_journal_title_string_tl},\iow_newline:
-      date         = {\g__nwejm_bib_issue_date_tl},\iow_newline:
       number       = \int_use:N \g__nwejm_issue_number_int,\iow_newline:
       % issn         = {\l__nwejm_journal_issn_tl},\iow_newline:
       options      = {skipbib}\iow_newline:
@@ -1649,12 +1694,13 @@
 \cs_generate_variant:Nn \tl_reverse:n { f }
 \cs_generate_variant:Nn \__nwejm_tl_pop_right:n { v }
 
-\NewDocumentCommand{\newenumeration}{O{}m}
+\cs_new_protected:Npn \__nwejm_start_newenumeration:nn #1 #2
 {
   \keys_define:nn { nwejm/newenumeration }
   {
     singular .tl_set:c = {l__nwejm_newenumeration_#2_singular_tl},
     plural   .tl_set:c =   {l__nwejm_newenumeration_#2_plural_tl},
+    label    .tl_set:c =   {l__nwejm_newenumeration_#2_label_tl},
   }
   \IfNoValueF {#1}
   {
@@ -1666,39 +1712,62 @@
   \tl_if_empty:cT {l__nwejm_newenumeration_#2_singular_tl} {
     \tl_set:cV {l__nwejm_newenumeration_#2_singular_tl} {\__nwejm_tl_pop_right:v {l__nwejm_newenumeration_#2_plural_tl}}
   }
-  \newlist{#2}{enumerate}{1}
-  \tl_set:cn {l__nwejm_newenumeration_#2_reference_tl} {
-    \textsf{
-      \tl_upper_case:n {\tl_head:f {\tl_use:c {l__nwejm_newenumeration_#2_singular_tl}}}
+  \tl_if_empty:cT {l__nwejm_newenumeration_#2_label_tl} {
+    \tl_set:cV {l__nwejm_newenumeration_#2_label_tl} {
+      \tl_upper_case:n {
+        \tl_head:f {
+          \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
+        }
+      }
     }
   }
-  \setlist[#2]{%
+}
+\cs_new_protected:Npn \__nwejm_end_newenumeration:n #1
+{
+  \tl_set:cn {l__nwejm_newenumeration_#1_reference_tl} {
+    \textsf{
+      \tl_use:c {l__nwejm_newenumeration_#1_label_tl}
+    }
+  }
+  \setlist[#1]{%
     label=
     \normalfont
     (
-    \tl_use:c {l__nwejm_newenumeration_#2_reference_tl}
+    \tl_use:c {l__nwejm_newenumeration_#1_reference_tl}
     $\c_math_subscript_token{\mathsf{\arabic*}}$
     ),
     ref=
     (
-    \tl_use:c {l__nwejm_newenumeration_#2_reference_tl}
+    \tl_use:c {l__nwejm_newenumeration_#1_reference_tl}
     $_\mathsf{\arabic*}$
     )
   }
-  \crefname{#2i}{
-    \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
+  \crefname{#1i}{
+    \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
   }{%
-    \tl_use:c {l__nwejm_newenumeration_#2_plural_tl}
+    \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
   }
-  \Crefname{#2i}{
+  \Crefname{#1i}{
     \tl_mixed_case:n{
-      \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
+      \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
     }
   }{%
     \tl_mixed_case:n{
-      \tl_use:c {l__nwejm_newenumeration_#2_plural_tl}
+      \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
     }
   }
+}
+\NewDocumentCommand{\newenumeration}{O{}m}
+{
+  \__nwejm_start_newenumeration:nn {#1}{#2}
+  \newlist{#2}{enumerate}{1}
+  \__nwejm_end_newenumeration:n {#2}
+}
+\NewDocumentCommand{\renewenumeration}{O{}m}
+{
+  \__nwejm_start_newenumeration:nn {#1}{#2}
+  \renewlist{#2}{enumerate}{1}
+  \__nwejm_end_newenumeration:n {#2}
 }
 \NewDocumentEnvironment{hypotheses}{}
 {
