@@ -2825,6 +2825,14 @@ Running "make install" installs the files in the local TeX tree.
 %<class-article>}
 %    \end{macrocode}
 %
+% In case one wants to manually control the page numbers, the following macro
+% ×\fixpagenumber{...}× has to be used instead of ×\setcounter{page}{...}×.
+%    \begin{macrocode}
+\NewDocumentCommand \fixpagenumber { m } {
+%<class-article>\setcounter{page}{#1}
+}
+%    \end{macrocode}
+%
 % \section{User level commands}
 %
 % Here, we gather all the user level (public) commands.
