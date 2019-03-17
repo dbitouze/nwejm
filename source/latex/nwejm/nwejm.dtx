@@ -821,7 +821,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Multilingual support for Plain TeX or LaTeX:
 %    \begin{macrocode}
-\RequirePackage{babel}%
+\RequirePackage[french,ngerman,dutch,english]{babel}%
 %    \end{macrocode}
 %
 % \item Intelligent page references:
@@ -3215,18 +3215,63 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We create a variant of the "\input" macro to be use for the input of each
 % article: it starts a new \package{biblatex}'s "refsection" and reset to zero
-% some counters.
+% some counters. It also redefine the glossaries' rules since glossaries'
+% acronyms' suffix in effect are not for the last loaded language (see
+% \url{https://tex.stackexchange.com/q/475788/18401}).
 %    \begin{macrocode}
 \NewDocumentCommand \inputarticle { O{english} m } {%
   \newrefsection
-  \tl_if_eq:nnTF { #1 } { german } {%
-    \selectlanguage{ngerman}
-  }{
-    \tl_if_eq:nnTF { #1 } { french } {%
+  \renewcommand*{\glspluralsuffix}{s}
+  \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
+  \renewcommand*{\glsupacrpluralsuffix}{\glstextup{\glsacrpluralsuffix}}
+  \str_case:nnTF {#1} {
+    {english} {
+      \selectlanguage{english}
+      \renewcommand*{\glossaryname}{Glossary}%
+      \renewcommand*{\acronymname}{Acronyms}%
+      \renewcommand*{\entryname}{Notation}%
+      \renewcommand*{\descriptionname}{Description}%
+      \renewcommand*{\symbolname}{Symbol}%
+      \renewcommand*{\pagelistname}{Page List}%
+      \renewcommand*{\glssymbolsgroupname}{Symbols}%
+      \renewcommand*{\glsnumbersgroupname}{Numbers}%
+    }
+    {german} {
+      \selectlanguage{ngerman}
+      \renewcommand*{\glossaryname}{Glossar}%
+      \renewcommand*{\acronymname}{Akronyme}%
+      \renewcommand*{\entryname}{Bezeichnung}%
+      \renewcommand*{\descriptionname}{Beschreibung}%
+      \renewcommand*{\symbolname}{Symbol}%
+      \renewcommand*{\pagelistname}{Seiten}%
+      \renewcommand*{\glssymbolsgroupname}{Symbole}%
+      \renewcommand*{\glsnumbersgroupname}{Zahlen}%
+    }
+    {french} {
       \selectlanguage{french}
       \g_@@_french_crefname_tl
-    }{
-      \selectlanguage{#1}
+      \renewcommand*{\glossaryname}{Glossaire}%
+      \renewcommand*{\acronymname}{Acronymes}%
+      \renewcommand*{\entryname}{Terme}%
+      \renewcommand*{\descriptionname}{Description}%
+      \renewcommand*{\symbolname}{Symbole}%
+      \renewcommand*{\pagelistname}{Pages}%
+      \renewcommand*{\glssymbolsgroupname}{Symboles}%
+      \renewcommand*{\glsnumbersgroupname}{Nombres}%
+      \renewcommand*{\glspluralsuffix}{s}
+      \renewcommand*{\glsacrpluralsuffix}{}
+      \renewcommand*{\glsupacrpluralsuffix}{}
+    }
+    {dutch} {
+      \selectlanguage{dutch}
+      \renewcommand*{\glossaryname}{Woordenlijst}%
+      \renewcommand*{\acronymname}{Acroniemen}%
+      \renewcommand*{\entryname}{Benaming}%
+      \renewcommand*{\descriptionname}{Beschrijving}%
+      \renewcommand*{\symbolname}{Symbool}%
+      \renewcommand*{\pagelistname}{Pagina's}%
+      \renewcommand*{\glssymbolsgroupname}{Symbolen}%
+      \renewcommand*{\glsnumbersgroupname}{Cijfers}%
     }
   }%
 %    \end{macrocode}
