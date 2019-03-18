@@ -841,7 +841,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Multilingual support for Plain TeX or LaTeX:
 %    \begin{macrocode}
-\RequirePackage[french,ngerman,dutch,english]{babel}%
+\RequirePackage{babel}%
 %    \end{macrocode}
 %
 % \item Intelligent page references:
@@ -3249,7 +3249,8 @@ Running "make install" installs the files in the local TeX tree.
   \renewcommand*{\glspluralsuffix}{s}
   \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
   \renewcommand*{\glsupacrpluralsuffix}{\glstextup{\glsacrpluralsuffix}}
-  \str_case:nnTF {#1} {
+  \StandardFootnotes
+  \str_case:nn {#1} {
     {english} {
       \selectlanguage{english}
       \renewcommand*{\glossaryname}{Glossary}%
@@ -3272,9 +3273,26 @@ Running "make install" installs the files in the local TeX tree.
       \renewcommand*{\glssymbolsgroupname}{Symbole}%
       \renewcommand*{\glsnumbersgroupname}{Zahlen}%
     }
+    {ngerman} {
+      \selectlanguage{ngerman}
+      \renewcommand*{\glossaryname}{Glossar}%
+      \renewcommand*{\acronymname}{Akronyme}%
+      \renewcommand*{\entryname}{Bezeichnung}%
+      \renewcommand*{\descriptionname}{Beschreibung}%
+      \renewcommand*{\symbolname}{Symbol}%
+      \renewcommand*{\pagelistname}{Seiten}%
+      \renewcommand*{\glssymbolsgroupname}{Symbole}%
+      \renewcommand*{\glsnumbersgroupname}{Zahlen}%
+    }
     {french} {
       \selectlanguage{french}
-      \g_@@_french_crefname_tl
+%    \end{macrocode}
+%
+% Though we switch to \pkg{babel}'s ×french×, footnotes are not displayed as
+% French ones in the issue. The following fixes this trouble.
+%    \begin{macrocode}
+      \FrenchFootnotes
+      \g__nwejm_french_crefname_tl
       \renewcommand*{\glossaryname}{Glossaire}%
       \renewcommand*{\acronymname}{Acronymes}%
       \renewcommand*{\entryname}{Terme}%
@@ -3299,16 +3317,6 @@ Running "make install" installs the files in the local TeX tree.
       \renewcommand*{\glsnumbersgroupname}{Cijfers}%
     }
   }%
-%    \end{macrocode}
-%
-% Though we switch to \pkg{babel}'s ×french×, footnotes are not displayed as
-% French ones in the issue. The following fixes this trouble.
-%    \begin{macrocode}
-  \tl_if_eq:nnTF { #1 } { french } {%
-    \FrenchFootnotes
-  }{%
-    \StandardFootnotes
-  }
 %    \end{macrocode}
 %
 % We reset setup possibly chosen in previous articles.

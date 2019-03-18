@@ -170,7 +170,7 @@
 \RequirePackage{geometry}
 \RequirePackage{translations}%
 \RequirePackage{fmtcount}%
-\RequirePackage[french,ngerman,dutch,english]{babel}%
+\RequirePackage{babel}%
 \RequirePackage{varioref}
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
@@ -742,7 +742,8 @@
   \renewcommand*{\glspluralsuffix}{s}
   \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
   \renewcommand*{\glsupacrpluralsuffix}{\glstextup{\glsacrpluralsuffix}}
-  \str_case:nnTF {#1} {
+  \StandardFootnotes
+  \str_case:nn {#1} {
     {english} {
       \selectlanguage{english}
       \renewcommand*{\glossaryname}{Glossary}%
@@ -765,8 +766,20 @@
       \renewcommand*{\glssymbolsgroupname}{Symbole}%
       \renewcommand*{\glsnumbersgroupname}{Zahlen}%
     }
+    {ngerman} {
+      \selectlanguage{ngerman}
+      \renewcommand*{\glossaryname}{Glossar}%
+      \renewcommand*{\acronymname}{Akronyme}%
+      \renewcommand*{\entryname}{Bezeichnung}%
+      \renewcommand*{\descriptionname}{Beschreibung}%
+      \renewcommand*{\symbolname}{Symbol}%
+      \renewcommand*{\pagelistname}{Seiten}%
+      \renewcommand*{\glssymbolsgroupname}{Symbole}%
+      \renewcommand*{\glsnumbersgroupname}{Zahlen}%
+    }
     {french} {
       \selectlanguage{french}
+      \FrenchFootnotes
       \g__nwejm_french_crefname_tl
       \renewcommand*{\glossaryname}{Glossaire}%
       \renewcommand*{\acronymname}{Acronymes}%
@@ -792,11 +805,6 @@
       \renewcommand*{\glsnumbersgroupname}{Cijfers}%
     }
   }%
-  \tl_if_eq:nnTF { #1 } { french } {%
-    \FrenchFootnotes
-  }{%
-    \StandardFootnotes
-  }
   \inputfrom{./}{#2}
   \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
     footnote,
