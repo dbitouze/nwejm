@@ -622,7 +622,7 @@
 
 \file_if_exist:nT { \c__nwejm_main_file_name_tl.aux }
 {\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
-  \AtBeginDocument{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
+  \AfterEndPreamble{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
 }
 \NewDocumentCommand \fixpagenumber { m } {
 \setcounter{page}{#1}
