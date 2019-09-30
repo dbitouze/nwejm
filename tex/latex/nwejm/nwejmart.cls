@@ -816,7 +816,7 @@
   \clist_map_inline:Nn \g__nwejm_counters_to_be_reset_clist {
     \@ifundefined{c@##1}{
     }{
-      \setcounter{##1}{\c_zero}
+      \setcounter{##1}{\c_zero_int}
     }
   }
   \glsresetall
@@ -1251,22 +1251,22 @@
   \int_set:Nn \l__nwejm_abs_int {\int_abs:n {#1}}
   \ifcurrentbaselanguage{english}{
     \int_use:N \l__nwejm_abs_int
-    \int_set:Nn \l_tmpa_int {\int_mod:nn {\l__nwejm_abs_int} {\c_one_hundred}}
+    \int_set:Nn \l_tmpa_int {\int_mod:nn {\l__nwejm_abs_int} { 100 }}
     \int_case:nnF
     { \l_tmpa_int }
     {
-      { \c_eleven }   { \fmtord{th} }
-      { \c_twelve }   { \fmtord{th} }
-      { \c_thirteen } { \fmtord{th} }
+      { 11 }   { \fmtord{th} }
+      { 12 }   { \fmtord{th} }
+      { 13 } { \fmtord{th} }
     }{
-      \int_set:Nn \l_tmpb_int {\int_mod:nn {\l__nwejm_abs_int} {\c_ten}}
+      \int_set:Nn \l_tmpb_int {\int_mod:nn {\l__nwejm_abs_int} { 10 }}
       \int_case:nnF
       { \l_tmpb_int }
       {
-        { \c_zero }   { \fmtord{th} }
-        { \c_one }   { \fmtord{st} }
-        { \c_two }   { \fmtord{nd} }
-        { \c_three } { \fmtord{rd} }
+        { 0 }   { \fmtord{th} }
+        { 1 }   { \fmtord{st} }
+        { 2 }   { \fmtord{nd} }
+        { 3 } { \fmtord{rd} }
       }{
         \fmtord{th}
       }
@@ -2461,7 +2461,7 @@
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
    \bool_if:NF \g__nwejm_nolocaltoc_bool {
      \newpage
-     \setcounter{page}{\c_zero}
+     \setcounter{page}{\c_zero_int}
      \pagenumbering{roman}%
      \etocarticlestylenomarks
     \etocsetlevel{chapter}{6}
