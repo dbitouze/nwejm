@@ -1669,7 +1669,7 @@ Running "make install" installs the files in the local TeX tree.
 % %    \begin{macrocode}
 %       \cleardoublepage
 %       \pagenumbering{roman}%
-%       \setcounter{page}{\c_three}
+%       \setcounter{page}{3}
 % %    \end{macrocode}
 % %
 % % On the backcover, we want the table of contents (displayed as a chapter,
@@ -2819,7 +2819,7 @@ Running "make install" installs the files in the local TeX tree.
 % needs the main file name to be fixed (chosen name: \enquote{issue}). If that's
 % not the case an error is thrown.
 %    \begin{macrocode}
-%<class>\str_if_eq_x:nnTF  \c_sys_jobname_str \c_@@_main_file_name_tl {
+%<class>\str_if_eq:eeTF  \c_sys_jobname_str \c_@@_main_file_name_tl {
 %<class>  \bool_if:NT {\g_@@_cover_bool} {
 %<class>    \msg_error:nn{nwejm}{Wrong~cover's~main~file~name!}
 %<class>  }
@@ -3349,7 +3349,7 @@ Running "make install" installs the files in the local TeX tree.
   \clist_map_inline:Nn \g_@@_counters_to_be_reset_clist {
     \@ifundefined{c@##1}{
     }{
-      \setcounter{##1}{\c_zero}
+      \setcounter{##1}{\c_zero_int}
     }
   }
 %    \end{macrocode}
@@ -4044,22 +4044,22 @@ Running "make install" installs the files in the local TeX tree.
   \int_set:Nn \l_@@_abs_int {\int_abs:n {#1}}
   \ifcurrentbaselanguage{english}{
     \int_use:N \l_@@_abs_int
-    \int_set:Nn \l_tmpa_int {\int_mod:nn {\l_@@_abs_int} {\c_one_hundred}}
+    \int_set:Nn \l_tmpa_int {\int_mod:nn {\l_@@_abs_int} { 100 }}
     \int_case:nnF
     { \l_tmpa_int }
     {
-      { \c_eleven }   { \fmtord{th} }
-      { \c_twelve }   { \fmtord{th} }
-      { \c_thirteen } { \fmtord{th} }
+      { 11 }   { \fmtord{th} }
+      { 12 }   { \fmtord{th} }
+      { 13 } { \fmtord{th} }
     }{
-      \int_set:Nn \l_tmpb_int {\int_mod:nn {\l_@@_abs_int} {\c_ten}}
+      \int_set:Nn \l_tmpb_int {\int_mod:nn {\l_@@_abs_int} { 10 }}
       \int_case:nnF
       { \l_tmpb_int }
       {
-        { \c_zero }   { \fmtord{th} }
-        { \c_one }   { \fmtord{st} }
-        { \c_two }   { \fmtord{nd} }
-        { \c_three } { \fmtord{rd} }
+        { 0 }   { \fmtord{th} }
+        { 1 }   { \fmtord{st} }
+        { 2 }   { \fmtord{nd} }
+        { 3 } { \fmtord{rd} }
       }{
         \fmtord{th}
       }
@@ -5615,7 +5615,7 @@ Running "make install" installs the files in the local TeX tree.
    \bool_if:NF \g_@@_nolocaltoc_bool {
 %    \setcounter{lastpagearticle}{\value{page}}
      \newpage
-     \setcounter{page}{\c_zero}
+     \setcounter{page}{\c_zero_int}
      \pagenumbering{roman}%
      \etocarticlestylenomarks
 %    \end{macrocode}
