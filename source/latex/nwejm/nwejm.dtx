@@ -1055,6 +1055,14 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_graphicdesign_string_tl {Graphic~design}
 %    \end{macrocode}
+% For the director of the publication.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_publication_director_string_tl {Directeur~de~la~publication}
+%    \end{macrocode}
+% For the director of the publication.
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_composed_by_string_tl {Composition}
+%    \end{macrocode}
 % For configuration file.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_configuration_file_string_tl {nwejm.cfg}
@@ -2388,11 +2396,15 @@ Running "make install" installs the files in the local TeX tree.
           \medskip%
         }
       }{
-        \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1-
-          \exp_not:V\DTLcurrentindex}%
-        \tl_if_empty:NF \l_@@_people_email_tl
-        {
-          \c_space_tl(\_@@_email:n {\l_@@_people_email_tl})
+        \tl_if_in:NnTF \l_@@_people_role_tl { publicationdirector } {
+          \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex},~
+          \l_@@_people_affiliation_tl%
+        }{
+          \_@@_citeauthor_no_giveninits:n {\c_@@_issue_bib_key_tl -#1- \exp_not:V\DTLcurrentindex}%
+          \tl_if_empty:NF \l_@@_people_email_tl
+          {
+            \c_space_tl(\_@@_email:n {\l_@@_people_email_tl})
+          }
         }
       }
     }
@@ -2640,6 +2652,20 @@ Running "make install" installs the files in the local TeX tree.
     \_@@_display_people_by_role:n { graphicdesign }
   \end{description}
   \g_@@_font_designer_text_tl
+  \par
+  \vspace*{\stretch{1}}
+  \selectlanguage{french}
+  \shorthandon{;:!?}
+  \begin{description}
+  \item[\c_@@_publication_director_string_tl{}~:]
+    \_@@_display_people_by_role:n { publicationdirector }
+  \item[\c_@@_composed_by_string_tl{}~:]
+    \_@@_display_people_by_role:n { composer }
+  \end{description}
+  \DTMlangsetup*{showdayofmonth=false}
+  \centering
+  \g_@@_masthead_tl
+  \selectlanguage{english}
   \bool_gset_false:N \g_@@_inside_backcover_bool
 }
 %    \end{macrocode}
@@ -2925,6 +2951,14 @@ Running "make install" installs the files in the local TeX tree.
 {
   \_@@_people:nnnnn {#1}{#2}{#3}{#4}{secretary}
 }
+\NewDocumentCommand \publicationdirector {mmmm}
+{
+  \_@@_people:nnnnn {#1}{#2}{#3}{#4}{publicationdirector}
+}
+\NewDocumentCommand \composer {mmmm}
+{
+  \_@@_people:nnnnn {#1}{#2}{#3}{#4}{composer}
+}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -3073,6 +3107,20 @@ Running "make install" installs the files in the local TeX tree.
   }
 }
 %    \end{macrocode}
+%
+% \begin{macro}{\masthead}
+%   We define the command that lets us specify the masthead (\enquote{ours} in French). This
+%   setup is likely to be rarely changed.
+%    \begin{macrocode}
+\tl_new:N \g_@@_masthead_tl
+\NewDocumentCommand \masthead { +m } {
+  \IfNoValueF {#1}
+  {
+    \tl_gset:Nn \g_@@_masthead_tl {#1}
+  }
+}
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 %</class>
 %    \end{macrocode}
