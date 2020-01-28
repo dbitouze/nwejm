@@ -6,7 +6,7 @@
 - README file.
 - CHANGELOG file (following https://keepachangelog.com/en/1.0.0/).
 - Semantic versionning (following https://semver.org/).
-- Publication Director, composer, masthead.
+- Publication director, composer, masthead (not for the articles' authors).
 
 ## Fixed
 - Track changes in `expl3`.
