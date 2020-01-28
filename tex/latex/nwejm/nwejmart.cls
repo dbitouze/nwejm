@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejmart}
-  {2019/03/18}
-  {0.98f}
+  {2020-01-28}
+  {1.0.0}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -150,7 +150,6 @@
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
 \RequirePackage{xr}
-\RequirePackage{currfile}
 \RequirePackage[multiple]{footmisc}%
 \RequirePackage{marginnote}%
 \RequirePackage{refcount}%
@@ -169,6 +168,7 @@
 \RequirePackage[easyscsl,noDcommand]{kpfonts}
 \RequirePackage{geometry}
 \RequirePackage{translations}%
+\RequirePackage{currfile}
 \RequirePackage{fmtcount}%
 \RequirePackage{babel}%
 \RequirePackage{varioref}
@@ -582,7 +582,7 @@
     \tl_if_empty:NF {#2}
     {
       \tl_if_eq:NNF {\c__nwejm_date_received_tl} {#1} { \c__nwejm_dates_separator_tl }
-      \tl_mixed_case:n { \exp_args:No \GetTranslation{#1} }
+      \text_titlecase:n { \exp_args:No \GetTranslation{#1} }
       \c__nwejm_colon_tl\c_space_tl
       \DTMdate{#2}%
     }
@@ -705,11 +705,11 @@
   }
   \clist_map_inline:Nn \l_tmpa_clist {
     \crefname{#1}{
-      \tl_lower_case:n{
+      \text_lowercase:n{
         \GetTranslationFor{french}{#1}
       }
     }{%
-      \tl_lower_case:n{
+      \text_lowercase:n{
         \GetTranslationFor{french}{plural-#1}
       }
     }
@@ -1076,7 +1076,7 @@
   \noindent
   {
     \bfseries
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-keyword}
       \c__nwejm_colon_tl
     }
@@ -1403,42 +1403,41 @@
 {
     \IfTranslation{English}{#1}{%
     }{%
-      \DeclareTranslation{English}{#1}{\tl_mixed_case:n{#2}}%
+      \DeclareTranslation{English}{#1}{\text_titlecase:n{#2}}%
     }
     \IfTranslation{French}{#1}{%
     }{%
-      \DeclareTranslation{French}{#1}{\tl_mixed_case:n{#3}}%
+      \DeclareTranslation{French}{#1}{\text_titlecase:n{#3}}%
     }
     \IfTranslation{German}{#1}{%
     }{%
-      \DeclareTranslation{German}{#1}{\tl_mixed_case:n{#4}}%
+      \DeclareTranslation{German}{#1}{\text_titlecase:n{#4}}%
     }
     \IfTranslation{Dutch}{#1}{%
     }{%
-      \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
+      \DeclareTranslation{Dutch}{#1}{\text_titlecase:n{#5}}%
     }
     %
     \IfTranslation{English}{#1-plural}{%
     }{%
-      \DeclareTranslation{English}{#1-plural}{\tl_mixed_case:n{#6}}%
+      \DeclareTranslation{English}{#1-plural}{\text_titlecase:n{#6}}%
     }
     \IfTranslation{French}{#1-plural}{%
     }{%
-      \DeclareTranslation{French}{#1-plural}{\tl_mixed_case:n{#7}}%
+      \DeclareTranslation{French}{#1-plural}{\text_titlecase:n{#7}}%
     }
     \IfTranslation{German}{#1-plural}{%
     }{%
-      \DeclareTranslation{German}{#1-plural}{\tl_mixed_case:n{#8}}%
+      \DeclareTranslation{German}{#1-plural}{\text_titlecase:n{#8}}%
     }
     \IfTranslation{Dutch}{#1-plural}{%
     }{%
-      \DeclareTranslation{Dutch}{#1-plural}{\tl_mixed_case:n{#9}}%
+      \DeclareTranslation{Dutch}{#1-plural}{\text_titlecase:n{#9}}%
     }
-    \__nwejm_orig_newtheorem{#1}{\tl_mixed_case:n{ \GetTranslation{#1} }}
+    \__nwejm_orig_newtheorem{#1}{\text_titlecase:n{ \GetTranslation{#1} }}
     \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-      \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\tl_mixed_case:n{ \GetTranslation{#1} }}
+      \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\text_titlecase:n{ \GetTranslation{#1} }}
     }
-
 }
 \cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnnnnn { nVVVVVVVV }
 \RenewDocumentCommand \newtheorem { O{} m }
@@ -1573,11 +1572,11 @@
     \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
   }
   \ifcurrentbaselanguage{french}{%
-    \crefname{#2}{\tl_lower_case:n{ \GetTranslation{#2} }}{\tl_lower_case:n{ \GetTranslation{#2-plural} }}
+    \crefname{#2}{\text_lowercase:n{ \GetTranslation{#2} }}{\text_lowercase:n{ \GetTranslation{#2-plural} }}
   }{%
     \crefname{#2}{\GetTranslation{#2}}{\GetTranslation{#2-plural}}
   }
-  \Crefname{#2}{\tl_mixed_case:n{ \GetTranslation{#2} }}{\tl_mixed_case:n{ \GetTranslation{#2-plural} }}
+  \Crefname{#2}{\text_titlecase:n{ \GetTranslation{#2} }}{\text_titlecase:n{ \GetTranslation{#2-plural} }}
 }
 \newtheorem{theorem}
 \newtheorem{corollary}
@@ -1631,20 +1630,20 @@
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{#1}
     }
   }{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-#1}
     }
   }
   \Crefname{#1}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{#1}
     }
   }{%
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-#1}
     }
   }
@@ -1664,12 +1663,12 @@
     \normalfont
     (
     \textsf{
-      \tl_upper_case:n {\tl_head:f {\GetTranslation{#1}}}
+      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
     }
     $\c_math_subscript_token\mathsf{\arabic*}$),
     ref=(
     \textsf{
-      \tl_upper_case:n {\tl_head:f {\GetTranslation{#1}}}
+      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
     }
     $_\mathsf{\arabic*}$
     )
@@ -1680,11 +1679,11 @@
     \GetTranslation{plural-#1}
   }
   \Crefname{#1i}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{#1}
     }
   }{%
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-#1}
     }
   }
@@ -1722,7 +1721,7 @@
   }
   \tl_if_empty:cT {l__nwejm_newenumeration_#2_label_tl} {
     \tl_set:cV {l__nwejm_newenumeration_#2_label_tl} {
-      \tl_upper_case:n {
+      \text_uppercase:n {
         \tl_head:f {
           \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
         }
@@ -1756,11 +1755,11 @@
     \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
   }
   \Crefname{#1i}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
     }
   }{%
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
     }
   }
@@ -2479,7 +2478,7 @@
 \expandafter\def\expandafter\pdfstringdefPreHook
 \expandafter{%
   \pdfstringdefPreHook
-  \renewcommand{\acrshort}[1]{\tl_upper_case:n {\glsentryshort{##1}}}%
+  \renewcommand{\acrshort}[1]{\text_uppercase:n {\glsentryshort{##1}}}%
 }
 \@ifpackageloaded{draftwatermark}{%
   \SetWatermarkColor{gray!10}%
@@ -2534,7 +2533,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2019 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2020 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
