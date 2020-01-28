@@ -642,11 +642,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{xr}
 %    \end{macrocode}
 %
-% \item Provide file name and path of input files:
-%    \begin{macrocode}
-\RequirePackage{currfile}
-%    \end{macrocode}
-%
 % \item A range of footnote options:
 %    \begin{macrocode}
 \RequirePackage[multiple]{footmisc}%
@@ -675,6 +670,76 @@ Running "make install" installs the files in the local TeX tree.
 % \item Determine if the current page is odd or even:
 %    \begin{macrocode}
 \RequirePackage{ifoddpage}%
+%    \end{macrocode}
+%
+% \item Control float placement:
+%    \begin{macrocode}
+\RequirePackage{placeins}%
+%    \end{macrocode}
+%
+% \item Define commands that appear not to eat spaces:
+%    \begin{macrocode}
+\RequirePackage{xspace}%
+%    \end{macrocode}
+%
+% \item Context sensitive quotation facilities:
+%    \begin{macrocode}
+\RequirePackage[autostyle]{csquotes}%
+%    \end{macrocode}
+%
+% \item Extended implementation of the \LaTeX{} array and
+%   tabular–environments:
+%    \begin{macrocode}
+\RequirePackage{array}
+%    \end{macrocode}
+%
+% \item Publication quality tables in \LaTeX{}:
+%    \begin{macrocode}
+\RequirePackage{booktabs}
+%    \end{macrocode}
+%
+% \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
+%   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
+%   loads \pkg{amsmath}, hence it's not necessary to load the
+%   latter. It has to be loaded before \pkg{datatool} and \pkg{kpfonts}.}:
+%    \begin{macrocode}
+\RequirePackage{mathtools}
+%    \end{macrocode}
+%
+% \item Extensions to theorem environments:
+%    \begin{macrocode}
+\RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
+%    \end{macrocode}
+%
+% \item Support for using RSFS fonts in maths:
+%    \begin{macrocode}
+\RequirePackage{rsfso}
+%    \end{macrocode}
+%
+% \item Vector arrows:
+%    \begin{macrocode}
+\RequirePackage{esvect}
+%    \end{macrocode}
+%
+% Load of main font to be used:
+%    \begin{macrocode}
+\RequirePackage[easyscsl,noDcommand]{kpfonts}
+% %<class-article>\RequirePackage[noDcommand]{kpfonts}
+%    \end{macrocode}
+%
+% \item Flexible and easy interface to page dimensions:
+%    \begin{macrocode}
+\RequirePackage{geometry}
+%    \end{macrocode}
+%
+% \item Internationalisation of \LaTeXe{} packages:
+%    \begin{macrocode}
+\RequirePackage{translations}%
+%    \end{macrocode}
+%
+% \item Provide file name and path of input files:
+%    \begin{macrocode}
+\RequirePackage{currfile}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -770,71 +835,6 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 %<*class|class-article>
-%    \end{macrocode}
-%
-% \item Control float placement:
-%    \begin{macrocode}
-\RequirePackage{placeins}%
-%    \end{macrocode}
-%
-% \item Define commands that appear not to eat spaces:
-%    \begin{macrocode}
-\RequirePackage{xspace}%
-%    \end{macrocode}
-%
-% \item Context sensitive quotation facilities:
-%    \begin{macrocode}
-\RequirePackage[autostyle]{csquotes}%
-%    \end{macrocode}
-%
-% \item Extended implementation of the \LaTeX{} array and
-%   tabular–environments:
-%    \begin{macrocode}
-\RequirePackage{array}
-%    \end{macrocode}
-%
-% \item Publication quality tables in \LaTeX{}:
-%    \begin{macrocode}
-\RequirePackage{booktabs}
-%    \end{macrocode}
-%
-% \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
-%   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
-%   loads \pkg{amsmath}, hence it's not necessary to load the
-%   latter. It has to be loaded before \pkg{datatool} and \pkg{kpfonts}.}:
-%    \begin{macrocode}
-\RequirePackage{mathtools}
-%    \end{macrocode}
-%
-% \item Extensions to theorem environments:
-%    \begin{macrocode}
-\RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
-%    \end{macrocode}
-%
-% \item Support for using RSFS fonts in maths:
-%    \begin{macrocode}
-\RequirePackage{rsfso}
-%    \end{macrocode}
-%
-% \item Vector arrows:
-%    \begin{macrocode}
-\RequirePackage{esvect}
-%    \end{macrocode}
-%
-% Load of main font to be used:
-%    \begin{macrocode}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
-% %<class-article>\RequirePackage[noDcommand]{kpfonts}
-%    \end{macrocode}
-%
-% \item Flexible and easy interface to page dimensions:
-%    \begin{macrocode}
-\RequirePackage{geometry}
-%    \end{macrocode}
-%
-% \item Internationalisation of \LaTeXe{} packages:
-%    \begin{macrocode}
-\RequirePackage{translations}%
 %    \end{macrocode}
 %
 % \item Display the value of a \LaTeX{} counter in a variety of formats
