@@ -1873,7 +1873,7 @@ Running "make install" installs the files in the local TeX tree.
       \bfseries%
       \adjustbox{stack=l}{%
         \c_@@_journal_title_string_tl
-%<class> \\\tl_mixed_case:n{\GetTranslation{volume-abbreviated}}\c_space_tl\int_use:N \g_@@_issue_number_int
+%<class> \\\text_titlecase:n{\GetTranslation{volume-abbreviated}}\c_space_tl\int_use:N \g_@@_issue_number_int
 %<class-article> \mbox{}
 }
 }
@@ -2778,7 +2778,7 @@ Running "make install" installs the files in the local TeX tree.
     \tl_if_empty:NF {#2}
     {
       \tl_if_eq:NNF {\c_@@_date_received_tl} {#1} { \c_@@_dates_separator_tl }
-      \tl_mixed_case:n { \exp_args:No \GetTranslation{#1} }
+      \text_titlecase:n { \exp_args:No \GetTranslation{#1} }
       \c_@@_colon_tl\c_space_tl
       \DTMdate{#2}%
     }
@@ -3253,11 +3253,11 @@ Running "make install" installs the files in the local TeX tree.
   }
   \clist_map_inline:Nn \l_tmpa_clist {
     \crefname{#1}{
-      \tl_lower_case:n{
+      \text_lowercase:n{
         \GetTranslationFor{french}{#1}
       }
     }{%
-      \tl_lower_case:n{
+      \text_lowercase:n{
         \GetTranslationFor{french}{plural-#1}
       }
     }
@@ -3815,7 +3815,7 @@ Running "make install" installs the files in the local TeX tree.
   \noindent
   {
     \bfseries
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-keyword}
       \c_@@_colon_tl
     }
@@ -4304,42 +4304,41 @@ Running "make install" installs the files in the local TeX tree.
 {
     \IfTranslation{English}{#1}{%
     }{%
-      \DeclareTranslation{English}{#1}{\tl_mixed_case:n{#2}}%
+      \DeclareTranslation{English}{#1}{\text_titlecase:n{#2}}%
     }
     \IfTranslation{French}{#1}{%
     }{%
-      \DeclareTranslation{French}{#1}{\tl_mixed_case:n{#3}}%
+      \DeclareTranslation{French}{#1}{\text_titlecase:n{#3}}%
     }
     \IfTranslation{German}{#1}{%
     }{%
-      \DeclareTranslation{German}{#1}{\tl_mixed_case:n{#4}}%
+      \DeclareTranslation{German}{#1}{\text_titlecase:n{#4}}%
     }
     \IfTranslation{Dutch}{#1}{%
     }{%
-      \DeclareTranslation{Dutch}{#1}{\tl_mixed_case:n{#5}}%
+      \DeclareTranslation{Dutch}{#1}{\text_titlecase:n{#5}}%
     }
     %
     \IfTranslation{English}{#1-plural}{%
     }{%
-      \DeclareTranslation{English}{#1-plural}{\tl_mixed_case:n{#6}}%
+      \DeclareTranslation{English}{#1-plural}{\text_titlecase:n{#6}}%
     }
     \IfTranslation{French}{#1-plural}{%
     }{%
-      \DeclareTranslation{French}{#1-plural}{\tl_mixed_case:n{#7}}%
+      \DeclareTranslation{French}{#1-plural}{\text_titlecase:n{#7}}%
     }
     \IfTranslation{German}{#1-plural}{%
     }{%
-      \DeclareTranslation{German}{#1-plural}{\tl_mixed_case:n{#8}}%
+      \DeclareTranslation{German}{#1-plural}{\text_titlecase:n{#8}}%
     }
     \IfTranslation{Dutch}{#1-plural}{%
     }{%
-      \DeclareTranslation{Dutch}{#1-plural}{\tl_mixed_case:n{#9}}%
+      \DeclareTranslation{Dutch}{#1-plural}{\text_titlecase:n{#9}}%
     }
-    \_@@_orig_newtheorem{#1}{\tl_mixed_case:n{ \GetTranslation{#1} }}
+    \_@@_orig_newtheorem{#1}{\text_titlecase:n{ \GetTranslation{#1} }}
     \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-      \_@@_orig_newtheorem*{#1_@@_nonumbered}{\tl_mixed_case:n{ \GetTranslation{#1} }}
+      \_@@_orig_newtheorem*{#1_@@_nonumbered}{\text_titlecase:n{ \GetTranslation{#1} }}
     }
-    
 }
 \cs_generate_variant:Nn \_@@_new_theorem:nnnnnnnnn { nVVVVVVVV }
 %    \end{macrocode}
@@ -4493,11 +4492,11 @@ Running "make install" installs the files in the local TeX tree.
     \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
   }
   \ifcurrentbaselanguage{french}{%
-    \crefname{#2}{\tl_lower_case:n{ \GetTranslation{#2} }}{\tl_lower_case:n{ \GetTranslation{#2-plural} }}
+    \crefname{#2}{\text_lowercase:n{ \GetTranslation{#2} }}{\text_lowercase:n{ \GetTranslation{#2-plural} }}
   }{%
     \crefname{#2}{\GetTranslation{#2}}{\GetTranslation{#2-plural}}
   }
-  \Crefname{#2}{\tl_mixed_case:n{ \GetTranslation{#2} }}{\tl_mixed_case:n{ \GetTranslation{#2-plural} }}
+  \Crefname{#2}{\text_titlecase:n{ \GetTranslation{#2} }}{\text_titlecase:n{ \GetTranslation{#2-plural} }}
 }
 %    \end{macrocode}
 %
@@ -4560,20 +4559,20 @@ Running "make install" installs the files in the local TeX tree.
 }
 \clist_map_inline:Nn \l_tmpa_clist {
   \crefname{#1}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{#1}
     }
   }{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-#1}
     }
   }
   \Crefname{#1}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{#1}
     }
   }{%
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-#1}
     }
   }
@@ -4600,12 +4599,12 @@ Running "make install" installs the files in the local TeX tree.
     \normalfont
     (
     \textsf{
-      \tl_upper_case:n {\tl_head:f {\GetTranslation{#1}}}
+      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
     }
     $\c_math_subscript_token\mathsf{\arabic*}$),
     ref=(
     \textsf{
-      \tl_upper_case:n {\tl_head:f {\GetTranslation{#1}}}
+      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
     }
     $_\mathsf{\arabic*}$
     )
@@ -4616,11 +4615,11 @@ Running "make install" installs the files in the local TeX tree.
     \GetTranslation{plural-#1}
   }
   \Crefname{#1i}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{#1}
     }
   }{%
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \GetTranslation{plural-#1}
     }
   }
@@ -4671,7 +4670,7 @@ Running "make install" installs the files in the local TeX tree.
   }
   \tl_if_empty:cT {l_@@_newenumeration_#2_label_tl} {
     \tl_set:cV {l_@@_newenumeration_#2_label_tl} {
-      \tl_upper_case:n {
+      \text_uppercase:n {
         \tl_head:f {
           \tl_use:c {l_@@_newenumeration_#2_singular_tl}
         }
@@ -4705,11 +4704,11 @@ Running "make install" installs the files in the local TeX tree.
     \tl_use:c {l_@@_newenumeration_#1_plural_tl}
   }
   \Crefname{#1i}{
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \tl_use:c {l_@@_newenumeration_#1_singular_tl}
     }
   }{%
-    \tl_mixed_case:n{
+    \text_titlecase:n{
       \tl_use:c {l_@@_newenumeration_#1_plural_tl}
     }
   }
@@ -5741,7 +5740,7 @@ Running "make install" installs the files in the local TeX tree.
 \expandafter\def\expandafter\pdfstringdefPreHook
 \expandafter{%
   \pdfstringdefPreHook
-  \renewcommand{\acrshort}[1]{\tl_upper_case:n {\glsentryshort{##1}}}%
+  \renewcommand{\acrshort}[1]{\text_uppercase:n {\glsentryshort{##1}}}%
 }
 %    \end{macrocode}
 %
