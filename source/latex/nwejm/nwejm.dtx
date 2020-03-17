@@ -4599,12 +4599,20 @@ Running "make install" installs the files in the local TeX tree.
     \normalfont
     (
     \textsf{
-      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
+      \tl_head:f {
+        \text_uppercase:n {
+          \GetTranslation{#1}
+        }
+      }
     }
     $\c_math_subscript_token\mathsf{\arabic*}$),
     ref=(
     \textsf{
-      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
+      \tl_head:f {
+        \text_uppercase:n {
+          \GetTranslation{#1}
+        }
+      }
     }
     $_\mathsf{\arabic*}$
     )
