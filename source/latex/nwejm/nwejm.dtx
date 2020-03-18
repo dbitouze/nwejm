@@ -4678,8 +4678,8 @@ Running "make install" installs the files in the local TeX tree.
   }
   \tl_if_empty:cT {l_@@_newenumeration_#2_label_tl} {
     \tl_set:cV {l_@@_newenumeration_#2_label_tl} {
-      \text_uppercase:n {
-        \tl_head:f {
+      \tl_head:f {
+        \text_uppercase:n {
           \tl_use:c {l_@@_newenumeration_#2_singular_tl}
         }
       }
