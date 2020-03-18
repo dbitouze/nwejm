@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
-  {2020-01-28}
-  {1.0.0}
+  {2020-03-18}
+  {1.0.1}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -2235,7 +2235,7 @@
     }
     \IfTranslation{French}{#1}{%
     }{%
-      \DeclareTranslation{French}{#1}{\text_titlecase:n{#3}}%
+      \DeclareTranslation{French}{#1}{#3}%
     }
     \IfTranslation{German}{#1}{%
     }{%
@@ -2252,7 +2252,7 @@
     }
     \IfTranslation{French}{#1-plural}{%
     }{%
-      \DeclareTranslation{French}{#1-plural}{\text_titlecase:n{#7}}%
+      \DeclareTranslation{French}{#1-plural}{#7}%
     }
     \IfTranslation{German}{#1-plural}{%
     }{%
@@ -2491,12 +2491,20 @@
     \normalfont
     (
     \textsf{
-      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
+      \tl_head:f {
+        \text_uppercase:n {
+          \GetTranslation{#1}
+        }
+      }
     }
     $\c_math_subscript_token\mathsf{\arabic*}$),
     ref=(
     \textsf{
-      \text_uppercase:n {\tl_head:f {\GetTranslation{#1}}}
+      \tl_head:f {
+        \text_uppercase:n {
+          \GetTranslation{#1}
+        }
+      }
     }
     $_\mathsf{\arabic*}$
     )
@@ -2549,8 +2557,8 @@
   }
   \tl_if_empty:cT {l__nwejm_newenumeration_#2_label_tl} {
     \tl_set:cV {l__nwejm_newenumeration_#2_label_tl} {
-      \text_uppercase:n {
-        \tl_head:f {
+      \tl_head:f {
+        \text_uppercase:n {
           \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
         }
       }
@@ -3303,7 +3311,7 @@
 \@ifpackageloaded{draftwatermark}{%
   \SetWatermarkColor{gray!10}%
   \SetWatermarkFontSize{30mm}%
-  \SetWatermarkText{\MakeUppercase{\c__nwejm_draftwatermark_string_tl}}%
+  \SetWatermarkText{\text_uppercase:n {\c__nwejm_draftwatermark_string_tl}}%
 }{%
 }
 \sys_if_engine_pdftex:T
