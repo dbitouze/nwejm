@@ -3408,6 +3408,11 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
 %    \end{macrocode}
+% We ensure the sections' counter will be printed as arabic numerals (in case
+% ×\appendix× has been used in a previous article):
+%    \begin{macrocode}
+  \gdef\thesection{\@arabic\c@section}
+%    \end{macrocode}
 % We reset all acronyms entries.
 %    \begin{macrocode}
   \glsresetall
