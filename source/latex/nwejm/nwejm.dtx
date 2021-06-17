@@ -615,16 +615,31 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \sys_if_engine_pdftex:TF
   {
-    \RequirePackage[utf8]{inputenc}
-  }{
-    \RequirePackage{fontspec}
-    \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
-  }
 %    \end{macrocode}
 %
 % \item Standard package for selecting font encodings:
 %    \begin{macrocode}
 \RequirePackage[T1]{fontenc}
+%    \end{macrocode}
+%
+% \item Load of main font to be used:
+%    \begin{macrocode}
+\RequirePackage[easyscsl,noDcommand]{kpfonts}
+}{
+%    \end{macrocode}
+%
+% \item Advanced font selection in \hologo{XeLaTeX} and \hologo{LuaLaTeX}:
+%    \begin{macrocode}
+    \RequirePackage{fontspec}
+%    \end{macrocode}
+%
+% \item OTF version of the Kp-fonts for both roman and sans-serif font, but
+% LatinModern for the monospaced one.
+%    \begin{macrocode}
+\setmainfont{KpRoman}
+\setsansfont{KpSans}
+\setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
+}
 %    \end{macrocode}
 %
 % \item Formatting both header and footers (pagestyle), and sections headers:
@@ -704,9 +719,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 % \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
-%   and useful tools for mathematical typesetting\footnote{The \Pkg{mathtools}
-%   loads \pkg{amsmath}, hence it's not necessary to load the
-%   latter. It has to be loaded before \pkg{datatool} and \pkg{kpfonts}.}:
+%   and useful tools for mathematical typesetting:
 %    \begin{macrocode}
 \RequirePackage{mathtools}
 %    \end{macrocode}
@@ -724,12 +737,6 @@ Running "make install" installs the files in the local TeX tree.
 % \item Vector arrows:
 %    \begin{macrocode}
 \RequirePackage{esvect}
-%    \end{macrocode}
-%
-% Load of main font to be used:
-%    \begin{macrocode}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
-% %<class-article>\RequirePackage[noDcommand]{kpfonts}
 %    \end{macrocode}
 %
 % \item Flexible and easy interface to page dimensions:
