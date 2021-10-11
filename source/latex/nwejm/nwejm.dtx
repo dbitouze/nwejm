@@ -442,10 +442,8 @@ Running "make install" installs the files in the local TeX tree.
   \bool_gset_true:N \g_@@_language_specified_bool%
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
-  \AtBeginDocument{
-    \LoadDictionaryFor{#1}{nwejm}
-  }
   \AtEndPreamble{%
+    \LoadDictionaryFor{#1}{nwejm}
     \FCloadlang{#1}
   }
   \AfterEndPreamble{%
