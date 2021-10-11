@@ -373,8 +373,8 @@ Running "make install" installs the files in the local TeX tree.
   can~be~used~only~in~document~body~and~not~in~preamble!}%
 \msg_new:nnn{nwejmart}{Article~setup~not~consistent}{The~ article~ setup~
   concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~ use.~ Please~
-  use~ \articlesetup~ command~ just~ once,~ just~ after~ the~ beginning~ of~
-  the~ document.}%
+  use~ `\string\articlesetup'~ command~ just~ once,~ just~ after~ the~
+  beginning~ of~ the~ document.}%
 \msg_new:nnn{
 %<class-article> nwejmart
 %<class>         nwejm
@@ -6741,7 +6741,6 @@ $clean_ext = "synctex.gz* run.xml tex.bak bbl bcf fdb_latexmk run tdo listing st
 #include:booktabs
 #include:mathtools
 #include:ntheorem
-#include:rsfso
 #include:esvect
 #include:kpfonts
 #include:translations
@@ -6952,8 +6951,7 @@ dutch
 % \Finale
 
 %%% Local Variables:
-%%% mode: tex
-%%% eval: (doctex-mode)
+%%% mode: doctex
 %%% ispell-local-dictionary: "english"
 %%% TeX-command-default: "TeX"
 %%% TeX-master: t
