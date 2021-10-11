@@ -64,8 +64,8 @@
   can~be~used~only~in~document~body~and~not~in~preamble!}%
 \msg_new:nnn{nwejmart}{Article~setup~not~consistent}{The~ article~ setup~
   concerning~ the~ option~ `#1'~ has~ changed~ after~ its~ 1st~ use.~ Please~
-  use~ \articlesetup~ command~ just~ once,~ just~ after~ the~ beginning~ of~
-  the~ document.}%
+  use~ `\string\articlesetup'~ command~ just~ once,~ just~ after~ the~
+  beginning~ of~ the~ document.}%
 \msg_new:nnn{
          nwejm
 }{`xy'~package~not~allowed!}{The~ `xy'~ package~ is~ not~ allowed~ with~ the~
@@ -128,12 +128,14 @@
 \RequirePackage[l2tabu,orthodox]{nag}
 \sys_if_engine_pdftex:TF
   {
-    \RequirePackage[utf8]{inputenc}
-  }{
-    \RequirePackage{fontspec}
-    \DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
-  }
 \RequirePackage[T1]{fontenc}
+\RequirePackage[easyscsl,noDcommand]{kpfonts}
+}{
+    \RequirePackage{fontspec}
+\setmainfont{KpRoman}
+\setsansfont{KpSans}
+\setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
+}
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
 \RequirePackage{adjustbox}%
@@ -151,9 +153,7 @@
 \RequirePackage{booktabs}
 \RequirePackage{mathtools}
 \RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
-\RequirePackage{rsfso}
 \RequirePackage{esvect}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
 \RequirePackage{geometry}
 \RequirePackage{translations}%
 \RequirePackage{currfile}
@@ -1248,10 +1248,10 @@
     rectangle (current~page.south~east);
     % laboratory logo
     \node[anchor=south~east] at ([xshift=-10mm]current~page~text~area.south~east)
-    {\includegraphics[height=.66\c__nwejm_logos_rectangle_height_dim]{logo-painleve}} ;
+    {\includegraphics[height=.5\c__nwejm_logos_rectangle_height_dim]{logo-painleve}} ;
     % university logo
     \node[anchor=south~west] at (current~page~text~area.south~west)
-    {\includegraphics[height=.66\c__nwejm_logos_rectangle_height_dim]{logo-ul1-ufr-math}} ;
+    {\includegraphics[height=.5\c__nwejm_logos_rectangle_height_dim]{ul-fst-math}} ;
     % crop marks
     \draw [white]
     ([xshift=2.5mm]current~page~text~area.north~east) --
@@ -1572,6 +1572,7 @@
   \str_case:nn {#1} {
     {english} {
       \selectlanguage{english}
+      % \shorthandoff{"}%
       \renewcommand*{\glossaryname}{Glossary}%
       \renewcommand*{\acronymname}{Acronyms}%
       \renewcommand*{\entryname}{Notation}%
@@ -1583,6 +1584,7 @@
     }
     {german} {
       \selectlanguage{ngerman}
+      % \shorthandon{"}%
       \renewcommand*{\glossaryname}{Glossar}%
       \renewcommand*{\acronymname}{Akronyme}%
       \renewcommand*{\entryname}{Bezeichnung}%
@@ -1594,6 +1596,7 @@
     }
     {ngerman} {
       \selectlanguage{ngerman}
+      % \shorthandon{"}%
       \renewcommand*{\glossaryname}{Glossar}%
       \renewcommand*{\acronymname}{Akronyme}%
       \renewcommand*{\entryname}{Bezeichnung}%
@@ -1605,6 +1608,7 @@
     }
     {french} {
       \selectlanguage{french}
+      % \shorthandoff{"}%
       \FrenchFootnotes
       \g__nwejm_french_crefname_tl
       \renewcommand*{\glossaryname}{Glossaire}%
@@ -1621,6 +1625,7 @@
     }
     {dutch} {
       \selectlanguage{dutch}
+      % \shorthandon{"}%
       \renewcommand*{\glossaryname}{Woordenlijst}%
       \renewcommand*{\acronymname}{Acroniemen}%
       \renewcommand*{\entryname}{Benaming}%
@@ -1648,6 +1653,7 @@
       \setcounter{##1}{\c_zero_int}
     }
   }
+  \gdef\thesection{\@arabic\c@section}
   \glsresetall
   \selectlanguage{english}
 }
@@ -3372,7 +3378,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2020 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2021 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
