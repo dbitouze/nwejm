@@ -81,10 +81,8 @@
   \bool_gset_true:N \g__nwejm_language_specified_bool%
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
-  \AtBeginDocument{
-    \LoadDictionaryFor{#1}{nwejm}
-  }
   \AtEndPreamble{%
+    \LoadDictionaryFor{#1}{nwejm}
     \FCloadlang{#1}
   }
   \AfterEndPreamble{%
@@ -1657,4 +1655,912 @@
 \AfterEndPreamble{
   \ifcurrentbaselanguage{french}{\g__nwejm_french_crefname_tl}{}
 }
+\clist_set:Nn \l_tmpa_clist {%
+  hypothesis,
+  assertion,%
+  condition%
+}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \newlist{#1}{enumerate}{1}
+  \setlist[#1]{%
+    label=
+    \normalfont
+    (
+    \textsf{
+      \tl_head:f {
+        \text_uppercase:n {
+          \GetTranslation{#1}
+        }
+      }
+    }
+    $\c_math_subscript_token\mathsf{\arabic*}$),
+    ref=(
+    \textsf{
+      \tl_head:f {
+        \text_uppercase:n {
+          \GetTranslation{#1}
+        }
+      }
+    }
+    $_\mathsf{\arabic*}$
+    )
+  }
+  \crefname{#1i}{
+    \GetTranslation{#1}
+  }{%
+    \GetTranslation{plural-#1}
+  }
+  \Crefname{#1i}{
+    \text_titlecase:n{
+      \GetTranslation{#1}
+    }
+  }{%
+    \text_titlecase:n{
+      \GetTranslation{plural-#1}
+    }
+  }
+}
+\cs_new_protected:Npn \__nwejm_tl_pop_right:n #1
+ {
+  \tl_reverse:f
+   {
+    \tl_tail:f
+     {
+      \tl_reverse:n { #1 }
+     }
+   }
+ }
+\cs_generate_variant:Nn \tl_reverse:n { f }
+\cs_generate_variant:Nn \__nwejm_tl_pop_right:n { v }
+
+\cs_new_protected:Npn \__nwejm_start_newenumeration:nn #1 #2
+{
+  \keys_define:nn { nwejm/newenumeration }
+  {
+    singular .tl_set:c = {l__nwejm_newenumeration_#2_singular_tl},
+    plural   .tl_set:c =   {l__nwejm_newenumeration_#2_plural_tl},
+    label    .tl_set:c =   {l__nwejm_newenumeration_#2_label_tl},
+  }
+  \IfNoValueF {#1}
+  {
+    \keys_set:nn { nwejm/newenumeration } { #1 }
+  }
+  \tl_if_empty:cT {l__nwejm_newenumeration_#2_plural_tl} {
+    \tl_set:cn {l__nwejm_newenumeration_#2_plural_tl} {#2}
+  }
+  \tl_if_empty:cT {l__nwejm_newenumeration_#2_singular_tl} {
+    \tl_set:cV {l__nwejm_newenumeration_#2_singular_tl} {\__nwejm_tl_pop_right:v {l__nwejm_newenumeration_#2_plural_tl}}
+  }
+  \tl_if_empty:cT {l__nwejm_newenumeration_#2_label_tl} {
+    \tl_set:cV {l__nwejm_newenumeration_#2_label_tl} {
+      \tl_head:f {
+        \text_uppercase:n {
+          \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
+        }
+      }
+    }
+  }
+}
+\cs_new_protected:Npn \__nwejm_end_newenumeration:n #1
+{
+  \tl_set:cn {l__nwejm_newenumeration_#1_reference_tl} {
+    \textsf{
+      \tl_use:c {l__nwejm_newenumeration_#1_label_tl}
+    }
+  }
+  \setlist[#1]{%
+    label=
+    \normalfont
+    (
+    \tl_use:c {l__nwejm_newenumeration_#1_reference_tl}
+    $\c_math_subscript_token{\mathsf{\arabic*}}$
+    ),
+    ref=
+    (
+    \tl_use:c {l__nwejm_newenumeration_#1_reference_tl}
+    $_\mathsf{\arabic*}$
+    )
+  }
+  \crefname{#1i}{
+    \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
+  }{%
+    \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
+  }
+  \Crefname{#1i}{
+    \text_titlecase:n{
+      \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
+    }
+  }{%
+    \text_titlecase:n{
+      \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
+    }
+  }
+}
+\NewDocumentCommand{\newenumeration}{O{}m}
+{
+  \__nwejm_start_newenumeration:nn {#1}{#2}
+  \newlist{#2}{enumerate}{1}
+  \__nwejm_end_newenumeration:n {#2}
+}
+\NewDocumentCommand{\renewenumeration}{O{}m}
+{
+  \__nwejm_start_newenumeration:nn {#1}{#2}
+  \renewlist{#2}{enumerate}{1}
+  \__nwejm_end_newenumeration:n {#2}
+}
+\NewDocumentEnvironment{hypotheses}{}
+{
+  \begin{hypothesis}
+  }{
+  \end{hypothesis}
+}
+\NewDocumentEnvironment{assertions}{}
+{
+  \begin{assertion}
+  }{
+  \end{assertion}
+}
+\NewDocumentEnvironment{conditions}{}
+{
+  \begin{condition}
+  }{
+  \end{condition}
+}
+\RenewDocumentCommand{\DeclareMathOperator}{smm}
+{
+  \NewDocumentCommand{#2}{}
+  {
+    \IfBooleanTF {#1}
+    {\operatorname*{#3}}
+    {\operatorname{#3}}
+    \peek_after:Nw \__nwejm_opx_check:
+  }
+}
+\NewDocumentCommand{\BinaryOperators}{m}
+{
+  \clist_gput_right:Nn \g__nwejm_opx_binary_clist { #1 }
+}
+\clist_new:N \g__nwejm_opx_binary_clist
+\cs_new_protected:Nn \__nwejm_opx_check:
+{
+  \clist_map_inline:Nn \g__nwejm_opx_binary_clist
+  {
+    \token_if_eq_meaning:NNT \l_peek_token ##1 { \clist_map_break:n { {\!} } }
+  }
+}
+\BinaryOperators{%
+  \amalg,%
+  \ast,%
+  \bigcirc,%
+  \bigtriangledown,%
+  \bigtriangleup,%
+  \bullet,%
+  \cap,%
+  \cdot,%
+  \circ,%
+  \cup,%
+  \dagger,%
+  \ddagger,%
+  \diamond,%
+  \div,%
+  \lhd,%
+  \mp,%
+  \odot,%
+  \ominus,%
+  \oplus,%
+  \oslash,%
+  \otimes,%
+  \pm,%
+  \rhd,%
+  \setminus,%
+  \sqcap,%
+  \sqcup,%
+  \star,%
+  \times,%
+  \triangleleft,%
+  \triangleright,%
+  \unlhd,%
+  \unrhd,%
+  \uplus,%
+  \vee,%
+  \wedge,%
+  \wr,%
+  \barwedge,%
+  \boxdot,%
+  \boxminus,%
+  \boxplus,%
+  \boxtimes,%
+  \Cap,%
+  \centerdot,%
+  \circledast,%
+  \circledcirc,%
+  \circleddash,%
+  \Cup,%
+  \curlyvee,%
+  \curlywedge,%
+  \divideontimes,%
+  \dotplus,%
+  \doublebarwedge,%
+  \intercal,%
+  \leftthreetimes,%
+  \ltimes,%
+  \rightthreetimes,%
+  \rtimes,%
+  \smallsetminus,%
+  \veebar%
+}
+\DeclareMathOperator{\cotan}{cotan}
+\DeclareMathOperator{\Arccos}{Arccos}
+\DeclareMathOperator{\Arcsin}{Arcsin}
+\DeclareMathOperator{\Arctan}{Arctan}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\Argch}{Argch}
+\DeclareMathOperator{\Argsh}{Argsh}
+\DeclareMathOperator{\Argth}{Argth}
+\cs_set_eq:NN \__nwejm_orig_arccos \arccos
+\cs_set_eq:NN \__nwejm_orig_arcsin \arcsin
+\cs_set_eq:NN \__nwejm_orig_arctan \arctan
+\cs_set_eq:NN \__nwejm_orig_arccosh \arccosh
+\cs_set_eq:NN \__nwejm_orig_arcsinh \arcsinh
+\cs_set_eq:NN \__nwejm_orig_arctanh \arctanh
+\RenewDocumentCommand \arccos {} {
+  \ifcurrentbaselanguage{french}{\Arccos}{\__nwejm_orig_arccos}%
+}
+\RenewDocumentCommand \arcsin {} {
+  \ifcurrentbaselanguage {french}{\Arcsin}{\__nwejm_orig_arcsin}%
+}
+\RenewDocumentCommand \arctan {} {
+  \ifcurrentbaselanguage {french}{\Arctan}{\__nwejm_orig_arctan}%
+}
+\RenewDocumentCommand \arccosh {} {
+  \ifcurrentbaselanguage{french}{\Argch}{\__nwejm_orig_arccosh}%
+}
+\RenewDocumentCommand \arcsinh {} {
+  \ifcurrentbaselanguage {french}{\Argsh}{\__nwejm_orig_arcsinh}%
+}
+\RenewDocumentCommand \arctanh {} {
+  \ifcurrentbaselanguage {french}{\Argth}{\__nwejm_orig_arctanh}%
+}
+\cs_set_eq:NN \__nwejm_orig_cot \cot
+\RenewDocumentCommand \cot {} {
+  \ifcurrentbaselanguage {french}{\cotan}{\__nwejm_orig_cot}%
+}
+\DeclareMathOperator{\ch}{ch}
+\DeclareMathOperator{\sh}{sh}
+\cs_set_eq:NN \__nwejm_orig_cosh \cosh
+\cs_set_eq:NN \__nwejm_orig_sinh \sinh
+\cs_set_eq:NN \__nwejm_orig_tanh \tanh
+\RenewDocumentCommand \cosh {} {
+  \ifcurrentbaselanguage {french}{\ch}{\__nwejm_orig_cosh}%
+}
+\RenewDocumentCommand \sinh {} {
+  \ifcurrentbaselanguage {french}{\sh}{\__nwejm_orig_sinh}%
+}
+\RenewDocumentCommand \tanh {} {
+  \ifcurrentbaselanguage {french}{\operatorname{th}}{\__nwejm_orig_tanh}%
+}
+\DeclareMathOperator{\Id}{Id}
+\cs_set_eq:NN \__nwejm_orig_log \log
+\cs_set_eq:NN \__nwejm_orig_lg \lg
+\RenewDocumentCommand \log { s } {
+    \IfBooleanTF {#1}
+  {
+    \__nwejm_orig_log
+  }
+  {
+    \ln
+  }
+}
+\RenewDocumentCommand \lg { s } {
+    \IfBooleanTF {#1}
+  {
+    \__nwejm_orig_lg
+  }
+  {
+    \ln
+  }
+}
+\NewDocumentCommand \E { O{} } {
+  \ensuremath{
+    \mathsf{e}
+    \tl_if_empty:nF {#1} {^{#1}}
+  }
+}
+\NewDocumentCommand \I { } {
+  \ensuremath{\mathsf{i}}
+}
+\bool_new:N \g__nwejm_grad_used_bool
+\NewDocumentCommand \grad {} {%
+  \bool_if:NTF \g__nwejm_grad_used_bool {
+    \bool_if:nT { (\g__nwejm_gradient_nabla_bool && !\g__nwejm_gradient_nabla_control_bool)
+      || ( !\g__nwejm_gradient_nabla_bool && \g__nwejm_gradient_nabla_control_bool) } {
+      \msg_error:nnn{nwejmart}{Article~setup~not~consistent}{gradient}
+    }
+  }{
+    \bool_gset_eq:NN \g__nwejm_gradient_nabla_control_bool \g__nwejm_gradient_nabla_bool
+    \bool_gset_true:N \g__nwejm_grad_used_bool
+  }
+  \bool_if:NTF \g__nwejm_gradient_nabla_bool {
+    \operatorname{\nabla}
+  }{
+    \operatorname{grad}
+  }%
+  \peek_after:Nw \__nwejm_opx_check:
+}
+\DeclareMathOperator{\Div}{div}
+\NewDocumentCommand \curl {} {%
+  \ifcurrentbaselanguage {english}{
+    \operatorname{curl}
+  }{
+    \operatorname{rot}
+  }%
+  \peek_after:Nw \__nwejm_opx_check:
+}
+\NewDocumentCommand \supp {} {%
+  \ifcurrentbaselanguage {ngerman}{
+    \operatorname{Tr}
+  }{
+    \operatorname{supp}
+  }%
+  \peek_after:Nw \__nwejm_opx_check:
+}
+\NewDocumentCommand \dif {}{\mathop{}\!\mathrm{d}}
+\cs_set_eq:NN \__nwejm_orig_leq \leq
+\cs_set_eq:NN \__nwejm_orig_geq \geq
+\RenewDocumentCommand \le {} {%
+  \ifcurrentbaselanguage {french}{\leqslant}{\__nwejm_orig_leq}%
+}
+\RenewDocumentCommand \leq {} {%
+  \ifcurrentbaselanguage {french}{\leqslant}{\__nwejm_orig_leq}%
+}
+\RenewDocumentCommand \ge {} {%
+  \ifcurrentbaselanguage {french}{\geqslant}{\__nwejm_orig_geq}%
+}
+\RenewDocumentCommand \geq {} {%
+  \ifcurrentbaselanguage {french}{\geqslant}{\__nwejm_orig_geq}%
+}
+\NewDocumentCommand \bbN {} {\mathbb{N}}
+\NewDocumentCommand \bbZ {} {\mathbb{Z}}
+\NewDocumentCommand \bbD {} {\mathbb{D}}
+\NewDocumentCommand \bbQ {} {\mathbb{Q}}
+\NewDocumentCommand \bbR {} {\mathbb{R}}
+\NewDocumentCommand \bbC {} {\mathbb{C}}
+\NewDocumentCommand \bbK {} {\mathbb{K}}
+\cs_set_eq:NN \emptyset \varnothing
+\tl_new:N \l__nwejm_given_tl
+\tl_set:Nn \l__nwejm_given_tl {
+  \nonscript\:\delimsize\vert
+  \allowbreak
+  \nonscript\:
+  \mathopen{}
+}%
+\DeclarePairedDelimiterX\__nwejm_set[1]\{\}{%
+  #1
+}
+\NewDocumentCommand \set { m O{} } {
+  \tl_if_empty:nTF {#2} {%
+    \__nwejm_set*{#1}
+  }{
+    \__nwejm_set*{#1\l__nwejm_given_tl #2}
+  }
+}
+\DeclareDocumentCommand{\NewPairedDelimiter}{mm}
+ {
+  \__nwejm_delimiter_clear_keys: % reset to the default
+  \keys_set:nn { nwejm/delimiters } { #2 }
+  \use:x % we want to expand the values of the token variables set with the keys
+   {
+    \exp_not:n {\NewDocumentCommand{#1}{sO{}m} }
+     {
+      \exp_not:n { \IfBooleanTF{##1} }
+       {
+        \exp_not:N \__nwejm_paired_delimiter:nnnnn
+         { \exp_not:n { 0 } }
+         { \exp_not:V \l__nwejm_delimiter_left_tl }
+         { \exp_not:V \l__nwejm_delimiter_right_tl }
+         { \exp_not:n { ##3 } }
+         { \exp_not:V \l__nwejm_delimiter_subscript_tl }
+       }
+       {
+         \exp_not:N \__nwejm_paired_delimiter:nnnnn
+         { \exp_not:n { ##2 } }
+         { \exp_not:V \l__nwejm_delimiter_left_tl }
+         { \exp_not:V \l__nwejm_delimiter_right_tl }
+         { \exp_not:n { ##3 } }
+         { \exp_not:V \l__nwejm_delimiter_subscript_tl }
+       }
+     }
+   }
+ }
+\keys_define:nn { nwejm/delimiters }
+ {
+  left      .tl_set:N = \l__nwejm_delimiter_left_tl,
+  right     .tl_set:N = \l__nwejm_delimiter_right_tl,
+  subscript .tl_set:N = \l__nwejm_delimiter_subscript_tl,
+ }
+\cs_new_protected:Npn \__nwejm_delimiter_clear_keys:
+ {
+  \keys_set:nn { nwejm/delimiters } { left=.,right=.,subscript={} }
+ }
+\cs_new_protected:Npn \__nwejm_paired_delimiter_expand:nnnn #1 #2 #3 #4
+ {% Fix the spacing issue with \left and \right (D. Arsenau, P. Stephani and H. Oberdiek)
+  \mathopen{}
+  \mathclose\c_group_begin_token
+   \left#1
+   #3
+   \group_insert_after:N \c_group_end_token
+   \right#2
+   \tl_if_empty:nF {#4} { \c_math_subscript_token {#4} }
+ }
+\cs_new_protected:Npn \__nwejm_paired_delimiter_fixed:nnnnn #1 #2 #3 #4 #5
+ {
+  \mathopen{#1#2}#4\mathclose{#1#3}
+  \tl_if_empty:nF {#5} { \c_math_subscript_token {#5} }
+ }
+\cs_new_protected:Npn \__nwejm_paired_delimiter:nnnnn #1 #2 #3 #4 #5
+ {
+   \str_case:nnF {#1}
+   {
+     { } { \__nwejm_paired_delimiter_expand:nnnn {#2}{#3}{#4}{#5} }
+     {0} { \__nwejm_paired_delimiter_fixed:nnnnn {}{#2}{#3}{#4}{#5} }
+     {1} { \__nwejm_paired_delimiter_fixed:nnnnn { \big }{#2}{#3}{#4}{#5} }
+     {\big} { \__nwejm_paired_delimiter_fixed:nnnnn { \big }{#2}{#3}{#4}{#5} }
+     {2} { \__nwejm_paired_delimiter_fixed:nnnnn { \Big }{#2}{#3}{#4}{#5} }
+     {\Big} { \__nwejm_paired_delimiter_fixed:nnnnn { \Big }{#2}{#3}{#4}{#5} }
+     {3} { \__nwejm_paired_delimiter_fixed:nnnnn { \bigg }{#2}{#3}{#4}{#5} }
+     {\bigg} { \__nwejm_paired_delimiter_fixed:nnnnn { \bigg }{#2}{#3}{#4}{#5} }
+     {4} { \__nwejm_paired_delimiter_fixed:nnnnn { \Bigg }{#2}{#3}{#4}{#5} }
+     {\Bigg} { \__nwejm_paired_delimiter_fixed:nnnnn { \Bigg }{#2}{#3}{#4}{#5} }
+   }
+   {
+     \msg_warning:nnn{nwejmart}{Wrong~paired~delimiter's~size~parameter}{#1}
+     \__nwejm_paired_delimiter_expand:nnnn {#2}{#3}{#4}
+   }
+ }
+\NewPairedDelimiter{\norm}{
+  left=\lVert,
+  right=\rVert
+}
+\NewPairedDelimiter{\lnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=1
+}
+\NewPairedDelimiter{\llnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=2
+}
+\NewPairedDelimiter{\lpnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=p
+}
+\NewPairedDelimiter{\supnorm}{
+  left=\lVert,
+  right=\rVert,
+  subscript=\infty
+}
+\NewPairedDelimiter{\abs}{
+  left=\lvert,
+  right=\rvert
+}
+\NewPairedDelimiter{\prt}{
+  left=(,
+  right=)
+}
+\NewPairedDelimiter{\brk}{
+  left=[,
+  right=]
+}
+\NewPairedDelimiter{\brc}{
+  left=\{,
+  right=\}
+}
+\NewPairedDelimiter{\lrangle}{
+  left=\langle,
+  right=\rangle
+}
+\NewPairedDelimiter{\leqgeq}{
+  left=<,
+  right=>
+}
+\AtEndPreamble{\allowdisplaybreaks}
+\int_new:N \g_multiline_eq_int
+\int_new:N \g_line_of_multiline_eq_int
+\tl_new:N \g_line_of_multiline_eq_label_tl
+\tl_new:N \g_next_line_of_multiline_eq_label_tl
+\clist_set:Nn \l_tmpa_clist {align,multline}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \cs_set_eq:cc {db_#1_start:} {#1}
+  \cs_set_eq:cc {db_#1_end:} {end#1}
+  \cs_set_eq:cc {db_#1_star_start:} {#1*}
+  \NewDocumentEnvironment{amsmath#1}{}
+  {\cs:w db_#1_start:\cs_end:}
+  {\cs:w db_#1_end:\cs_end:}
+  \NewDocumentEnvironment{amsmath#1*}{}
+  {\cs:w db_#1_star_start:\cs_end:}
+  {\cs:w db_#1_end:\cs_end:}
+  \RenewEnviron{#1}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {#1} \BODY
+  }
+  \RenewEnviron{#1*}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {#1*} \BODY
+  }
+}
+\bool_new:N \g__nwejm_within_patched_amsmath_env_bool
+\clist_set:Nn \l_tmpa_clist {flalign,alignat}
+\clist_map_inline:Nn \l_tmpa_clist {
+  \RenewEnviron{#1}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+  }
+  \RenewEnviron{#1*}
+  {
+    \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
+  }
+}
+\seq_new:N \l_db_multiline_eq_seq
+\cs_new_protected:Nn \db_multiline_eq:nn
+{
+  \int_gincr:N \g_multiline_eq_int
+  \int_zero:N \g_line_of_multiline_eq_int
+  \int_gincr:N \g_line_of_multiline_eq_int
+  \tl_gset:Nx \g_tmpa_tl {
+    multilineeq
+    -
+    \int_use:N \g_multiline_eq_int
+    -
+    line
+    -
+  }
+  \tl_gset:Nx \g_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_use:N \g_line_of_multiline_eq_int
+  }
+  \tl_gset:Nx \g_next_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_eval:n {\g_line_of_multiline_eq_int + 1}
+  }
+  \ltx@label{\g_line_of_multiline_eq_label_tl}
+  %
+  \seq_set_split:Nnn \l_db_multiline_eq_seq { \\ } { #2 }
+  \tl_if_in:nnTF {#1} {multline} {
+    \begin{amsmath#1}
+      \bool_gset_true:N \g__nwejm_within_patched_amsmath_env_bool
+      \seq_use:Nnnn \l_db_multiline_eq_seq
+      { \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@space }{ \multiline@double@backslash@add@double@space }
+      \hfill
+    \end{amsmath#1}
+    \bool_gset_false:N \g__nwejm_within_patched_amsmath_env_bool
+  }{
+    \begin{amsmath#1}
+      \bool_gset_true:N \g__nwejm_within_patched_amsmath_env_bool
+      \seq_use:Nn \l_db_multiline_eq_seq { \multiline@double@backslash }
+    \end{amsmath#1}
+    \bool_gset_false:N \g__nwejm_within_patched_amsmath_env_bool
+  }
+ }
+\cs_generate_variant:Nn \db_multiline_eq:nn { nV }
+\cs_new_protected:Nn \db_multiline_double_backslash:nn
+{
+  \db_add_marginal_note:
+  \IfValueTF{#2}{%
+    \IfBooleanTF{#1}{\\*[#2]}{\\[#2]}%
+  }{%
+    \IfBooleanTF{#1}{\\*}{\\}%
+  }%
+  %
+  \db_add_multiline_eq_label:
+}
+\NewDocumentCommand{\multiline@double@backslash}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+}
+\NewDocumentCommand{\multiline@double@backslash@add@space}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+  \hspace{\mathindent}
+}
+\NewDocumentCommand{\multiline@double@backslash@add@double@space}{so}{%
+  \db_multiline_double_backslash:nn {#1}{#2}
+  \hspace{2\mathindent}
+}
+\cs_new_protected:Nn \db_add_marginal_note:
+{
+  \int_compare:nNnT {
+    \getpagerefnumber{\g_next_line_of_multiline_eq_label_tl}%
+  }>{
+    \getpagerefnumber{\g_line_of_multiline_eq_label_tl}%
+  }{
+    \reversemarginpar
+    \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
+    \normalmarginpar
+    \marginnote[\g__nwejm_equation_continues_next_page_tl]{}
+  }
+}
+\tl_gset:Nn \g__nwejm_equation_continues_next_page_tl {
+  \tiny
+  \sffamily
+  \slshape
+  (
+  \GetTranslation{equation-continues-next-page}
+  )
+}
+\cs_new_protected:Nn \db_add_multiline_eq_label:
+{
+   \ifmeasuring@\else
+  \int_gincr:N \g_line_of_multiline_eq_int
+  \tl_gset:Nx \g_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_use:N \g_line_of_multiline_eq_int
+  }
+  \tl_gset:Nx \g_next_line_of_multiline_eq_label_tl {
+    \g_tmpa_tl
+    \int_eval:n {\g_line_of_multiline_eq_int + 1}
+  }
+  \ltx@label{\g_line_of_multiline_eq_label_tl}%
+  \fi
+}
+\def\MT_intertext: {%
+  \def\intertext##1{%
+    \db_add_marginal_note:
+    \ifvmode\else\\\@empty\fi
+    \noalign{%
+      \penalty\postdisplaypenalty\vskip\belowdisplayskip
+      \vskip-\lineskiplimit      % CCS
+      \vskip\normallineskiplimit % CCS
+      \vskip\l_MT_above_intertext_sep
+       \vbox{\normalbaselines
+         \ifdim
+           \ifdim\@totalleftmargin=\z@
+             \linewidth
+           \else
+             -\maxdimen
+           \fi
+         =\columnwidth
+        \else \parshape\@ne \@totalleftmargin \linewidth
+        \fi
+        \noindent\ignorespaces##1\par}%
+      \penalty\predisplaypenalty\vskip\abovedisplayskip%
+      \vskip-\lineskiplimit      % CCS
+      \vskip\normallineskiplimit % CCS
+      \vskip\l_MT_above_intertext_sep
+   }%
+   \db_add_multiline_eq_label:
+ }%
+ \MH_let:NwN \shortintertext \shortintertext@
+}
+\pretocmd{\MT_orig_shortintertext:n}{%
+  \bool_if:NT \g__nwejm_within_patched_amsmath_env_bool {
+    \db_add_marginal_note:
+  }
+}{}{}
+\apptocmd{\MT_orig_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
+\pretocmd{\MT_shortintertext:n}{%
+  \bool_if:NT \g__nwejm_within_patched_amsmath_env_bool {
+    \db_add_marginal_note:
+  }
+}{}{}
+\apptocmd{\MT_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
+\setkeys{\MT_options_name:}{
+  original-intertext=false,
+  original-shortintertext=false
+}
+\newcommand*{\nwejm@marginnote}{%
+  \@dblarg\NWEJM@mn@marginnote
+}
+\newcommand{\NWEJM@mn@marginnote}[2][]{%
+  \ifhmode
+    \@bsphack
+    \begingroup
+    \ifdim\@savsk>\z@\else
+      \def\:{\@xifnch}\expandafter\def\: { \futurelet\@let@token\@ifnch}%
+    \fi
+  \else
+    \begingroup
+  \fi
+  \@ifnextchar [{\NWEJM@mn__nwejmmarginnote[{#1}]{#2}}{\NWEJM@mn__nwejmmarginnote[{#1}]{#2}[\z@]}%
+}
+\newcommand{\NWEJM@mn__nwejmmarginnote}{}
+\long\def\NWEJM@mn__nwejmmarginnote[#1]#2[#3]{%
+  \endgroup
+  \ifhmode
+    \NWEJM@mn__nwejm@marginnote[{#1}]{#2}[{#3}]%
+    \@esphack
+  \else
+    \NWEJM@mn__nwejm@marginnote[{#1}]{#2}[{#3}]%
+  \fi
+}
+
+\long\def\NWEJM@mn__nwejm@marginnote[#1]#2[#3]{%
+  \begingroup
+    \ifmmode\mn@strut\let\@tempa\mn@vadjust\else
+      \if@inlabel\leavevmode\fi
+      \ifhmode\mn@strut\let\@tempa\mn@vadjust\else\let\@tempa\mn@vlap\fi
+    \fi
+    \@tempa{%
+      \vbox to\z@{%
+        \vss
+        \@mn@margintest
+        \if@reversemargin\if@tempswa
+            \@tempswafalse
+          \else
+            \@tempswatrue
+        \fi\fi
+          \rlap{%
+            \ifx\@mn@currxpos\relax
+              \kern\marginnoterightadjust
+              \if@mn@verbose
+                \PackageInfo{marginnote}{%
+                  xpos not known,\MessageBreak
+                  using \string\marginnoterightadjust}%
+              \fi
+            \else\ifx\@mn@currxpos\@empty
+                \kern\marginnoterightadjust
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos not known,\MessageBreak
+                    using \string\marginnoterightadjust}%
+                \fi
+              \else
+                \if@mn@verbose
+                  \PackageInfo{marginnote}{%
+                    xpos seems to be \@mn@currxpos,\MessageBreak
+                    \string\marginnoterightadjust
+                    \space ignored}%
+                \fi
+                \begingroup
+                  \setlength{\@tempdima}{\@mn@currxpos}%
+                  \kern-\@tempdima
+                  \if@twoside\ifodd\@mn@currpage\relax
+                      \kern\oddsidemargin
+                    \else
+                      \kern\evensidemargin
+                    \fi
+                  \else
+                    \kern\oddsidemargin
+                  \fi
+                  \kern 1in
+                \endgroup
+              \fi
+            \fi
+            \kern\marginnotetextwidth\kern\marginparsep
+            \vbox to\z@{\kern\marginnotevadjust\kern #3
+              \vbox to\z@{%
+                \hsize\marginparwidth
+                \linewidth\hsize
+                \kern-\parskip
+                \marginfont\raggedrightmarginnote\strut\hspace{\z@}%
+                \ignorespaces#2\endgraf
+                \vss}%
+              \vss}%
+          }%
+      }%
+    }%
+  \endgroup
+}
+\etocsettocdepth{subsection}
+\@ifpackageloaded{pgfplots}{%
+  \ifcurrentbaselanguage{french}{%
+    \pgfplotsset{%
+      /pgf/number~format/.cd,
+      use~comma,
+      1000~sep={\,},
+      min~exponent~for~1000~sep=4
+    }%
+  }{
+  }
+}
+\AtEndPreamble{%
+  \defbibheading{__nwejm_subbibliography}[\refname]{%
+    \section*{#1}
+  }%
+  \SetCiteCommand{\autocite}%
+}%
+\cs_set_eq:NN \__nwejm_printbibliography \printbibliography
+\RenewDocumentCommand \printbibliography { O{} } {
+  \FloatBarrier%
+  \tl_if_empty:NF {\g__nwejm_article_acknowledgments_tl}
+  {
+    \section*{\GetTranslation{Acknowledgments}}
+    \g__nwejm_article_acknowledgments_tl
+    \tl_gclear:N \g__nwejm_article_acknowledgments_tl
+  }
+  \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
+   \bool_if:NF \g__nwejm_nolocaltoc_bool {
+     \newpage
+     \setcounter{page}{\c_zero_int}
+     \pagenumbering{roman}%
+     \etocarticlestylenomarks
+    \etocsetlevel{chapter}{6}
+    \tableofcontents
+  }
+}
+\exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
+\ifkp@easyscsl
+\DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
+  \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
+    \fontshape\itdefault}\selectfont}
+\fi
+\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
+\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+\expandafter\def\expandafter\pdfstringdefPreHook
+\expandafter{%
+  \pdfstringdefPreHook
+  \renewcommand{\acrshort}[1]{\text_uppercase:n {\glsentryshort{##1}}}%
+}
+\@ifpackageloaded{draftwatermark}{%
+  \SetWatermarkColor{gray!10}%
+  \SetWatermarkFontSize{30mm}%
+  \SetWatermarkText{\text_uppercase:n {\c__nwejm_draftwatermark_string_tl}}%
+}{%
+}
+\sys_if_engine_pdftex:T
+  {
+    \renewcommand{\ttdefault}{lmtt}
+  }
+\tl_new:N \g__nwejm_font_designer_text_tl%
+\cs_new_protected:Nn \__nwejm_font_designer_text:n
+{
+  \tl_gset:Nn \g__nwejm_font_designer_text_tl { #1 }
+}
+\NewDocumentCommand \fontdesignertext {m}
+{
+  \__nwejm_font_designer_text:n {#1}%
+}
+\tl_new:N \g__nwejm_graphicdesign_text_tl%
+\cs_new_protected:Nn \__nwejm_graphicdesign_text:n
+{
+  \tl_gset:Nn \g__nwejm_graphicdesign_text_tl { #1 }
+}
+\NewDocumentCommand \graphicdesigntext {m}
+{
+  \__nwejm_graphicdesign_text:n {#1}%
+}
+\NewDocumentCommand \nwejm { s } {
+  \IfBooleanTF {#1}
+  {
+    \g__nwejm_nwejm_string_tl
+  }
+  {
+    \g__nwejm_nwejm_short_string_tl
+  }
+  \xspace
+}
+\AfterEndPreamble{%
+  \titleformat{\chapter}[block]
+  {\normalfont\centering}{}{0pt}{}
+  \titlespacing*{\chapter}{0pt}{0pt}{0pt}
+}
+\AtEndPreamble{%
+  \@ifpackageloaded{xy}{%
+    \msg_error:nn{
+ nwejmart
+    }{`xy'~package~not~allowed!}
+  }{
+  }
+}
 \ExplSyntaxOff
+%% 
+%% Copyright (C) 2015-2021 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% 
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License (LPPL), either
+%% version 1.3c of this license or (at your option) any later
+%% version.  The latest version of this license is in the file:
+%% 
+%% http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%% Denis Bitouze.
+%% 
+%% This work consists of the file nwejm.dtx and a Makefile.
+%% Running "make" generates the derived files README, nwejm.pdf and nwejm.cls.
+%% Running "make inst" installs the files in the user's TeX tree.
+%% Running "make install" installs the files in the local TeX tree.
+%% 
+%%
+%% End of file `nwejmart.cls'.
