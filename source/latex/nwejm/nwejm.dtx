@@ -3311,6 +3311,7 @@ Running "make install" installs the files in the local TeX tree.
   \str_case:nn {#1} {
     {english} {
       \selectlanguage{english}
+      % \shorthandoff{"}%
       \renewcommand*{\glossaryname}{Glossary}%
       \renewcommand*{\acronymname}{Acronyms}%
       \renewcommand*{\entryname}{Notation}%
@@ -3322,6 +3323,7 @@ Running "make install" installs the files in the local TeX tree.
     }
     {german} {
       \selectlanguage{ngerman}
+      % \shorthandon{"}%
       \renewcommand*{\glossaryname}{Glossar}%
       \renewcommand*{\acronymname}{Akronyme}%
       \renewcommand*{\entryname}{Bezeichnung}%
@@ -3333,6 +3335,7 @@ Running "make install" installs the files in the local TeX tree.
     }
     {ngerman} {
       \selectlanguage{ngerman}
+      % \shorthandon{"}%
       \renewcommand*{\glossaryname}{Glossar}%
       \renewcommand*{\acronymname}{Akronyme}%
       \renewcommand*{\entryname}{Bezeichnung}%
@@ -3344,6 +3347,7 @@ Running "make install" installs the files in the local TeX tree.
     }
     {french} {
       \selectlanguage{french}
+      % \shorthandoff{"}%
 %    \end{macrocode}
 %
 % Though we switch to \pkg{babel}'s ×french×, footnotes are not displayed as
@@ -3365,6 +3369,7 @@ Running "make install" installs the files in the local TeX tree.
     }
     {dutch} {
       \selectlanguage{dutch}
+      % \shorthandon{"}%
       \renewcommand*{\glossaryname}{Woordenlijst}%
       \renewcommand*{\acronymname}{Acroniemen}%
       \renewcommand*{\entryname}{Benaming}%
@@ -5883,6 +5888,16 @@ Running "make install" installs the files in the local TeX tree.
   }
 }
 %    \end{macrocode}
+%
+% % By default, we switch the shorthand character ×"× off used by the Dutch and
+% % German languages as they are source of many troubles, especially with the
+% % ×tikzcd× environments.
+% %    \begin{macrocode}
+% \AddToHook{begindocument/end}{%
+%   \shorthandoff{"}%
+%   \usetikzlibrary{babel}%
+% }
+% %    \end{macrocode}
 %
 % We now leave the \LaTeX3{} programming environment.
 %    \begin{macrocode}
