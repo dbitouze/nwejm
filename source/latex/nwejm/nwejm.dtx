@@ -442,11 +442,11 @@ Running "make install" installs the files in the local TeX tree.
   \bool_gset_true:N \g_@@_language_specified_bool%
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
-  \AtEndPreamble{%
+  \AddToHook{begindocument/before}{%
     \LoadDictionaryFor{#1}{nwejm}
     \FCloadlang{#1}
   }
-  \AfterEndPreamble{%
+  \AddToHook{begindocument/end}{%
     \selectlanguage{#1}
   }
 }
@@ -572,7 +572,7 @@ Running "make install" installs the files in the local TeX tree.
 % We load the dictionaries containing the translations needed for theorems and
 % the like.
 %    \begin{macrocode}
-\AtEndPreamble{
+\AddToHook{begindocument/before}{
   \LoadDictionaryFor{french}{nwejm}
   \LoadDictionaryFor{english}{nwejm}
   \LoadDictionaryFor{dutch}{nwejm}
@@ -909,7 +909,7 @@ Running "make install" installs the files in the local TeX tree.
 % \item Hypertext marks:
 %    \begin{macrocode}
 \RequirePackage[pdfencoding=unicode,final]{hyperref}%
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
 %    \end{macrocode}
@@ -1872,7 +1872,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
   \box_new:N \l_@@_journal_logo_box
   \box_new:N \l_@@_journal_name_box
-  \AfterEndPreamble{%
+  \AddToHook{begindocument/end}{%
     \hbox_set:Nn \l_@@_journal_name_box
     {
       \bfseries%
@@ -1937,7 +1937,7 @@ Running "make install" installs the files in the local TeX tree.
 % \end{itemize}
 %
 %    \begin{macrocode}
-\AtBeginDocument{%
+\AddToHook{begindocument}{%
   \graphicspath{{\c_@@_issue_images_path_string_tl//}{../\c_@@_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
@@ -1955,7 +1955,7 @@ Running "make install" installs the files in the local TeX tree.
 %   to be different.
 % \end{itemize}
 %    \begin{macrocode}
-%<class-article>      \AfterEndPreamble{\g_@@_mainmatter_switch_tl}
+%<class-article>      \AddToHook{begindocument/end}{\g_@@_mainmatter_switch_tl}
 %    \end{macrocode}
 %
 % \section{Options}
@@ -2872,7 +2872,7 @@ Running "make install" installs the files in the local TeX tree.
 %<class-article>
 %<class-article>\file_if_exist:nT { \c_@@_main_file_name_tl.aux }
 %<class-article>{\externaldocument[@@-]{\c_@@_main_file_name_tl}
-%<class-article>  \AfterEndPreamble{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-\currfilebase}}}
+%<class-article>  \AddToHook{begindocument/end}{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-\currfilebase}}}
 %<class-article>}
 %    \end{macrocode}
 %
@@ -3451,7 +3451,7 @@ Running "make install" installs the files in the local TeX tree.
 % This can be done only at the beginning of the document, in order to know the
 % characteristics of the current issue.
 %    \begin{macrocode}
-\AtBeginDocument{%
+\AddToHook{begindocument}{%
 %    \end{macrocode}
 %
 % We first create a token list containing the date of the current issue formated
@@ -4003,7 +4003,7 @@ Running "make install" installs the files in the local TeX tree.
 % instead of begin of the document in order some settings needed in preamble are
 % taken in account.
 %    \begin{macrocode}
-%<class>\AtEndPreamble{\file_input:n {\c_@@_configuration_file_string_tl}}
+%<class>\AddToHook{begindocument/before}{\file_input:n {\c_@@_configuration_file_string_tl}}
 %    \end{macrocode}
 %
 % \subsection{Miscellaneous}
@@ -4379,7 +4379,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \RenewDocumentCommand \newtheorem { O{} m }
 {
-  \AtBeginDocument{
+  \AddToHook{begindocument}{
     \tl_clear:N \l_@@_newtheorem_style_tl
     \tl_clear:N \l_@@_newtheorem_title_tl
     \tl_clear:N \l_@@_newtheorem_french_title_tl
@@ -4608,7 +4608,7 @@ Running "make install" installs the files in the local TeX tree.
     }
   }
 }
-\AfterEndPreamble{
+\AddToHook{begindocument/end}{
   \ifcurrentbaselanguage{french}{\g_@@_french_crefname_tl}{}
 }
 %    \end{macrocode}
@@ -5223,7 +5223,7 @@ Running "make install" installs the files in the local TeX tree.
 % breaks fall where they may, even in the middle of a multi-line equation. If
 % needed, the ×\\*× command can be used to prohibit a pagebreak after a given line.
 %    \begin{macrocode}
-\AtEndPreamble{\allowdisplaybreaks}
+\AddToHook{begindocument/before}{\allowdisplaybreaks}
 %    \end{macrocode}
 %
 % The  drawback of ×\allowdisplaybreaks× macro is it may happen we haven't
@@ -5652,7 +5652,7 @@ Running "make install" installs the files in the local TeX tree.
 % header and footer on the page (and the following ones until the next article)
 % where the bibliography appears).
 %    \begin{macrocode}
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \defbibheading{_@@_subbibliography}[\refname]{%
     \section*{#1}
   }%
@@ -5851,7 +5851,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\AfterEndPreamble{%
+\AddToHook{begindocument/end}{%
 %    \end{macrocode}
 %
 % If the cover production is asked, we automatically load some libraries, make
@@ -5881,18 +5881,18 @@ Running "make install" installs the files in the local TeX tree.
 % Because articles' title are displayed thanks to the ×\chapter× command, we
 % have to format its layout.
 %    \begin{macrocode}
-\AfterEndPreamble{%
+\AddToHook{begindocument/end}{%
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
 }
 %    \end{macrocode}
 %
-% \Pkg{xy} performs category code changes of ×@× ×\AtBeginDocument× and this
+% \Pkg{xy} performs category code changes of ×@× ×\AddToHook{begindocument}× and this
 % cause troubles (see \url{tex.stackexchange.com/q/303238/18401}). Hence, we
 % prohibit it.
 %    \begin{macrocode}
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \@ifpackageloaded{xy}{%
     \msg_error:nn{
 %<class-article> nwejmart
