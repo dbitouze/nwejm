@@ -5757,11 +5757,14 @@ Running "make install" installs the files in the local TeX tree.
 % is not robust in \pkg{kpfonts} code
 % (cf. \url{https://groups.google.com/d/msg/fr.comp.text.tex/hIi97ipK5qA/WJoPwvH-p1UJ}).
 %    \begin{macrocode}
-\ifkp@easyscsl
-\DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
-  \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
-    \fontshape\itdefault}\selectfont}
-\fi
+\sys_if_engine_pdftex:T
+{
+  \ifkp@easyscsl
+  \DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
+    \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
+      \fontshape\itdefault}\selectfont}
+  \fi
+}
 %    \end{macrocode}
 %
 % We replace the \pkg{kpfonts}' \enquote{mathfrak} by the one from
