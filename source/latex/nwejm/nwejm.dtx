@@ -572,7 +572,7 @@ Running "make install" installs the files in the local TeX tree.
 % We load the dictionaries containing the translations needed for theorems and
 % the like.
 %    \begin{macrocode}
-\AtBeginDocument{
+\AtEndPreamble{
   \LoadDictionaryFor{french}{nwejm}
   \LoadDictionaryFor{english}{nwejm}
   \LoadDictionaryFor{dutch}{nwejm}
@@ -3292,6 +3292,14 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class|class-article>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class>
+%    \end{macrocode}
+%
 % \subsection{Input variant}
 %
 % We create a variant of the "\input" macro to be use for the input of each
@@ -3301,6 +3309,7 @@ Running "make install" installs the files in the local TeX tree.
 % \url{https://tex.stackexchange.com/q/475788/18401}).
 %    \begin{macrocode}
 \NewDocumentCommand \inputarticle { O{english} m } {%
+  \int_gincr:N \g_@@_articles_int
   \newrefsection
   \renewcommand*{\glspluralsuffix}{s}
   \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
@@ -3423,6 +3432,14 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</class>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*class|class-article>
+%    \end{macrocode}
+%
 % \section{(Re)Definition of document commands that identify the article}
 %
 % The names of the authors of the different articles will appear at several
@@ -3486,7 +3503,6 @@ Running "make install" installs the files in the local TeX tree.
 % We increment the "\g_@@_articles_int" integer that counts the number of
 % articles in order to provide for each of them a unique bibliographic key.
 %    \begin{macrocode}
-  \int_gincr:N \g_@@_articles_int
   \tl_gclear:N \g_@@_short_title_tl
   \tl_gclear:N \g_@@_header_title_tl
   \tl_gclear:N \g_@@_short_subtitle_tl
