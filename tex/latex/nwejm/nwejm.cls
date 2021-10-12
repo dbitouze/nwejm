@@ -117,7 +117,7 @@
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{amsmath}%
 \PassOptionsToPackage{french,ngerman,dutch,english,noabbrev,capitalize}{cleveref}
-\AtBeginDocument{
+\AddToHook{begindocument/before}{
   \LoadDictionaryFor{french}{nwejm}
   \LoadDictionaryFor{english}{nwejm}
   \LoadDictionaryFor{dutch}{nwejm}
@@ -206,7 +206,7 @@
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
 \ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \RequirePackage[pdfencoding=unicode,final]{hyperref}%
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
 \RequirePackage[all]{hypcap}
@@ -641,7 +641,7 @@
 }
   \box_new:N \l__nwejm_journal_logo_box
   \box_new:N \l__nwejm_journal_name_box
-  \AfterEndPreamble{%
+  \AddToHook{begindocument/end}{%
     \hbox_set:Nn \l__nwejm_journal_name_box
     {
       \bfseries%
@@ -687,7 +687,7 @@
   {}%
 }
 \def\@pnumwidth{\@tocrmarg}
-\AtBeginDocument{%
+\AddToHook{begindocument}{%
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
@@ -1564,6 +1564,7 @@
   \crefname{line}{ligne}{lignes}%
 }
 \NewDocumentCommand \inputarticle { O{english} m } {%
+  \int_gincr:N \g__nwejm_articles_int
   \newrefsection
   \renewcommand*{\glspluralsuffix}{s}
   \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
@@ -1657,7 +1658,7 @@
   \glsresetall
   \selectlanguage{english}
 }
-\AtBeginDocument{%
+\AddToHook{begindocument}{%
 \tl_new:N \g__nwejm_bib_issue_date_tl
 \tl_gset:Nn
 \g__nwejm_bib_issue_date_tl {
@@ -1681,7 +1682,6 @@
 \tl_new:N \g__nwejm_title_tl
 \RenewDocumentCommand \title { o o m } {
   \cleardoublepage
-  \int_gincr:N \g__nwejm_articles_int
   \tl_gclear:N \g__nwejm_short_title_tl
   \tl_gclear:N \g__nwejm_header_title_tl
   \tl_gclear:N \g__nwejm_short_subtitle_tl
@@ -2018,7 +2018,7 @@
   \tl_gclear:N \g__nwejm_people_email_tl
   \tl_clear:N \l__nwejm_people_first_last_names_tl%
 }
-\AtEndPreamble{\file_input:n {\c__nwejm_configuration_file_string_tl}}
+\AddToHook{begindocument/before}{\file_input:n {\c__nwejm_configuration_file_string_tl}}
 \DeclarePlainStyle{«~}{~»}{`}{'}
 \setcounter{topnumber}{3}
 \renewcommand{\topfraction}{0.8}
@@ -2276,7 +2276,7 @@
 \cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnnnnn { nVVVVVVVV }
 \RenewDocumentCommand \newtheorem { O{} m }
 {
-  \AtBeginDocument{
+  \AddToHook{begindocument}{
     \tl_clear:N \l__nwejm_newtheorem_style_tl
     \tl_clear:N \l__nwejm_newtheorem_title_tl
     \tl_clear:N \l__nwejm_newtheorem_french_title_tl
@@ -2482,7 +2482,7 @@
     }
   }
 }
-\AfterEndPreamble{
+\AddToHook{begindocument/end}{
   \ifcurrentbaselanguage{french}{\g__nwejm_french_crefname_tl}{}
 }
 \clist_set:Nn \l_tmpa_clist {%
@@ -2997,7 +2997,7 @@
   left=<,
   right=>
 }
-\AtEndPreamble{\allowdisplaybreaks}
+\AddToHook{begindocument/before}{\allowdisplaybreaks}
 \int_new:N \g_multiline_eq_int
 \int_new:N \g_line_of_multiline_eq_int
 \tl_new:N \g_line_of_multiline_eq_label_tl
@@ -3284,7 +3284,7 @@
   }{
   }
 }
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \defbibheading{__nwejm_subbibliography}[\refname]{%
     \section*{#1}
   }%
@@ -3302,11 +3302,14 @@
   \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-\ifkp@easyscsl
-\DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
-  \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
-    \fontshape\itdefault}\selectfont}
-\fi
+\sys_if_engine_pdftex:T
+{
+  \ifkp@easyscsl
+  \DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
+    \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
+      \fontshape\itdefault}\selectfont}
+  \fi
+}
 \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
 \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 \expandafter\def\expandafter\pdfstringdefPreHook
@@ -3352,7 +3355,7 @@
   }
   \xspace
 }
-\AfterEndPreamble{%
+\AddToHook{begindocument/end}{%
   \bool_if:NTF {\g__nwejm_cover_bool} {
     \g__nwejm_display_frontcover_tl
     \g__nwejm_display_backcover_tl
@@ -3363,12 +3366,12 @@
     \tableofcontents
   }
 }
-\AfterEndPreamble{%
+\AddToHook{begindocument/end}{%
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
 }
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \@ifpackageloaded{xy}{%
     \msg_error:nn{
          nwejm

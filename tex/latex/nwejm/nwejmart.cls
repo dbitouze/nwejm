@@ -81,11 +81,11 @@
   \bool_gset_true:N \g__nwejm_language_specified_bool%
   \PassOptionsToPackage{main=#1}{babel}
   \PassOptionsToPackage{#1}{varioref}
-  \AtEndPreamble{%
+  \AddToHook{begindocument/before}{%
     \LoadDictionaryFor{#1}{nwejm}
     \FCloadlang{#1}
   }
-  \AfterEndPreamble{%
+  \AddToHook{begindocument/end}{%
     \selectlanguage{#1}
   }
 }
@@ -181,7 +181,7 @@
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
 \ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \RequirePackage[pdfencoding=unicode,final]{hyperref}%
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \hypersetup{hidelinks,hypertexnames=false,breaklinks}%
 }%
 \RequirePackage[all]{hypcap}
@@ -356,7 +356,7 @@
 }
   \box_new:N \l__nwejm_journal_logo_box
   \box_new:N \l__nwejm_journal_name_box
-  \AfterEndPreamble{%
+  \AddToHook{begindocument/end}{%
     \hbox_set:Nn \l__nwejm_journal_name_box
     {
       \bfseries%
@@ -402,11 +402,11 @@
   {}%
 }
 \def\@pnumwidth{\@tocrmarg}
-\AtBeginDocument{%
+\AddToHook{begindocument}{%
   \graphicspath{{\c__nwejm_issue_images_path_string_tl//}{../\c__nwejm_issue_images_path_string_tl//}}
   % \glsdisablehyper
 }
-      \AfterEndPreamble{\g__nwejm_mainmatter_switch_tl}
+      \AddToHook{begindocument/end}{\g__nwejm_mainmatter_switch_tl}
 \int_new:N \g__nwejm_issue_number_int
 \int_new:N \g__nwejm_issue_month_int
 \int_new:N \g__nwejm_issue_year_int
@@ -620,7 +620,7 @@
 
 \file_if_exist:nT { \c__nwejm_main_file_name_tl.aux }
 {\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
-  \AfterEndPreamble{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
+  \AddToHook{begindocument/end}{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
 }
 \NewDocumentCommand \fixpagenumber { m } {
 \setcounter{page}{#1}
@@ -735,98 +735,7 @@
   \crefname{listing}{liste}{listes}%
   \crefname{line}{ligne}{lignes}%
 }
-\NewDocumentCommand \inputarticle { O{english} m } {%
-  \newrefsection
-  \renewcommand*{\glspluralsuffix}{s}
-  \renewcommand*{\glsacrpluralsuffix}{\glspluralsuffix}
-  \renewcommand*{\glsupacrpluralsuffix}{\glstextup{\glsacrpluralsuffix}}
-  \StandardFootnotes
-  \str_case:nn {#1} {
-    {english} {
-      \selectlanguage{english}
-      % \shorthandoff{"}%
-      \renewcommand*{\glossaryname}{Glossary}%
-      \renewcommand*{\acronymname}{Acronyms}%
-      \renewcommand*{\entryname}{Notation}%
-      \renewcommand*{\descriptionname}{Description}%
-      \renewcommand*{\symbolname}{Symbol}%
-      \renewcommand*{\pagelistname}{Page List}%
-      \renewcommand*{\glssymbolsgroupname}{Symbols}%
-      \renewcommand*{\glsnumbersgroupname}{Numbers}%
-    }
-    {german} {
-      \selectlanguage{ngerman}
-      % \shorthandon{"}%
-      \renewcommand*{\glossaryname}{Glossar}%
-      \renewcommand*{\acronymname}{Akronyme}%
-      \renewcommand*{\entryname}{Bezeichnung}%
-      \renewcommand*{\descriptionname}{Beschreibung}%
-      \renewcommand*{\symbolname}{Symbol}%
-      \renewcommand*{\pagelistname}{Seiten}%
-      \renewcommand*{\glssymbolsgroupname}{Symbole}%
-      \renewcommand*{\glsnumbersgroupname}{Zahlen}%
-    }
-    {ngerman} {
-      \selectlanguage{ngerman}
-      % \shorthandon{"}%
-      \renewcommand*{\glossaryname}{Glossar}%
-      \renewcommand*{\acronymname}{Akronyme}%
-      \renewcommand*{\entryname}{Bezeichnung}%
-      \renewcommand*{\descriptionname}{Beschreibung}%
-      \renewcommand*{\symbolname}{Symbol}%
-      \renewcommand*{\pagelistname}{Seiten}%
-      \renewcommand*{\glssymbolsgroupname}{Symbole}%
-      \renewcommand*{\glsnumbersgroupname}{Zahlen}%
-    }
-    {french} {
-      \selectlanguage{french}
-      % \shorthandoff{"}%
-      \FrenchFootnotes
-      \g__nwejm_french_crefname_tl
-      \renewcommand*{\glossaryname}{Glossaire}%
-      \renewcommand*{\acronymname}{Acronymes}%
-      \renewcommand*{\entryname}{Terme}%
-      \renewcommand*{\descriptionname}{Description}%
-      \renewcommand*{\symbolname}{Symbole}%
-      \renewcommand*{\pagelistname}{Pages}%
-      \renewcommand*{\glssymbolsgroupname}{Symboles}%
-      \renewcommand*{\glsnumbersgroupname}{Nombres}%
-      \renewcommand*{\glspluralsuffix}{s}
-      \renewcommand*{\glsacrpluralsuffix}{}
-      \renewcommand*{\glsupacrpluralsuffix}{}
-    }
-    {dutch} {
-      \selectlanguage{dutch}
-      % \shorthandon{"}%
-      \renewcommand*{\glossaryname}{Woordenlijst}%
-      \renewcommand*{\acronymname}{Acroniemen}%
-      \renewcommand*{\entryname}{Benaming}%
-      \renewcommand*{\descriptionname}{Beschrijving}%
-      \renewcommand*{\symbolname}{Symbool}%
-      \renewcommand*{\pagelistname}{Pagina's}%
-      \renewcommand*{\glssymbolsgroupname}{Symbolen}%
-      \renewcommand*{\glsnumbersgroupname}{Cijfers}%
-    }
-  }%
-  \inputfrom{./}{#2}
-  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
-    footnote,
-    section,
-    figure,
-    table,
-    equation
-  }
-  \clist_map_inline:Nn \g__nwejm_counters_to_be_reset_clist {
-    \@ifundefined{c@##1}{
-    }{
-      \setcounter{##1}{\c_zero_int}
-    }
-  }
-  \gdef\thesection{\@arabic\c@section}
-  \glsresetall
-  \selectlanguage{english}
-}
-\AtBeginDocument{%
+\AddToHook{begindocument}{%
 \tl_new:N \g__nwejm_bib_issue_date_tl
 \tl_gset:Nn
 \g__nwejm_bib_issue_date_tl {
@@ -850,7 +759,6 @@
 \tl_new:N \g__nwejm_title_tl
 \RenewDocumentCommand \title { o o m } {
   \cleardoublepage
-  \int_gincr:N \g__nwejm_articles_int
   \tl_gclear:N \g__nwejm_short_title_tl
   \tl_gclear:N \g__nwejm_header_title_tl
   \tl_gclear:N \g__nwejm_short_subtitle_tl
@@ -1446,7 +1354,7 @@
 \cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnnnnn { nVVVVVVVV }
 \RenewDocumentCommand \newtheorem { O{} m }
 {
-  \AtBeginDocument{
+  \AddToHook{begindocument}{
     \tl_clear:N \l__nwejm_newtheorem_style_tl
     \tl_clear:N \l__nwejm_newtheorem_title_tl
     \tl_clear:N \l__nwejm_newtheorem_french_title_tl
@@ -1652,7 +1560,7 @@
     }
   }
 }
-\AfterEndPreamble{
+\AddToHook{begindocument/end}{
   \ifcurrentbaselanguage{french}{\g__nwejm_french_crefname_tl}{}
 }
 \clist_set:Nn \l_tmpa_clist {%
@@ -2167,7 +2075,7 @@
   left=<,
   right=>
 }
-\AtEndPreamble{\allowdisplaybreaks}
+\AddToHook{begindocument/before}{\allowdisplaybreaks}
 \int_new:N \g_multiline_eq_int
 \int_new:N \g_line_of_multiline_eq_int
 \tl_new:N \g_line_of_multiline_eq_label_tl
@@ -2454,7 +2362,7 @@
   }{
   }
 }
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \defbibheading{__nwejm_subbibliography}[\refname]{%
     \section*{#1}
   }%
@@ -2480,11 +2388,14 @@
   }
 }
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
-\ifkp@easyscsl
-\DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
-  \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
-    \fontshape\itdefault}\selectfont}
-\fi
+\sys_if_engine_pdftex:T
+{
+  \ifkp@easyscsl
+  \DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
+    \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
+      \fontshape\itdefault}\selectfont}
+  \fi
+}
 \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
 \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 \expandafter\def\expandafter\pdfstringdefPreHook
@@ -2530,12 +2441,12 @@
   }
   \xspace
 }
-\AfterEndPreamble{%
+\AddToHook{begindocument/end}{%
   \titleformat{\chapter}[block]
   {\normalfont\centering}{}{0pt}{}
   \titlespacing*{\chapter}{0pt}{0pt}{0pt}
 }
-\AtEndPreamble{%
+\AddToHook{begindocument/before}{%
   \@ifpackageloaded{xy}{%
     \msg_error:nn{
  nwejmart
