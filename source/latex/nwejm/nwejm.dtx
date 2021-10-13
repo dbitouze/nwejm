@@ -5769,14 +5769,14 @@ Running "make install" installs the files in the local TeX tree.
     \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
       \fontshape\itdefault}\selectfont}
   \fi
-}
 %    \end{macrocode}
 %
 % We replace the \pkg{kpfonts}' \enquote{mathfrak} by the one from
 % \enquote{eufrak}, as the former doesn't provide Euler Fraktur digits.
 %    \begin{macrocode}
-\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
-\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+  \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
+  \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+}
 %    \end{macrocode}
 %
 % \subsection{Related to \Pkg{hyperref}}
