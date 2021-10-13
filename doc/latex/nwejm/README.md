@@ -8,7 +8,7 @@ new journal "North-Western European Journal of Mathematics".
 
 Release
 -------
-2020-03-18 v1.0.1
+2021-10-12 v1.0.2
 
 Development
 -----------

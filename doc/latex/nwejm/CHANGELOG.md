@@ -1,5 +1,11 @@
 # [Unreleased]
 
+# [1.0.2] - 2021-10-12
+
+## Fixed
+- Bug gh #4 (https://git.io/JKLYW).
+- Fix bug in case of engine other than `pdftex`.
+
 # [1.0.1] - 2020-03-18
 
 ## Fixed

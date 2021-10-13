@@ -1,4 +1,4 @@
-$pdf_mode = 1;
+$pdf_mode = 4;
 
 $bibtex_use = 1;
 $bibtex = 'biber -U %O %B';

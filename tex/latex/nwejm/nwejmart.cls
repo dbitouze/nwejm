@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejmart}
-  {2020-03-18}
-  {1.0.1}
+  {2021-10-12}
+  {1.0.2}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -137,14 +137,13 @@
 }
 \RequirePackage[l2tabu,orthodox]{nag}
 \sys_if_engine_pdftex:TF
-  {
-\RequirePackage[T1]{fontenc}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
+{
+  \RequirePackage[T1]{fontenc}
+  \RequirePackage[easyscsl,noDcommand]{kpfonts}
 }{
-    \RequirePackage{fontspec}
-\setmainfont{KpRoman}
-\setsansfont{KpSans}
-\setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
+  \RequirePackage{unicode-math}
+  \RequirePackage[noDcommand]{kpfonts-otf}
+  \setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
 }
 \RequirePackage[pagestyles]{titlesec}%
 \RequirePackage{graphicx}%
@@ -2395,9 +2394,9 @@
     \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
       \fontshape\itdefault}\selectfont}
   \fi
+  \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
+  \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 }
-\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
-\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 \expandafter\def\expandafter\pdfstringdefPreHook
 \expandafter{%
   \pdfstringdefPreHook
