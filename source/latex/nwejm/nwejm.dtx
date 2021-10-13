@@ -628,7 +628,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Load of main font to be used:
 %    \begin{macrocode}
-  \RequirePackage[easyscsl,noDcommand]{kpfonts}
+  \RequirePackage[noDcommand]{kpfonts}
 }{
 %    \end{macrocode}
 %
@@ -5758,22 +5758,12 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Related to \Pkg{kpfonts}}
 %
-% We robustify the "\itshape" redefinition (in case of "easyscsl" option), that
-% is not robust in \pkg{kpfonts} code
-% (cf. \url{https://groups.google.com/d/msg/fr.comp.text.tex/hIi97ipK5qA/WJoPwvH-p1UJ}).
-%    \begin{macrocode}
-\sys_if_engine_pdftex:T
-{
-  \ifkp@easyscsl
-  \DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
-    \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
-      \fontshape\itdefault}\selectfont}
-  \fi
-%    \end{macrocode}
 %
 % We replace the \pkg{kpfonts}' \enquote{mathfrak} by the one from
 % \enquote{eufrak}, as the former doesn't provide Euler Fraktur digits.
 %    \begin{macrocode}
+\sys_if_engine_pdftex:T
+{
   \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
   \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 }
