@@ -612,37 +612,36 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[l2tabu,orthodox]{nag}
 %    \end{macrocode}
 %
-% \item In case of \hologo{pdfTeX} engine, we enforce \pkg{inputenc} to be
-%   loaded with its \docAuxKey*{utf8} option. Otherwise \pkg{fontspec},
-%   convenient for both \hologo{XeLaTeX} and \hologo{LuaLaTeX}, is loaded with
-%   ligatures à la \TeX{} by default enabled.
+% \item In case of \hologo{pdfTeX} engine, we enforce \pkg{fontenc} to be
+%   loaded with its \docAuxKey*{T1} option. Otherwise \pkg{fontspec},
+%   convenient for both \hologo{XeLaTeX} and \hologo{LuaLaTeX}, is loaded by the
+%   \pkg{unicode-math} package.
 %    \begin{macrocode}
 \sys_if_engine_pdftex:TF
-  {
+{
 %    \end{macrocode}
 %
 % \item Standard package for selecting font encodings:
 %    \begin{macrocode}
-\RequirePackage[T1]{fontenc}
+  \RequirePackage[T1]{fontenc}
 %    \end{macrocode}
 %
 % \item Load of main font to be used:
 %    \begin{macrocode}
-\RequirePackage[easyscsl,noDcommand]{kpfonts}
+  \RequirePackage[easyscsl,noDcommand]{kpfonts}
 }{
 %    \end{macrocode}
 %
-% \item Advanced font selection in \hologo{XeLaTeX} and \hologo{LuaLaTeX}:
+% \item Unicode mathematics support for \hologo{XeTeX} and \hologo{LuaTeX}:
 %    \begin{macrocode}
-    \RequirePackage{fontspec}
+  \RequirePackage{unicode-math}
 %    \end{macrocode}
 %
 % \item OTF version of the Kp-fonts for both roman and sans-serif font, but
 % LatinModern for the monospaced one.
 %    \begin{macrocode}
-\setmainfont{KpRoman}
-\setsansfont{KpSans}
-\setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
+  \RequirePackage[noDcommand]{kpfonts-otf}
+  \setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
 }
 %    \end{macrocode}
 %
