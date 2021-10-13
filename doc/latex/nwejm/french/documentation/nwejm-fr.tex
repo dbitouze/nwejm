@@ -1,3 +1,12 @@
+\ExplSyntaxOn
+\msg_new:nnn{nwejm}{LuaLaTeX~mandatory}{This~ documentation~ has~ to~ be~
+  compiled~ with~ LuaLaTeX~ only}
+\sys_if_engine_luatex:F
+{
+  \msg_error:nn{nwejm}{LuaLaTeX~mandatory}
+}
+\ExplSyntaxOff
+%
 \documentclass[french,nolocaltoc]{nwejmart}
 %
 \DTMsavedate{release-date}{2021-10-12}
