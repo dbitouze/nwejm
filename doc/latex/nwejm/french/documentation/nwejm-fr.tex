@@ -17,8 +17,6 @@
 \makeindex[columns=2]
 \tcbset{index format=off}
 %
-\lstMakeShortInline[style=dbtex]|
-%
 \tcbset{listing options={escapechar=+}}
 %
 \SetWatermarkColor{gray!10}%
@@ -114,7 +112,7 @@ classe a pour but :
 
 \begin{dbwarning}{Codage d'entrée \protect\lstinline+UTF-8+ obligatoire}{}
   La \nwejmauthorcl{} du \nwejm{} repose de façon cruciale sur un codage
-  d'entrée en |UTF-8| :
+  d'entrée en ×UTF-8× :
   \begin{itemize}
   \item elle charge le \Package{inputenc}\footnote{%
       Il convient donc de \emph{ne pas} charger ce package : on se reportera
@@ -125,7 +123,7 @@ classe a pour but :
     %
     avec l'option \docAuxKey{utf8} ;
   \item elle suppose que les fichiers sources \file{.tex} sont effectivement
-    codés en |UTF-8| : on veillera donc à ce que l'éditeur utilisé soit réglé
+    codés en ×UTF-8× : on veillera donc à ce que l'éditeur utilisé soit réglé
     sur ce codage d'entrée.
   \end{itemize}
 \end{dbwarning}
@@ -209,7 +207,7 @@ options de classe suivantes.
 
 \begin{dbwarning}{Commande \protect\refCom{articlesetup} : pas en préambule !}{}
   La commande \refCom{articlesetup} doit être utilisée \emph{exclusivement} dans
-  le corps du document (de préférence juste après |\begin{document}|) sans quoi
+  le corps du document (de préférence juste après ×\begin{document}×) sans quoi
     la configuration choisie, certes prise en compte dans l'article isolé,
     risque de ne pas l'être dans le volume complet !
 \end{dbwarning}
@@ -712,8 +710,8 @@ La \nwejmauthorcl{} :
 \begin{dbremark}{Syntaxes équivalentes pour la fonction exponentielle}{}
   Il y a équivalence entre les commandes :
   \begin{itemize}
-  \item |\E[|\meta{argument}|]| qui est fournie par la classe ;
-  \item |\E^{|\meta{argument}|}| qui est plus habituelle.
+  \item ×\E[×\meta{argument}×]× qui est fournie par la classe ;
+  \item ×\E^{×\meta{argument}×}× qui est plus habituelle.
 \end{itemize}
 \end{dbremark}
 
@@ -825,7 +823,7 @@ La \nwejmauthorcl{} :
 \begin{docCommand}{tanh}{}
   Cette commande affiche la tangente hyperbolique : \enquote{$\tanh$}.
   \begin{dbremark}{Pas de commande \protect\docAuxCommand{th} pour la tangente hyperbolique}{}
-    La commande |\th| est déjà définie dans \LaTeX{} et ne peut donc pas être
+    La commande ×\th× est déjà définie dans \LaTeX{} et ne peut donc pas être
     utilisée pour la tangente hyperbolique.
   \end{dbremark}
 \end{docCommand}
@@ -898,7 +896,7 @@ Ces commandes ayant toutes la même syntaxe, seule celle de la commande
 \end{docCommand*}
 
 \begin{docCommand}{norm*}{\marg{argument}}
-  Cette commande est équivalente à |\norm[0]{|\meta{argument}|}|.
+  Cette commande est équivalente à ×\norm[0]{×\meta{argument}×}×.
 \end{docCommand}
 
 \begin{bodycode}[listing and text]
@@ -995,7 +993,7 @@ de délimiteurs au moyen de la commande \refCom{NewPairedDelimiter}.
 \begin{docCommand}{Div}{}
   Cette commande affiche la divergence : \enquote{$\Div$}.
   \begin{dbremark}{Pas de commande \protect\docAuxCommand{div} pour la divergence}{}
-    La commande |\div| est déjà définie dans \LaTeX{} et ne peut donc pas être
+    La commande ×\div× est déjà définie dans \LaTeX{} et ne peut donc pas être
     utilisée pour la divergence.
   \end{dbremark}
 \end{docCommand}
@@ -1059,7 +1057,7 @@ le déclarer au moyen de la commande \refCom{BinaryOperators}.
 \begin{tabular}{>{$}l<{$}@{ : }l}
   \grad \cdot    F & bon     \\
   \grad \mybinop F & mauvais \\ \BinaryOperators{\mybinop}%
-  \grad \mybinop F & bon (grâce à \verb|\BinaryOperators{\mybinop}|)
+  \grad \mybinop F & bon (grâce à \verb+\BinaryOperators{\mybinop}+)
 \end{tabular}
 \end{bodycode}
 
@@ -1147,11 +1145,11 @@ en forme variables. La \nwejmauthorcl{} fournit effectivement trois styles de
   \centering
   % \setlength{\tymin}{\widthof{romain, terminé}}
   \begin{tabulary}{\linewidth}{lLLL}
-Style                 & Titre récurrent                  & Contenu                            & \enquote{Théorèmes} concernés               \\\toprule
-\docValue{theorem}    & gras, romain, numéroté           & italique
-                      & théorèmes, corollaires, conjectures, propositions, lemmes, axiomes                                                  \\\midrule
-\docValue{definition} & gras, romain, numéroté           & romain                             & définitions, remarques, exemples, notations \\\midrule
-\docValue{proof}      & non gras, italique, non numéroté & romain, terminé par un carré blanc & preuves                                     \\\bottomrule
+    Style                 & Titre récurrent                  & Contenu                            & \enquote{Théorèmes} concernés               \\\toprule
+    \docValue{theorem}    & gras, romain, numéroté           & italique
+                                                                                                  & théorèmes, corollaires, conjectures, propositions, lemmes, axiomes \\\midrule
+    \docValue{definition} & gras, romain, numéroté           & romain                             & définitions, remarques, exemples, notations \\\midrule
+    \docValue{proof}      & non gras, italique, non numéroté & romain, terminé par un carré blanc & preuves                                     \\\bottomrule
   \end{tabulary}
   \caption{Styles de \enquote{théorèmes} fournis}
   \label{env-theorems-styles}
@@ -1172,7 +1170,7 @@ pas, la commande \refCom{newtheorem} permet d'en créer de nouveaux.
       l'initiale est en majuscule.} ;
   \item le style est \docValue{theorem}.
   \end{itemize}
-  Cette commande crée également l'environnement étoilé \meta{nom}|*| produisant
+  Cette commande crée également l'environnement étoilé \meta{nom}×*× produisant
   des occurrences \emph{non} numérotées de ce \enquote{théorème}.
 
 \begin{preamblecode}[listing options={deletekeywords={[2]article}}]
@@ -1529,8 +1527,8 @@ fournit notamment les commandes \refCom{cref} et \refCom{vref} suivantes.
 
 \begin{docCommand}{cref}{\brackets{\meta{label$_1$},...,\meta{label$_n$}}}
   Si un ou plusieurs objets\objets{} sont labellisés au moyen de
-  \lstinline[deletekeywords={[2]label}]|\label{|\meta{label$_1$}|}|,...,
-  \lstinline[deletekeywords={[2]label}]|\label{|\meta{label$_n$}|}|, la commande
+  \lstinline[deletekeywords={[2]label}]×\label{×\meta{label$_1$}×}×,...,
+  \lstinline[deletekeywords={[2]label}]×\label{×\meta{label$_n$}×}×, la commande
   \refCom{cref} :
   \begin{itemize}
   \item en affiche les numéros\footnote{Entourés de parenthèses quand c'est
@@ -1579,9 +1577,9 @@ On se reportera aux \vref{sec-titre,sec-auteurs} [...]
 % Le lecteur, rompu à la composition de formules de mathématiques, connaît
 % certainement le \Package*{amsmath} et les environnements qu'il fournit :
 % \begin{itemize}
-% \item |equation|, |align|, |gather|, |multline| et |flalign| qui numérotent
+% \item ×equation×, ×align×, ×gather×, ×multline× et ×flalign× qui numérotent
 %   leur contenu ;
-% \item |equation*|, |align*|, |gather*|, |multline*| et |flalign*| qui \emph{ne}
+% \item ×equation*×, ×align*×, ×gather*×, ×multline*× et ×flalign*× qui \emph{ne}
 %   numérotent \emph{pas} leur contenu ;
 % \end{itemize}
 % et utilise les premiers si (et seulement si, théoriquement) les contenus
@@ -1740,18 +1738,18 @@ d'extrait\autocite[Pour plus de détails, cf. par exemple][]{Bitouze}.
 Le \Package*{hyperref} fournit (entre autres) la commande \refCom{url} qui
 permet de facilement afficher des adresses Web, aussi appelées
 \enquote{\gls{url}}, même si elles comportent des caractères spéciaux de \TeX{}
-(|#|,
+(×#×,
 %
 \lstinline[commentstyle={}]+%+,
 %
-|_|, |~|, |&|, etc.) : ces caractères peuvent donc être saisis tels quels, sauf
+×_×, ×~×, ×&×, etc.) : ces caractères peuvent donc être saisis tels quels, sauf
 si la commande \refCom{url} est utilisée dans l'argument d'une autre
 commande\footnote{Par exemple \protect\docAuxCommand*{footnote}.} auquel cas les
-caractères |#| et
+caractères ×#× et
 %
 \lstinline[commentstyle={}]+%+
 %
-sont alors à faire précéder de la commande \enquote{d'échappement} |\|
+sont alors à faire précéder de la commande \enquote{d'échappement} ×\×
 (contre-oblique).%
 
 \begin{docCommand}{url}{\marg{adresse Web}}
@@ -1866,7 +1864,7 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
     \begin{description}
     \item[option par défaut :] \docAuxKey{autostyle} ;
     \item[réglage par défaut :]
-      \lstinline[alsolanguage={[csquotes]TeX},alsolanguage={[biblatex]TeX}]|\SetCiteCommand{\autocite}| ;
+      \lstinline[alsolanguage={[csquotes]TeX},alsolanguage={[biblatex]TeX}]×\SetCiteCommand{\autocite}× ;
   \end{description}
 \item[\package{biblatex} :] gestion puissante de la bibliographie ;
 \item[\package{datetime2} :] formats de dates et de (zones de) temps :
@@ -1877,9 +1875,9 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
   hypertextes\footnote{Cf. \vref{sec-url}.} :
   \begin{description}
   \item[option par défaut :] \docAuxKey{hidelinks},
-    \docAuxKey{pdfencoding}\lstinline[alsolanguage={[hyperref]TeX}]|=unicode|,
+    \docAuxKey{pdfencoding}\lstinline[alsolanguage={[hyperref]TeX}]×=unicode×,
     \docAuxKey{final}, \docAuxKey{breaklinks},
-    \docAuxKey{hypertexnames}|=false| ;
+    \docAuxKey{hypertexnames}×=false× ;
   \end{description}
 \item[\package{glossaries} :] création de glossaires et (listes d')acronymes :
   \begin{description}
@@ -1917,7 +1915,7 @@ notables sont précisés.
   \item[option par défaut :]\
     \begin{itemize}
     \item \docAuxKey{detect-all} ;
-    \item \docAuxKey{locale}|=|\docValue{FR} ou \docValue{UK} ou \docValue{DE}
+    \item \docAuxKey{locale}×=×\docValue{FR} ou \docValue{UK} ou \docValue{DE}
       selon la langue de l'article ;
     \end{itemize}
   \end{description}
@@ -2027,7 +2025,7 @@ Pour éviter certaines confusions, les espaces dans les codes sources devant
 La présente classe, ainsi que certaines de ses commandes et certains de ses
 environnements, peuvent être modulés au moyen d'options, ou listes d'options
 (séparées par des virgules). Ces options peuvent se présenter sous la forme
-\meta{clé}|=|\meta{valeur} et la \meta{valeur} passée à une \meta{clé} peut
+\meta{clé}×=×\meta{valeur} et la \meta{valeur} passée à une \meta{clé} peut
 être :
 %^^A \begin{description}
 %^^A \item[ne prennent pas de valeur.] Une telle option, par exemple nommée
