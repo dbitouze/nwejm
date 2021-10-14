@@ -129,7 +129,7 @@
 \sys_if_engine_pdftex:TF
 {
   \RequirePackage[T1]{fontenc}
-  \RequirePackage[easyscsl,noDcommand]{kpfonts}
+  \RequirePackage[noDcommand]{kpfonts}
 }{
   \RequirePackage{unicode-math}
   \RequirePackage[noDcommand]{kpfonts-otf}
@@ -3303,11 +3303,6 @@
 \exp_after:wN\addbibresource\exp_after:wN{\c__nwejm_issue_bib_path_string_tl}
 \sys_if_engine_pdftex:T
 {
-  \ifkp@easyscsl
-  \DeclareRobustCommand{\itshape}{\not@math@alphabet\itshape\mathit%
-    \ifthenelse{\equal{\f@shape}{\scdefault}}{\fontshape{scsl}}{%
-      \fontshape\itdefault}\selectfont}
-  \fi
   \DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
   \SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
 }
