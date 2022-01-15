@@ -757,7 +757,7 @@
 }
 \tl_new:N \g__nwejm_title_tl
 \RenewDocumentCommand \title { o o m } {
-  \cleardoublepage
+  % \cleardoublepage
   \tl_gclear:N \g__nwejm_short_title_tl
   \tl_gclear:N \g__nwejm_header_title_tl
   \tl_gclear:N \g__nwejm_short_subtitle_tl
@@ -2450,7 +2450,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2021 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2022 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
