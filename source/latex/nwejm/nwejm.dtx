@@ -3314,6 +3314,12 @@ Running "make install" installs the files in the local TeX tree.
 % \url{https://tex.stackexchange.com/q/475788/18401}).
 %    \begin{macrocode}
 \NewDocumentCommand \inputarticle { O{english} m } {%
+%    \end{macrocode}
+%
+% First, we don't want the (next) title to appear in the headers of the preceding
+% article.
+%    \begin{macrocode}
+  \cleardoublepage
   \int_gincr:N \g_@@_articles_int
   \newrefsection
   \renewcommand*{\glspluralsuffix}{s}
@@ -3497,12 +3503,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_new:N \g_@@_title_tl
 \RenewDocumentCommand \title { o o m } {
-%    \end{macrocode}
-%
-% We don't want the (next) title to appear in the headers of the preceding
-% article.
-%    \begin{macrocode}
-  \cleardoublepage
 %    \end{macrocode}
 %
 % We increment the "\g_@@_articles_int" integer that counts the number of
