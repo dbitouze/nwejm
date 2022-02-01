@@ -197,7 +197,7 @@
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
 \RequirePackage{etoc}%
-\RequirePackage[babel=true,final]{microtype}%
+\RequirePackage[babel=true,nopatch=eqnum,final]{microtype}%
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
@@ -1681,7 +1681,6 @@
 }
 \tl_new:N \g__nwejm_title_tl
 \RenewDocumentCommand \title { o o m } {
-  % \cleardoublepage
   \tl_gclear:N \g__nwejm_short_title_tl
   \tl_gclear:N \g__nwejm_header_title_tl
   \tl_gclear:N \g__nwejm_short_subtitle_tl
@@ -3023,16 +3022,21 @@
   }
 }
 \bool_new:N \g__nwejm_within_patched_amsmath_env_bool
-\clist_set:Nn \l_tmpa_clist {flalign,alignat}
-\clist_map_inline:Nn \l_tmpa_clist {
-  \RenewEnviron{#1}
-  {
-    \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
-  }
-  \RenewEnviron{#1*}
-  {
-    \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
-  }
+\RenewEnviron{flalign}
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+}
+\RenewEnviron{flalign*}
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
+}
+\RenewEnviron{alignat}[1]
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+}
+\RenewEnviron{alignat*}[1]
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
 }
 \seq_new:N \l_db_multiline_eq_seq
 \cs_new_protected:Nn \db_multiline_eq:nn
@@ -3373,6 +3377,10 @@
     }{`xy'~package~not~allowed!}
   }{
   }
+}
+\AddToHook{begindocument/end}{%
+  % \shorthandoff{"}%
+  \usetikzlibrary{babel}%
 }
 \ExplSyntaxOff
 %% 
