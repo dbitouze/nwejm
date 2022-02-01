@@ -5906,15 +5906,15 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% % By default, we switch the shorthand character ×"× off used by the Dutch and
-% % German languages as they are source of many troubles, especially with the
-% % ×tikzcd× environments.
-% %    \begin{macrocode}
-% \AddToHook{begindocument/end}{%
-%   \shorthandoff{"}%
-%   \usetikzlibrary{babel}%
-% }
-% %    \end{macrocode}
+% By default, we switch the shorthand character ×"× off used by the Dutch and
+% German languages as they are source of many troubles, especially with the
+% ×tikzcd× environments.
+%    \begin{macrocode}
+\AddToHook{begindocument/end}{%
+  % \shorthandoff{"}%
+  \usetikzlibrary{babel}%
+}
+%    \end{macrocode}
 %
 % We now leave the \LaTeX3{} programming environment.
 %    \begin{macrocode}
