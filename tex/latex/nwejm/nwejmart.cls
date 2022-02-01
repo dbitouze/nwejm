@@ -2454,7 +2454,9 @@
 }
 \AddToHook{begindocument/end}{%
   % \shorthandoff{"}%
-  \usetikzlibrary{babel}%
+  \@ifpackageloaded{tikz}{%
+    \usetikzlibrary{babel}%
+  }%
 }
 \ExplSyntaxOff
 %% 
