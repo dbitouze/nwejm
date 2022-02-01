@@ -5288,16 +5288,21 @@ Running "make install" installs the files in the local TeX tree.
 % \url{https://tex.stackexchange.com/q/399979/18401}). As a workaround, we make
 % these environments the same as ×align(*)×.
 %    \begin{macrocode}
-\clist_set:Nn \l_tmpa_clist {flalign,alignat}
-\clist_map_inline:Nn \l_tmpa_clist {
-  \RenewEnviron{#1}
-  {
-    \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
-  }
-  \RenewEnviron{#1*}
-  {
-    \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
-  }
+\RenewEnviron{flalign}
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+}
+\RenewEnviron{flalign*}
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
+}
+\RenewEnviron{alignat}[1]
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align} \BODY
+}
+\RenewEnviron{alignat*}[1]
+{
+  \cs:w db_multiline_eq:nV\cs_end: {align*} \BODY
 }
 %    \end{macrocode}
 %
