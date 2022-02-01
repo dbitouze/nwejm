@@ -5912,7 +5912,9 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \AddToHook{begindocument/end}{%
   % \shorthandoff{"}%
-  \usetikzlibrary{babel}%
+  \@ifpackageloaded{tikz}{%
+    \usetikzlibrary{babel}%
+  }%
 }
 %    \end{macrocode}
 %
