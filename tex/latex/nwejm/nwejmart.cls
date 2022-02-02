@@ -187,8 +187,6 @@
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{cleveref}%
-\expandafter\def\csname ver@etex.sty\endcsname{3000/12/31}
-\let\globcount\newcount
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -2456,7 +2454,7 @@
   % \shorthandoff{"}%
   \@ifpackageloaded{tikz}{%
     \usetikzlibrary{babel}%
-  }%
+  }{}%
 }
 \ExplSyntaxOff
 %% 
