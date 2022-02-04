@@ -344,7 +344,6 @@ Running "make install" installs the files in the local TeX tree.
 %
 \def\NWEJM@classname{\jobname}
 \def\NWEJM@addons{addons}
-\def\NWEJM@documentation{documentation}
 \def\NWEJM@examplestemplate{\jobname-examples-template}
 %
 \usedir{tex/latex/\NWEJM@classname}
@@ -385,7 +384,7 @@ Running "make install" installs the files in the local TeX tree.
 \generate{
   \file{README.md}{\from{\jobname.dtx}{readme}}
 }
-\usedir{doc/latex/\NWEJM@classname/french/\NWEJM@documentation}
+\usedir{doc/latex/\NWEJM@classname/french}
 \generate{
   \file{latexmkrc}{\from{\jobname.dtx}{latexmkrc}}
 }
