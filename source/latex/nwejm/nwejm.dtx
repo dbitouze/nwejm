@@ -2,6 +2,268 @@
 %<*internal>
 \iffalse
 %</internal>
+%    \begin{macrocode}
+%<*ctanomat>
+%    \end{macrocode}
+% This is a description file for ctan-o-mat.
+% It manages uploads of a package to
+% CTAN -- the Comprehensive TeX Archive Network.
+%
+% The syntax is roughly oriented towards (La)TeX.
+% Two form of the macros are used. The simple macros take one argument
+% in braces. Here the argument may not contain embedded macros.
+%
+% The second form uses an environment enclosed in \begin{}/\end{}.
+% In the long text fields logo macros can be used.
+%
+% You should enter your values between the begin and the end of the
+% named type.
+% -------------------------------------------------------------------------
+% This field contains the CTAN id of the package.
+% The value is optional.
+% The value is restricted to 32 characters.
+\pkg{nwejm}
+% -------------------------------------------------------------------------
+% This field contains the version of the package.
+% The value is optional.
+% The value is restricted to 32 characters.
+\version{1.0.3 2022-02-04}
+% -------------------------------------------------------------------------
+% This field contains the name of the author(s).
+% The value is optional.
+% The value is restricted to 128 characters.
+\author{Denis Bitouzé}
+% -------------------------------------------------------------------------
+% This field contains the email address of the uploader.
+% The value is an email address.
+% The value is restricted to 255 characters.
+\email{denis.bitouze@univ-littoral.fr}
+% -------------------------------------------------------------------------
+% This field contains the name of the uploader.
+% The value is restricted to 255 characters.
+\uploader{Denis Bitouzé}
+% -------------------------------------------------------------------------
+% This field contains the directory on CTAN.
+% The value is optional.
+% The value is restricted to 255 characters.
+\ctanPath{/macros/latex/contrib/nwejm}
+% -------------------------------------------------------------------------
+% This field contains the license.
+% The value is optional.
+% The value is restricted to 2048 characters.
+% Multiple values are allowed.
+\license{lppl1.3c}
+% -------------------------------------------------------------------------
+% This field contains the URL of the home page.
+% The value is optional.
+% The value is a URL.
+% The value is restricted to 255 characters.
+% Multiple values are allowed.
+\home{}
+% -------------------------------------------------------------------------
+% This field contains the URL of the bug tracker.
+% The value is optional.
+% The value is a URL.
+% The value is restricted to 255 characters.
+% Multiple values are allowed.
+\bugtracker{https://github.com/dbitouze/nwejm/issues/}
+% -------------------------------------------------------------------------
+% This field contains the support channel.
+% The value is optional.
+% The value is a URL.
+% The value is restricted to 255 characters.
+% Multiple values are allowed.
+\support{}
+% -------------------------------------------------------------------------
+% This field contains the version management.
+% The value is optional.
+% The value is a URL.
+% The value is restricted to 255 characters.
+% Multiple values are allowed.
+\repository{https://github.com/dbitouze/nwejm/}
+% -------------------------------------------------------------------------
+% This field contains the developer's channel.
+% The value is optional.
+% The value is a URL.
+% The value is restricted to 255 characters.
+% Multiple values are allowed.
+\development{}
+% -------------------------------------------------------------------------
+% This field contains the update indicator; true for update.
+% The value is optional.
+% The value is restricted to 8 characters.
+\update{true}
+% -------------------------------------------------------------------------
+% This field contains the topics id.
+% The value is optional.
+% The value is restricted to 1024 characters.
+% Multiple values are allowed.
+\topic{}
+% -------------------------------------------------------------------------
+% This field contains the text for the mail announcement.
+% The value is optional.
+% The value is restricted to 8192 characters.
+\begin{announcement}
+\end{announcement}
+% -------------------------------------------------------------------------
+% This field contains the one-liner for the package.
+% The value is optional.
+% The value is restricted to 128 characters.
+\summary{Support for the journal “North-Western European Journal of Mathematics”}
+% -------------------------------------------------------------------------
+% This field contains the descriptive abstract for the package.
+% The value is optional.
+% The value is restricted to 4096 characters.
+\begin{description}
+The bundle includes LaTeX classes and BibLaTeX styles files dedicated to the new
+journal [“North-Western European Journal of
+Mathematics”](http://math.univ-lille1.fr/~nwejm/):
+- nwejm for the complete issues of the journal, aimed at the NWEJM’s team,
+- nwejmart, intended for the authors who wish to publish an article in the NWEJM. This class’s goal is to:
+  - faithfully reproduce the layout of the nwejm, thus enabling the authors to be able to work their document in actual conditions,
+  - provide a number of tools (commands and environments) to facilitate the drafting of documents, in particular those containing mathematical formulas.
+\end{description}
+% -------------------------------------------------------------------------
+% This field contains the note to the CTAN upload managers.
+% The value is optional.
+% The value is restricted to 2048 characters.
+\begin{note}
+\end{note}
+% -------------------------------------------------------------------------
+% This field contains the archive file.
+% The value is the file name of the archive to be uploaded.
+% It may have a relative or absolute directory.
+\file{../dtx-forge/nwejm.zip}
+%    \begin{macrocode}
+%</ctanomat>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*changelog>
+%    \end{macrocode}
+# [Unreleased]
+
+# [1.0.3] - 2022-02-04
+
+## Added
+- Add the ability to fit the TOC on a reduced number of pages.
+- Warning in the documentation and in the template about the necessity to use both `biblatex` and `biber`.
+
+## Fixed
+- Authors in headers appeared one page too early.
+- `\begin{alignat}{X}...` displayed "X".
+- Boring warning "unable to apply patch 'eqnum'".
+- Conflicts between `tikzcd` and (Dutch) `babel`.
+
+# [1.0.2] - 2021-10-12
+
+## Fixed
+- Bug gh #4 (https://git.io/JKLYW).
+- Fix bug in case of engine other than `pdftex`.
+
+# [1.0.1] - 2020-03-18
+
+## Fixed
+- Track changes in `expl3`.
+- Fix bugs due to changes in `expl3`.
+
+# [1.0.0] - 2020-01-28
+
+## Added
+- README file.
+- CHANGELOG file (following https://keepachangelog.com/en/1.0.0/).
+- Semantic versionning (following https://semver.org/).
+- Publication director, composer, masthead (not for the articles' authors).
+
+## Fixed
+- Track changes in `expl3`.
+
+# [0.98f] - 2019-03-18
+
+## Added
+- Built-in "conditions" enumeration.
+- New public command for easily create new enumerations.
+
+## Changed
+- "Such that" symbol in sets definitions now is `\vert` instead of `\slash`.
+- `authoryear` bib and cite style changed for `authoryear-comp`.
+- Hyperfootnotes now true.
+- Documentation improved.
+- Plural forms of (new) theorems now handled.
+- Command `\textcite` revisited.
+- Minor other changes.
+
+## Fixed
+- Several bug fixes.
+
+# [0.98e] - 2018-04-07
+
+## Changed
+- Track changes in `expl3`.
+- Support for `biblatex` 3.8 changes.
+- "Cont. next page" notifications for `align` and `multline` across page breaks.
+- *Breaking change* `flalign(*)` and `alignat(*)` now are aliases of `align(*)`
+  (needed for the previous feature).
+- *Breaking change* Package `autonum` not loaded anymore: `equation`, `align`,
+  `gather`, `multline` and `flalign` that have to be un-numbered should now be
+  starred.
+- Some new, minor, features.
+
+## Fixed
+- Several bug fixes.
+
+# [0.98c] - 2017-02-09
+
+## Fixed
+- Fix error due to `l3sort` is now available directly on loading `expl3`.
+
+# [0.98b] - 2017-02-06
+
+## Changed
+- Adjustments because of deprecated functions removed from `expl3`.
+
+## Fixed
+- Fix "n.d." appeared in case `.bib` files use `year` field instead of `date`
+  field.
+- Other minor bug fix.
+
+# [0.98a] - 2017-01-06
+
+## Changed
+- Documentation improved.
+
+## Fixed
+- Bug fixes.
+
+# [0.97] - 2016-06-10
+
+## Added
+- Instructions to authors
+
+## Changed
+- Package `xy` declared incompatible with the current bundle.
+
+## Fixed
+- Sections in appendices of the documentation are alphabetically numbered.
+- The page numbers of standalone articles/issue are synchronized.
+
+# [0.96] - 2016-04-14
+
+## Changed
+- Improvements.
+- (Not backward compatible) Big sets macros prefixed with `bb`, e.g. `\bbR`
+  instead of `\R`.
+
+## Fixed
+- Bug fixes.
+
+# [0.95] - 2016-04-04
+
+- Initial CTAN release of the `nwejm` bundle.
+%    \begin{macrocode}
+%</changelog>
+%    \end{macrocode}
+%
 %<*readme>
 nwejm - Support for the journal "North-Western European Journal of Mathematics"
 ===============================================================================
