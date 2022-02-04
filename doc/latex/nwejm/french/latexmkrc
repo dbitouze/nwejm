@@ -1,0 +1,39 @@
+$pdf_mode = 4;
+
+$biber = 'biber -U %O %B';
+$bibtex_use = 1;
+
+$pdflatex="pdflatex -synctex=1 %O %S";
+$lualatex="lualatex -synctex=1 %O %S";
+
+add_cus_dep('glo', 'gls', 0, 'makeglossaries');
+add_cus_dep('acn', 'acr', 0, 'makeglossaries');
+add_cus_dep('slo', 'sls', 0, 'makeglossaries');
+sub makeglossaries {
+    my ($base_name, $path) = fileparse( $_[0] );
+    pushd $path;
+    my $return = system "makeglossaries", $base_name;
+    popd;
+    return $return;
+}
+
+$makeindex = 'texindy -L english -C utf8';
+
+push @generated_exts, 'acn', 'acr', 'alg', 'bbl', 'bcf', 'fls', 'gl*', 'ist',
+'run.xml', 'sbl*', 'sl*', 'sym*', 'unq', 'mw' ;
+
+$clean_ext .= ' synctex.gz* run.xml tex.bak out sta bbl bcf fdb_latexmk run tdo
+    listing *~ lo* xdy vrb ain atfi nav snm thm iny xref db* listing tcbtemp aux
+    idx ind lof lot out toc acn acr alg glg* glo* gls* ins sbl slg sym ist
+    run.xml xdy lol fls unq synctex.gz mw *~ aux bcf frm msk nlg nls ntn tcbtemp
+    thm nav nlo not i dx ind lof lot out toc acn acr alg glg glo gls glg2 gls2
+    glo2 sbl slg slo sls sym glsdefs ist run.xml xdy lol fls unq synctex.gz *~
+    listing png tkzfct.gnuplot tkzfct.table mw snm tns sta %R.*.vrb xref 4ct 4tc idv
+    lg pre tmp *.typo mp epub html' ;
+
+@generated_exts = qw(db* listing tcbtemp aux idx ind lof lot out toc acn acr alg
+glg* glo* gls* ins sbl slg sym ist run.xml xdy lol fls unq synctex.gz mw *~ aux
+bcf frm msk nlg nls ntn tcbtemp thm nav nlo not i dx ind lof lot out toc acn acr
+alg glg glo gls glg2 gls2 glo2 sbl slg slo sls sym glsdefs ist run.xml xdy lol
+fls unq synctex.gz *~ listing png tkzfct.gnuplot tkzfct.table mw snm tns sta
+vrb xref *.typo mp  epub html);

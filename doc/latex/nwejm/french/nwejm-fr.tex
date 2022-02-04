@@ -9,8 +9,8 @@
 %
 \documentclass[french,nolocaltoc]{nwejmart}
 %
-\DTMsavedate{release-date}{2021-10-12}
-\newcommand{\releaseversion}{1.0.2}
+\DTMsavedate{release-date}{2022-02-04}
+\newcommand{\releaseversion}{1.0.3}
 %
 \usepackage[nwejm]{denisbdoc}
 \usepackage{tabulary}
@@ -105,6 +105,22 @@ affiliation={%
   \end{enumerate}
   Les auteurs d'articles prendront donc soin de recourir à la \nwejmauthorcl{}
   et \emph{pas} à la \nwejmcl{}.
+\end{dbwarning}
+
+\begin{dbwarning}{Packages nécessaires}{}
+  Pour pouvoir utiliser la \nwejmauthorcl{}, il est nécessaire de disposer :
+  \begin{itemize}
+  \item d'une distribution \hologo{TeX} raisonnablement récente ;
+  \item du \Package{biblatex} ;
+  \item du programme
+    \href{https://www.ctan.org/pkg/biber}{\program{biber}}\footnote{Attention !
+      La bibliographie doit être compilée non pas au moyen de l'habituel
+      \program{bibtex}, mais de \program{biber}. Plus de détails
+      \vref{wa-affichage-auteurs} et \vref{sec-bibliographie}.}.
+  \end{itemize}
+  Sous Ubuntu par exemple, si la \hologo{TeX}~Live est installée via les paquets
+  de la distribution GNU/Linux, ceux nommés \package{texlive-bibtex-extra} et
+  \package{biber} sont nécessaires.
 \end{dbwarning}
 
 La classe \LaTeX{} \nwejmauthor{} est destinée aux auteurs souhaitant publier un
@@ -387,7 +403,7 @@ et \refKey{affiliationtagged} suivantes.
   virgules, la paire d'accolades l'entourant est obligatoire.
 \end{dbwarning}
 
-\begin{dbwarning}{Affichage des prénoms et noms du ou des auteurs}{}
+\begin{dbwarning}{Affichage des prénoms et noms du ou des auteurs}{affichage-auteurs}
   Pour que les prénoms et noms du ou des auteurs soient affichés, il est
   nécessaire :
   \begin{enumerate}
@@ -395,7 +411,7 @@ et \refKey{affiliationtagged} suivantes.
   \item de procéder à une suite de compilations\suitecompilations{} :
     \begin{enumerate}
     \item \hologo{pdfLaTeX} ;
-    \item \hologo{biber} ;
+    \item \program{biber} ;
     \item \hologo{pdfLaTeX}.
     \end{enumerate}
   \end{enumerate}
