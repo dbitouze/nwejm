@@ -1,5 +1,17 @@
 # [Unreleased]
 
+# [1.0.3] - 2022-02-04
+
+## Added
+- Add the ability to fit the TOC on a reduced number of pages.
+- Warning in the documentation and in the template about the necessity to use both `biblatex` and `biber`.
+
+## Fixed
+- Authors in headers appeared one page too early.
+- `\begin{alignat}{X}...` displayed "X".
+- Boring warning "unable to apply patch 'eqnum'".
+- Conflicts between `tikzcd` and (Dutch) `babel`.
+
 # [1.0.2] - 2021-10-12
 
 ## Fixed
