@@ -370,6 +370,11 @@ Running "make install" installs the files in the local TeX tree.
 %</install>
 %<install>\endbatchfile
 %<*internal>
+\usedir{.}
+\generate{
+  \nopreamble\nopostamble
+  \file{\NWEJM@classname.pkg}{\from{\jobname.dtx}{ctanomat}}
+}%
 \usedir{source/latex/\NWEJM@classname}
 \generate{
   \file{\NWEJM@classname.ins}{\from{\jobname.dtx}{install}}
