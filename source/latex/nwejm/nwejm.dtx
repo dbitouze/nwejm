@@ -1257,7 +1257,7 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\c_@@_paperwidth_dim}
 % \begin{macro}{\c_@@_topmargin_dim}
 % \begin{macro}{\c_@@_headsep_dim}
-% \begin{macro}{\c_@@_botmargin_dim}
+% \begin{macro}{\c_@@_bottom_margin_front_dim}
 % \begin{macro}{\c_@@_innermargin_dim}
 % \begin{macro}{\c_@@_outermargin_dim}
 % \begin{macro}{\c_@@_footskip_dim}
@@ -1478,10 +1478,10 @@ Running "make install" installs the files in the local TeX tree.
   \c_@@_headsep_inside_frontcover_dim
 }
 \dim_const:Nn \c_@@_headheight_dim  { 5mm }
-\dim_const:Nn \c_@@_botmargin_dim   { 30mm}
+\dim_const:Nn \c_@@_bottom_margin_main_dim   { 36mm}
+\dim_const:Nn \c_@@_bottom_margin_front_dim   { 30mm}
 \dim_const:Nn \c_@@_footskip_dim    { 10mm}
 \dim_const:Nn \c_@@_margin_frontcover_dim { 15mm }
-\dim_const:Nn \c_@@_bottom_frontcover_dim { 15mm }
 \dim_const:Nn \c_@@_left_minipage_frontcover_dim { .4\linewidth }
 \dim_const:Nn \c_@@_right_minipage_frontcover_dim { .6\linewidth }
 %    \end{macrocode}
@@ -1513,13 +1513,6 @@ Running "make install" installs the files in the local TeX tree.
 % \end{macro}
 % \end{macro}
 % \end{macro}
-%
-% We set the default geometry of the page.
-%    \begin{macrocode}
-\geometry{%
-  papersize={\c_@@_paperwidth_dim,\c_@@_paperheight_dim}
-}
-%    \end{macrocode}
 %
 %    \begin{macrocode}
 %</class|class-article>
@@ -1571,7 +1564,7 @@ Running "make install" installs the files in the local TeX tree.
     ,top=\c_@@_topmargin_inside_cover_dim
     ,headheight=\c_@@_headheight_dim
     ,headsep=\c_@@_headsep_inside_frontcover_dim
-    ,bottom=\c_@@_botmargin_dim
+    ,bottom=\c_@@_bottom_margin_front_dim
     ,footskip=\c_@@_footskip_dim
     ,nomarginpar%
     ,textwidth=\c_@@_inside_cover_textwidth_dim
@@ -1583,7 +1576,7 @@ Running "make install" installs the files in the local TeX tree.
     ,top=\c_@@_topmargin_inside_cover_dim
     ,headheight=\c_@@_headheight_dim
     ,headsep=\c_@@_headsep_inside_frontcover_dim
-    ,bottom=\c_@@_botmargin_dim
+    ,bottom=\c_@@_bottom_margin_front_dim
     ,footskip=\c_@@_footskip_dim
     ,nomarginpar%
     ,textwidth=\c_@@_inside_cover_textwidth_dim
@@ -1600,7 +1593,7 @@ Running "make install" installs the files in the local TeX tree.
   ,top=\c_@@_topmargin_front_matter_dim%
   ,headheight=\c_@@_headheight_dim
   ,headsep=\c_@@_headsep_front_matter_dim
-  ,bottom=\c_@@_botmargin_dim
+  ,bottom=\c_@@_bottom_margin_front_dim
   ,footskip=\c_@@_footskip_dim%
   ,inner=\c_@@_innermargin_dim+\c_@@_front_matter_extra_innermargin_dim%
   ,outer=\c_@@_outermargin_dim+\c_@@_front_matter_extra_outermargin_dim%
@@ -1641,6 +1634,7 @@ Running "make install" installs the files in the local TeX tree.
   ,textwidth=\c_@@_layoutwidth_dim*3/4
   ,textheight=\c_@@_layoutheight_dim*3/4
   % ,marginratio={4\string :6,5\string :7}
+  ,bottom=\c_@@_bottom_margin_main_dim
   ,inner=\c_@@_innermargin_dim
   ,headheight=\c_@@_headheight_dim
   ,footskip=\c_@@_footskip_dim
@@ -1651,11 +1645,23 @@ Running "make install" installs the files in the local TeX tree.
   % ,top=\c_@@_topmargin_dim%
   % ,headheight=\c_@@_headheight_dim
   % ,headsep=\c_@@_headsep_dim
-  % ,bottom=\c_@@_botmargin_dim
+  % ,bottom=\c_@@_bottom_margin_front_dim
   % ,footskip=\c_@@_footskip_dim
   % ,inner=\c_@@_innermargin_dim
   % ,outer=\c_@@_outermargin_dim
 }%
+%    \end{macrocode}
+%
+% We set the default geometry of the page.
+%    \begin{macrocode}
+\geometry
+{%
+  papersize={\c_@@_paperwidth_dim,\c_@@_paperheight_dim},
+}
+\exp_after:wN\geometry\exp_after:wN
+{%
+  \c_@@_main_geometry_tl
+}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1740,7 +1746,6 @@ Running "make install" installs the files in the local TeX tree.
   \bool_if:NF {\g_@@_for_authors_bool}{
     \bool_if:NF {\g_@@_tableofcontents_already_used_bool}{
       \normalsize%
-      \clearpage%
       \bool_gset_false:N \g_@@_frontmatter_bool%
       \g_@@_mainmatter_switch_tl
     }
@@ -1749,7 +1754,7 @@ Running "make install" installs the files in the local TeX tree.
 }%
 \renewcommand\etocaftercontentshook
 {%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+  % \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
 }%
 %    \end{macrocode}
 %
@@ -2603,10 +2608,12 @@ Running "make install" installs the files in the local TeX tree.
         \end{description}
       \end{description}
     \end{multicols*}
-  \clearpage%
+    % \clearpage%
+    \restoregeometry
   \bool_gset_false:N \g_@@_inside_frontcover_bool
   \pagestyle{@@_frontmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+  \restoregeometry
+  % \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
 }
 %    \end{macrocode}
 %
@@ -3624,10 +3631,10 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_new:N \g_@@_frontmatter_switch_tl%
 \tl_gset:Nn \g_@@_frontmatter_switch_tl {
-  \bool_gset_true:N  \g_@@_frontmatter_bool
+  \bool_gset_true:N \g_@@_frontmatter_bool
   \frontmatter
-  \pagestyle{@@_frontmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+  % \pagestyle{@@_frontmatter_ps}%
+  % \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
 }
 %    \end{macrocode}
 %
@@ -3641,7 +3648,8 @@ Running "make install" installs the files in the local TeX tree.
   \mainmatter
   % \SetParskip{\c_@@_mainmatter_parskip_skip}
   \pagestyle{@@_mainmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
+  \restoregeometry
+  % \exp_after:wN\newgeometry\exp_after:wN{\c_@@_main_geometry_tl}%
 }
 %    \end{macrocode}
 %
@@ -5913,6 +5921,13 @@ Running "make install" installs the files in the local TeX tree.
   \@ifpackageloaded{tikz}{%
     \usetikzlibrary{babel}%
   }{}%
+}
+%    \end{macrocode}
+%
+% By default, the page style is the one of the mainmatter.
+%    \begin{macrocode}
+\AddToHook{begindocument/end}{%
+  \pagestyle{@@_mainmatter_ps}%
 }
 %    \end{macrocode}
 %
