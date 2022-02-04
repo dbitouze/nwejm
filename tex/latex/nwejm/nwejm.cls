@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
-  {2021-10-12}
-  {1.0.2}
+  {2022-02-04}
+  {1.0.3}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -196,6 +196,8 @@
 \RequirePackage{varioref}
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
+\RequirePackage{tocloft}%
+\gdef\ttl@savemark{}
 \RequirePackage{etoc}%
 \RequirePackage[babel=true,nopatch=eqnum,final]{microtype}%
 \RequirePackage[useregional]{datetime2}%
@@ -407,10 +409,10 @@
   \c__nwejm_headsep_inside_frontcover_dim
 }
 \dim_const:Nn \c__nwejm_headheight_dim  { 5mm }
-\dim_const:Nn \c__nwejm_botmargin_dim   { 30mm}
+\dim_const:Nn \c__nwejm_bottom_margin_main_dim   { 36mm}
+\dim_const:Nn \c__nwejm_bottom_margin_front_dim   { 30mm}
 \dim_const:Nn \c__nwejm_footskip_dim    { 10mm}
 \dim_const:Nn \c__nwejm_margin_frontcover_dim { 15mm }
-\dim_const:Nn \c__nwejm_bottom_frontcover_dim { 15mm }
 \dim_const:Nn \c__nwejm_left_minipage_frontcover_dim { .4\linewidth }
 \dim_const:Nn \c__nwejm_right_minipage_frontcover_dim { .6\linewidth }
 \dim_const:Nn \c__nwejm_innermargin_dim { 23mm }
@@ -427,9 +429,6 @@
 \dim_const:Nn \c__nwejm_inside_cover_offset_dim { \c_zero_dim }%
 \dim_const:Nn \c__nwejm_logos_rectangle_thickness_dim { 3.1mm }
 \dim_const:Nn \c__nwejm_logos_rectangle_height_dim { 33mm }
-\geometry{%
-  papersize={\c__nwejm_paperwidth_dim,\c__nwejm_paperheight_dim}
-}
 \bool_if:NT {\g__nwejm_inside_pages_bool} {
   \geometry{showcrop}
 }
@@ -461,7 +460,7 @@
     ,top=\c__nwejm_topmargin_inside_cover_dim
     ,headheight=\c__nwejm_headheight_dim
     ,headsep=\c__nwejm_headsep_inside_frontcover_dim
-    ,bottom=\c__nwejm_botmargin_dim
+    ,bottom=\c__nwejm_bottom_margin_front_dim
     ,footskip=\c__nwejm_footskip_dim
     ,nomarginpar%
     ,textwidth=\c__nwejm_inside_cover_textwidth_dim
@@ -473,7 +472,7 @@
     ,top=\c__nwejm_topmargin_inside_cover_dim
     ,headheight=\c__nwejm_headheight_dim
     ,headsep=\c__nwejm_headsep_inside_frontcover_dim
-    ,bottom=\c__nwejm_botmargin_dim
+    ,bottom=\c__nwejm_bottom_margin_front_dim
     ,footskip=\c__nwejm_footskip_dim
     ,nomarginpar%
     ,textwidth=\c__nwejm_inside_cover_textwidth_dim
@@ -486,7 +485,7 @@
   ,top=\c__nwejm_topmargin_front_matter_dim%
   ,headheight=\c__nwejm_headheight_dim
   ,headsep=\c__nwejm_headsep_front_matter_dim
-  ,bottom=\c__nwejm_botmargin_dim
+  ,bottom=\c__nwejm_bottom_margin_front_dim
   ,footskip=\c__nwejm_footskip_dim%
   ,inner=\c__nwejm_innermargin_dim+\c__nwejm_front_matter_extra_innermargin_dim%
   ,outer=\c__nwejm_outermargin_dim+\c__nwejm_front_matter_extra_outermargin_dim%
@@ -511,6 +510,7 @@
   ,textwidth=\c__nwejm_layoutwidth_dim*3/4
   ,textheight=\c__nwejm_layoutheight_dim*3/4
   % ,marginratio={4\string :6,5\string :7}
+  ,bottom=\c__nwejm_bottom_margin_main_dim
   ,inner=\c__nwejm_innermargin_dim
   ,headheight=\c__nwejm_headheight_dim
   ,footskip=\c__nwejm_footskip_dim
@@ -521,11 +521,19 @@
   % ,top=\c__nwejm_topmargin_dim%
   % ,headheight=\c__nwejm_headheight_dim
   % ,headsep=\c__nwejm_headsep_dim
-  % ,bottom=\c__nwejm_botmargin_dim
+  % ,bottom=\c__nwejm_bottom_margin_front_dim
   % ,footskip=\c__nwejm_footskip_dim
   % ,inner=\c__nwejm_innermargin_dim
   % ,outer=\c__nwejm_outermargin_dim
 }%
+\geometry
+{%
+  papersize={\c__nwejm_paperwidth_dim,\c__nwejm_paperheight_dim},
+}
+\exp_after:wN\geometry\exp_after:wN
+{%
+  \c__nwejm_main_geometry_tl
+}
 \bool_new:N \g__nwejm_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
@@ -544,7 +552,6 @@
   \bool_if:NF {\g__nwejm_for_authors_bool}{
     \bool_if:NF {\g__nwejm_tableofcontents_already_used_bool}{
       \normalsize%
-      \clearpage%
       \bool_gset_false:N \g__nwejm_frontmatter_bool%
       \g__nwejm_mainmatter_switch_tl
     }
@@ -553,7 +560,7 @@
 }%
 \renewcommand\etocaftercontentshook
 {%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
+  % \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }%
 \newpagestyle{__nwejm_frontcover_ps}[]{%
   \sethead
@@ -1122,10 +1129,12 @@
         \end{description}
       \end{description}
     \end{multicols*}
-  \clearpage%
+    % \clearpage%
+    \restoregeometry
   \bool_gset_false:N \g__nwejm_inside_frontcover_bool
   \pagestyle{__nwejm_frontmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
+  \restoregeometry
+  % \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }
 \tl_new:N \g__nwejm_display_inside_backcover_tl%
 \tl_gset:Nn \g__nwejm_display_inside_backcover_tl {%
@@ -1754,10 +1763,10 @@
   }
 \tl_new:N \g__nwejm_frontmatter_switch_tl%
 \tl_gset:Nn \g__nwejm_frontmatter_switch_tl {
-  \bool_gset_true:N  \g__nwejm_frontmatter_bool
+  \bool_gset_true:N \g__nwejm_frontmatter_bool
   \frontmatter
-  \pagestyle{__nwejm_frontmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
+  % \pagestyle{__nwejm_frontmatter_ps}%
+  % \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }
 \tl_new:N \g__nwejm_mainmatter_switch_tl%
 \tl_gset:Nn \g__nwejm_mainmatter_switch_tl {
@@ -1766,7 +1775,8 @@
   \mainmatter
   % \SetParskip{\c__nwejm_mainmatter_parskip_skip}
   \pagestyle{__nwejm_mainmatter_ps}%
-  \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
+  \restoregeometry
+  % \exp_after:wN\newgeometry\exp_after:wN{\c__nwejm_main_geometry_tl}%
 }
 \tl_new:N \g__nwejm_article_acknowledgments_tl%
 \cs_new_protected:Nn \__nwejm_article_acknowledgments:n
@@ -3381,6 +3391,9 @@
   \@ifpackageloaded{tikz}{%
     \usetikzlibrary{babel}%
   }{}%
+}
+\AddToHook{begindocument/end}{%
+  \pagestyle{__nwejm_mainmatter_ps}%
 }
 \ExplSyntaxOff
 %% 
