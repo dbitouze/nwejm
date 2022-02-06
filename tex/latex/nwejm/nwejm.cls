@@ -1254,10 +1254,10 @@
     rectangle (current~page.south~east);
     % laboratory logo
     \node[anchor=south~east] at ([xshift=-10mm]current~page~text~area.south~east)
-    {\includegraphics[height=.5\c__nwejm_logos_rectangle_height_dim]{logo-painleve}} ;
+    {\includegraphics[height=.5\c__nwejm_logos_rectangle_height_dim]{nwejm-logo-painleve}} ;
     % university logo
     \node[anchor=south~west] at (current~page~text~area.south~west)
-    {\includegraphics[height=.5\c__nwejm_logos_rectangle_height_dim]{ul-fst-math}} ;
+    {\includegraphics[height=.5\c__nwejm_logos_rectangle_height_dim]{nwejm-ul-fst-math}} ;
     % crop marks
     \draw [white]
     ([xshift=2.5mm]current~page~text~area.north~east) --
