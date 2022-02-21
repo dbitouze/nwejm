@@ -1,6 +1,11 @@
 # [Unreleased]
 
-# [1.0.3] - 2022-02-04
+# [1.0.4] - 2022-02-21
+
+## Changed
+Logo file renamed for consistency.
+
+# [1.0.3] - 2022-02-02
 
 ## Added
 - Add the ability to fit the TOC on a reduced number of pages.
