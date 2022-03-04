@@ -1,5 +1,5 @@
 # Contributions welcome!
 
-Currently, the `yathesis` documentation is not translated in English. In case
+Currently, the `nwejm` documentation is not translated in English. In case
 you're interested, please contact the maintainer:
-`denis.bitouze@lmpa.univ-littoral.fr`
+`denis.bitouze@univ-littoral.fr`
