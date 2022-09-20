@@ -664,6 +664,15 @@ Running "make install" installs the files in the local TeX tree.
   size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
   `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
+\msg_new:nnn{nwejmart}{Something~wrong~with~page~numbers}{
+  The~ first~ page~ number~ of~ the~ current~ article~ is~ supposed~ to~ be~
+  extracted~ from~ the~ file~ `\c_@@_main_file_name_tl.aux`~ but~ the~ latter~
+  doesn't~ contain~ any~ relevant~ information~ for~ this~ purpose.~ Double~
+  check~ the~ `\c_@@_main_file_name_tl.tex`~ actually~ contains~
+  `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~
+  `\c_@@_main_file_name_tl.pdf`~ actually~ contains~ the~ content~ of~ the~
+  current~ article.
+}%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -3151,20 +3160,40 @@ Running "make install" installs the files in the local TeX tree.
 %<class>}
 %    \end{macrocode}
 %
+% If the auxiliairy ×issue.aux× file:
+% \begin{itemize}
+% \item does exist, the first page number of the article gets extracted from here,
+%   at least if the relevant information (×\getpagerefnumber{@@-\currfilebase})
+%   is avaialable (otherwise, an error message is emitted since, it is the
+%   manifestation of a problem that would lead to an extra page numbered 0),
+% \item doesn't exist, the first page number is by default 1, but may be fixed
+%   thanks to the macro ×\fixpagenumber× (which has no effect in the case
+%   ×issue.aux× file does exist).
+% \end{itemize}
+%
 %    \begin{macrocode}
 %<class-article>
-%<class-article>\file_if_exist:nT { \c_@@_main_file_name_tl.aux }
-%<class-article>{\externaldocument[@@-]{\c_@@_main_file_name_tl}
-%<class-article>  \AddToHook{begindocument/end}{\setcounter{page}{\number\numexpr\getpagerefnumber{@@-\currfilebase}}}
-%<class-article>}
+%<class-article>\file_if_exist:nTF { \c_@@_main_file_name_tl.aux }
+%<class-article>{
+%<class-article>   \externaldocument[@@-]{\c_@@_main_file_name_tl}
+%<class-article>   \int_set:Nn \l_tmpa_int {\number\numexpr\getpagerefnumber{@@-\currfilebase}}
+%<class-article>   \int_compare:nNnTF {\l_tmpa_int} > {0}
+%<class-article>   {
+%<class-article>     \AddToHook{begindocument/end}{\setcounter{page}{\l_tmpa_int}}
+%<class-article>   }{
+%<class-article>     \msg_error:nn{nwejmart}{Something~wrong~with~page~numbers}
+%<class-article>   }
+%<class-article>   \NewDocumentCommand \fixpagenumber { m } { }
+%<class-article>}{
 %    \end{macrocode}
 %
 % In case one wants to manually control the page numbers, the following macro
 % ×\fixpagenumber{...}× has to be used instead of ×\setcounter{page}{...}×.
 %    \begin{macrocode}
-\NewDocumentCommand \fixpagenumber { m } {
-%<class-article>\setcounter{page}{#1}
-}
+  \NewDocumentCommand \fixpagenumber { m } {
+%<class-article>  \setcounter{page}{#1}
+  }
+%<class-article>}
 %    \end{macrocode}
 %
 % \section{User level commands}
