@@ -664,16 +664,14 @@ Running "make install" installs the files in the local TeX tree.
   size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
   `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
-\msg_new:nnn{nwejmart}{Something~wrong~with~page~numbers}{
-  The~ first~ page~ number~ of~ the~ current~ article~
-  (`\c_sys_jobname_str.tex')~ is~ supposed~ to~ be~ extracted~ from~ the~ file~
-  `\c_@@_main_file_name_tl.aux`~ but~ the~ latter~ doesn't~ contain~ any~
-  relevant~ information~ for~ this~ purpose.~ Double~ check~ the~
-  `\c_@@_main_file_name_tl.tex'~ file~ actually~ contains~
-  `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~ the~ resulting~
-  `\c_@@_main_file_name_tl.pdf'~ actually~ contains~ the~ content~ of~ the~
-  current~ article.
-}%
+%<class-article> \msg_new:nnn{nwejmart}{Something~wrong~with~page~numbers}{The~ first~ page~
+%<class-article>   number~ of~ the~ current~ article~ (`\c_sys_jobname_str.tex')~ is~ supposed~
+%<class-article>   to~ be~ extracted~ from~ the~ file~ `\c_@@_main_file_name_tl.aux`~ but~ the~
+%<class-article>   latter~ doesn't~ contain~ any~ relevant~ information~ for~ this~ purpose.~
+%<class-article>   Double~ check~ the~ `\c_@@_main_file_name_tl.tex'~ file~ actually~ contains~
+%<class-article>   `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~ the~ resulting~
+%<class-article>   `\c_@@_main_file_name_tl.pdf'~ actually~ contains~ the~ content~ of~ the~
+%<class-article>   current~ article.}%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
