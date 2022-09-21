@@ -665,12 +665,13 @@ Running "make install" installs the files in the local TeX tree.
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
   `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
 \msg_new:nnn{nwejmart}{Something~wrong~with~page~numbers}{
-  The~ first~ page~ number~ of~ the~ current~ article~ is~ supposed~ to~ be~
-  extracted~ from~ the~ file~ `\c_@@_main_file_name_tl.aux`~ but~ the~ latter~
-  doesn't~ contain~ any~ relevant~ information~ for~ this~ purpose.~ Double~
-  check~ the~ `\c_@@_main_file_name_tl.tex`~ actually~ contains~
-  `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~
-  `\c_@@_main_file_name_tl.pdf`~ actually~ contains~ the~ content~ of~ the~
+  The~ first~ page~ number~ of~ the~ current~ article~
+  (`\c_sys_jobname_str.tex')~ is~ supposed~ to~ be~ extracted~ from~ the~ file~
+  `\c_@@_main_file_name_tl.aux`~ but~ the~ latter~ doesn't~ contain~ any~
+  relevant~ information~ for~ this~ purpose.~ Double~ check~ the~
+  `\c_@@_main_file_name_tl.tex'~ file~ actually~ contains~
+  `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~ the~ resulting~
+  `\c_@@_main_file_name_tl.pdf'~ actually~ contains~ the~ content~ of~ the~
   current~ article.
 }%
 %    \end{macrocode}
@@ -3176,7 +3177,8 @@ Running "make install" installs the files in the local TeX tree.
 %<class-article>\file_if_exist:nTF { \c_@@_main_file_name_tl.aux }
 %<class-article>{
 %<class-article>   \externaldocument[@@-]{\c_@@_main_file_name_tl}
-%<class-article>   \int_set:Nn \l_tmpa_int {\number\numexpr\getpagerefnumber{@@-\currfilebase}}
+%<class-article>   \cs_generate_variant:Nn \int_set:Nn { Nx }
+%<class-article>   \int_set:Nx \l_tmpa_int {\number\numexpr\getpagerefnumber{@@-\currfilebase}}
 %<class-article>   \int_compare:nNnTF {\l_tmpa_int} > {0}
 %<class-article>   {
 %<class-article>     \AddToHook{begindocument/end}{\setcounter{page}{\l_tmpa_int}}
