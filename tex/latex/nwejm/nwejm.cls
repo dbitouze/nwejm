@@ -18,8 +18,8 @@
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
-  {2022-02-21}
-  {1.0.4}
+  {2022-09-21}
+  {1.0.5}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }

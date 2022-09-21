@@ -1,5 +1,16 @@
 # [Unreleased]
 
+# [1.0.5] - 2022-09-21
+
+## Fixed
+(First) Page numbers could be not the same in whole issue and in standalone articles.
+
+## Added
+English translation of the documentation.
+
+## Changed
+ `\fixpagenumber` restricted to preamble (`nwejm` class only, not used by the authors).
+
 # [1.0.4] - 2022-02-21
 
 ## Changed
@@ -13,8 +24,8 @@ Logo file renamed for consistency.
 
 ## Fixed
 - Authors in headers appeared one page too early.
-- `\begin{alignat}{X}...` displayed "X".
-- Boring warning "unable to apply patch 'eqnum'".
+- `\begin{alignat}{X}...` displayed “X”.
+- Boring warning “unable to apply patch 'eqnum'”.
 - Conflicts between `tikzcd` and (Dutch) `babel`.
 
 # [1.0.2] - 2021-10-12
@@ -43,11 +54,11 @@ Logo file renamed for consistency.
 # [0.98f] - 2019-03-18
 
 ## Added
-- Built-in "conditions" enumeration.
+- Built-in “conditions” enumeration.
 - New public command for easily create new enumerations.
 
 ## Changed
-- "Such that" symbol in sets definitions now is `\vert` instead of `\slash`.
+- “Such that” symbol in sets definitions now is `\vert` instead of `\slash`.
 - `authoryear` bib and cite style changed for `authoryear-comp`.
 - Hyperfootnotes now true.
 - Documentation improved.
@@ -63,7 +74,7 @@ Logo file renamed for consistency.
 ## Changed
 - Track changes in `expl3`.
 - Support for `biblatex` 3.8 changes.
-- "Cont. next page" notifications for `align` and `multline` across page breaks.
+- “Cont. next page” notifications for `align` and `multline` across page breaks.
 - *Breaking change* `flalign(*)` and `alignat(*)` now are aliases of `align(*)`
   (needed for the previous feature).
 - *Breaking change* Package `autonum` not loaded anymore: `equation`, `align`,
@@ -85,7 +96,7 @@ Logo file renamed for consistency.
 - Adjustments because of deprecated functions removed from `expl3`.
 
 ## Fixed
-- Fix "n.d." appeared in case `.bib` files use `year` field instead of `date`
+- Fix “n.d.” appeared in case `.bib` files use `year` field instead of `date`
   field.
 - Other minor bug fix.
 
