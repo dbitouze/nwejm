@@ -75,6 +75,14 @@
   size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
   `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
+ \msg_new:nnn{nwejmart}{Something~wrong~with~page~numbers}{The~ first~ page~
+   number~ of~ the~ current~ article~ (`\c_sys_jobname_str.tex')~ is~ supposed~
+   to~ be~ extracted~ from~ the~ file~ `\c__nwejm_main_file_name_tl.aux`~ but~ the~
+   latter~ doesn't~ contain~ any~ relevant~ information~ for~ this~ purpose.~
+   Double~ check~ the~ `\c__nwejm_main_file_name_tl.tex'~ file~ actually~ contains~
+   `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~ the~ resulting~
+   `\c__nwejm_main_file_name_tl.pdf'~ actually~ contains~ the~ content~ of~ the~
+   current~ article.}%
 \bool_new:N \g__nwejm_language_specified_bool
 \cs_new_protected:Nn \__nwejm_language:n
 {
@@ -623,12 +631,22 @@
 %%<class-article>    \hypersetup{pdfmsc=\g_@@_msc_tl}
 }
 
-\file_if_exist:nT { \c__nwejm_main_file_name_tl.aux }
-{\externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
-  \AddToHook{begindocument/end}{\setcounter{page}{\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}}
-}
+\file_if_exist:nTF { \c__nwejm_main_file_name_tl.aux }
+{
+   \externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
+   \cs_generate_variant:Nn \int_set:Nn { Nx }
+   \int_set:Nx \l_tmpa_int {\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}
+   \int_compare:nNnTF {\l_tmpa_int} > {0}
+   {
+     \AddToHook{begindocument/end}{\setcounter{page}{\l_tmpa_int}}
+   }{
+     \msg_error:nn{nwejmart}{Something~wrong~with~page~numbers}
+   }
+   \NewDocumentCommand \fixpagenumber { m } { }
+}{
 \NewDocumentCommand \fixpagenumber { m } {
-\setcounter{page}{#1}
+  \setcounter{page}{#1}
+}
 }
 \vref@addto\extrasfrench{%
   \def\reftextfaceafter {page~\reftextvario{ci-contre}{suivante}}%
@@ -864,7 +882,6 @@
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
 \tl_new:N \g__nwejm_authors_first_last_names_tl%
-\tl_new:N \g__nwejm_citeauthor_no_giveninits%
 \tl_new:N \g__nwejm_citeauthor_tl%
 \int_new:N \g__nwejm_author_s_number_current_article_int%
 \cs_new_protected:Nn \__nwejm_citeauthor_no_giveninits:n {%

@@ -1618,7 +1618,6 @@
       \selectlanguage{french}
       % \shorthandoff{"}%
       \FrenchFootnotes
-      \g__nwejm_french_crefname_tl
       \renewcommand*{\glossaryname}{Glossaire}%
       \renewcommand*{\acronymname}{Acronymes}%
       \renewcommand*{\entryname}{Terme}%
@@ -1789,7 +1788,6 @@
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
 \tl_new:N \g__nwejm_authors_first_last_names_tl%
-\tl_new:N \g__nwejm_citeauthor_no_giveninits%
 \tl_new:N \g__nwejm_citeauthor_tl%
 \int_new:N \g__nwejm_author_s_number_current_article_int%
 \cs_new_protected:Nn \__nwejm_citeauthor_no_giveninits:n {%
