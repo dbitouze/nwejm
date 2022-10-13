@@ -228,7 +228,7 @@
 \tl_const:Nn \c__nwejm_editorinchief_string_tl {Editor~in~Chief}
 \tl_const:Nn \c__nwejm_associate_editors_string_tl {Associate~Editors}
 \tl_const:Nn \c__nwejm_managing_editor_string_tl {Managing~Editor}
-\tl_const:Nn \c__nwejm_field_editor_string_tl {Field~Editor}
+\tl_const:Nn \c__nwejm_field_editor_string_tl {Fields~Editor}
 \tl_const:Nn \c__nwejm_editorial_secretariat_string_tl {Secretariat}
 \tl_const:Nn \c__nwejm_phone_string_tl {Tel.}
 \tl_const:Nn \c__nwejm_issn_string_tl {\textsc{issn}}
