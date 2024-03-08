@@ -902,6 +902,12 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[l2tabu,orthodox]{nag}
 %    \end{macrocode}
 %
+% \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
+%   and useful tools for mathematical typesetting:
+%    \begin{macrocode}
+\RequirePackage{mathtools}
+%    \end{macrocode}
+%
 % \item In case of \hologo{pdfTeX} engine, we enforce \pkg{fontenc} to be
 %   loaded with its \docAuxKey*{T1} option. Otherwise \pkg{fontspec},
 %   convenient for both \hologo{XeLaTeX} and \hologo{LuaLaTeX}, is loaded by the
@@ -1009,12 +1015,6 @@ Running "make install" installs the files in the local TeX tree.
 % \item Publication quality tables in \LaTeX{}:
 %    \begin{macrocode}
 \RequirePackage{booktabs}
-%    \end{macrocode}
-%
-% \item Extension to \Pkg{amsmath}: correct various bugs/defeciencies in amsmath
-%   and useful tools for mathematical typesetting:
-%    \begin{macrocode}
-\RequirePackage{mathtools}
 %    \end{macrocode}
 %
 % \item Extensions to theorem environments:
