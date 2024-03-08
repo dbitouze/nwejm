@@ -930,7 +930,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \item Unicode mathematics support for \hologo{XeTeX} and \hologo{LuaTeX}:
 %    \begin{macrocode}
-  \RequirePackage{unicode-math}
+  \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
 %    \end{macrocode}
 %
 % \item OTF version of the Kp-fonts for both roman and sans-serif font, but
