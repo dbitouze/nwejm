@@ -677,6 +677,12 @@ Running "make install" installs the files in the local TeX tree.
 %<class-article>   current~ article.}%
 %    \end{macrocode}
 %
+%   In order to automatically fix the first page number each of the articles, we
+%   define a related integer.
+%    \begin{macrocode}
+\int_new:N \l_@@_first_page_number_int%
+%    \end{macrocode}
+%
 %    \begin{macrocode}
 %</class|class-article>
 %    \end{macrocode}
@@ -3178,11 +3184,11 @@ Running "make install" installs the files in the local TeX tree.
 %<class-article>\file_if_exist:nTF { \c_@@_main_file_name_tl.aux }
 %<class-article>{
 %<class-article>   \externaldocument[@@-]{\c_@@_main_file_name_tl}
-%<class-article>   \cs_generate_variant:Nn \int_set:Nn { Nx }
-%<class-article>   \int_set:Nx \l_tmpa_int {\number\numexpr\getpagerefnumber{@@-\currfilebase}}
-%<class-article>   \int_compare:nNnTF {\l_tmpa_int} > {0}
+%<class-article>   \cs_generate_variant:Nn \int_set:Nn { Ne }
+%<class-article>   \int_set:Ne \l_@@_first_page_number_int {\number\numexpr\getpagerefnumber{@@-\currfilebase}}
+%<class-article>   \int_compare:nNnTF {\l_@@_first_page_number_int} > {0}
 %<class-article>   {
-%<class-article>     \AddToHook{begindocument/end}{\setcounter{page}{\l_tmpa_int}}
+%<class-article>     \AddToHook{begindocument/end}{\setcounter{page}{\l_@@_first_page_number_int}}
 %<class-article>   }{
 %<class-article>     \msg_error:nn{nwejmart}{Something~wrong~with~page~numbers}
 %<class-article>   }
