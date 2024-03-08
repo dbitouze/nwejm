@@ -561,14 +561,6 @@ Running "make install" installs the files in the local TeX tree.
 % commands.
 %
 % \begin{itemize}
-% \item A generic document command parser:
-%    \begin{macrocode}
-\RequirePackage{xparse}
-%    \end{macrocode}
-% \item \LaTeXe{} option processing using \LaTeX3 keys:
-%    \begin{macrocode}
-\RequirePackage{l3keys2e}
-%    \end{macrocode}
 % % \item Sorting lists (since \Pkg{l3sort} is about to move from `experimental'
 % % to `stable' status, the \File{l3sort.sty} will be removed soonish):
 % %    \begin{macrocode}
@@ -830,7 +822,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\ProcessKeysOptions { nwejm }
+\ProcessKeyOptions [nwejm]
 %    \end{macrocode}
 %
 % \subsection{Class loading}
