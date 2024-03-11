@@ -12,14 +12,12 @@
 %% License:| Released under the LaTeX Project Public License v1.3c or later
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
-\RequirePackage{xparse}
-\RequirePackage{l3keys2e}
 \RequirePackage{etoolbox}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejmart}
-  {2022-09-21}
-  {1.0.5}
+  {2024-02-08}
+  {1.0.6}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -83,6 +81,7 @@
    `\string\inputarticle\string{\c_sys_jobname_str\string}'~ and~ the~ resulting~
    `\c__nwejm_main_file_name_tl.pdf'~ actually~ contains~ the~ content~ of~ the~
    current~ article.}%
+\int_new:N \l__nwejm_first_page_number_int%
 \bool_new:N \g__nwejm_language_specified_bool
 \cs_new_protected:Nn \__nwejm_language:n
 {
@@ -135,7 +134,7 @@
     \bool_gset_true:N \g__nwejm_nolocaltoc_bool
   },%
 }%
-\ProcessKeysOptions { nwejm }
+\ProcessKeyOptions [nwejm]
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{amsmath}%
@@ -144,12 +143,13 @@
   \__nwejm_language:n {english}
 }
 \RequirePackage[l2tabu,orthodox]{nag}
+\RequirePackage{mathtools}
 \sys_if_engine_pdftex:TF
 {
   \RequirePackage[T1]{fontenc}
   \RequirePackage[noDcommand]{kpfonts}
 }{
-  \RequirePackage{unicode-math}
+  \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
   \RequirePackage[noDcommand]{kpfonts-otf}
   \setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
 }
@@ -168,7 +168,6 @@
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage{mathtools}
 \RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
 \RequirePackage{esvect}
 \RequirePackage{geometry}
@@ -176,6 +175,7 @@
 \RequirePackage{currfile}
 \RequirePackage{fmtcount}%
 \RequirePackage{babel}%
+\RequirePackage{listings}%
 \RequirePackage{varioref}
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
@@ -634,11 +634,11 @@
 \file_if_exist:nTF { \c__nwejm_main_file_name_tl.aux }
 {
    \externaldocument[__nwejm-]{\c__nwejm_main_file_name_tl}
-   \cs_generate_variant:Nn \int_set:Nn { Nx }
-   \int_set:Nx \l_tmpa_int {\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}
-   \int_compare:nNnTF {\l_tmpa_int} > {0}
+   \cs_generate_variant:Nn \int_set:Nn { Ne }
+   \int_set:Ne \l__nwejm_first_page_number_int {\number\numexpr\getpagerefnumber{__nwejm-\currfilebase}}
+   \int_compare:nNnTF {\l__nwejm_first_page_number_int} > {0}
    {
-     \AddToHook{begindocument/end}{\setcounter{page}{\l_tmpa_int}}
+     \AddToHook{begindocument/end}{\setcounter{page}{\l__nwejm_first_page_number_int}}
    }{
      \msg_error:nn{nwejmart}{Something~wrong~with~page~numbers}
    }
@@ -2487,7 +2487,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2022 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2024 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either

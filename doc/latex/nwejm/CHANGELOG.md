@@ -1,5 +1,12 @@
 # [Unreleased]
 
+# [1.0.6] - 2024-02-08
+
+## Fixed
+- (First) Page numbers could be not the same in whole issue and in standalone
+  articles.
+- Minor tweaks in the code.
+
 # [1.0.5] - 2022-09-21
 
 ## Fixed

@@ -12,14 +12,12 @@
 %% License:| Released under the LaTeX Project Public License v1.3c or later
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
-\RequirePackage{xparse}
-\RequirePackage{l3keys2e}
 \RequirePackage{etoolbox}
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesExplClass
   {nwejm}
-  {2022-09-21}
-  {1.0.5}
+  {2024-02-08}
+  {1.0.6}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
@@ -75,6 +73,7 @@
   size~parameter~specified~ (`#1')~is~ not~ allowed:~ only~ `0',~`1'~(or~
   `\string\big'),~`2'~(or~ `\string\Big'),~`3'~(or~ `\string\big'g)~and~`4'~(or~
   `\string\Bigg')~ are ~ allowed. ~ It~ will~ be~ ignored.}%
+\int_new:N \l__nwejm_first_page_number_int%
 \bool_new:N \g__nwejm_for_authors_bool
 \bool_new:N \g__nwejm_for_printer_bool
 \bool_new:N \g__nwejm_cover_bool
@@ -112,7 +111,7 @@
     \PassOptionsToClass{draft}{book}
   },%
 }%
-\ProcessKeysOptions { nwejm }
+\ProcessKeyOptions [nwejm]
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{amsmath}%
@@ -126,12 +125,13 @@
 \PassOptionsToPackage{french,ngerman,dutch,english}{babel}
 \PassOptionsToPackage{french,ngerman,dutch,english}{varioref}
 \RequirePackage[l2tabu,orthodox]{nag}
+\RequirePackage{mathtools}
 \sys_if_engine_pdftex:TF
 {
   \RequirePackage[T1]{fontenc}
   \RequirePackage[noDcommand]{kpfonts}
 }{
-  \RequirePackage{unicode-math}
+  \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
   \RequirePackage[noDcommand]{kpfonts-otf}
   \setmonofont[Scale = MatchLowercase]{Latin Modern Mono}
 }
@@ -150,7 +150,6 @@
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage{mathtools}
 \RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
 \RequirePackage{esvect}
 \RequirePackage{geometry}
@@ -193,6 +192,7 @@
 \RequirePackage{datatool}%
 \RequirePackage{fmtcount}%
 \RequirePackage{babel}%
+\RequirePackage{listings}%
 \RequirePackage{varioref}
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
@@ -3395,7 +3395,7 @@
 }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2022 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2024 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
