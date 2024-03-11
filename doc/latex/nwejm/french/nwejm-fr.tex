@@ -9,8 +9,8 @@
 %
 \documentclass[french,nolocaltoc]{nwejmart}
 %
-\DTMsavedate{release-date}{2022-09-21}
-\newcommand{\releaseversion}{1.0.5}
+\DTMsavedate{release-date}{2024-02-08}
+\newcommand{\releaseversion}{1.0.6}
 %
 \usepackage[nwejm]{denisbdoc}
 \usepackage{tabulary}
@@ -37,6 +37,17 @@
   ^^^^27e9% Right-Pointing Angle Bracket
   ^^00}
 \lst@RestoreCatcodes
+
+\NewDocumentCommand{\myarrow}{}{{\fontfamily{pzd}\fontencoding{U}\fontseries{m}\fontshape{n}\selectfont\char213}}
+\RenewDocumentCommand\tcb@ref@doc{msm}{%
+  \hyperref[#1:#3]{\texttt{\ref*{#1:#3}}%
+  \IfBooleanTF{#2}{}{%
+    \ifnum\getpagerefnumber{#1:#3}=\thepage\relax%
+    \else%
+      \up*{\myarrow%
+      \,\kvtcb@text@pageshort\,\pageref*{#1:#3}}%
+    \fi}}%
+}
 \makeatother
 %
 \indexsetup{level=\section*,toclevel=section,noclearpage}
