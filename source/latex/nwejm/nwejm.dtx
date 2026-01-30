@@ -845,7 +845,6 @@ Running "make install" installs the files in the local TeX tree.
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{amsmath}%
-\PassOptionsToPackage{french,ngerman,dutch,english,noabbrev,capitalize}{cleveref}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1024,9 +1023,9 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{booktabs}
 %    \end{macrocode}
 %
-% \item Extensions to theorem environments:
+% \item An l3keys interface to amsthm:
 %    \begin{macrocode}
-\RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
+\RequirePackage{keytheorems}
 %    \end{macrocode}
 %
 % \item Vector arrows:
@@ -1159,11 +1158,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{listings}%
 %    \end{macrocode}
 %
-% \item Intelligent page references:
-%    \begin{macrocode}
-\RequirePackage{varioref}
-%    \end{macrocode}
-%
 % \item Support for sub-captions (rather sub-floats):
 %    \begin{macrocode}
 \RequirePackage{subcaption}
@@ -1206,13 +1200,6 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage{environ}
 %    \end{macrocode}
 %
-% \item Improve on \LaTeX{}'s footnote handling (useful for its ×\savenotes× and
-% ×\spewnotes× commands added to theorems environment in order footnotes are
-% not trapped within them).
-%    \begin{macrocode}
-\RequirePackage{footnote}%
-%    \end{macrocode}
-%
 % \item Programmable bibliographies and citations (loaded with a dedicated style):
 %    \begin{macrocode}
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
@@ -1242,9 +1229,15 @@ Running "make install" installs the files in the local TeX tree.
 \RequirePackage[nowarn]{glossaries}%
 %    \end{macrocode}
 %
-% \item Intelligent cross-referencing:
+% \item Clever LaTeX cross-references based on \Pkg{zref}:
 %    \begin{macrocode}
-\RequirePackage{cleveref}%
+\RequirePackage{zref-clever}%
+%    \end{macrocode}
+%
+% \item Extended LaTeX page cross-references with \Pkg{varioref} and
+% \Pkg{zref-clever}:
+%    \begin{macrocode}
+\RequirePackage{zref-vario}%
 %    \end{macrocode}
 %
 % \end{enumerate}
@@ -2519,16 +2512,6 @@ Running "make install" installs the files in the local TeX tree.
   title-plural / english .value_required:n = true,
   title-plural / german .value_required:n = true,
   title-plural / dutch .value_required:n = true,
-  %
-  style .choice:,
-  style / theorem .code:n = {\_@@_theorem_style:n {theorem}},
-  style / definition .code:n = {\_@@_theorem_style:n {definition}},
-  style / proof .code:n = {\_@@_theorem_style:n {proof}},
-  style / unknown .code:n =
-  \msg_error:nnxxx { nwejm } { Unknown~choice }
-  { style } % Name of choice key
-  { theorem~or~definition~or~proof } % Valid choices
-  { \exp_not:n {#1} } % Invalid choice given
 }
 %    \end{macrocode}
 % \end{macro}
@@ -3567,62 +3550,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % \end{macro}
 %
-% Because of the ×capitalize× option passed to \Package{cleveref}, the names of
-% the references (\enquote{chapter}, \enquote{theorem}, etc.) have their first
-% letter capitalised (even with ×\cref×), which fit the English/Amercian
-% typographic rules, but not the French ones. Hence, we redefine these
-% references' names in French in order ×\cref× gives their lower case
-% version. Because this redefinition is needed more than once, we store it in
-% the ×\g_@@_french_crefname_tl× token list.
-%    \begin{macrocode}
-\tl_gset:Nn \g_@@_french_crefname_tl {
-  \clist_set:Nn \l_tmpa_clist {%
-    theorem,
-    corollary,
-    conjecture,
-    proposition,
-    lemma,
-    axiom,
-    definition,
-    remark,
-    example,
-    notation,
-    proof%
-  }
-  \clist_map_inline:Nn \l_tmpa_clist {
-    \crefname{#1}{
-      \text_lowercase:n{
-        \GetTranslationFor{french}{#1}
-      }
-    }{%
-      \text_lowercase:n{
-        \GetTranslationFor{french}{plural-#1}
-      }
-    }
-  }
-  \crefname{equation}{{\'e}quation}{{\'e}quations}%
-  \crefname{figure}{figure}{figures}%
-  \crefname{table}{table}{tables}%
-  \crefname{page}{page}{pages}%
-  \crefname{part}{partie}{parties}%
-  \crefname{chapter}{chapitre}{chapitres}%
-  \crefname{section}{section}{sections}%
-  \crefname{appendix}{annexe}{annexes}%
-  \crefname{enumi}{point}{points}%
-  \crefname{footnote}{note}{notes}%
-  \crefname{theorem}{th\'eor\`eme}{th\'eor\`emes}%
-  \crefname{lemma}{lemme}{lemmes}%
-  \crefname{corollary}{corollaire}{corollaires}%
-  \crefname{proposition}{proposition}{propositions}%
-  \crefname{definition}{d\'efinition}{d\'efinitions}%
-  \crefname{result}{r\'esultat}{r\'esultats}%
-  \crefname{example}{exemple}{exemples}%
-  \crefname{remark}{remarque}{remarques}%
-  \crefname{note}{commentaire}{commentaires}%
-  \crefname{algorithm}{algorithme}{algorithmes}%
-  \crefname{listing}{liste}{listes}%
-  \crefname{line}{ligne}{lignes}%
-}
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -4612,273 +4539,119 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Usual theorems and the like}
 %
-% Some usual theorems and the like are defined, thanks to \Pkg{thmtools} build
-% upon \Pkg{ntheorem}. First, we define a private function "\_@@_new_theorem"
-% that defines:
-% \begin{enumerate}
-% \item a new (private, \pkg{thmtools}) theorem with 4 arguments:
-%   \begin{enumerate}
-%   \item name of the (private) \pkg{thmtools} theorem,
-%   \item French title for this theorem,
-%   \item English title for this theorem.
-%   \end{enumerate}
-% \item a public environment based on this private theorem with a the usual
-%   syntax of \pkg{amsthm} theorems, except it has an optional argument for
-%   possible additional options to the default styles ("theorem" or
-%   "definition").
-% \end{enumerate}
+% Some usual theorems and the like are defined, thanks to \Pkg{keytheorems}.
 %
-% Then, we define a public command, similar to "\newtheorem", based on
-% "\_@@_new_theorem", that lets the user define his own theorems:
+% First, we define some styles:
 %    \begin{macrocode}
-\bool_new:N \g_@@_no_numbered_theorem_bool
-\cs_new_protected:Nn \_@@_theorem_style:n
-{
-  \bool_gset_false:N \g_@@_no_numbered_theorem_bool
-  \str_case:nn
-  { #1 }
-  {
-    { theorem }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\itshape}
-      \theoremseparator{~--}
-      \theoremsymbol{}
+\newkeytheoremstyle{theorem}{
+  inherit-style=plain,
+  notefont=\bfseries,
+  headpunct={~--}
+}
+\renewkeytheoremstyle{definition}{
+  inherit-style=definition,
+  notefont=\bfseries,
+  headpunct={~--}
+}
+\newkeytheoremstyle{proof}{
+  inherit-style=remark,
+  notefont=\itshape,
+  numbered=false,
+  qed=\ensuremath{\square}
+}
+%    \end{macrocode}
+%
+% Then, we define a private that let us distinguish whether the references names
+% will be title cased or not, depending whether the current language will French
+% of not.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_titlecase:n {
+  \ifcurrentbaselanguage{french}{
+      #1
+    }{
+      \text_titlecase:n{#1}
     }
-    { definition }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{~--}
-      \theoremsymbol{}
-    }
-    { proof }   {
-      \theoremstyle{nonumberplain}
-      \bool_gset_true:N \g_@@_no_numbered_theorem_bool
-      \theoremheaderfont{\normalfont\itshape}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{.}
-      \theoremsymbol{\ensuremath{\square}}
-    }
+  }
+%    \end{macrocode}
+%
+%   Now we define the private function that defines the ``theorems'' (both
+%   numbered and, for the star form, unnumbered). The
+%   \lstinline|\AddToHook{begindocument}| is needed because of the
+%   \lstinline|\GetTranslation| command which cannot be used before the language
+%   is set by \Pkg{babel}, which is done at the just before
+%   \lstinline|begindocument|.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_new_theorem:nn {
+  \AddToHook{begindocument}{%
+    \newkeytheorem{#2}[
+      name=\text_titlecase:n{\GetTranslation{#2}},
+      refname={
+        \_@@_titlecase:n{\GetTranslation{#2}},
+        \_@@_titlecase:n{\GetTranslation{plural-#2}}
+      },
+      #1
+    ]
+    \newkeytheorem{#2*}[
+      name=\text_titlecase:n{\GetTranslation{#2}},
+      refname={
+        \_@@_titlecase:n{\GetTranslation{#2}},
+        \_@@_titlecase:n{\GetTranslation{plural-#2}}
+      },
+      numbered=false,
+      #1
+    ]
+    \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
   }
 }
-\cs_set_eq:NN \_@@_orig_newtheorem \newtheorem
-\cs_new_protected:Nn \_@@_new_theorem:nnnnnnnnn
-{
-    \IfTranslation{English}{#1}{%
-    }{%
-      \DeclareTranslation{English}{#1}{\text_titlecase:n{#2}}%
-    }
-    \IfTranslation{French}{#1}{%
-    }{%
-      \DeclareTranslation{French}{#1}{#3}%
-    }
-    \IfTranslation{German}{#1}{%
-    }{%
-      \DeclareTranslation{German}{#1}{\text_titlecase:n{#4}}%
-    }
-    \IfTranslation{Dutch}{#1}{%
-    }{%
-      \DeclareTranslation{Dutch}{#1}{\text_titlecase:n{#5}}%
-    }
-    %
-    \IfTranslation{English}{#1-plural}{%
-    }{%
-      \DeclareTranslation{English}{#1-plural}{\text_titlecase:n{#6}}%
-    }
-    \IfTranslation{French}{#1-plural}{%
-    }{%
-      \DeclareTranslation{French}{#1-plural}{#7}%
-    }
-    \IfTranslation{German}{#1-plural}{%
-    }{%
-      \DeclareTranslation{German}{#1-plural}{\text_titlecase:n{#8}}%
-    }
-    \IfTranslation{Dutch}{#1-plural}{%
-    }{%
-      \DeclareTranslation{Dutch}{#1-plural}{\text_titlecase:n{#9}}%
-    }
-    \_@@_orig_newtheorem{#1}{\text_titlecase:n{ \GetTranslation{#1} }}
-    \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-      \_@@_orig_newtheorem*{#1_@@_nonumbered}{\text_titlecase:n{ \GetTranslation{#1} }}
-    }
-}
-\cs_generate_variant:Nn \_@@_new_theorem:nnnnnnnnn { nVVVVVVVV }
 %    \end{macrocode}
 %
-% Then, we define a public command, similar to "\newtheorem", based on
-% "\_@@_new_theorem", that lets the user define his own theorems:
-%    \begin{macrocode}
-\RenewDocumentCommand \newtheorem { O{} m }
-{
-  \AddToHook{begindocument}{
-    \tl_clear:N \l_@@_newtheorem_style_tl
-    \tl_clear:N \l_@@_newtheorem_title_tl
-    \tl_clear:N \l_@@_newtheorem_french_title_tl
-    \tl_clear:N \l_@@_newtheorem_english_title_tl
-    \tl_clear:N \l_@@_newtheorem_german_title_tl
-    \tl_clear:N \l_@@_newtheorem_dutch_title_tl
-    %
-    \tl_clear:N \l_@@_newtheorem_title_plural_tl
-    \tl_clear:N \l_@@_newtheorem_french_title_plural_tl
-    \tl_clear:N \l_@@_newtheorem_english_title_plural_tl
-    \tl_clear:N \l_@@_newtheorem_german_title_plural_tl
-    \tl_clear:N \l_@@_newtheorem_dutch_title_plural_tl
-    %
-    \tl_set:Nn \l_@@_newtheorem_english_title_tl {
-      #2
-    }
-    \tl_set:Nf \l_@@_newtheorem_french_title_tl {
-      \l_@@_newtheorem_english_title_tl
-    }
-    \tl_set:Nf \l_@@_newtheorem_german_title_tl {
-      \l_@@_newtheorem_english_title_tl
-    }
-    \tl_set:Nf \l_@@_newtheorem_dutch_title_tl {
-      \l_@@_newtheorem_english_title_tl
-    }
-    %
-    \tl_set:Nf \l_@@_newtheorem_english_title_plural_tl {
-      \l_@@_newtheorem_english_title_tl s
-    }
-    \tl_set:Nf \l_@@_newtheorem_french_title_plural_tl {
-      \l_@@_newtheorem_english_title_plural_tl
-    }
-    \tl_set:Nf \l_@@_newtheorem_german_title_plural_tl {
-      \l_@@_newtheorem_english_title_plural_tl
-    }
-    \tl_set:Nf \l_@@_newtheorem_dutch_title_plural_tl {
-      \l_@@_newtheorem_english_title_plural_tl
-    }
-    %
-    \_@@_theorem_style:n {theorem}
-    %
-    \IfNoValueF {#1}
-    {
-      \keys_set:nn { nwejm / newtheorem } { #1 }
-      %
-      \tl_if_empty:NF \l_@@_newtheorem_title_tl {%
-        \tl_set:Nf \l_@@_newtheorem_english_title_tl
-        {
-          \l_@@_newtheorem_title_tl
-        }
-        \tl_set:Nf \l_@@_newtheorem_french_title_tl
-        {
-          \l_@@_newtheorem_title_tl
-        }
-        \tl_set:Nf \l_@@_newtheorem_german_title_tl
-        {
-          \l_@@_newtheorem_title_tl
-        }
-        \tl_set:Nf \l_@@_newtheorem_dutch_title_tl
-        {
-          \l_@@_newtheorem_title_tl
-        }
-      }
-      %
-      \tl_if_empty:NT \l_@@_newtheorem_title_plural_tl {%
-        \tl_if_empty:NTF \l_@@_newtheorem_title_tl {%
-          \tl_set:Nn \l_@@_newtheorem_title_plural_tl { #2 s }
-        }{%
-          \tl_set:Nf \l_@@_newtheorem_title_plural_tl { \l_@@_newtheorem_title_tl s }
-        }
-      }
-      \tl_set:Nf \l_@@_newtheorem_english_title_plural_tl
-      {
-        \l_@@_newtheorem_title_plural_tl
-      }
-      \tl_set:Nf \l_@@_newtheorem_french_title_plural_tl
-      {
-        \l_@@_newtheorem_title_plural_tl
-      }
-      \tl_set:Nf \l_@@_newtheorem_german_title_plural_tl
-      {
-        \l_@@_newtheorem_title_plural_tl
-      }
-      \tl_set:Nf \l_@@_newtheorem_dutch_title_plural_tl
-      {
-        \l_@@_newtheorem_title_plural_tl
-      }
-      %
-      % \tl_set:Nn \l_@@_newtheorem_style_tl {
-      %   theorem
-      % }
-    }
-    %
-    \_@@_new_theorem:nVVVVVVVV
-    {#2}
-    {\l_@@_newtheorem_english_title_tl}
-    {\l_@@_newtheorem_french_title_tl}
-    {\l_@@_newtheorem_german_title_tl}
-    {\l_@@_newtheorem_dutch_title_tl}
-    {\l_@@_newtheorem_english_title_plural_tl}
-    {\l_@@_newtheorem_french_title_plural_tl}
-    {\l_@@_newtheorem_german_title_plural_tl}
-    {\l_@@_newtheorem_dutch_title_plural_tl}
-    {\l_@@_newtheorem_style_tl}
-%    \end{macrocode}
-% The following line ensures footnotes and, more specifically, autocitations
-% (which are in footnotes) are handled in theorems' notes (i.e. in their
-% optional argument).
-%    \begin{macrocode}
-    \makesavenoteenv{#2}
-%    \end{macrocode}
+%   Now we define the public command that let the user define his own
+%   ``theorems'' (both numbered and, for the star form, unnumbered).
 %
 %    \begin{macrocode}
-    \bool_if:NF {\g_@@_no_numbered_theorem_bool} {
-      \ifcsmacro{#2*}{%
-        \RenewDocumentEnvironment{#2*}{o}
-        {
-          \IfNoValueTF {##1}
-          { \begin{#2_@@_nonumbered} }
-            { \begin{#2_@@_nonumbered}[##1] }
-            }{
-            \end{#2_@@_nonumbered}
-          }
-        }{
-          \NewDocumentEnvironment{#2*}{o}
-          {
-            \IfNoValueTF {##1}
-            { \begin{#2_@@_nonumbered} }
-              { \begin{#2_@@_nonumbered}[##1] }
-              }{
-              \end{#2_@@_nonumbered}
-            }
-          }
-        }
-%    \end{macrocode}
-%
-% We add to the list of counters we want to be able to easily set to zero the
-% ones associated to the (numbered) theorem environments (defined either by the
-% class or by the user):
-%    \begin{macrocode}
-    \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
-  }
-  \ifcurrentbaselanguage{french}{%
-    \crefname{#2}{\text_lowercase:n{ \GetTranslation{#2} }}{\text_lowercase:n{ \GetTranslation{#2-plural} }}
-  }{%
-    \crefname{#2}{\GetTranslation{#2}}{\GetTranslation{#2-plural}}
-  }
-  \Crefname{#2}{\text_titlecase:n{ \GetTranslation{#2} }}{\text_titlecase:n{ \GetTranslation{#2-plural} }}
+\RenewDocumentCommand{\newtheorem}{O{} m}{
+  \_@@_new_theorem:nn {#1} {#2}
 }
 %    \end{macrocode}
 %
 % Finally, we define some usual theorems:
+%
 %    \begin{macrocode}
-\newtheorem{theorem}
-\newtheorem{corollary}
-\newtheorem{conjecture}
-\newtheorem{proposition}
-\newtheorem{lemma}
-\newtheorem{axiom}
+\newtheorem[style=theorem]{theorem}
+\newtheorem[style=theorem]{axiom}
+\newtheorem[style=theorem]{corollary}
+\newtheorem[style=theorem]{conjecture}
+\newtheorem[style=theorem]{proposition}
+\newtheorem[style=theorem]{lemma}
 %
 \newtheorem[style=definition]{definition}
-\newtheorem[style=definition]{remark}
 \newtheorem[style=definition]{example}
 \newtheorem[style=definition]{notation}
+\newtheorem[style=definition]{remark}
+%    \end{macrocode}
 %
-\newtheorem[style=proof]{proof}
+%   Since the proof command exists in LaTeX2e, we need to define it the
+%   \Pkg{keytheorems} way differently.
 %
+%    \begin{macrocode}
+\AddToHook{begindocument}{%
+  \renewkeytheorem{proof}[
+    name=\text_titlecase:n{\GetTranslation{proof}},
+    refname={
+      \_@@_titlecase:n{\GetTranslation{proof}},
+      \_@@_titlecase:n{\GetTranslation{plural-proof}}
+    },
+    style=proof
+  ]
+}
+%    \end{macrocode}
+%
+%   We define a function that clones already defined theorems and define for
+%   each of them a clone the name of which being just titlecased.
+%
+%    \begin{macrocode}
 \cs_new_protected:Nn \_@@_clone_theorem:nn
 {
   \NewDocumentEnvironment{#1}{}
@@ -4920,29 +4693,14 @@ Running "make install" installs the files in the local TeX tree.
   notation,
   proof%
 }
-\clist_map_inline:Nn \l_tmpa_clist {
-  \crefname{#1}{
-    \text_titlecase:n{
-      \GetTranslation{#1}
-    }
-  }{
-    \text_titlecase:n{
-      \GetTranslation{plural-#1}
-    }
-  }
-  \Crefname{#1}{
-    \text_titlecase:n{
-      \GetTranslation{#1}
-    }
-  }{%
-    \text_titlecase:n{
-      \GetTranslation{plural-#1}
-    }
-  }
-}
-\AddToHook{begindocument/end}{
-  \ifcurrentbaselanguage{french}{\g_@@_french_crefname_tl}{}
-}
+%    \end{macrocode}
+%
+%   Since version 1.1.0 (2026-01-30) of the class, \Pkg{varioref} is replaced by
+%   \Pkg{zref-vario} since; hence we define a (factice) \Pkg{varioref}'s
+%   \lstinline|\vref| command to be a wrapper of \Pkg{zref-vario}'s
+%   \lstinline|\zvref|:
+%    \begin{macrocode}
+\RenewDocumentCommand{\vref}{O{} m}{\zvref[#1]{#2}}
 %    \end{macrocode}
 %
 % \subsection{Assertions, hypotheses and conditions enumerations}
@@ -4950,61 +4708,61 @@ Running "make install" installs the files in the local TeX tree.
 % An environment for assertions' and hypotheses enumerations are provided in
 % order to display them homogeneously:
 %    \begin{macrocode}
-\clist_set:Nn \l_tmpa_clist {%
-  hypothesis,
-  assertion,%
-  condition%
-}
-\clist_map_inline:Nn \l_tmpa_clist {
-  \newlist{#1}{enumerate}{1}
-  \setlist[#1]{%
-    label=
-    \normalfont
-    (
-    \textsf{
-      \tl_head:f {
-        \text_uppercase:n {
-          \GetTranslation{#1}
+\AddToHook{begindocument}{
+  \clist_set:Nn \l_tmpa_clist {%
+    hypothesis,
+    assertion,%
+    condition%
+  }
+  \clist_map_inline:Nn \l_tmpa_clist {
+    \newlist{#1}{enumerate}{1}
+    \setlist[#1]{%
+      label=
+      \normalfont
+      (
+      \textsf{
+        \tl_head:f {
+          \text_uppercase:n {
+            \GetTranslation{#1}
+          }
         }
       }
-    }
-    $\c_math_subscript_token\mathsf{\arabic*}$),
-    ref=(
-    \textsf{
-      \tl_head:f {
-        \text_uppercase:n {
-          \GetTranslation{#1}
+      $\c_math_subscript_token\mathsf{\arabic*}$),
+      ref=(
+      \textsf{
+        \tl_head:f {
+          \text_uppercase:n {
+            \GetTranslation{#1}
+          }
         }
       }
+      $_\mathsf{\arabic*}$
+      )
     }
-    $_\mathsf{\arabic*}$
-    )
-  }
-  \crefname{#1i}{
-    \GetTranslation{#1}
-  }{%
-    \GetTranslation{plural-#1}
-  }
-  \Crefname{#1i}{
-    \text_titlecase:n{
-      \GetTranslation{#1}
-    }
-  }{%
-    \text_titlecase:n{
-      \GetTranslation{plural-#1}
+    \zcRefTypeSetup{#1i}{
+      Name-sg = \text_titlecase:n{
+        \GetTranslation{#1}
+      },
+      name-sg =     \GetTranslation{#1} ,
+      Name-pl = \text_titlecase:n{
+        \GetTranslation{plural-#1}
+      },
+      name-pl = \GetTranslation{plural-#1} ,
     }
   }
 }
 %    \end{macrocode}
 %
-% Public command for easily create new environments of enumerations. The mandatory
-% argument is the name of the environment which is (a priori) the plural form of
-% the name of the enumeration; the optional argument let us specify:
+%   Public command for easily create new environments of enumerations. The
+%   mandatory argument is the name of the environment which is (a priori) the
+%   plural form of the name of the enumeration; the optional argument let us
+%   specify:
 % \begin{itemize}
-% \item the singular form if it is not obtained by removing the last letter to the plural
-%   form,
+% \item the singular form if it is not obtained by removing the last letter to
+%   the plural form,
 % \item the plural form if it is not the same as the environment's name,
-% \item the label form if it is not the same as the initial of the singular form.
+% \item the label form if it is not the same as the initial of the singular
+%   form.
 % \end{itemize}
 %
 %    \begin{macrocode}
@@ -5069,19 +4827,15 @@ Running "make install" installs the files in the local TeX tree.
     $_\mathsf{\arabic*}$
     )
   }
-  \crefname{#1i}{
-    \tl_use:c {l_@@_newenumeration_#1_singular_tl}
-  }{%
-    \tl_use:c {l_@@_newenumeration_#1_plural_tl}
-  }
-  \Crefname{#1i}{
-    \text_titlecase:n{
-      \tl_use:c {l_@@_newenumeration_#1_singular_tl}
-    }
-  }{%
-    \text_titlecase:n{
-      \tl_use:c {l_@@_newenumeration_#1_plural_tl}
-    }
+  \zcRefTypeSetup{#1i}{
+    Name-sg = \text_titlecase:n{
+      \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
+    },
+    name-sg = \tl_use:c {l__nwejm_newenumeration_#1_singular_tl} ,
+    Name-pl = \text_titlecase:n{
+      \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
+    },
+    name-pl = \tl_use:c {l__nwejm_newenumeration_#1_plural_tl} ,
   }
 }
 %
@@ -7152,7 +6906,8 @@ vrb xref *.typo mp  epub html);
 #include:hypcap
 #include:bookmark
 #include:glossaries
-#include:cleveref
+#include:zref-clever
+#include:zref-vario
 #
 # Document class
 #keyvals:\documentclass/nwejmart
