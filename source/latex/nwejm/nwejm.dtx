@@ -117,7 +117,7 @@
 \begin{description}
 The bundle includes LaTeX classes and BibLaTeX styles files dedicated to the new
 journal [“North-Western European Journal of
-Mathematics”](http://math.univ-lille1.fr/~nwejm/):
+Mathematics”](https://nwejm.univ-lille.fr/):
 - nwejm for the complete issues of the journal, aimed at the NWEJM’s team,
 - nwejmart, intended for the authors who wish to publish an article in the NWEJM. This class’s goal is to:
   - faithfully reproduce the layout of the nwejm, thus enabling the authors to be able to work their document in actual conditions,
@@ -1270,7 +1270,7 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\g_@@_counters_to_be_reset_clist}
 %   We create a new comma list that will gather all the counters (in particular
 %   the ones associated to the (numbered) theorem environments, defined either
-%   by the or by the user), we want to be able to easily set to zero at the end
+%   by the class or by the user), we want to be able to easily set to zero at the end
 %   of each article input:
 %    \begin{macrocode}
 \clist_new:N \g_@@_counters_to_be_reset_clist
@@ -3568,7 +3568,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \subsection{Input variant}
 %
-% We create a variant of the "\input" macro to be use for the input of each
+% We create a variant of the "\input" macro to be used for the input of each
 % article: it starts a new \package{biblatex}'s "refsection" and reset to zero
 % some counters. It also redefine the glossaries' rules since glossaries'
 % acronyms' suffix in effect are not for the last loaded language (see
@@ -6059,7 +6059,7 @@ Running "make install" installs the files in the local TeX tree.
             59655 Villeneuve d'Ascq,
   phone = +33 (0)3 20 43 42 33,
   email = aurore.smets@univ-lille1.fr,
-  url = http://math.univ-lille1.fr/~nwejm/,
+  url = https://nwejm.univ-lille.fr/,
   issn =
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -6879,7 +6879,7 @@ vrb xref *.typo mp  epub html);
 %
 %    \begin{macrocode}
 # mode: nwejm.cls
-# denisbitouze, 23.12.2015
+# denisbitouze, 2026-01-30
 #
 #include:class-book
 #include:latex-document
@@ -6895,7 +6895,7 @@ vrb xref *.typo mp  epub html);
 #include:array
 #include:booktabs
 #include:mathtools
-#include:ntheorem
+#include:keytheorems
 #include:esvect
 #include:kpfonts
 #include:translations
