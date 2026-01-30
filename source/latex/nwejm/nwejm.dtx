@@ -2449,14 +2449,16 @@ Running "make install" installs the files in the local TeX tree.
 %
 % \begin{macro}{affiliation}
 % \begin{macro}{affiliationtagged}
-% The keys options are created.
+%   The keys options are created. We stored in a temporary variable the result
+%   of expanding ×\the\c@footnote× in order to fix issue \#5.
 %    \begin{macrocode}
 \NewDocumentCommand \@@_author_affiliation:ww { o u\q_@@ }
 {
   \stepcounter{footnote}
-  \prop_put_if_new:NVn \l_tmpa_prop {\the\c@footnote} {#2}
+  \tl_set:NV \l_tmpa_tl {\the\c@footnote}
+  \prop_put_if_new:NVn \l_tmpa_prop \l_tmpa_tl {#2}
   \IfValueT{#1}{%
-    \prop_put_if_new:NnV \l_affiliations_tagged_prop {#1} {\the\c@footnote}
+    \prop_put_if_new:NnV \l_affiliations_tagged_prop {#1} \l_tmpa_tl
   }
 }
 %
