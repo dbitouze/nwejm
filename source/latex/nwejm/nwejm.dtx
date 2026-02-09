@@ -27,7 +27,7 @@
 % This field contains the version of the package.
 % The value is optional.
 % The value is restricted to 32 characters.
-\version{1.1.0 2026-01-30}
+\version{2.0 2026-02-06}
 % -------------------------------------------------------------------------
 % This field contains the name of the author(s).
 % The value is optional.
@@ -143,6 +143,18 @@ This update consists only in a logo file renamed as requested by Karl Berry.
 %<*changelog>
 %    \end{macrocode}
 # [Unreleased]
+
+# [2.0] - 2026-02-06
+
+## Fixed
+- The bundle now relies on `keytheorems`, `zref-clever`, `zrefvario` instead of `ntheorem`, `thmtools`, `cleveref` (breaks backward compatibility but rollback provided).
+- Use of arguments inconsistent with expl3 language specification (gh #5).
+
+## Changed
+- `title-plural=⟨plural⟩` replaced by `refname={⟨singular⟩,⟨plural⟩}`
+
+## Deprecated
+- `title-plural`
 
 # [1.0.6] - 2024-02-08
 
@@ -299,7 +311,7 @@ new journal “North-Western European Journal of Mathematics”.
 
 Release
 -------
-2026-01-30 v1.1.0
+2026-02-06 v2.0
 
 Development
 -----------
@@ -330,7 +342,7 @@ https://github.com/dbitouze/nwejm.
 \input l3docstrip.tex
 \Msg{********************************************************}
 \Msg{* Installation}
-\Msg{* Class: nwejm 2026-01-30 v1.1.0}
+\Msg{* Class: nwejm 2026-02-06 v2.0}
 \Msg{* for the journal}
 \Msg{* "North-Western European Journal of Mathematics" (DB)}
 \Msg{********************************************************}
@@ -602,7 +614,7 @@ Running "make install" installs the files in the local TeX tree.
 \providecommand\DeclareRelease[3]{}
 \providecommand\DeclareCurrentRelease[2]{}
 \DeclareRelease{}{2024-02-08}{nwejm-2024-02-08.cls}
-\DeclareCurrentRelease{}{2026-01-30}
+\DeclareCurrentRelease{}{2026-02-06}
 %    \end{macrocode}
 %
 % The class is declared in the \LaTeX3{}'s way.
@@ -610,55 +622,54 @@ Running "make install" installs the files in the local TeX tree.
 \ProvidesExplClass
 %<class>  {nwejm}
 %<class-article>  {nwejmart}
-  {2026-01-30}
-  {1.1.0}
+  {2026-02-06}
+  {2.0}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\ExplSyntaxOn
 %    \end{macrocode}
 %
 % \section{Messages}
 %
 % In this section, some messages are declared for future use.
 %    \begin{macrocode}
-\msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
-{Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
-  ~`\int_use:N\c_@@_first_issue_number_int'.}%
-\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{You~ are~ using~ the~
-  `nwejm'~ class~ designed~ for~ the~ complete~ issues~ of~ the~ NWEJM~ and~
-  aimed~ for~ the~ NWEJM's~ team,~ not~ for~ authors~ of~ articles:~ if~ you're~
-  an~ author~ of~ an~ article,~ you~ should~ use~ the~ `nwejmart'~ class~
-  instead.~ Otherwise,~ if~ you're~ from~ the~ NWEJM's~ team,~ please~ note~
-  that~ the~ issue's~ main~ file~ should~ be~ named~
-  `\tl_use:N\c_@@_main_file_name_tl.tex',~ not~ `\c_sys_jobname_str.tex'.~
-  Please~ rename~ the~ current~ file~ accordingly.}%
-\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~ should~
-  /not/~ be~ named~ as~ the~ issue's~ main~ file~
-  `\tl_use:N\c_@@_main_file_name_tl.tex'.~ Please~ rename~ the~ current~ file~
-  accordingly.}%
-\msg_new:nnn{nwejm}{Main~file~needs~to~be~compiled!}{The~ issue's~ main~ file~
-  (`\tl_use:N\c_@@_main_file_name_tl.tex')~ should~ be~ compiled~ at~ least~
-  once~ before~ the~ cover~ can~ be~ generated.}%
+%<class>\msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
+%<class>{Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
+%<class>  ~`\int_use:N\c_@@_first_issue_number_int'.}%
+%<class>\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{You~ are~ using~ the~
+%<class>  `nwejm'~ class~ designed~ for~ the~ complete~ issues~ of~ the~ NWEJM~ and~
+%<class>  aimed~ for~ the~ NWEJM's~ team,~ not~ for~ authors~ of~ articles:~ if~ you're~
+%<class>  an~ author~ of~ an~ article,~ you~ should~ use~ the~ `nwejmart'~ class~
+%<class>  instead.~ Otherwise,~ if~ you're~ from~ the~ NWEJM's~ team,~ please~ note~
+%<class>  that~ the~ issue's~ main~ file~ should~ be~ named~
+%<class>  `\tl_use:N\c_@@_main_file_name_tl.tex',~ not~ `\c_sys_jobname_str.tex'.~
+%<class>  Please~ rename~ the~ current~ file~ accordingly.}%
+%<class>\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~ should~
+%<class>  /not/~ be~ named~ as~ the~ issue's~ main~ file~
+%<class>  `\tl_use:N\c_@@_main_file_name_tl.tex'.~ Please~ rename~ the~ current~ file~
+%<class>  accordingly.}%
+%<class>\msg_new:nnn{nwejm}{Main~file~needs~to~be~compiled!}{The~ issue's~ main~ file~
+%<class>  (`\tl_use:N\c_@@_main_file_name_tl.tex')~ should~ be~ compiled~ at~ least~
+%<class>  once~ before~ the~ cover~ can~ be~ generated.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
-\msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
+\msg_new:nnn{
+%<class-article> nwejmart
+%<class>         nwejm
+}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
   with~ `#1'.~ This~ one~ will~ be~ ignored.}%
-\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~
-  a~ valid~ language~ name~ (only~ `english',~ `french',~ `ngerman',~ `german',~
-  `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}%
+% \msg_new:nnn{
+% %<class-article> nwejmart
+% %<class>         nwejm
+% }{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~
+%   a~ valid~ language~ name~ (only~ `english',~ `french',~ `ngerman',~ `german',~
+%   `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}%
 \msg_new:nnn{nwejmart}{No~keyword}{You~ haven't~ specify~ any~ keyword~ for~
   this~ article!}%
 \msg_new:nnn{nwejmart}{No~MSC}{You~ haven't~ specify~ any~ Mathematical~
   Subject~ Classification~ (MSC)~ for~ this~ article!}%
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
-\msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
-  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~
-  counterpart~ `#1'.}%
 \msg_new:nnn{
 %<class-article> nwejmart
 %<class>         nwejm
@@ -691,7 +702,7 @@ Running "make install" installs the files in the local TeX tree.
 %   In order to automatically fix the first page number each of the articles, we
 %   define a related integer.
 %    \begin{macrocode}
-\int_new:N \l_@@_first_page_number_int%
+%<class-article>\int_new:N \l_@@_first_page_number_int%
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -710,7 +721,7 @@ Running "make install" installs the files in the local TeX tree.
 \bool_new:N \g_@@_for_authors_bool
 \bool_new:N \g_@@_for_printer_bool
 \bool_new:N \g_@@_cover_bool
-\bool_new:N \g_@@_coverpage_bool
+% \bool_new:N \g_@@_coverpage_bool
 \bool_new:N \g_@@_inside_pages_bool
 \bool_new:N \g_@@_show_binding_bool
 %    \end{macrocode}
@@ -862,7 +873,7 @@ Running "make install" installs the files in the local TeX tree.
 % We now treat the case where no language option is passed at ×\documentclass×
 % level (×english× is the default).
 %    \begin{macrocode}
-\bool_if:NF {\g_@@_language_specified_bool} {
+\bool_if:NF \g_@@_language_specified_bool {
   \_@@_language:n {english}
 }
 %    \end{macrocode}
@@ -1087,7 +1098,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % Some of the packages are needed only when the cover has to be produced.
 %    \begin{macrocode}
-\bool_if:NTF {\g_@@_cover_bool} {
+\bool_if:NTF \g_@@_cover_bool {
 %    \end{macrocode}
 %
 % \item Coloured boxes, for \LaTeX{} examples and theorems, etc.
@@ -1292,10 +1303,10 @@ Running "make install" installs the files in the local TeX tree.
 %   The first issue number, month and year, and the interval (in months) between
 %   two consecutive issues, are declared.
 %    \begin{macrocode}
-\int_const:Nn \c_@@_first_issue_number_int { 1 }
-\int_const:Nn \c_@@_first_issue_year_int   { 2015 }
-\int_const:Nn \c_@@_first_issue_month_int  { 1 }
-\int_const:Nn \c_@@_interval_in_months_int { 12 }
+%<class>\int_const:Nn \c_@@_first_issue_number_int { 1 }
+%<class>\int_const:Nn \c_@@_first_issue_year_int   { 2015 }
+%<class>\int_const:Nn \c_@@_first_issue_month_int  { 1 }
+%<class>\int_const:Nn \c_@@_interval_in_months_int { 12 }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -1314,10 +1325,6 @@ Running "make install" installs the files in the local TeX tree.
 %<*class>
 %    \end{macrocode}
 %
-% For the backcover table of contents.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_backcover_tableofcontents_string_tl {Volume's~Contents}
-%    \end{macrocode}
 % For the editor in chief.
 %    \begin{macrocode}
 \tl_const:Nn \c_@@_editorinchief_string_tl {Editor~in~Chief}
@@ -1376,7 +1383,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % For the front cover header texts.
 %    \begin{macrocode}
-\bool_if:NT {\g_@@_cover_bool} {
+\bool_if:NT \g_@@_cover_bool {
   \tl_const:Nn \c_@@_frontcover_left_string_tl {
     Number\c_space_tl\c_@@_issue_number_tl%
   }
@@ -1387,15 +1394,6 @@ Running "make install" installs the files in the local TeX tree.
     \c_@@_frontcover_left_string_tl\c_space_tl--\c_space_tl\c_@@_frontcover_right_string_tl%
   }
 }
-%    \end{macrocode}
-% For the name of the directory containing the 3rd and 4th cover pages.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_backmatter_directory_string_tl {backmatter}
-%    \end{macrocode}
-% For the name of the file containing the text of the current issue's back cover.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_issue_backcover_text_file_string_tl {backcover}
-\tl_const:Nn \c_@@_backcover_page_file_string_tl {\c_@@_backmatter_directory_string_tl/\c_@@_issue_backcover_text_file_string_tl}
 %    \end{macrocode}
 % For the authors instructions.
 %    \begin{macrocode}
@@ -1430,17 +1428,9 @@ Running "make install" installs the files in the local TeX tree.
 \tl_const:Nn \c_@@_images_directory_string_tl {images}
 \tl_const:Nn \c_@@_issue_images_path_string_tl {\c_@@_images_directory_string_tl}
 %    \end{macrocode}
-% For the preliminary versions sent to authors for checking.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_preliminary_version_string_tl {%
-  This~document~is~a~draft~that~lets~you~check~the~integrity~of~original~text~and
-  bibliography~of~your~article~to~appear~in~the~next~issue~of~the
-  \c_@@_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
-}
-%    \end{macrocode}
 % For the cover's background image.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_cover_background_image_tl {nwejm-cover-background.jpg}
+%<class>\tl_const:Nn \c_@@_cover_background_image_tl {nwejm-cover-background.jpg}
 %    \end{macrocode}
 % For the cover's background color in case the corresponding image is missing.
 %    \begin{macrocode}
@@ -1477,7 +1467,7 @@ Running "make install" installs the files in the local TeX tree.
 % For the name of the file containing the issue's number and year used by the
 % file that produces the cover.
 %    \begin{macrocode}
-\tl_const:Nn \c_@@_issue_number_year_file_string_tl {\c_@@_main_file_name_tl.iny}
+%<class>\tl_const:Nn \c_@@_issue_number_year_file_string_tl {\c_@@_main_file_name_tl.iny}
 %    \end{macrocode}
 %
 % % For the name of the file containing the informations needed to separate the
@@ -1497,15 +1487,6 @@ Running "make install" installs the files in the local TeX tree.
 \tl_const:Nn \c_@@_journal_title_string_tl {
   North-Western~European~Journal~of~Mathematics%
 }
-\tl_const:Nn \c_@@_journal_front_cover_title_string_tl {
-  North-Western~European\\Journal\\of\\Mathematics%
-}
-%    \end{macrocode}
-%
-% For the names of the underlying classes.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_nwejm_class_name_tl {nwejm}
-\tl_const:Nn \c_@@_nwejmarticle_class_name_tl {nwejmart}
 %    \end{macrocode}
 %
 % \subsection{Booleans}
@@ -1519,21 +1500,18 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\g_@@_rubric_bool}
 % \begin{macro}{\g_@@_interview_rubric_bool}
 % \begin{macro}{\g_@@_mainmatter_bool}
-% \begin{macro}{\g_@@_backmatter_bool}
 % \begin{macro}{\g_@@_backcover_bool}
 %   The following booleans will be used to test wheter we are respectively in the
 %   front cover, in the inside front cover, in the frontmatter, in (first page
 %   of) a rubric, in the mainmatter.
 %    \begin{macrocode}
-\bool_new:N \g_@@_frontcover_bool
-\bool_new:N \g_@@_inside_frontcover_bool
-\bool_new:N \g_@@_inside_backcover_bool
+%<class>\bool_new:N \g_@@_frontcover_bool
+%<class>\bool_new:N \g_@@_inside_frontcover_bool
+%<class>\bool_new:N \g_@@_inside_backcover_bool
 \bool_new:N \g_@@_frontmatter_bool
 \bool_new:N \g_@@_mainmatter_bool
-\bool_new:N \g_@@_backmatter_bool
-\bool_new:N \g_@@_backcover_bool
+%<class>\bool_new:N \g_@@_backcover_bool
 %    \end{macrocode}
-% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}
@@ -1571,7 +1549,7 @@ Running "make install" installs the files in the local TeX tree.
 % We define a \enquote{printer} layout offset dimension
 % "\c_@@_printer_layoutoffset_dim", fixed by the printer to be \SI{10}{\mm}.
 %    \begin{macrocode}
-\dim_const:Nn \c_@@_printer_layoutoffset_dim { 10mm }
+%<class>\dim_const:Nn \c_@@_printer_layoutoffset_dim { 10mm }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1586,7 +1564,7 @@ Running "make install" installs the files in the local TeX tree.
 % the equal to \enquote{printer} layout offset dimension) iff the output is
 % prepared for the printer ("\g_@@_for_printer_bool" flag equals true).
 %    \begin{macrocode}
-\bool_if:NTF {\g_@@_for_printer_bool} {
+\bool_if:NTF \g_@@_for_printer_bool {
   \dim_const:Nn \c_@@_potential_layoutoffset_dim { \c_@@_printer_layoutoffset_dim}
 }{
   \dim_const:Nn \c_@@_potential_layoutoffset_dim {\c_zero_dim}
@@ -1690,7 +1668,7 @@ Running "make install" installs the files in the local TeX tree.
 % option), which implies the output is prepared for the printer, with non-zero
 % offset ("\g_@@_for_printer_bool" flag equals true).
 %    \begin{macrocode}
-\bool_if:NTF {\g_@@_cover_bool} {
+\bool_if:NTF \g_@@_cover_bool {
   \dim_compare:nTF {\g_@@_binding_dim > \c_zero_dim} {%
     \dim_const:Nn \c_@@_potential_bindingoffset_dim { \g_@@_binding_dim }
   }{
@@ -1732,7 +1710,7 @@ Running "make install" installs the files in the local TeX tree.
 %   \end{description}
 % \end{itemize}
 %    \begin{macrocode}
-%<class>\bool_if:NTF {\g_@@_cover_bool} {
+%<class>\bool_if:NTF \g_@@_cover_bool {
 %<class>  \dim_const:Nn \c_@@_paperwidth_dim  {
 %<class>    \c_@@_layoutwidth_dim
 %<class>    +
@@ -1752,54 +1730,28 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\dim_const:Nn \c_@@_topmargin_dim   { 20mm}
-\dim_const:Nn \c_@@_topmargin_frontcover_dim {
-  \c_@@_topmargin_dim
-}
-\dim_const:Nn \c_@@_topmargin_inside_cover_dim   {
-  \c_@@_topmargin_dim
-}
-\dim_const:Nn \c_@@_topmargin_front_matter_dim   {
-  \c_@@_topmargin_inside_cover_dim
-}
-% \dim_const:Nn \c_@@_topmargin_backcover_dim {
-%   \c_@@_topmargin_frontcover_dim
-% }
-\dim_const:Nn \c_@@_headsep_dim     { 9.5mm}
-\dim_const:Nn \c_@@_headsep_frontcover_dim {
-  \c_@@_headsep_dim
-}
-\dim_const:Nn \c_@@_headsep_inside_frontcover_dim {
-  \c_@@_headsep_dim
-  +7mm
-}
-\dim_const:Nn \c_@@_headsep_front_matter_dim {
-  \c_@@_headsep_inside_frontcover_dim
-}
+%<class>\dim_const:Nn \c_@@_topmargin_dim   { 20mm}
+%<class>\dim_const:Nn \c_@@_topmargin_inside_cover_dim   {
+%<class>  \c_@@_topmargin_dim
+%<class>}
+%<class>\dim_const:Nn \c_@@_headsep_dim     { 9.5mm}
+%<class>\dim_const:Nn \c_@@_headsep_inside_frontcover_dim {
+%<class>  \c_@@_headsep_dim
+%<class>  +7mm
+%<class>}
 \dim_const:Nn \c_@@_headheight_dim  { 5mm }
 \dim_const:Nn \c_@@_bottom_margin_main_dim   { 36mm}
-\dim_const:Nn \c_@@_bottom_margin_front_dim   { 30mm}
+%<class>\dim_const:Nn \c_@@_bottom_margin_front_dim   { 30mm}
 \dim_const:Nn \c_@@_footskip_dim    { 10mm}
-\dim_const:Nn \c_@@_margin_frontcover_dim { 15mm }
-\dim_const:Nn \c_@@_left_minipage_frontcover_dim { .4\linewidth }
-\dim_const:Nn \c_@@_right_minipage_frontcover_dim { .6\linewidth }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \dim_const:Nn \c_@@_innermargin_dim { 23mm }
-\dim_const:Nn \c_@@_outermargin_dim { 30mm }
-\dim_const:Nn \c_@@_inside_cover_textwidth_dim { 145mm }%
-\dim_const:Nn \c_@@_outermargin_inside_frontcover_dim { 15mm }
-\dim_const:Nn \c_@@_outermargin_inside_backcover_dim { 10mm }
-\dim_const:Nn \c_@@_innermargin_backcover_dim { 10mm }
-\dim_const:Nn \c_@@_outermargin_backcover_dim { \c_@@_innermargin_backcover_dim }
-\dim_const:Nn \c_@@_topmargin_backcover_dim { \c_@@_innermargin_backcover_dim }
-\dim_const:Nn \c_@@_bottommargin_backcover_dim { \c_@@_innermargin_backcover_dim }
-\dim_const:Nn \c_@@_front_matter_extra_innermargin_dim    { \c_zero_dim }
-\dim_const:Nn \c_@@_front_matter_extra_outermargin_dim    { \c_zero_dim }
-\dim_const:Nn \c_@@_inside_cover_offset_dim { \c_zero_dim }%
-\dim_const:Nn \c_@@_logos_rectangle_thickness_dim { 3.1mm }
-\dim_const:Nn \c_@@_logos_rectangle_height_dim { 33mm }
+%<class>\dim_const:Nn \c_@@_inside_cover_textwidth_dim { 145mm }%
+%<class>\dim_const:Nn \c_@@_outermargin_inside_frontcover_dim { 15mm }
+%<class>\dim_const:Nn \c_@@_outermargin_inside_backcover_dim { 10mm }
+%<class>\dim_const:Nn \c_@@_logos_rectangle_thickness_dim { 3.1mm }
+%<class>\dim_const:Nn \c_@@_logos_rectangle_height_dim { 33mm }
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -1823,14 +1775,14 @@ Running "make install" installs the files in the local TeX tree.
 %
 % When the inside pages are produced, the crop marks are shown.
 %    \begin{macrocode}
-\bool_if:NT {\g_@@_inside_pages_bool} {
+\bool_if:NT \g_@@_inside_pages_bool {
   \geometry{showcrop}
 }
 %    \end{macrocode}
 %
 % We create a constant token list that contains the geometry of the front cover.
 %    \begin{macrocode}
-\bool_if:NTF {\g_@@_cover_bool} {
+\bool_if:NTF \g_@@_cover_bool {
   \tl_const:Nn \c_@@_frontcover_geometry_tl {%
     ,layoutheight=\c_@@_layoutheight_dim
     ,layoutwidth=\c_@@_layoutwidth_dim
@@ -1856,7 +1808,7 @@ Running "make install" installs the files in the local TeX tree.
 % We create a constant token list that contains the geometry of the inside front
 % and back covers.
 %    \begin{macrocode}
-\bool_if:NTF {\g_@@_cover_bool} {
+\bool_if:NTF \g_@@_cover_bool {
   \tl_const:Nn \c_@@_inside_cover_geometry_tl {%
     ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
     ,layoutoffset=\c_@@_potential_layoutoffset_dim
@@ -1880,40 +1832,6 @@ Running "make install" installs the files in the local TeX tree.
     ,nomarginpar%
     ,textwidth=\c_@@_inside_cover_textwidth_dim
   }%
-}
-%    \end{macrocode}
-%
-% We create a constant token list that contains the geometry of the front matter.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_front_matter_geometry_tl {%
-  ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
-  ,layoutoffset=\c_@@_potential_layoutoffset_dim
-  % ,bindingoffset=\c_@@_potential_bindingoffset_dim
-  ,top=\c_@@_topmargin_front_matter_dim%
-  ,headheight=\c_@@_headheight_dim
-  ,headsep=\c_@@_headsep_front_matter_dim
-  ,bottom=\c_@@_bottom_margin_front_dim
-  ,footskip=\c_@@_footskip_dim%
-  ,inner=\c_@@_innermargin_dim+\c_@@_front_matter_extra_innermargin_dim%
-  ,outer=\c_@@_outermargin_dim+\c_@@_front_matter_extra_outermargin_dim%
-  ,nomarginpar%
-}%
-%    \end{macrocode}
-%
-% We create a constant token list that contains the geometry of the back cover.
-%    \begin{macrocode}
-\tl_const:Nn \c_@@_backcover_geometry_tl {%
-  ,layoutsize={\c_@@_layoutwidth_dim,\c_@@_layoutheight_dim}
-  ,layoutoffset=\c_@@_potential_layoutoffset_dim
-  % ,bindingoffset=\c_@@_potential_bindingoffset_dim
-  ,top=\c_@@_topmargin_backcover_dim%
-  % ,top=\c_@@_topmargin_dim-15mm%
-  % ,headheight=\c_@@_headheight_dim
-  % ,headsep=\c_@@_headsep_dim-18mm
-  ,bottom=\c_@@_bottommargin_backcover_dim
-  % ,footskip=\c_@@_footskip_dim
-  ,inner=\c_@@_innermargin_backcover_dim
-  ,outer=\c_@@_outermargin_backcover_dim
 }
 %    \end{macrocode}
 %
@@ -1980,7 +1898,7 @@ Running "make install" installs the files in the local TeX tree.
 % % (see \url{http://tex.stackexchange.com/q/240318/18401}).
 % %    \begin{macrocode}
 % \bool_if:NF {\g_@@_coverpage_bool} {
-%   \bool_if:NF {\g_@@_inside_pages_bool} {
+%   \bool_if:NF \g_@@_inside_pages_bool {
 %     \preto\@enddocumenthook{
 % %    \end{macrocode}
 % %
@@ -2031,8 +1949,8 @@ Running "make install" installs the files in the local TeX tree.
 \renewcommand\etocbeforetitlehook
 {%
   \DeclareNameAlias{labelname}{giveninits-last}
-  \bool_if:NF {\g_@@_for_authors_bool}{
-    \bool_if:NF {\g_@@_tableofcontents_already_used_bool}{
+  \bool_if:NF \g_@@_for_authors_bool{
+    \bool_if:NF \g_@@_tableofcontents_already_used_bool{
       \g_@@_frontmatter_switch_tl
       \phantomsection
       \hypertarget{@@_toc}{}
@@ -2042,8 +1960,8 @@ Running "make install" installs the files in the local TeX tree.
 }%
 \renewcommand\etocaftertochook
 {%
-  \bool_if:NF {\g_@@_for_authors_bool}{
-    \bool_if:NF {\g_@@_tableofcontents_already_used_bool}{
+  \bool_if:NF \g_@@_for_authors_bool{
+    \bool_if:NF \g_@@_tableofcontents_already_used_bool{
       \normalsize%
       \bool_gset_false:N \g_@@_frontmatter_bool%
       \g_@@_mainmatter_switch_tl
@@ -2146,7 +2064,7 @@ Running "make install" installs the files in the local TeX tree.
 \newpagestyle{@@_mainmatter_ps}[]{%
   \sethead%
   [
-  \tl_if_exist:NT {\g_@@_header_title_tl}
+  \tl_if_exist:NT \g_@@_header_title_tl
   {
     \tl_if_empty:NF \g_@@_header_title_tl {%
       \slshape\g_@@_header_title_tl
@@ -2185,7 +2103,7 @@ Running "make install" installs the files in the local TeX tree.
       \bfseries%
       \adjustbox{stack=l}{%
         \c_@@_journal_title_string_tl
-%<class> \\\text_titlecase:n{\GetTranslation{volume-abbreviated}}\c_space_tl\int_use:N \g_@@_issue_number_int
+%<class> \\\text_titlecase_first:n{\GetTranslation{volume-abbreviated}}\c_space_tl\int_use:N \g_@@_issue_number_int
 %<class-article> \mbox{}
 }
 }
@@ -2364,7 +2282,6 @@ Running "make install" installs the files in the local TeX tree.
 \int_new:N \g_@@_issue_number_int
 \int_new:N \g_@@_issue_month_int
 \int_new:N \g_@@_issue_year_int
-\tl_new:N \g_@@_frontcover_image_options_tl
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -2433,22 +2350,10 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 \quark_new:N \q_@@
-\int_new:N \l_author_int
-\prop_new:N \g_authors_prop
+\int_new:N \l_@@_author_int
+\prop_new:N \g_@@_authors_prop
 \prop_new:N \l_affiliations_tagged_prop
-\cs_generate_variant:Nn \prop_put_if_new:Nnn { NVn }
-\cs_generate_variant:Nn \prop_gput_if_new:Nnn { Nxn }
-\cs_generate_variant:Nn \prop_put_if_new:Nnn { NnV }
-%    \end{macrocode}
-%
-% Currently, \Package{expl3} doesn't provide any command that counts the number
-% of items of property lists. It should be implemented soonish and, meanwhile,
-% Bruno Le Floch provided the following macros (see
-% \url{https://github.com/latex3/latex3/issues/293}).
-%    \begin{macrocode}
-\cs_new:Npn \__@@_prop_count:nn #1#2 { + 1 }
-\cs_new:Npn \@@_prop_count:N #1
-{ \int_eval:n { 0 \prop_map_function:NN #1 \__@@_prop_count:nn } }
+\cs_generate_variant:Nn \prop_gput_if_not_in:Nnn { Nxn }
 %    \end{macrocode}
 %
 % \begin{macro}{affiliation}
@@ -2459,10 +2364,10 @@ Running "make install" installs the files in the local TeX tree.
 \NewDocumentCommand \@@_author_affiliation:ww { o u\q_@@ }
 {
   \stepcounter{footnote}
-  \tl_set:NV \l_tmpa_tl {\the\c@footnote}
-  \prop_put_if_new:NVn \l_tmpa_prop \l_tmpa_tl {#2}
+  \tl_set:Ne \l_tmpa_tl {\the\c@footnote}
+  \prop_put_if_not_in:NVn \l_tmpa_prop \l_tmpa_tl {#2}
   \IfValueT{#1}{%
-    \prop_put_if_new:NnV \l_affiliations_tagged_prop {#1} \l_tmpa_tl
+    \prop_put_if_not_in:NnV \l_affiliations_tagged_prop {#1} \l_tmpa_tl
   }
 }
 %
@@ -2475,9 +2380,12 @@ Running "make install" installs the files in the local TeX tree.
   affiliationtagged .code:n = {%
     \prop_get:NnNTF \l_affiliations_tagged_prop {#1} \l_tmpa_tl
     {%
-      \prop_put_if_new:NVn \l_tmpa_prop {\l_tmpa_tl} {}
+      \prop_put_if_not_in:NVn \l_tmpa_prop {\l_tmpa_tl} {}
     }{
-      \msg_error:nnn{@@}{Unknown~tag}{#1}
+      \msg_error:nnn{
+%<class-article>nwejmart
+%<class>     nwejm
+}{Unknown~tag}{#1}
     }
   },
 %    \end{macrocode}
@@ -2627,13 +2535,6 @@ Running "make install" installs the files in the local TeX tree.
   \DTLnewdbentry{people}{role}{#5}%
   \_@@_populate_bib_file:nn {#1}{#5}
 }
-%    \end{macrocode}
-%
-% We create a variant of this control sequence that passes the \emph{values} of
-% the variables involved (see
-% \url{http://tex.stackexchange.com/a/214284/18401}).
-%    \begin{macrocode}
-\cs_generate_variant:Nn \_@@_people:nnnnn { nVnVx }
 %    \end{macrocode}
 %
 % \section{Functions for displaying people involved in the journal by role}
@@ -2969,10 +2870,6 @@ Running "make install" installs the files in the local TeX tree.
 % \section{Displaying the back cover}
 %
 %    \begin{macrocode}
-\tl_new:N \g_@@_short_toc_tl%
-%    \end{macrocode}
-%
-%    \begin{macrocode}
 \tl_new:N \g_@@_display_backcover_tl%
 \tl_gset:Nn \g_@@_display_backcover_tl {%
   \bool_gset_true:N \g_@@_backcover_bool
@@ -3069,12 +2966,12 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \cs_new_protected:Nn \_@@_date:nn
 {
-  \tl_if_exist:NT {#2}
+  \tl_if_exist:nT {#2}
   {
-    \tl_if_empty:NF {#2}
+    \tl_if_empty:nF {#2}
     {
-      \tl_if_eq:NNF {\c_@@_date_received_tl} {#1} { \c_@@_dates_separator_tl }
-      \text_titlecase:n { \exp_args:No \GetTranslation{#1} }
+      \tl_if_eq:NnF \c_@@_date_received_tl {#1} { \c_@@_dates_separator_tl }
+      \text_titlecase_first:n { \exp_args:No \GetTranslation{#1} }
       \c_@@_colon_tl\c_space_tl
       \DTMdate{#2}%
     }
@@ -3141,12 +3038,12 @@ Running "make install" installs the files in the local TeX tree.
 % needs the main file name to be fixed (chosen name: \enquote{issue}). If that's
 % not the case an error is thrown.
 %    \begin{macrocode}
-%<class>\str_if_eq:eeTF  \c_sys_jobname_str \c_@@_main_file_name_tl {
-%<class>  \bool_if:NT {\g_@@_cover_bool} {
+%<class>\str_if_eq:eeTF { \c_sys_jobname_str } { \c_@@_main_file_name_tl }{
+%<class>  \bool_if:NT \g_@@_cover_bool {
 %<class>    \msg_error:nn{nwejm}{Wrong~cover's~main~file~name!}
 %<class>  }
 %<class>}{
-%<class>  \bool_if:NTF {\g_@@_cover_bool} {
+%<class>  \bool_if:NTF \g_@@_cover_bool {
 %<class>    \file_if_exist:nTF { \c_@@_issue_number_year_file_string_tl }
 %<class>    {
 %<class>      \file_input:n {\c_@@_issue_number_year_file_string_tl}
@@ -3369,7 +3266,7 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We fix some of the PDF's metadata.
 %    \begin{macrocode}
-  \bool_if:NT {\g_@@_cover_bool} {
+  \bool_if:NT \g_@@_cover_bool {
     \hypersetup{
       pdftitle=\c_@@_journal_title_string_tl\c_space_tl--\c_space_tl\c_@@_frontcover_left_string_tl\c_space_tl--\c_space_tl\int_use:N\g_@@_issue_year_int,
       pdfauthor=\c_@@_journal_title_string_tl\c_space_tl(editor)
@@ -3516,7 +3413,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \cs_new_protected:Nn \_@@_command_only_in_body:n
 {
-  \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {
+  \cs_if_eq:NNF \@onlypreamble \@notprerr {
     \msg_error:nnn{
 %<class-article>     nwejmart
 %<class>     nwejm
@@ -3715,22 +3612,6 @@ Running "make install" installs the files in the local TeX tree.
 \AddToHook{begindocument}{%
 %    \end{macrocode}
 %
-% We first create a token list containing the date of the current issue formated
-% as required by \pkg{biblatex} (the month issue needs a leading zero if it is
-% $<10$).
-%    \begin{macrocode}
-\tl_new:N \g_@@_bib_issue_date_tl
-\tl_gset:Nn
-\g_@@_bib_issue_date_tl {
-  \int_use:N \g_@@_issue_year_int -
-  \int_compare:nNnT {\g_@@_issue_month_int}<{10}
-  {
-    0
-  }
-  \int_use:N \g_@@_issue_month_int
-}
-%    \end{macrocode}
-%
 % We will populate the bibiliographic file of the current issue with the current
 % issue (as "@periodical" entry type).
 %    \begin{macrocode}
@@ -3816,13 +3697,13 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-  \int_incr:N \l_author_int
-  \prop_gput_if_new:Nxn \g_authors_prop {author_\int_use:c {l_author_int}} {#2}
+  \int_incr:N \l_@@_author_int
+  \prop_gput_if_not_in:Nxn \g_@@_authors_prop {author_\int_use:c {l_@@_author_int}} {#2}
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm/authors } { #1 }
   }
-  \prop_set_eq:cN {l_author_ \int_use:c {l_author_int} _affiliations_prop} \l_tmpa_prop
+  \prop_set_eq:cN {l_author_ \int_use:c {l_@@_author_int} _affiliations_prop} \l_tmpa_prop
   \prop_clear:N \l_tmpa_prop
   \_@@_populate_bib_file:nn {#2}{author-art-\int_use:N \g_@@_articles_int}
   \tl_if_empty:NTF \l_@@_people_first_last_names_tl {%
@@ -3874,7 +3755,7 @@ Running "make install" installs the files in the local TeX tree.
 % A private "\_@@_frontmatter_switch_tl" switch is defined in order to
 % automatically insert some settings.
 %    \begin{macrocode}
-\tl_new:N \g_@@_frontmatter_switch_tl%
+%<class>\tl_new:N \g_@@_frontmatter_switch_tl%
 \tl_gset:Nn \g_@@_frontmatter_switch_tl {
   \bool_gset_true:N \g_@@_frontmatter_bool
   \frontmatter
@@ -3922,7 +3803,6 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \tl_new:N \g_@@_article_bib_key_tl%
 \tl_new:N \l_@@_people_first_last_names_tl
-\tl_new:N \g_@@_authors_first_last_names_tl%
 \tl_new:N \g_@@_citeauthor_tl%
 \int_new:N \g_@@_author_s_number_current_article_int%
 %
@@ -3952,8 +3832,8 @@ Running "make install" installs the files in the local TeX tree.
 % alter the behavior of these macros, we first store their original meanings in
 % some private control sequence:
 %    \begin{macrocode}
-\cs_set_eq:NN \_@@_orig_multinamedelim \multinamedelim
-\cs_set_eq:NN \_@@_orig_finalnamedelim \finalnamedelim
+\cs_set_eq:NN \_@@_orig_multinamedelim:n \multinamedelim
+\cs_set_eq:NN \_@@_orig_finalnamedelim:n \finalnamedelim
 \cs_new_protected:Nn \_@@_maketitle_citeauthor:n
 {
   \restorecommand\mkbibnamelast
@@ -3973,7 +3853,7 @@ Running "make install" installs the files in the local TeX tree.
 \cs_new_protected:Nn \@@_display_author:n
 {
   \seq_clear:N \l_tmpa_seq
-  \prop_get:NnN \g_authors_prop {author_#1} \l_tmpa_tl
+  \prop_get:NnN \g_@@_authors_prop {author_#1} \l_tmpa_tl
   \prop_map_inline:cn {l_author_ #1 _affiliations_prop} {
     \seq_put_right:Nx \l_tmpa_seq { ##1 }
   }
@@ -4000,12 +3880,8 @@ Running "make install" installs the files in the local TeX tree.
 %
 % We declare two token list which will used in the next (re)definition.
 %    \begin{macrocode}
-\tl_new:N \l_@@_bullet_and_rule_tl
 \tl_new:N \l_@@_authors_box_tl
 \tl_new:N \l_@@_abstract_box_tl
-\tl_new:N \l_@@_bullet_and_rule_odd_tl
-\tl_new:N \l_@@_bullet_and_rule_even_tl
-\tl_new:N \l_@@_title_box_tl
 \tl_new:N \g_@@_title_for_toc_tl
 %    \end{macrocode}
 %
@@ -4074,19 +3950,19 @@ Running "make install" installs the files in the local TeX tree.
     \mbox{}
   }
   {
-    \int_set:Nn \l_tmpa_int { \@@_prop_count:N \g_authors_prop}
+    \int_set:Nn \l_tmpa_int { \prop_count:N \g_@@_authors_prop}
     \normalsize%
     \int_step_inline:nnnn {1}{1}{\l_tmpa_int} {
       \@@_display_author:n {##1}
     }
-    \prop_gclear:N \g_authors_prop
+    \prop_gclear:N \g_@@_authors_prop
   }
 }
 %    \end{macrocode}
 %
 % We clear the tagged affiliations (henece their scope is the current article).
 %    \begin{macrocode}
-\int_zero:N \l_author_int
+\int_zero:N \l_@@_author_int
 \prop_clear:N \l_affiliations_tagged_prop
 %    \end{macrocode}
 %
@@ -4101,7 +3977,7 @@ Running "make install" installs the files in the local TeX tree.
   \noindent
   {
     \bfseries
-    \text_titlecase:n{
+    \text_titlecase_first:n{
       \GetTranslation{plural-keyword}
       \c_@@_colon_tl
     }
@@ -4191,7 +4067,7 @@ Running "make install" installs the files in the local TeX tree.
       \g_@@_subtitle_tl
     }\\[2ex]%
     \l_@@_authors_box_tl%
-    \bool_if:NT {\g_@@_date_specified_bool}
+    \bool_if:NT \g_@@_date_specified_bool
     {
       \\[2ex]
       \l_@@_dates_box_tl
@@ -4324,9 +4200,9 @@ Running "make install" installs the files in the local TeX tree.
 % has done its own.
 %
 %    \begin{macrocode}
-\cs_set_eq:NN \_@@_section \section
-\cs_set_eq:NN \_@@_subsection \subsection
-\cs_set_eq:NN \_@@_subsubsection \subsubsection
+\cs_set_eq:NN \_@@_section: \section
+\cs_set_eq:NN \_@@_subsection: \subsection
+\cs_set_eq:NN \_@@_subsubsection: \subsubsection
 \AfterPreamble{%
   \RenewDocumentCommand \section { s o o m } {%
     \tl_gclear:N \g_@@_short_section_title_tl
@@ -4343,7 +4219,7 @@ Running "make install" installs the files in the local TeX tree.
     }{
       \tl_gset:Nn \g_@@_short_section_title_tl {#2}
     }
-    \_@@_section[\g_@@_short_section_title_tl]{\g_@@_section_title_tl}
+    \_@@_section: [\g_@@_short_section_title_tl]{\g_@@_section_title_tl}
     \IfNoValueF {#3}{
       \sectionmark{#3}
     }
@@ -4353,14 +4229,14 @@ Running "make install" installs the files in the local TeX tree.
     {
       \setsecnumdepth{none}%
     }
-    \IfNoValueTF{#2}{\_@@_subsection{#3}}{\_@@_subsection[#2]{#3}}
+    \IfNoValueTF{#2}{\_@@_subsection: {#3}}{\_@@_subsection: [#2]{#3}}
   }
   \RenewDocumentCommand \subsubsection { s o m } {%
     \IfBooleanT {#1}
     {
       \setsecnumdepth{none}%
     }
-    \IfNoValueTF{#2}{\_@@_subsubsection{#3}}{\_@@_subsubsection[#2]{#3}}
+    \IfNoValueTF{#2}{\_@@_subsubsection: {#3}}{\_@@_subsubsection: [#2]{#3}}
   }
 }
 %    \end{macrocode}
@@ -4745,7 +4621,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-%   Since version 1.1.0 (2026-01-30) of the class, \Pkg{varioref} is replaced by
+%   Since version 2.0 (2026-02-06) of the class, \Pkg{varioref} is replaced by
 %   \Pkg{zref-vario} since; hence we define a (factice) \Pkg{varioref}'s
 %   \lstinline|\vref| command to be a wrapper of \Pkg{zref-vario}'s
 %   \lstinline|\zvref|:
@@ -4798,11 +4674,11 @@ Running "make install" installs the files in the local TeX tree.
       )
     }
     \zcRefTypeSetup{#1i}{
-      Name-sg = \text_titlecase:n{
+      Name-sg = \text_titlecase_first:n{
         \GetTranslation{#1}
       },
-      name-sg =     \GetTranslation{#1} ,
-      Name-pl = \text_titlecase:n{
+      name-sg = \GetTranslation{#1} ,
+      Name-pl = \text_titlecase_first:n{
         \GetTranslation{plural-#1}
       },
       name-pl = \GetTranslation{plural-#1} ,
@@ -4842,8 +4718,8 @@ Running "make install" installs the files in the local TeX tree.
   \keys_define:nn { nwejm/newenumeration }
   {
     singular .tl_set:c = {l_@@_newenumeration_#2_singular_tl},
-    plural   .tl_set:c =   {l_@@_newenumeration_#2_plural_tl},
-    label    .tl_set:c =   {l_@@_newenumeration_#2_label_tl},
+    plural   .tl_set:c = {l_@@_newenumeration_#2_plural_tl},
+    label    .tl_set:c = {l_@@_newenumeration_#2_label_tl},
   }
   \IfNoValueF {#1}
   {
@@ -4853,12 +4729,12 @@ Running "make install" installs the files in the local TeX tree.
     \tl_set:cn {l_@@_newenumeration_#2_plural_tl} {#2}
   }
   \tl_if_empty:cT {l_@@_newenumeration_#2_singular_tl} {
-    \tl_set:cV {l_@@_newenumeration_#2_singular_tl} {\_@@_tl_pop_right:v {l_@@_newenumeration_#2_plural_tl}}
+    \tl_set:ce {l_@@_newenumeration_#2_singular_tl} {\_@@_tl_pop_right:v {l_@@_newenumeration_#2_plural_tl}}
   }
   \tl_if_empty:cT {l_@@_newenumeration_#2_label_tl} {
-    \tl_set:cV {l_@@_newenumeration_#2_label_tl} {
-      \tl_head:f {
-        \text_uppercase:n {
+    \tl_set:ce {l_@@_newenumeration_#2_label_tl} {
+      \text_uppercase:n {
+        \tl_head:f {
           \tl_use:c {l_@@_newenumeration_#2_singular_tl}
         }
       }
@@ -4886,14 +4762,14 @@ Running "make install" installs the files in the local TeX tree.
     )
   }
   \zcRefTypeSetup{#1i}{
-    Name-sg = \text_titlecase:n{
-      \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
+    Name-sg = \text_titlecase_first:n{
+      \tl_use:c {l_@@_newenumeration_#1_singular_tl}
     },
-    name-sg = \tl_use:c {l__nwejm_newenumeration_#1_singular_tl} ,
-    Name-pl = \text_titlecase:n{
-      \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
+    name-sg = \tl_use:c {l_@@_newenumeration_#1_singular_tl} ,
+    Name-pl = \text_titlecase_first:n{
+      \tl_use:c {l_@@_newenumeration_#1_plural_tl}
     },
-    name-pl = \tl_use:c {l__nwejm_newenumeration_#1_plural_tl} ,
+    name-pl = \tl_use:c {l_@@_newenumeration_#1_plural_tl} ,
   }
 }
 %
@@ -5036,59 +4912,59 @@ Running "make install" installs the files in the local TeX tree.
 \DeclareMathOperator{\Argch}{Argch}
 \DeclareMathOperator{\Argsh}{Argsh}
 \DeclareMathOperator{\Argth}{Argth}
-\cs_set_eq:NN \_@@_orig_arccos \arccos
-\cs_set_eq:NN \_@@_orig_arcsin \arcsin
-\cs_set_eq:NN \_@@_orig_arctan \arctan
-\cs_set_eq:NN \_@@_orig_arccosh \arccosh
-\cs_set_eq:NN \_@@_orig_arcsinh \arcsinh
-\cs_set_eq:NN \_@@_orig_arctanh \arctanh
+\cs_set_eq:NN \_@@_orig_arccos: \arccos
+\cs_set_eq:NN \_@@_orig_arcsin: \arcsin
+\cs_set_eq:NN \_@@_orig_arctan: \arctan
+\cs_set_eq:NN \_@@_orig_arccosh: \arccosh
+\cs_set_eq:NN \_@@_orig_arcsinh: \arcsinh
+\cs_set_eq:NN \_@@_orig_arctanh: \arctanh
 \RenewDocumentCommand \arccos {} {
-  \ifcurrentbaselanguage{french}{\Arccos}{\_@@_orig_arccos}%
+  \ifcurrentbaselanguage{french}{\Arccos}{\_@@_orig_arccos:}%
 }
 \RenewDocumentCommand \arcsin {} {
-  \ifcurrentbaselanguage {french}{\Arcsin}{\_@@_orig_arcsin}%
+  \ifcurrentbaselanguage {french}{\Arcsin}{\_@@_orig_arcsin:}%
 }
 \RenewDocumentCommand \arctan {} {
-  \ifcurrentbaselanguage {french}{\Arctan}{\_@@_orig_arctan}%
+  \ifcurrentbaselanguage {french}{\Arctan}{\_@@_orig_arctan:}%
 }
 \RenewDocumentCommand \arccosh {} {
-  \ifcurrentbaselanguage{french}{\Argch}{\_@@_orig_arccosh}%
+  \ifcurrentbaselanguage{french}{\Argch}{\_@@_orig_arccosh:}%
 }
 \RenewDocumentCommand \arcsinh {} {
-  \ifcurrentbaselanguage {french}{\Argsh}{\_@@_orig_arcsinh}%
+  \ifcurrentbaselanguage {french}{\Argsh}{\_@@_orig_arcsinh:}%
 }
 \RenewDocumentCommand \arctanh {} {
-  \ifcurrentbaselanguage {french}{\Argth}{\_@@_orig_arctanh}%
+  \ifcurrentbaselanguage {french}{\Argth}{\_@@_orig_arctanh:}%
 }
 %    \end{macrocode}
 %
 % Various other operators.
 %    \begin{macrocode}
-\cs_set_eq:NN \_@@_orig_cot \cot
+\cs_set_eq:NN \_@@_orig_cot: \cot
 \RenewDocumentCommand \cot {} {
-  \ifcurrentbaselanguage {french}{\cotan}{\_@@_orig_cot}%
+  \ifcurrentbaselanguage {french}{\cotan}{\_@@_orig_cot:}%
 }
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\sh}{sh}
-\cs_set_eq:NN \_@@_orig_cosh \cosh
-\cs_set_eq:NN \_@@_orig_sinh \sinh
-\cs_set_eq:NN \_@@_orig_tanh \tanh
+\cs_set_eq:NN \_@@_orig_cosh: \cosh
+\cs_set_eq:NN \_@@_orig_sinh: \sinh
+\cs_set_eq:NN \_@@_orig_tanh: \tanh
 \RenewDocumentCommand \cosh {} {
-  \ifcurrentbaselanguage {french}{\ch}{\_@@_orig_cosh}%
+  \ifcurrentbaselanguage {french}{\ch}{\_@@_orig_cosh:}%
 }
 \RenewDocumentCommand \sinh {} {
-  \ifcurrentbaselanguage {french}{\sh}{\_@@_orig_sinh}%
+  \ifcurrentbaselanguage {french}{\sh}{\_@@_orig_sinh:}%
 }
 \RenewDocumentCommand \tanh {} {
-  \ifcurrentbaselanguage {french}{\operatorname{th}}{\_@@_orig_tanh}%
+  \ifcurrentbaselanguage {french}{\operatorname{th}}{\_@@_orig_tanh:}%
 }
 \DeclareMathOperator{\Id}{Id}
-\cs_set_eq:NN \_@@_orig_log \log
-\cs_set_eq:NN \_@@_orig_lg \lg
+\cs_set_eq:NN \_@@_orig_log: \log
+\cs_set_eq:NN \_@@_orig_lg: \lg
 \RenewDocumentCommand \log { s } {
     \IfBooleanTF {#1}
   {
-    \_@@_orig_log
+    \_@@_orig_log:
   }
   {
     \ln
@@ -5097,7 +4973,7 @@ Running "make install" installs the files in the local TeX tree.
 \RenewDocumentCommand \lg { s } {
     \IfBooleanTF {#1}
   {
-    \_@@_orig_lg
+    \_@@_orig_lg:
   }
   {
     \ln
@@ -5169,8 +5045,8 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{Various math utilities}
 %
 %    \begin{macrocode}
-\cs_set_eq:NN \_@@_orig_leq \leq
-\cs_set_eq:NN \_@@_orig_geq \geq
+\cs_set_eq:NN \_@@_orig_leq: \leq
+\cs_set_eq:NN \_@@_orig_geq: \geq
 \RenewDocumentCommand \le {} {%
   \ifcurrentbaselanguage {french}{\leqslant}{\_@@_orig_leq}%
 }
@@ -5816,7 +5692,7 @@ Running "make install" installs the files in the local TeX tree.
 % \begin{macro}{\printbibliography}
 %    \begin{macrocode}
 % \newcounter{lastpagearticle}
-\cs_set_eq:NN \_@@_printbibliography \printbibliography
+\cs_set_eq:NN \_@@_printbibliography: \printbibliography
 \RenewDocumentCommand \printbibliography { O{} } {
 %    \end{macrocode}
 % We force all the previous floats to be processed no later on the page
@@ -5826,13 +5702,13 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 % We automatically insert the acknowledgments (if any) before the bibliography.
 %    \begin{macrocode}
-  \tl_if_empty:NF {\g_@@_article_acknowledgments_tl}
+  \tl_if_empty:NF \g_@@_article_acknowledgments_tl
   {
     \section*{\GetTranslation{Acknowledgments}}
     \g_@@_article_acknowledgments_tl
     \tl_gclear:N \g_@@_article_acknowledgments_tl
   }
-  \_@@_printbibliography[heading=_@@_subbibliography,resetnumbers,#1]
+  \_@@_printbibliography: [heading=_@@_subbibliography,resetnumbers,#1]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -5946,7 +5822,7 @@ Running "make install" installs the files in the local TeX tree.
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\tl_new:N \g_@@_font_designer_text_tl%
+%<class>\tl_new:N \g_@@_font_designer_text_tl%
 \cs_new_protected:Nn \@@_font_designer_text:n
 {
   \tl_gset:Nn \g_@@_font_designer_text_tl { #1 }
@@ -5954,18 +5830,6 @@ Running "make install" installs the files in the local TeX tree.
 \NewDocumentCommand \fontdesignertext {m}
 {
   \_@@_font_designer_text:n {#1}%
-}
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\tl_new:N \g_@@_graphicdesign_text_tl%
-\cs_new_protected:Nn \@@_graphicdesign_text:n
-{
-  \tl_gset:Nn \g_@@_graphicdesign_text_tl { #1 }
-}
-\NewDocumentCommand \graphicdesigntext {m}
-{
-  \_@@_graphicdesign_text:n {#1}%
 }
 %    \end{macrocode}
 %
@@ -6000,7 +5864,7 @@ Running "make install" installs the files in the local TeX tree.
 % some configurations and display it (and only it). Otherwise, we automatically
 % display the table of contents.
 %    \begin{macrocode}
-  \bool_if:NTF {\g_@@_cover_bool} {
+  \bool_if:NTF \g_@@_cover_bool {
     \g_@@_display_frontcover_tl
     \g_@@_display_backcover_tl
     \g_@@_display_inside_frontcover_tl
@@ -6931,7 +6795,7 @@ vrb xref *.typo mp  epub html);
 %
 %    \begin{macrocode}
 # mode: nwejm.cls
-# denisbitouze, 2026-01-30
+# denisbitouze, 2026-02-06
 #
 #include:class-book
 #include:latex-document
