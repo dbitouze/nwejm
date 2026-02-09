@@ -2494,30 +2494,20 @@ Running "make install" installs the files in the local TeX tree.
 % \subsection{New theorem options}
 %
 %    \begin{macrocode}
-\tl_new:N \l_@@_newtheorem_style_tl
-\keys_define:nn { nwejm / newtheorem }
+\keys_define:nn { keytheorems/thm }
 {
-  title .tl_set:N = \l_@@_newtheorem_title_tl,
-  title / french .tl_set:N = \l_@@_newtheorem_french_title_tl,
-  title / english .tl_set:N = \l_@@_newtheorem_english_title_tl,
-  title / german .tl_set:N = \l_@@_newtheorem_german_title_tl,
-  title / dutch .tl_set:N = \l_@@_newtheorem_dutch_title_tl,
-  title .value_required:n = true,
-  title / french .value_required:n = true,
-  title / english .value_required:n = true,
-  title / german .value_required:n = true,
-  title / dutch .value_required:n = true,
-  %
-  title-plural .tl_set:N = \l_@@_newtheorem_title_plural_tl,
-  title-plural / french .tl_set:N = \l_@@_newtheorem_french_title_plural_tl,
-  title-plural / english .tl_set:N = \l_@@_newtheorem_english_title_plural_tl,
-  title-plural / german .tl_set:N = \l_@@_newtheorem_german_title_plural_tl,
-  title-plural / dutch .tl_set:N = \l_@@_newtheorem_dutch_title_plural_tl,
-  title-plural .value_required:n = true,
-  title-plural / french .value_required:n = true,
-  title-plural / english .value_required:n = true,
-  title-plural / german .value_required:n = true,
-  title-plural / dutch .value_required:n = true,
+  title .undefine:,
+  title .code:n = {
+    \exp_args:Nne \keys_set:nn { keytheorems/thm } {
+      name= \text_titlecase_all:n {#1}
+    }
+    \exp_args:Nne \keys_set:nn { keytheorems/thm } {
+      refname= {
+        \_@@_titlecase_all:n{#1},
+        \_@@_titlecase_all:n{#1} s
+      }
+    }
+  },
 }
 %    \end{macrocode}
 % \end{macro}
@@ -4567,16 +4557,33 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-% Then, we define a private that let us distinguish whether the references names
-% will be title cased or not, depending whether the current language will French
-% of not.
+%   For compatibility reason, we hack the default keytheorem style (coming from
+%   the amsthm one) in order that, after the end of a theorem or proof, the
+%   following line of text doesn't start a new paragraph, so will be indented
+%   not always but only if stipulated (e.g. by a blank line). See
+%   \url{https://tex.stackexchange.com/a/728591/18401}.
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \_@@_titlecase:n {
+\addtotheoremhook{postfoot}{\@endpetrue}
+%    \end{macrocode}
+%
+%   Then, we define private macros that let us distinguish whether the
+%   references names will be title cased or not, depending whether the current
+%   language will French of not.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \_@@_titlecase_first:n {
   \ifcurrentbaselanguage{french}{
       #1
     }{
-      \text_titlecase:n{#1}
+      \text_titlecase_first:n{#1}
+    }
+  }
+\cs_new_protected:Nn \_@@_titlecase_all:n {
+  \ifcurrentbaselanguage{french}{
+      #1
+    }{
+      \text_titlecase_all:n{#1}
     }
   }
 %    \end{macrocode}
@@ -4590,26 +4597,64 @@ Running "make install" installs the files in the local TeX tree.
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \_@@_new_theorem:nn {
-  \AddToHook{begindocument}{%
     \newkeytheorem{#2}[
-      name=\text_titlecase:n{\GetTranslation{#2}},
-      refname={
-        \_@@_titlecase:n{\GetTranslation{#2}},
-        \_@@_titlecase:n{\GetTranslation{plural-#2}}
+      style=theorem,
+      name=\text_titlecase_all:n {#2},
+      refname= {
+        \_@@_titlecase_all:n{#2},
+        \_@@_titlecase_all:n{#2} s
+      },
+      Refname= {
+        \text_titlecase_all:n{#2},
+        \text_titlecase_all:n{#2} s
       },
       #1
     ]
     \newkeytheorem{#2*}[
-      name=\text_titlecase:n{\GetTranslation{#2}},
-      refname={
-        \_@@_titlecase:n{\GetTranslation{#2}},
-        \_@@_titlecase:n{\GetTranslation{plural-#2}}
+      style=theorem,
+      name=\text_titlecase_all:n {#2},
+      refname= {
+        \_@@_titlecase_all:n{#2},
+        \_@@_titlecase_all:n{#2} s
+      },
+      Refname= {
+        \text_titlecase_all:n{#2},
+        \text_titlecase_all:n{#2} s
       },
       numbered=false,
       #1
     ]
-    \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
+    \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
+}
+\cs_new_protected:Nn \_@@_predefined_theorem:nn {
+  \AddToHook{begindocument}{%
+    \newkeytheorem{#2}[
+      name=\text_titlecase_all:n{\GetTranslation{#2}},
+      refname={
+        \_@@_titlecase_all:n{\GetTranslation{#2}},
+        \_@@_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      Refname={
+        \text_titlecase_all:n{\GetTranslation{#2}},
+        \text_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      #1
+    ]
+    \newkeytheorem{#2*}[
+      name=\text_titlecase_all:n{\GetTranslation{#2}},
+      refname={
+        \_@@_titlecase_all:n{\GetTranslation{#2}},
+        \_@@_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      Refname={
+        \text_titlecase_all:n{\GetTranslation{#2}},
+        \text_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      numbered=false,
+      #1
+    ]
   }
+  \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
 }
 %    \end{macrocode}
 %
@@ -4625,17 +4670,16 @@ Running "make install" installs the files in the local TeX tree.
 % Finally, we define some usual theorems:
 %
 %    \begin{macrocode}
-\newtheorem[style=theorem]{theorem}
-\newtheorem[style=theorem]{axiom}
-\newtheorem[style=theorem]{corollary}
-\newtheorem[style=theorem]{conjecture}
-\newtheorem[style=theorem]{proposition}
-\newtheorem[style=theorem]{lemma}
-%
-\newtheorem[style=definition]{definition}
-\newtheorem[style=definition]{example}
-\newtheorem[style=definition]{notation}
-\newtheorem[style=definition]{remark}
+\_@@_predefined_theorem:nn{style=theorem}{theorem}
+\_@@_predefined_theorem:nn{style=theorem}{axiom}
+\_@@_predefined_theorem:nn{style=theorem}{corollary}
+\_@@_predefined_theorem:nn{style=theorem}{conjecture}
+\_@@_predefined_theorem:nn{style=theorem}{proposition}
+\_@@_predefined_theorem:nn{style=theorem}{lemma}
+\_@@_predefined_theorem:nn{style=definition}{definition}
+\_@@_predefined_theorem:nn{style=definition}{example}
+\_@@_predefined_theorem:nn{style=definition}{notation}
+\_@@_predefined_theorem:nn{style=definition}{remark}
 %    \end{macrocode}
 %
 %   Since the proof command exists in LaTeX2e, we need to define it the
@@ -4644,10 +4688,10 @@ Running "make install" installs the files in the local TeX tree.
 %    \begin{macrocode}
 \AddToHook{begindocument}{%
   \renewkeytheorem{proof}[
-    name=\text_titlecase:n{\GetTranslation{proof}},
+    name=\text_titlecase_all:n{\GetTranslation{proof}},
     refname={
-      \_@@_titlecase:n{\GetTranslation{proof}},
-      \_@@_titlecase:n{\GetTranslation{plural-proof}}
+      \_@@_titlecase_all:n{\GetTranslation{proof}},
+      \_@@_titlecase_all:n{\GetTranslation{plural-proof}}
     },
     style=proof
   ]
@@ -4707,6 +4751,14 @@ Running "make install" installs the files in the local TeX tree.
 %   \lstinline|\zvref|:
 %    \begin{macrocode}
 \RenewDocumentCommand{\vref}{O{} m}{\zvref[#1]{#2}}
+%    \end{macrocode}
+%
+%   Since version 2.0 (2026-02-06) of the class, \Pkg{cleveref} is replaced by
+%   \Pkg{zref-clever} since; hence we define a (factice) \Pkg{cleveref}'s
+%   \lstinline|\cref| command to be a wrapper of \Pkg{zref-clever}'s
+%   \lstinline|\zcref|:
+%    \begin{macrocode}
+\NewDocumentCommand{\cref}{O{} m}{\zcref[#1]{#2}}
 %    \end{macrocode}
 %
 % \subsection{Assertions, hypotheses and conditions enumerations}
