@@ -1,5 +1,5 @@
 # mode: nwejm.cls
-# denisbitouze, 23.12.2015
+# denisbitouze, 2026-02-10
 #
 #include:class-book
 #include:latex-document
@@ -15,7 +15,7 @@
 #include:array
 #include:booktabs
 #include:mathtools
-#include:ntheorem
+#include:keytheorems
 #include:esvect
 #include:kpfonts
 #include:translations
@@ -32,7 +32,8 @@
 #include:hypcap
 #include:bookmark
 #include:glossaries
-#include:cleveref
+#include:zref-clever
+#include:zref-vario
 #
 # Document class
 #keyvals:\documentclass/nwejmart

@@ -1,5 +1,19 @@
 # [Unreleased]
 
+# [2.0] - 2026-02-10
+
+## Fixed
+- The bundle now relies on `keytheorems`, `zref-clever`, `zrefvario` instead of `ntheorem`, `thmtools`, `cleveref` (breaks backward compatibility but rollback provided).
+- Use of arguments inconsistent with expl3 language specification (gh #5).
+- Code improved (thanks to explcheck!)
+
+## Changed
+- `title-plural=⟨plural⟩` replaced by `refname={⟨singular⟩,⟨plural⟩}`.
+- Documentation updated.
+
+## Deprecated
+- `title-plural`.
+
 # [1.0.6] - 2024-02-08
 
 ## Fixed

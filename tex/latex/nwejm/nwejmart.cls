@@ -13,49 +13,30 @@
 %%     See:| http://www.latex-project.org/lppl.txt
 %% 
 \RequirePackage{etoolbox}
-\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\NeedsTeXFormat{LaTeX2e}[2018-04-01]
+\providecommand\DeclareRelease[3]{}
+\providecommand\DeclareCurrentRelease[2]{}
+\DeclareRelease{}{2024-02-08}{nwejm-2024-02-08.cls}
+\DeclareCurrentRelease{}{2026-02-10}
 \ProvidesExplClass
   {nwejmart}
-  {2024-02-08}
-  {1.0.6}
+  {2026-02-10}
+  {2.0}
   {
     Class for the journal "North-Western European Journal of Mathematics".
   }
-\ExplSyntaxOn
-\msg_new:nnnn{nwejm}{Issue~number~needed}{Option~`#1'~needed!}
-{Please~specify~`#1=<number>', ~otherwise~`<number>'~will~be~set~to
-  ~`\int_use:N\c__nwejm_first_issue_number_int'.}%
-\msg_new:nnn{nwejm}{Wrong~issue's~main~file~name!}{You~ are~ using~ the~
-  `nwejm'~ class~ designed~ for~ the~ complete~ issues~ of~ the~ NWEJM~ and~
-  aimed~ for~ the~ NWEJM's~ team,~ not~ for~ authors~ of~ articles:~ if~ you're~
-  an~ author~ of~ an~ article,~ you~ should~ use~ the~ `nwejmart'~ class~
-  instead.~ Otherwise,~ if~ you're~ from~ the~ NWEJM's~ team,~ please~ note~
-  that~ the~ issue's~ main~ file~ should~ be~ named~
-  `\tl_use:N\c__nwejm_main_file_name_tl.tex',~ not~ `\c_sys_jobname_str.tex'.~
-  Please~ rename~ the~ current~ file~ accordingly.}%
-\msg_new:nnn{nwejm}{Wrong~cover's~main~file~name!}{The~ cover~ file~ should~
-  /not/~ be~ named~ as~ the~ issue's~ main~ file~
-  `\tl_use:N\c__nwejm_main_file_name_tl.tex'.~ Please~ rename~ the~ current~ file~
-  accordingly.}%
-\msg_new:nnn{nwejm}{Main~file~needs~to~be~compiled!}{The~ issue's~ main~ file~
-  (`\tl_use:N\c__nwejm_main_file_name_tl.tex')~ should~ be~ compiled~ at~ least~
-  once~ before~ the~ cover~ can~ be~ generated.}%
 \msg_new:nnnn{nwejmart}{Unknown~choice}{Choice~`#3'~invalid!}
 {Please~specify~#1=#2.}%
-\msg_new:nnn{nwejmart}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
+\msg_new:nnn{
+ nwejmart
+}{Unknown~tag}{There~ isn't~ any~ affiliation~ tagged~
   with~ `#1'.~ This~ one~ will~ be~ ignored.}%
-\msg_new:nnn{nwejmart}{Unknown~language}{The~ option~ `#1'~ you~ passed~ isn't~
-  a~ valid~ language~ name~ (only~ `english',~ `french',~ `ngerman',~ `german',~
-  `dutch'~ are~ accepted).~ `english'~ will~ be~ used~ instead.}%
 \msg_new:nnn{nwejmart}{No~keyword}{You~ haven't~ specify~ any~ keyword~ for~
   this~ article!}%
 \msg_new:nnn{nwejmart}{No~MSC}{You~ haven't~ specify~ any~ Mathematical~
   Subject~ Classification~ (MSC)~ for~ this~ article!}%
 \msg_new:nnn{nwejmart}{No~abstract}{You~ haven't~ specify~ any~ abstract~ for~
   this~ article!}%
-\msg_new:nnn{nwejmart}{Starred~AMS~environments}{The~ starred~AMS~environment~
-  `#1*'~should~ be~ avoided.~ It~ will ~be ~ replaced ~ by its~ unstarred~
-  counterpart~ `#1'.}%
 \msg_new:nnn{
  nwejmart
 }{Command~restricted~to~document~body~used~in~preamble}{The~command~#1
@@ -138,15 +119,14 @@
 \LoadClass { book }
 \PassOptionsToPackage{export}{adjustbox}%
 \PassOptionsToPackage{fleqn}{amsmath}%
-\PassOptionsToPackage{french,ngerman,dutch,english,noabbrev,capitalize}{cleveref}
-\bool_if:NF {\g__nwejm_language_specified_bool} {
+\bool_if:NF \g__nwejm_language_specified_bool {
   \__nwejm_language:n {english}
 }
 \RequirePackage[l2tabu,orthodox]{nag}
 \RequirePackage{mathtools}
 \sys_if_engine_pdftex:TF
 {
-  \RequirePackage[T1]{fontenc}
+\RequirePackage[T1]{fontenc}
   \RequirePackage[noDcommand]{kpfonts}
 }{
   \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
@@ -168,7 +148,7 @@
 \RequirePackage[autostyle]{csquotes}%
 \RequirePackage{array}
 \RequirePackage{booktabs}
-\RequirePackage[amsmath,thmmarks,fleqn]{ntheorem}
+\RequirePackage{keytheorems}
 \RequirePackage{esvect}
 \RequirePackage{geometry}
 \RequirePackage{translations}%
@@ -176,17 +156,15 @@
 \RequirePackage{fmtcount}%
 \RequirePackage{babel}%
 \RequirePackage{listings}%
-\RequirePackage{varioref}
 \RequirePackage{subcaption}
 \RequirePackage{tocvsec2}
 \RequirePackage{tocloft}%
 \gdef\ttl@savemark{}
 \RequirePackage{etoc}%
-\RequirePackage[babel=true,nopatch=eqnum,final]{microtype}%
+\RequirePackage[babel=true,nopatch=eqnum,final,nopatch=footnote]{microtype}%
 \RequirePackage[useregional]{datetime2}%
 \RequirePackage[inline]{enumitem}%
 \RequirePackage{environ}
-\RequirePackage{footnote}%
 \RequirePackage[backend=biber,style=nwejm]{biblatex}%
 \ExecuteBibliographyOptions{defernumbers=true,dashed=false,uniquename=init,backref,safeinputenc}
 \RequirePackage[pdfencoding=unicode,final]{hyperref}%
@@ -196,17 +174,14 @@
 \RequirePackage[all]{hypcap}
 \RequirePackage[numbered]{bookmark}%
 \RequirePackage[nowarn]{glossaries}%
-\RequirePackage{cleveref}%
+\RequirePackage{zref-clever}%
+\RequirePackage{zref-vario}%
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
 \glsdisablehyper
 \int_new:N \g__nwejm_articles_int
 \clist_new:N \g__nwejm_counters_to_be_reset_clist
-\int_const:Nn \c__nwejm_first_issue_number_int { 1 }
-\int_const:Nn \c__nwejm_first_issue_year_int   { 2015 }
-\int_const:Nn \c__nwejm_first_issue_month_int  { 1 }
-\int_const:Nn \c__nwejm_interval_in_months_int { 12 }
 \tl_const:Nn \c__nwejm_main_file_name_tl {issue}
 \tl_const:Nn \c__nwejm_date_received_tl {received}
 \tl_const:Nn \c__nwejm_date_accepted_tl {accepted}
@@ -214,12 +189,6 @@
 \tl_const:Nn \c__nwejm_dates_separator_tl {/}
 \tl_const:Nn \c__nwejm_images_directory_string_tl {images}
 \tl_const:Nn \c__nwejm_issue_images_path_string_tl {\c__nwejm_images_directory_string_tl}
-\tl_const:Nn \c__nwejm_preliminary_version_string_tl {%
-  This~document~is~a~draft~that~lets~you~check~the~integrity~of~original~text~and
-  bibliography~of~your~article~to~appear~in~the~next~issue~of~the
-  \c__nwejm_journal_title_string_tl.~The~current~layout~may~not~be~the~final~one.%
-}
-\tl_const:Nn \c__nwejm_cover_background_image_tl {nwejm-cover-background.jpg}
 \definecolor{__nwejm_cover_background_color_tl}{rgb}{0.16,0.22,0.56}
 \tl_const:Nn \c__nwejm_msc_string_tl {\textsc{msc}}
 \tl_const:Nn \c__nwejm_colon_tl {
@@ -231,76 +200,26 @@
 \tl_const:Nn \c__nwejm_issue_bib_file_suffix_string_tl {__nwejm}
 \tl_const:Nn \c__nwejm_issue_bib_file_string_tl {\c_sys_jobname_str\c__nwejm_issue_bib_file_suffix_string_tl.bib}
 \tl_const:Nn \c__nwejm_issue_bib_path_string_tl {\c__nwejm_issue_bib_file_string_tl}
-\tl_const:Nn \c__nwejm_issue_number_year_file_string_tl {\c__nwejm_main_file_name_tl.iny}
 \tl_const:Nn \c__nwejm_issue_bib_key_tl {\int_use:N \g__nwejm_issue_number_int}
 \tl_const:Nn \c__nwejm_journal_short_title_string_tl {\textsc{nwejm}}
 \tl_const:Nn \c__nwejm_journal_title_string_tl {
   North-Western~European~Journal~of~Mathematics%
 }
-\tl_const:Nn \c__nwejm_journal_front_cover_title_string_tl {
-  North-Western~European\\Journal\\of\\Mathematics%
-}
-\tl_const:Nn \c__nwejm_nwejm_class_name_tl {nwejm}
-\tl_const:Nn \c__nwejm_nwejmarticle_class_name_tl {nwejmart}
-\bool_new:N \g__nwejm_frontcover_bool
-\bool_new:N \g__nwejm_inside_frontcover_bool
-\bool_new:N \g__nwejm_inside_backcover_bool
 \bool_new:N \g__nwejm_frontmatter_bool
 \bool_new:N \g__nwejm_mainmatter_bool
-\bool_new:N \g__nwejm_backmatter_bool
-\bool_new:N \g__nwejm_backcover_bool
 \bool_new:N \g__nwejm_date_specified_bool
 \dim_const:Nn \c__nwejm_layoutheight_dim { 240mm}
 \dim_const:Nn \c__nwejm_layoutwidth_dim  { 170mm}
-\dim_const:Nn \c__nwejm_printer_layoutoffset_dim { 10mm }
 \dim_const:Nn \c__nwejm_paperheight_dim {
   \c__nwejm_layoutheight_dim
 }
   \dim_const:Nn \c__nwejm_paperwidth_dim  {
     \c__nwejm_layoutwidth_dim
   }
-\dim_const:Nn \c__nwejm_topmargin_dim   { 20mm}
-\dim_const:Nn \c__nwejm_topmargin_frontcover_dim {
-  \c__nwejm_topmargin_dim
-}
-\dim_const:Nn \c__nwejm_topmargin_inside_cover_dim   {
-  \c__nwejm_topmargin_dim
-}
-\dim_const:Nn \c__nwejm_topmargin_front_matter_dim   {
-  \c__nwejm_topmargin_inside_cover_dim
-}
-\dim_const:Nn \c__nwejm_headsep_dim     { 9.5mm}
-\dim_const:Nn \c__nwejm_headsep_frontcover_dim {
-  \c__nwejm_headsep_dim
-}
-\dim_const:Nn \c__nwejm_headsep_inside_frontcover_dim {
-  \c__nwejm_headsep_dim
-  +7mm
-}
-\dim_const:Nn \c__nwejm_headsep_front_matter_dim {
-  \c__nwejm_headsep_inside_frontcover_dim
-}
 \dim_const:Nn \c__nwejm_headheight_dim  { 5mm }
 \dim_const:Nn \c__nwejm_bottom_margin_main_dim   { 36mm}
-\dim_const:Nn \c__nwejm_bottom_margin_front_dim   { 30mm}
 \dim_const:Nn \c__nwejm_footskip_dim    { 10mm}
-\dim_const:Nn \c__nwejm_margin_frontcover_dim { 15mm }
-\dim_const:Nn \c__nwejm_left_minipage_frontcover_dim { .4\linewidth }
-\dim_const:Nn \c__nwejm_right_minipage_frontcover_dim { .6\linewidth }
 \dim_const:Nn \c__nwejm_innermargin_dim { 23mm }
-\dim_const:Nn \c__nwejm_outermargin_dim { 30mm }
-\dim_const:Nn \c__nwejm_inside_cover_textwidth_dim { 145mm }%
-\dim_const:Nn \c__nwejm_outermargin_inside_frontcover_dim { 15mm }
-\dim_const:Nn \c__nwejm_outermargin_inside_backcover_dim { 10mm }
-\dim_const:Nn \c__nwejm_innermargin_backcover_dim { 10mm }
-\dim_const:Nn \c__nwejm_outermargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
-\dim_const:Nn \c__nwejm_topmargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
-\dim_const:Nn \c__nwejm_bottommargin_backcover_dim { \c__nwejm_innermargin_backcover_dim }
-\dim_const:Nn \c__nwejm_front_matter_extra_innermargin_dim    { \c_zero_dim }
-\dim_const:Nn \c__nwejm_front_matter_extra_outermargin_dim    { \c_zero_dim }
-\dim_const:Nn \c__nwejm_inside_cover_offset_dim { \c_zero_dim }%
-\dim_const:Nn \c__nwejm_logos_rectangle_thickness_dim { 3.1mm }
-\dim_const:Nn \c__nwejm_logos_rectangle_height_dim { 33mm }
 \tl_const:Nn \c__nwejm_main_geometry_tl {%
   ,layoutsize={\c__nwejm_layoutwidth_dim,\c__nwejm_layoutheight_dim}
   ,textwidth=\c__nwejm_layoutwidth_dim*3/4
@@ -341,7 +260,7 @@
 \newpagestyle{__nwejm_mainmatter_ps}[]{%
   \sethead%
   [
-  \tl_if_exist:NT {\g__nwejm_header_title_tl}
+  \tl_if_exist:NT \g__nwejm_header_title_tl
   {
     \tl_if_empty:NF \g__nwejm_header_title_tl {%
       \slshape\g__nwejm_header_title_tl
@@ -423,7 +342,6 @@
 \int_new:N \g__nwejm_issue_number_int
 \int_new:N \g__nwejm_issue_month_int
 \int_new:N \g__nwejm_issue_year_int
-\tl_new:N \g__nwejm_frontcover_image_options_tl
 \keys_define:nn { nwejm/issuesetup }
 {
   number .int_gset:N = \g__nwejm_issue_number_int,
@@ -450,21 +368,17 @@
   online   .value_required:n = true,
 }
 \quark_new:N \q__nwejm
-\int_new:N \l_author_int
-\prop_new:N \g_authors_prop
+\int_new:N \l__nwejm_author_int
+\prop_new:N \g__nwejm_authors_prop
 \prop_new:N \l_affiliations_tagged_prop
-\cs_generate_variant:Nn \prop_put_if_new:Nnn { NVn }
-\cs_generate_variant:Nn \prop_gput_if_new:Nnn { Nxn }
-\cs_generate_variant:Nn \prop_put_if_new:Nnn { NnV }
-\cs_new:Npn \__nwejm_prop_count:nn #1#2 { + 1 }
-\cs_new:Npn \__nwejm_prop_count:N #1
-{ \int_eval:n { 0 \prop_map_function:NN #1 \__nwejm_prop_count:nn } }
+\cs_generate_variant:Nn \prop_gput_if_not_in:Nnn { Nxn }
 \NewDocumentCommand \__nwejm_author_affiliation:ww { o u\q__nwejm }
 {
   \stepcounter{footnote}
-  \prop_put_if_new:NVn \l_tmpa_prop {\the\c@footnote} {#2}
+  \tl_set:Ne \l_tmpa_tl {\the\c@footnote}
+  \prop_put_if_not_in:NVn \l_tmpa_prop \l_tmpa_tl {#2}
   \IfValueT{#1}{%
-    \prop_put_if_new:NnV \l_affiliations_tagged_prop {#1} {\the\c@footnote}
+    \prop_put_if_not_in:NnV \l_affiliations_tagged_prop {#1} \l_tmpa_tl
   }
 }
 \keys_define:nn { nwejm / authors }
@@ -476,48 +390,30 @@
   affiliationtagged .code:n = {%
     \prop_get:NnNTF \l_affiliations_tagged_prop {#1} \l_tmpa_tl
     {%
-      \prop_put_if_new:NVn \l_tmpa_prop {\l_tmpa_tl} {}
+      \prop_put_if_not_in:NVn \l_tmpa_prop {\l_tmpa_tl} {}
     }{
-      \msg_error:nnn{__nwejm}{Unknown~tag}{#1}
+      \msg_error:nnn{
+nwejmart
+}{Unknown~tag}{#1}
     }
   },
   affiliation .value_required:n = true,
   affiliationtagged .value_required:n = true,
 }
-\tl_new:N \l__nwejm_newtheorem_style_tl
-\keys_define:nn { nwejm / newtheorem }
+\keys_define:nn { keytheorems/thm }
 {
-  title .tl_set:N = \l__nwejm_newtheorem_title_tl,
-  title / french .tl_set:N = \l__nwejm_newtheorem_french_title_tl,
-  title / english .tl_set:N = \l__nwejm_newtheorem_english_title_tl,
-  title / german .tl_set:N = \l__nwejm_newtheorem_german_title_tl,
-  title / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_tl,
-  title .value_required:n = true,
-  title / french .value_required:n = true,
-  title / english .value_required:n = true,
-  title / german .value_required:n = true,
-  title / dutch .value_required:n = true,
-  %
-  title-plural .tl_set:N = \l__nwejm_newtheorem_title_plural_tl,
-  title-plural / french .tl_set:N = \l__nwejm_newtheorem_french_title_plural_tl,
-  title-plural / english .tl_set:N = \l__nwejm_newtheorem_english_title_plural_tl,
-  title-plural / german .tl_set:N = \l__nwejm_newtheorem_german_title_plural_tl,
-  title-plural / dutch .tl_set:N = \l__nwejm_newtheorem_dutch_title_plural_tl,
-  title-plural .value_required:n = true,
-  title-plural / french .value_required:n = true,
-  title-plural / english .value_required:n = true,
-  title-plural / german .value_required:n = true,
-  title-plural / dutch .value_required:n = true,
-  %
-  style .choice:,
-  style / theorem .code:n = {\__nwejm_theorem_style:n {theorem}},
-  style / definition .code:n = {\__nwejm_theorem_style:n {definition}},
-  style / proof .code:n = {\__nwejm_theorem_style:n {proof}},
-  style / unknown .code:n =
-  \msg_error:nnxxx { nwejm } { Unknown~choice }
-  { style } % Name of choice key
-  { theorem~or~definition~or~proof } % Valid choices
-  { \exp_not:n {#1} } % Invalid choice given
+  title .undefine:,
+  title .code:n = {
+    \exp_args:Nne \keys_set:nn { keytheorems/thm } {
+      name= \text_titlecase_all:n {#1}
+    }
+    \exp_args:Nne \keys_set:nn { keytheorems/thm } {
+      refname= {
+        \__nwejm_titlecase_all:n{#1},
+        \__nwejm_titlecase_all:n{#1} s
+      }
+    }
+  },
 }
 \bool_new:N \g__nwejm_gradient_nabla_bool
 \bool_new:N \g__nwejm_gradient_nabla_control_bool
@@ -588,12 +484,12 @@
 }
 \cs_new_protected:Nn \__nwejm_date:nn
 {
-  \tl_if_exist:NT {#2}
+  \tl_if_exist:nT {#2}
   {
-    \tl_if_empty:NF {#2}
+    \tl_if_empty:nF {#2}
     {
-      \tl_if_eq:NNF {\c__nwejm_date_received_tl} {#1} { \c__nwejm_dates_separator_tl }
-      \text_titlecase:n { \exp_args:No \GetTranslation{#1} }
+      \tl_if_eq:NnF \c__nwejm_date_received_tl {#1} { \c__nwejm_dates_separator_tl }
+      \text_titlecase_first:n { \exp_args:No \GetTranslation{#1} }
       \c__nwejm_colon_tl\c_space_tl
       \DTMdate{#2}%
     }
@@ -697,7 +593,7 @@
 \def\reftextvario#1#2{#2}
 \cs_new_protected:Nn \__nwejm_command_only_in_body:n
 {
-  \cs_if_eq:NNF {\@onlypreamble} {\@notprerr} {
+  \cs_if_eq:NNF \@onlypreamble \@notprerr {
     \msg_error:nnn{
      nwejmart
      }{Command~restricted~to~document~body~used~in~preamble}{#1}
@@ -710,65 +606,7 @@
 \NewDocumentCommand \dates { m } {
   \keys_set:nn { nwejm/dates } { #1 }
 }
-\tl_gset:Nn \g__nwejm_french_crefname_tl {
-  \clist_set:Nn \l_tmpa_clist {%
-    theorem,
-    corollary,
-    conjecture,
-    proposition,
-    lemma,
-    axiom,
-    definition,
-    remark,
-    example,
-    notation,
-    proof%
-  }
-  \clist_map_inline:Nn \l_tmpa_clist {
-    \crefname{#1}{
-      \text_lowercase:n{
-        \GetTranslationFor{french}{#1}
-      }
-    }{%
-      \text_lowercase:n{
-        \GetTranslationFor{french}{plural-#1}
-      }
-    }
-  }
-  \crefname{equation}{{\'e}quation}{{\'e}quations}%
-  \crefname{figure}{figure}{figures}%
-  \crefname{table}{table}{tables}%
-  \crefname{page}{page}{pages}%
-  \crefname{part}{partie}{parties}%
-  \crefname{chapter}{chapitre}{chapitres}%
-  \crefname{section}{section}{sections}%
-  \crefname{appendix}{annexe}{annexes}%
-  \crefname{enumi}{point}{points}%
-  \crefname{footnote}{note}{notes}%
-  \crefname{theorem}{th\'eor\`eme}{th\'eor\`emes}%
-  \crefname{lemma}{lemme}{lemmes}%
-  \crefname{corollary}{corollaire}{corollaires}%
-  \crefname{proposition}{proposition}{propositions}%
-  \crefname{definition}{d\'efinition}{d\'efinitions}%
-  \crefname{result}{r\'esultat}{r\'esultats}%
-  \crefname{example}{exemple}{exemples}%
-  \crefname{remark}{remarque}{remarques}%
-  \crefname{note}{commentaire}{commentaires}%
-  \crefname{algorithm}{algorithme}{algorithmes}%
-  \crefname{listing}{liste}{listes}%
-  \crefname{line}{ligne}{lignes}%
-}
 \AddToHook{begindocument}{%
-\tl_new:N \g__nwejm_bib_issue_date_tl
-\tl_gset:Nn
-\g__nwejm_bib_issue_date_tl {
-  \int_use:N \g__nwejm_issue_year_int -
-  \int_compare:nNnT {\g__nwejm_issue_month_int}<{10}
-  {
-    0
-  }
-  \int_use:N \g__nwejm_issue_month_int
-}
   \iow_now:Nx \g__nwejm_bib_out_iow {%
     @periodical{\c__nwejm_issue_bib_key_tl,\iow_newline:
       issuetitle   = {\exp_not:f\c__nwejm_journal_title_string_tl},\iow_newline:
@@ -814,13 +652,13 @@
 }
 \RenewDocumentCommand \author { O{} m } {
   \cleardoublepage
-  \int_incr:N \l_author_int
-  \prop_gput_if_new:Nxn \g_authors_prop {author_\int_use:c {l_author_int}} {#2}
+  \int_incr:N \l__nwejm_author_int
+  \prop_gput_if_not_in:Nxn \g__nwejm_authors_prop {author_\int_use:c {l__nwejm_author_int}} {#2}
   \IfNoValueF {#1}
   {
     \keys_set:nn { nwejm/authors } { #1 }
   }
-  \prop_set_eq:cN {l_author_ \int_use:c {l_author_int} _affiliations_prop} \l_tmpa_prop
+  \prop_set_eq:cN {l_author_ \int_use:c {l__nwejm_author_int} _affiliations_prop} \l_tmpa_prop
   \prop_clear:N \l_tmpa_prop
   \__nwejm_populate_bib_file:nn {#2}{author-art-\int_use:N \g__nwejm_articles_int}
   \tl_if_empty:NTF \l__nwejm_people_first_last_names_tl {%
@@ -854,7 +692,6 @@
   {
     \tl_gset_eq:NN \g__nwejm_abstract_body_tl \BODY
   }
-\tl_new:N \g__nwejm_frontmatter_switch_tl%
 \tl_gset:Nn \g__nwejm_frontmatter_switch_tl {
   \bool_gset_true:N \g__nwejm_frontmatter_bool
   \frontmatter
@@ -881,7 +718,6 @@
 }
 \tl_new:N \g__nwejm_article_bib_key_tl%
 \tl_new:N \l__nwejm_people_first_last_names_tl
-\tl_new:N \g__nwejm_authors_first_last_names_tl%
 \tl_new:N \g__nwejm_citeauthor_tl%
 \int_new:N \g__nwejm_author_s_number_current_article_int%
 \cs_new_protected:Nn \__nwejm_citeauthor_no_giveninits:n {%
@@ -899,8 +735,8 @@
     \g__nwejm_citeauthor_tl
   }%
 }
-\cs_set_eq:NN \__nwejm_orig_multinamedelim \multinamedelim
-\cs_set_eq:NN \__nwejm_orig_finalnamedelim \finalnamedelim
+\cs_set_eq:NN \__nwejm_orig_multinamedelim:n \multinamedelim
+\cs_set_eq:NN \__nwejm_orig_finalnamedelim:n \finalnamedelim
 \cs_new_protected:Nn \__nwejm_maketitle_citeauthor:n
 {
   \restorecommand\mkbibnamelast
@@ -920,7 +756,7 @@
 \cs_new_protected:Nn \__nwejm_display_author:n
 {
   \seq_clear:N \l_tmpa_seq
-  \prop_get:NnN \g_authors_prop {author_#1} \l_tmpa_tl
+  \prop_get:NnN \g__nwejm_authors_prop {author_#1} \l_tmpa_tl
   \prop_map_inline:cn {l_author_ #1 _affiliations_prop} {
     \seq_put_right:Nx \l_tmpa_seq { ##1 }
   }
@@ -943,12 +779,8 @@
   }
   \hskip 1em plus .17fil
 }
-\tl_new:N \l__nwejm_bullet_and_rule_tl
 \tl_new:N \l__nwejm_authors_box_tl
 \tl_new:N \l__nwejm_abstract_box_tl
-\tl_new:N \l__nwejm_bullet_and_rule_odd_tl
-\tl_new:N \l__nwejm_bullet_and_rule_even_tl
-\tl_new:N \l__nwejm_title_box_tl
 \tl_new:N \g__nwejm_title_for_toc_tl
 \RenewDocumentCommand \maketitle { } {
 \tl_gset:Nn \g__nwejm_article_bib_key_tl {%
@@ -991,15 +823,15 @@
     \mbox{}
   }
   {
-    \int_set:Nn \l_tmpa_int { \__nwejm_prop_count:N \g_authors_prop}
+    \int_set:Nn \l_tmpa_int { \prop_count:N \g__nwejm_authors_prop}
     \normalsize%
     \int_step_inline:nnnn {1}{1}{\l_tmpa_int} {
       \__nwejm_display_author:n {##1}
     }
-    \prop_gclear:N \g_authors_prop
+    \prop_gclear:N \g__nwejm_authors_prop
   }
 }
-\int_zero:N \l_author_int
+\int_zero:N \l__nwejm_author_int
 \prop_clear:N \l_affiliations_tagged_prop
 \tl_set:Nn \l__nwejm_dates_box_tl
 {%
@@ -1010,7 +842,7 @@
   \noindent
   {
     \bfseries
-    \text_titlecase:n{
+    \text_titlecase_first:n{
       \GetTranslation{plural-keyword}
       \c__nwejm_colon_tl
     }
@@ -1082,7 +914,7 @@
       \g__nwejm_subtitle_tl
     }\\[2ex]%
     \l__nwejm_authors_box_tl%
-    \bool_if:NT {\g__nwejm_date_specified_bool}
+    \bool_if:NT \g__nwejm_date_specified_bool
     {
       \\[2ex]
       \l__nwejm_dates_box_tl
@@ -1140,9 +972,9 @@
   \sisetup{detect-all}
 }
 \apptocmd{\appendix}{\renewcommand{\thesection}{\Alph{section}}}{}{}
-\cs_set_eq:NN \__nwejm_section \section
-\cs_set_eq:NN \__nwejm_subsection \subsection
-\cs_set_eq:NN \__nwejm_subsubsection \subsubsection
+\cs_set_eq:NN \__nwejm_section: \section
+\cs_set_eq:NN \__nwejm_subsection: \subsection
+\cs_set_eq:NN \__nwejm_subsubsection: \subsubsection
 \AfterPreamble{%
   \RenewDocumentCommand \section { s o o m } {%
     \tl_gclear:N \g__nwejm_short_section_title_tl
@@ -1159,7 +991,7 @@
     }{
       \tl_gset:Nn \g__nwejm_short_section_title_tl {#2}
     }
-    \__nwejm_section[\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
+    \__nwejm_section: [\g__nwejm_short_section_title_tl]{\g__nwejm_section_title_tl}
     \IfNoValueF {#3}{
       \sectionmark{#3}
     }
@@ -1169,14 +1001,14 @@
     {
       \setsecnumdepth{none}%
     }
-    \IfNoValueTF{#2}{\__nwejm_subsection{#3}}{\__nwejm_subsection[#2]{#3}}
+    \IfNoValueTF{#2}{\__nwejm_subsection: {#3}}{\__nwejm_subsection: [#2]{#3}}
   }
   \RenewDocumentCommand \subsubsection { s o m } {%
     \IfBooleanT {#1}
     {
       \setsecnumdepth{none}%
     }
-    \IfNoValueTF{#2}{\__nwejm_subsubsection{#3}}{\__nwejm_subsubsection[#2]{#3}}
+    \IfNoValueTF{#2}{\__nwejm_subsubsection: {#3}}{\__nwejm_subsubsection: [#2]{#3}}
   }
 }
 \int_new:N \l__nwejm_abs_int
@@ -1301,228 +1133,120 @@
 \RenewDocumentCommand \vec { m } {
   \vv{#1}
 }
-\bool_new:N \g__nwejm_no_numbered_theorem_bool
-\cs_new_protected:Nn \__nwejm_theorem_style:n
-{
-  \bool_gset_false:N \g__nwejm_no_numbered_theorem_bool
-  \str_case:nn
-  { #1 }
-  {
-    { theorem }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\itshape}
-      \theoremseparator{~--}
-      \theoremsymbol{}
-    }
-    { definition }   {
-      \theoremstyle{plain}
-      \theoremheaderfont{\normalfont\bfseries}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{~--}
-      \theoremsymbol{}
-    }
-    { proof }   {
-      \theoremstyle{nonumberplain}
-      \bool_gset_true:N \g__nwejm_no_numbered_theorem_bool
-      \theoremheaderfont{\normalfont\itshape}
-      \theorembodyfont{\normalfont}
-      \theoremseparator{.}
-      \theoremsymbol{\ensuremath{\square}}
+\newkeytheoremstyle{theorem}{
+  inherit-style=plain,
+  notefont=\bfseries,
+  headpunct={~--}
+}
+\renewkeytheoremstyle{definition}{
+  inherit-style=definition,
+  notefont=\bfseries,
+  headpunct={~--}
+}
+\newkeytheoremstyle{proof}{
+  inherit-style=remark,
+  notefont=\itshape,
+  numbered=false,
+  qed=\ensuremath{\square}
+}
+\addtotheoremhook{postfoot}{\@endpetrue}
+\cs_new_protected:Nn \__nwejm_titlecase_first:n {
+  \ifcurrentbaselanguage{french}{
+      #1
+    }{
+      \text_titlecase_first:n{#1}
     }
   }
-}
-\cs_set_eq:NN \__nwejm_orig_newtheorem \newtheorem
-\cs_new_protected:Nn \__nwejm_new_theorem:nnnnnnnnn
-{
-    \IfTranslation{English}{#1}{%
-    }{%
-      \DeclareTranslation{English}{#1}{\text_titlecase:n{#2}}%
+\cs_new_protected:Nn \__nwejm_titlecase_all:n {
+  \ifcurrentbaselanguage{french}{
+      #1
+    }{
+      \text_titlecase_all:n{#1}
     }
-    \IfTranslation{French}{#1}{%
-    }{%
-      \DeclareTranslation{French}{#1}{#3}%
-    }
-    \IfTranslation{German}{#1}{%
-    }{%
-      \DeclareTranslation{German}{#1}{\text_titlecase:n{#4}}%
-    }
-    \IfTranslation{Dutch}{#1}{%
-    }{%
-      \DeclareTranslation{Dutch}{#1}{\text_titlecase:n{#5}}%
-    }
-    %
-    \IfTranslation{English}{#1-plural}{%
-    }{%
-      \DeclareTranslation{English}{#1-plural}{\text_titlecase:n{#6}}%
-    }
-    \IfTranslation{French}{#1-plural}{%
-    }{%
-      \DeclareTranslation{French}{#1-plural}{#7}%
-    }
-    \IfTranslation{German}{#1-plural}{%
-    }{%
-      \DeclareTranslation{German}{#1-plural}{\text_titlecase:n{#8}}%
-    }
-    \IfTranslation{Dutch}{#1-plural}{%
-    }{%
-      \DeclareTranslation{Dutch}{#1-plural}{\text_titlecase:n{#9}}%
-    }
-    \__nwejm_orig_newtheorem{#1}{\text_titlecase:n{ \GetTranslation{#1} }}
-    \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-      \__nwejm_orig_newtheorem*{#1__nwejm_nonumbered}{\text_titlecase:n{ \GetTranslation{#1} }}
-    }
-}
-\cs_generate_variant:Nn \__nwejm_new_theorem:nnnnnnnnn { nVVVVVVVV }
-\RenewDocumentCommand \newtheorem { O{} m }
-{
-  \AddToHook{begindocument}{
-    \tl_clear:N \l__nwejm_newtheorem_style_tl
-    \tl_clear:N \l__nwejm_newtheorem_title_tl
-    \tl_clear:N \l__nwejm_newtheorem_french_title_tl
-    \tl_clear:N \l__nwejm_newtheorem_english_title_tl
-    \tl_clear:N \l__nwejm_newtheorem_german_title_tl
-    \tl_clear:N \l__nwejm_newtheorem_dutch_title_tl
-    %
-    \tl_clear:N \l__nwejm_newtheorem_title_plural_tl
-    \tl_clear:N \l__nwejm_newtheorem_french_title_plural_tl
-    \tl_clear:N \l__nwejm_newtheorem_english_title_plural_tl
-    \tl_clear:N \l__nwejm_newtheorem_german_title_plural_tl
-    \tl_clear:N \l__nwejm_newtheorem_dutch_title_plural_tl
-    %
-    \tl_set:Nn \l__nwejm_newtheorem_english_title_tl {
-      #2
-    }
-    \tl_set:Nf \l__nwejm_newtheorem_french_title_tl {
-      \l__nwejm_newtheorem_english_title_tl
-    }
-    \tl_set:Nf \l__nwejm_newtheorem_german_title_tl {
-      \l__nwejm_newtheorem_english_title_tl
-    }
-    \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl {
-      \l__nwejm_newtheorem_english_title_tl
-    }
-    %
-    \tl_set:Nf \l__nwejm_newtheorem_english_title_plural_tl {
-      \l__nwejm_newtheorem_english_title_tl s
-    }
-    \tl_set:Nf \l__nwejm_newtheorem_french_title_plural_tl {
-      \l__nwejm_newtheorem_english_title_plural_tl
-    }
-    \tl_set:Nf \l__nwejm_newtheorem_german_title_plural_tl {
-      \l__nwejm_newtheorem_english_title_plural_tl
-    }
-    \tl_set:Nf \l__nwejm_newtheorem_dutch_title_plural_tl {
-      \l__nwejm_newtheorem_english_title_plural_tl
-    }
-    %
-    \__nwejm_theorem_style:n {theorem}
-    %
-    \IfNoValueF {#1}
-    {
-      \keys_set:nn { nwejm / newtheorem } { #1 }
-      %
-      \tl_if_empty:NF \l__nwejm_newtheorem_title_tl {%
-        \tl_set:Nf \l__nwejm_newtheorem_english_title_tl
-        {
-          \l__nwejm_newtheorem_title_tl
-        }
-        \tl_set:Nf \l__nwejm_newtheorem_french_title_tl
-        {
-          \l__nwejm_newtheorem_title_tl
-        }
-        \tl_set:Nf \l__nwejm_newtheorem_german_title_tl
-        {
-          \l__nwejm_newtheorem_title_tl
-        }
-        \tl_set:Nf \l__nwejm_newtheorem_dutch_title_tl
-        {
-          \l__nwejm_newtheorem_title_tl
-        }
-      }
-      %
-      \tl_if_empty:NT \l__nwejm_newtheorem_title_plural_tl {%
-        \tl_if_empty:NTF \l__nwejm_newtheorem_title_tl {%
-          \tl_set:Nn \l__nwejm_newtheorem_title_plural_tl { #2 s }
-        }{%
-          \tl_set:Nf \l__nwejm_newtheorem_title_plural_tl { \l__nwejm_newtheorem_title_tl s }
-        }
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_english_title_plural_tl
-      {
-        \l__nwejm_newtheorem_title_plural_tl
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_french_title_plural_tl
-      {
-        \l__nwejm_newtheorem_title_plural_tl
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_german_title_plural_tl
-      {
-        \l__nwejm_newtheorem_title_plural_tl
-      }
-      \tl_set:Nf \l__nwejm_newtheorem_dutch_title_plural_tl
-      {
-        \l__nwejm_newtheorem_title_plural_tl
-      }
-      %
-      % \tl_set:Nn \l__nwejm_newtheorem_style_tl {
-      %   theorem
-      % }
-    }
-    %
-    \__nwejm_new_theorem:nVVVVVVVV
-    {#2}
-    {\l__nwejm_newtheorem_english_title_tl}
-    {\l__nwejm_newtheorem_french_title_tl}
-    {\l__nwejm_newtheorem_german_title_tl}
-    {\l__nwejm_newtheorem_dutch_title_tl}
-    {\l__nwejm_newtheorem_english_title_plural_tl}
-    {\l__nwejm_newtheorem_french_title_plural_tl}
-    {\l__nwejm_newtheorem_german_title_plural_tl}
-    {\l__nwejm_newtheorem_dutch_title_plural_tl}
-    {\l__nwejm_newtheorem_style_tl}
-    \makesavenoteenv{#2}
-    \bool_if:NF {\g__nwejm_no_numbered_theorem_bool} {
-      \ifcsmacro{#2*}{%
-        \RenewDocumentEnvironment{#2*}{o}
-        {
-          \IfNoValueTF {##1}
-          { \begin{#2__nwejm_nonumbered} }
-            { \begin{#2__nwejm_nonumbered}[##1] }
-            }{
-            \end{#2__nwejm_nonumbered}
-          }
-        }{
-          \NewDocumentEnvironment{#2*}{o}
-          {
-            \IfNoValueTF {##1}
-            { \begin{#2__nwejm_nonumbered} }
-              { \begin{#2__nwejm_nonumbered}[##1] }
-              }{
-              \end{#2__nwejm_nonumbered}
-            }
-          }
-        }
+  }
+\cs_new_protected:Nn \__nwejm_new_theorem:nn {
+    \newkeytheorem{#2}[
+      style=theorem,
+      name=\text_titlecase_all:n {#2},
+      refname= {
+        \__nwejm_titlecase_all:n{#2},
+        \__nwejm_titlecase_all:n{#2} s
+      },
+      Refname= {
+        \text_titlecase_all:n{#2},
+        \text_titlecase_all:n{#2} s
+      },
+      #1
+    ]
+    \newkeytheorem{#2*}[
+      style=theorem,
+      name=\text_titlecase_all:n {#2},
+      refname= {
+        \__nwejm_titlecase_all:n{#2},
+        \__nwejm_titlecase_all:n{#2} s
+      },
+      Refname= {
+        \text_titlecase_all:n{#2},
+        \text_titlecase_all:n{#2} s
+      },
+      numbered=false,
+      #1
+    ]
     \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
-  }
-  \ifcurrentbaselanguage{french}{%
-    \crefname{#2}{\text_lowercase:n{ \GetTranslation{#2} }}{\text_lowercase:n{ \GetTranslation{#2-plural} }}
-  }{%
-    \crefname{#2}{\GetTranslation{#2}}{\GetTranslation{#2-plural}}
-  }
-  \Crefname{#2}{\text_titlecase:n{ \GetTranslation{#2} }}{\text_titlecase:n{ \GetTranslation{#2-plural} }}
 }
-\newtheorem{theorem}
-\newtheorem{corollary}
-\newtheorem{conjecture}
-\newtheorem{proposition}
-\newtheorem{lemma}
-\newtheorem{axiom}
-\newtheorem[style=definition]{definition}
-\newtheorem[style=definition]{remark}
-\newtheorem[style=definition]{example}
-\newtheorem[style=definition]{notation}
-\newtheorem[style=proof]{proof}
+\cs_new_protected:Nn \__nwejm_predefined_theorem:nn {
+  \AddToHook{begindocument}{%
+    \newkeytheorem{#2}[
+      name=\text_titlecase_all:n{\GetTranslation{#2}},
+      refname={
+        \__nwejm_titlecase_all:n{\GetTranslation{#2}},
+        \__nwejm_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      Refname={
+        \text_titlecase_all:n{\GetTranslation{#2}},
+        \text_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      #1
+    ]
+    \newkeytheorem{#2*}[
+      name=\text_titlecase_all:n{\GetTranslation{#2}},
+      refname={
+        \__nwejm_titlecase_all:n{\GetTranslation{#2}},
+        \__nwejm_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      Refname={
+        \text_titlecase_all:n{\GetTranslation{#2}},
+        \text_titlecase_all:n{\GetTranslation{plural-#2}}
+      },
+      numbered=false,
+      #1
+    ]
+  }
+  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
+}
+\RenewDocumentCommand{\newtheorem}{O{} m}{
+  \__nwejm_new_theorem:nn {#1} {#2}
+}
+\__nwejm_predefined_theorem:nn{style=theorem}{theorem}
+\__nwejm_predefined_theorem:nn{style=theorem}{axiom}
+\__nwejm_predefined_theorem:nn{style=theorem}{corollary}
+\__nwejm_predefined_theorem:nn{style=theorem}{conjecture}
+\__nwejm_predefined_theorem:nn{style=theorem}{proposition}
+\__nwejm_predefined_theorem:nn{style=theorem}{lemma}
+\__nwejm_predefined_theorem:nn{style=definition}{definition}
+\__nwejm_predefined_theorem:nn{style=definition}{example}
+\__nwejm_predefined_theorem:nn{style=definition}{notation}
+\__nwejm_predefined_theorem:nn{style=definition}{remark}
+\AddToHook{begindocument}{%
+  \renewkeytheorem{proof}[
+    name=\text_titlecase_all:n{\GetTranslation{proof}},
+    refname={
+      \__nwejm_titlecase_all:n{\GetTranslation{proof}},
+      \__nwejm_titlecase_all:n{\GetTranslation{plural-proof}}
+    },
+    style=proof
+  ]
+}
 \cs_new_protected:Nn \__nwejm_clone_theorem:nn
 {
   \NewDocumentEnvironment{#1}{}
@@ -1562,71 +1286,48 @@
   notation,
   proof%
 }
-\clist_map_inline:Nn \l_tmpa_clist {
-  \crefname{#1}{
-    \text_titlecase:n{
-      \GetTranslation{#1}
-    }
-  }{
-    \text_titlecase:n{
-      \GetTranslation{plural-#1}
-    }
+\RenewDocumentCommand{\vref}{O{} m}{\zvref[#1]{#2}}
+\NewDocumentCommand{\cref}{O{} m}{\zcref[#1]{#2}}
+\AddToHook{begindocument}{
+  \clist_set:Nn \l_tmpa_clist {%
+    hypothesis,
+    assertion,%
+    condition%
   }
-  \Crefname{#1}{
-    \text_titlecase:n{
-      \GetTranslation{#1}
-    }
-  }{%
-    \text_titlecase:n{
-      \GetTranslation{plural-#1}
-    }
-  }
-}
-\AddToHook{begindocument/end}{
-  \ifcurrentbaselanguage{french}{\g__nwejm_french_crefname_tl}{}
-}
-\clist_set:Nn \l_tmpa_clist {%
-  hypothesis,
-  assertion,%
-  condition%
-}
-\clist_map_inline:Nn \l_tmpa_clist {
-  \newlist{#1}{enumerate}{1}
-  \setlist[#1]{%
-    label=
-    \normalfont
-    (
-    \textsf{
-      \tl_head:f {
-        \text_uppercase:n {
-          \GetTranslation{#1}
+  \clist_map_inline:Nn \l_tmpa_clist {
+    \newlist{#1}{enumerate}{1}
+    \setlist[#1]{%
+      label=
+      \normalfont
+      (
+      \textsf{
+        \tl_head:f {
+          \text_uppercase:n {
+            \GetTranslation{#1}
+          }
         }
       }
-    }
-    $\c_math_subscript_token\mathsf{\arabic*}$),
-    ref=(
-    \textsf{
-      \tl_head:f {
-        \text_uppercase:n {
-          \GetTranslation{#1}
+      $\c_math_subscript_token\mathsf{\arabic*}$),
+      ref=(
+      \textsf{
+        \tl_head:f {
+          \text_uppercase:n {
+            \GetTranslation{#1}
+          }
         }
       }
+      $_\mathsf{\arabic*}$
+      )
     }
-    $_\mathsf{\arabic*}$
-    )
-  }
-  \crefname{#1i}{
-    \GetTranslation{#1}
-  }{%
-    \GetTranslation{plural-#1}
-  }
-  \Crefname{#1i}{
-    \text_titlecase:n{
-      \GetTranslation{#1}
-    }
-  }{%
-    \text_titlecase:n{
-      \GetTranslation{plural-#1}
+    \zcRefTypeSetup{#1i}{
+      Name-sg = \text_titlecase_first:n{
+        \GetTranslation{#1}
+      },
+      name-sg = \GetTranslation{#1} ,
+      Name-pl = \text_titlecase_first:n{
+        \GetTranslation{plural-#1}
+      },
+      name-pl = \GetTranslation{plural-#1} ,
     }
   }
 }
@@ -1648,8 +1349,8 @@
   \keys_define:nn { nwejm/newenumeration }
   {
     singular .tl_set:c = {l__nwejm_newenumeration_#2_singular_tl},
-    plural   .tl_set:c =   {l__nwejm_newenumeration_#2_plural_tl},
-    label    .tl_set:c =   {l__nwejm_newenumeration_#2_label_tl},
+    plural   .tl_set:c = {l__nwejm_newenumeration_#2_plural_tl},
+    label    .tl_set:c = {l__nwejm_newenumeration_#2_label_tl},
   }
   \IfNoValueF {#1}
   {
@@ -1659,12 +1360,12 @@
     \tl_set:cn {l__nwejm_newenumeration_#2_plural_tl} {#2}
   }
   \tl_if_empty:cT {l__nwejm_newenumeration_#2_singular_tl} {
-    \tl_set:cV {l__nwejm_newenumeration_#2_singular_tl} {\__nwejm_tl_pop_right:v {l__nwejm_newenumeration_#2_plural_tl}}
+    \tl_set:ce {l__nwejm_newenumeration_#2_singular_tl} {\__nwejm_tl_pop_right:v {l__nwejm_newenumeration_#2_plural_tl}}
   }
   \tl_if_empty:cT {l__nwejm_newenumeration_#2_label_tl} {
-    \tl_set:cV {l__nwejm_newenumeration_#2_label_tl} {
-      \tl_head:f {
-        \text_uppercase:n {
+    \tl_set:ce {l__nwejm_newenumeration_#2_label_tl} {
+      \text_uppercase:n {
+        \tl_head:f {
           \tl_use:c {l__nwejm_newenumeration_#2_singular_tl}
         }
       }
@@ -1691,19 +1392,15 @@
     $_\mathsf{\arabic*}$
     )
   }
-  \crefname{#1i}{
-    \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
-  }{%
-    \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
-  }
-  \Crefname{#1i}{
-    \text_titlecase:n{
+  \zcRefTypeSetup{#1i}{
+    Name-sg = \text_titlecase_first:n{
       \tl_use:c {l__nwejm_newenumeration_#1_singular_tl}
-    }
-  }{%
-    \text_titlecase:n{
+    },
+    name-sg = \tl_use:c {l__nwejm_newenumeration_#1_singular_tl} ,
+    Name-pl = \text_titlecase_first:n{
       \tl_use:c {l__nwejm_newenumeration_#1_plural_tl}
-    }
+    },
+    name-pl = \tl_use:c {l__nwejm_newenumeration_#1_plural_tl} ,
   }
 }
 \NewDocumentCommand{\newenumeration}{O{}m}
@@ -1829,55 +1526,55 @@
 \DeclareMathOperator{\Argch}{Argch}
 \DeclareMathOperator{\Argsh}{Argsh}
 \DeclareMathOperator{\Argth}{Argth}
-\cs_set_eq:NN \__nwejm_orig_arccos \arccos
-\cs_set_eq:NN \__nwejm_orig_arcsin \arcsin
-\cs_set_eq:NN \__nwejm_orig_arctan \arctan
-\cs_set_eq:NN \__nwejm_orig_arccosh \arccosh
-\cs_set_eq:NN \__nwejm_orig_arcsinh \arcsinh
-\cs_set_eq:NN \__nwejm_orig_arctanh \arctanh
+\cs_set_eq:NN \__nwejm_orig_arccos: \arccos
+\cs_set_eq:NN \__nwejm_orig_arcsin: \arcsin
+\cs_set_eq:NN \__nwejm_orig_arctan: \arctan
+\cs_set_eq:NN \__nwejm_orig_arccosh: \arccosh
+\cs_set_eq:NN \__nwejm_orig_arcsinh: \arcsinh
+\cs_set_eq:NN \__nwejm_orig_arctanh: \arctanh
 \RenewDocumentCommand \arccos {} {
-  \ifcurrentbaselanguage{french}{\Arccos}{\__nwejm_orig_arccos}%
+  \ifcurrentbaselanguage{french}{\Arccos}{\__nwejm_orig_arccos:}%
 }
 \RenewDocumentCommand \arcsin {} {
-  \ifcurrentbaselanguage {french}{\Arcsin}{\__nwejm_orig_arcsin}%
+  \ifcurrentbaselanguage {french}{\Arcsin}{\__nwejm_orig_arcsin:}%
 }
 \RenewDocumentCommand \arctan {} {
-  \ifcurrentbaselanguage {french}{\Arctan}{\__nwejm_orig_arctan}%
+  \ifcurrentbaselanguage {french}{\Arctan}{\__nwejm_orig_arctan:}%
 }
 \RenewDocumentCommand \arccosh {} {
-  \ifcurrentbaselanguage{french}{\Argch}{\__nwejm_orig_arccosh}%
+  \ifcurrentbaselanguage{french}{\Argch}{\__nwejm_orig_arccosh:}%
 }
 \RenewDocumentCommand \arcsinh {} {
-  \ifcurrentbaselanguage {french}{\Argsh}{\__nwejm_orig_arcsinh}%
+  \ifcurrentbaselanguage {french}{\Argsh}{\__nwejm_orig_arcsinh:}%
 }
 \RenewDocumentCommand \arctanh {} {
-  \ifcurrentbaselanguage {french}{\Argth}{\__nwejm_orig_arctanh}%
+  \ifcurrentbaselanguage {french}{\Argth}{\__nwejm_orig_arctanh:}%
 }
-\cs_set_eq:NN \__nwejm_orig_cot \cot
+\cs_set_eq:NN \__nwejm_orig_cot: \cot
 \RenewDocumentCommand \cot {} {
-  \ifcurrentbaselanguage {french}{\cotan}{\__nwejm_orig_cot}%
+  \ifcurrentbaselanguage {french}{\cotan}{\__nwejm_orig_cot:}%
 }
 \DeclareMathOperator{\ch}{ch}
 \DeclareMathOperator{\sh}{sh}
-\cs_set_eq:NN \__nwejm_orig_cosh \cosh
-\cs_set_eq:NN \__nwejm_orig_sinh \sinh
-\cs_set_eq:NN \__nwejm_orig_tanh \tanh
+\cs_set_eq:NN \__nwejm_orig_cosh: \cosh
+\cs_set_eq:NN \__nwejm_orig_sinh: \sinh
+\cs_set_eq:NN \__nwejm_orig_tanh: \tanh
 \RenewDocumentCommand \cosh {} {
-  \ifcurrentbaselanguage {french}{\ch}{\__nwejm_orig_cosh}%
+  \ifcurrentbaselanguage {french}{\ch}{\__nwejm_orig_cosh:}%
 }
 \RenewDocumentCommand \sinh {} {
-  \ifcurrentbaselanguage {french}{\sh}{\__nwejm_orig_sinh}%
+  \ifcurrentbaselanguage {french}{\sh}{\__nwejm_orig_sinh:}%
 }
 \RenewDocumentCommand \tanh {} {
-  \ifcurrentbaselanguage {french}{\operatorname{th}}{\__nwejm_orig_tanh}%
+  \ifcurrentbaselanguage {french}{\operatorname{th}}{\__nwejm_orig_tanh:}%
 }
 \DeclareMathOperator{\Id}{Id}
-\cs_set_eq:NN \__nwejm_orig_log \log
-\cs_set_eq:NN \__nwejm_orig_lg \lg
+\cs_set_eq:NN \__nwejm_orig_log: \log
+\cs_set_eq:NN \__nwejm_orig_lg: \lg
 \RenewDocumentCommand \log { s } {
     \IfBooleanTF {#1}
   {
-    \__nwejm_orig_log
+    \__nwejm_orig_log:
   }
   {
     \ln
@@ -1886,7 +1583,7 @@
 \RenewDocumentCommand \lg { s } {
     \IfBooleanTF {#1}
   {
-    \__nwejm_orig_lg
+    \__nwejm_orig_lg:
   }
   {
     \ln
@@ -1937,8 +1634,8 @@
   \peek_after:Nw \__nwejm_opx_check:
 }
 \NewDocumentCommand \dif {}{\mathop{}\!\mathrm{d}}
-\cs_set_eq:NN \__nwejm_orig_leq \leq
-\cs_set_eq:NN \__nwejm_orig_geq \geq
+\cs_set_eq:NN \__nwejm_orig_leq: \leq
+\cs_set_eq:NN \__nwejm_orig_geq: \geq
 \RenewDocumentCommand \le {} {%
   \ifcurrentbaselanguage {french}{\leqslant}{\__nwejm_orig_leq}%
 }
@@ -2395,16 +2092,16 @@
   }%
   \SetCiteCommand{\autocite}%
 }%
-\cs_set_eq:NN \__nwejm_printbibliography \printbibliography
+\cs_set_eq:NN \__nwejm_printbibliography: \printbibliography
 \RenewDocumentCommand \printbibliography { O{} } {
   \FloatBarrier%
-  \tl_if_empty:NF {\g__nwejm_article_acknowledgments_tl}
+  \tl_if_empty:NF \g__nwejm_article_acknowledgments_tl
   {
     \section*{\GetTranslation{Acknowledgments}}
     \g__nwejm_article_acknowledgments_tl
     \tl_gclear:N \g__nwejm_article_acknowledgments_tl
   }
-  \__nwejm_printbibliography[heading=__nwejm_subbibliography,resetnumbers,#1]
+  \__nwejm_printbibliography: [heading=__nwejm_subbibliography,resetnumbers,#1]
    \bool_if:NF \g__nwejm_nolocaltoc_bool {
      \newpage
      \setcounter{page}{\c_zero_int}
@@ -2435,7 +2132,6 @@
   {
     \renewcommand{\ttdefault}{lmtt}
   }
-\tl_new:N \g__nwejm_font_designer_text_tl%
 \cs_new_protected:Nn \__nwejm_font_designer_text:n
 {
   \tl_gset:Nn \g__nwejm_font_designer_text_tl { #1 }
@@ -2443,15 +2139,6 @@
 \NewDocumentCommand \fontdesignertext {m}
 {
   \__nwejm_font_designer_text:n {#1}%
-}
-\tl_new:N \g__nwejm_graphicdesign_text_tl%
-\cs_new_protected:Nn \__nwejm_graphicdesign_text:n
-{
-  \tl_gset:Nn \g__nwejm_graphicdesign_text_tl { #1 }
-}
-\NewDocumentCommand \graphicdesigntext {m}
-{
-  \__nwejm_graphicdesign_text:n {#1}%
 }
 \NewDocumentCommand \nwejm { s } {
   \IfBooleanTF {#1}
