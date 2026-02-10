@@ -27,7 +27,7 @@
 % This field contains the version of the package.
 % The value is optional.
 % The value is restricted to 32 characters.
-\version{2.0 2026-02-06}
+\version{2.0 2026-02-10}
 % -------------------------------------------------------------------------
 % This field contains the name of the author(s).
 % The value is optional.
@@ -144,17 +144,19 @@ This update consists only in a logo file renamed as requested by Karl Berry.
 %    \end{macrocode}
 # [Unreleased]
 
-# [2.0] - 2026-02-06
+# [2.0] - 2026-02-10
 
 ## Fixed
 - The bundle now relies on `keytheorems`, `zref-clever`, `zrefvario` instead of `ntheorem`, `thmtools`, `cleveref` (breaks backward compatibility but rollback provided).
 - Use of arguments inconsistent with expl3 language specification (gh #5).
+- Code imroved (thanks to explcheck!).
 
 ## Changed
-- `title-plural=⟨plural⟩` replaced by `refname={⟨singular⟩,⟨plural⟩}`
+- `title-plural=⟨plural⟩` replaced by `refname={⟨singular⟩,⟨plural⟩}`.
+- Documentation updated.
 
 ## Deprecated
-- `title-plural`
+- `title-plural`.
 
 # [1.0.6] - 2024-02-08
 
@@ -311,7 +313,7 @@ new journal “North-Western European Journal of Mathematics”.
 
 Release
 -------
-2026-02-06 v2.0
+2026-02-10 v2.0
 
 Development
 -----------
@@ -342,7 +344,7 @@ https://github.com/dbitouze/nwejm.
 \input l3docstrip.tex
 \Msg{********************************************************}
 \Msg{* Installation}
-\Msg{* Class: nwejm 2026-02-06 v2.0}
+\Msg{* Class: nwejm 2026-02-10 v2.0}
 \Msg{* for the journal}
 \Msg{* "North-Western European Journal of Mathematics" (DB)}
 \Msg{********************************************************}
@@ -614,7 +616,7 @@ Running "make install" installs the files in the local TeX tree.
 \providecommand\DeclareRelease[3]{}
 \providecommand\DeclareCurrentRelease[2]{}
 \DeclareRelease{}{2024-02-08}{nwejm-2024-02-08.cls}
-\DeclareCurrentRelease{}{2026-02-06}
+\DeclareCurrentRelease{}{2026-02-10}
 %    \end{macrocode}
 %
 % The class is declared in the \LaTeX3{}'s way.
@@ -622,7 +624,7 @@ Running "make install" installs the files in the local TeX tree.
 \ProvidesExplClass
 %<class>  {nwejm}
 %<class-article>  {nwejmart}
-  {2026-02-06}
+  {2026-02-10}
   {2.0}
   {
     Class for the journal "North-Western European Journal of Mathematics".
@@ -4621,7 +4623,7 @@ Running "make install" installs the files in the local TeX tree.
 }
 %    \end{macrocode}
 %
-%   Since version 2.0 (2026-02-06) of the class, \Pkg{varioref} is replaced by
+%   Since version 2.0 (2026-02-10) of the class, \Pkg{varioref} is replaced by
 %   \Pkg{zref-vario} since; hence we define a (factice) \Pkg{varioref}'s
 %   \lstinline|\vref| command to be a wrapper of \Pkg{zref-vario}'s
 %   \lstinline|\zvref|:
@@ -4629,7 +4631,7 @@ Running "make install" installs the files in the local TeX tree.
 \RenewDocumentCommand{\vref}{O{} m}{\zvref[#1]{#2}}
 %    \end{macrocode}
 %
-%   Since version 2.0 (2026-02-06) of the class, \Pkg{cleveref} is replaced by
+%   Since version 2.0 (2026-02-10) of the class, \Pkg{cleveref} is replaced by
 %   \Pkg{zref-clever} since; hence we define a (factice) \Pkg{cleveref}'s
 %   \lstinline|\cref| command to be a wrapper of \Pkg{zref-clever}'s
 %   \lstinline|\zcref|:
@@ -6795,7 +6797,7 @@ vrb xref *.typo mp  epub html);
 %
 %    \begin{macrocode}
 # mode: nwejm.cls
-# denisbitouze, 2026-02-06
+# denisbitouze, 2026-02-10
 #
 #include:class-book
 #include:latex-document
