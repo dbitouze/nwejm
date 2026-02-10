@@ -9,8 +9,8 @@
 %
 \documentclass[french,nolocaltoc]{nwejmart}
 %
-\DTMsavedate{release-date}{2024-02-08}
-\newcommand{\releaseversion}{1.0.6}
+\DTMsavedate{release-date}{2026-02-10}
+\newcommand{\releaseversion}{2.0}
 %
 \usepackage[nwejm]{denisbdoc}
 \usepackage{tabulary}
@@ -33,8 +33,17 @@
   ^^e0^^e1^^e2^^e3^^e4^^e5^^e6^^e7^^e8^^e9^^ea^^eb^^ec^^ed^^ee^^ef%
   ^^f0^^f1^^f2^^f3^^f4^^f5^^f6^^f7^^f8^^f9^^fa^^fb^^fc^^fd^^fe^^ff%
   ^^^^20ac^^^^0153^^^^0152% nouveau pour xetex
-  ^^^^27e8%  Left-Pointing Angle Bracket
-  ^^^^27e9% Right-Pointing Angle Bracket
+  ^^^^201c% for “
+  ^^^^201d% for ”
+  ^^^^215b% for ⅛
+  ^^^^2122% for ™
+  ^^^^2019% for ’
+  ^^^^0153% for œ
+  ^^^^0152% for Œ
+  ^^^^20ac% for €
+  ^^^^27e8% for ⟨
+  ^^^^27e9% for ⟩
+  ^^^^2026% for …
   ^^00}
 \lst@RestoreCatcodes
 
@@ -75,9 +84,10 @@
 %
 \newtheorem{article}
 \newtheorem[style=definition]{fait}
-\newtheorem[title=expérience]{experience}
-\newtheorem[title-plural=anneaux]{anneau}
-\newtheorem[title=idéal,title-plural=idéaux]{ideal}
+\newtheorem{expérience}
+\newtheorem[title=contraventionnalisation]{ctrv}
+\newtheorem[refname={anneau,anneaux}]{anneau}
+\newtheorem[refname={idéal,idéaux}]{idéal}
 %
 \newenumeration{conventions}
 \newenumeration[singular=cas]{cas}
@@ -117,11 +127,26 @@ affiliation={%
 \section{Introduction}
 \label{sec-introduction}
 
-\begin{dbremark}{Documentation : travail en cours}{}
-  La présente documentation est un travail en cours. Nous prions les lecteurs
-  qui ont des remarques à formuler ou qui trouveront des erreurs de bien vouloir
-  nous les signaler à l'adresse courriel figurant en page de titre.
-\end{dbremark}
+\begin{dbwarning}{Compatibilité ascendante cassée avec la version~2.0}{}
+  Entre les versions 1.6 et 2.0 (publiées respectivement les 8 février 2024 et
+  10 février 2026) des classes \textsf{nwejm} et \nwejmauthor{}, ci-dessous
+  documentées, la compatibilité ascendante a été cassée (au profit d'une
+  meilleure mise en page) en termes à la fois :
+  \begin{itemize}
+  \item de syntaxe (cf. la clé \refKey{refname} qui remplace la clé
+    \refAux{title-plural}, désormais obsolète) ;
+  \item de mise en page.
+  \end{itemize}
+  Afin de pouvoir recompiler à l'identique d'anciens documents, il suffira de
+  charger ces classes au moyen de, respectivement :
+\begin{preamblecode}
+\documentclass[...]{nwejm}[=2024-02-08]
+\end{preamblecode}
+  et
+\begin{preamblecode}
+\documentclass[...]{nwejmart}[=2024-02-08]
+\end{preamblecode}
+\end{dbwarning}
 
 \begin{dbwarning}{Classe à utiliser}{}
   Le \gls{nwejm} fournit deux classes \LaTeX{} :
@@ -144,7 +169,8 @@ affiliation={%
     \href{https://www.ctan.org/pkg/biber}{\program{biber}}\footnote{Attention !
       La bibliographie doit être compilée non pas au moyen de l'habituel
       \program{bibtex}, mais de \program{biber}. Plus de détails
-      \vref{wa-affichage-auteurs} et \vref{sec-bibliographie}.}.
+      avertissement~\ref{wa-affichage-auteurs} \pageref{wa-affichage-auteurs} et
+      \vref{sec-bibliographie}.}.
   \end{itemize}
   Sous Ubuntu par exemple, si la \hologo{TeX}~Live est installée via les paquets
   de la distribution GNU/Linux, ceux nommés \package{texlive-bibtex-extra} et
@@ -155,7 +181,7 @@ La classe \LaTeX{} \nwejmauthor{} est destinée aux auteurs souhaitant publier u
 article dans le \href{http://math.univ-lille1.fr/~nwejm/}{\gls{nwejm}}. Cette
 classe a pour but :
 \begin{enumerate}
-\item de reproduire fidèlement la maquette de la \nwejm{}, permettant ainsi
+\item de reproduire fidèlement la maquette de la \nwejmcl{}, permettant ainsi
   aux auteurs de pouvoir travailler la mise en page de leur document dans des
   conditions réelles ;
 \item de fournir un certain nombre d'outils (commandes et environnements)
@@ -431,7 +457,8 @@ et \refKey{affiliationtagged} suivantes.
   virgules, la paire d'accolades l'entourant est obligatoire.
 \end{dbwarning}
 
-\begin{dbwarning}{Affichage des prénoms et noms du ou des auteurs}{affichage-auteurs}
+\begin{dbwarning}{Affichage des prénoms et noms du ou des
+    auteurs}{affichage-auteurs}
   Pour que les prénoms et noms du ou des auteurs soient affichés, il est
   nécessaire :
   \begin{enumerate}
@@ -699,14 +726,13 @@ donne le texte figurant dans l'encadré intitulé \enquote{Exemple de
 \ExplSyntaxOn
 \makeatletter
 \defbibheading{origsectionnotintoc}[References]{%
-  \__nwejm_section*{#1}%
+  \__nwejm_section:*{#1}%
 }
 \makeatother
 \ExplSyntaxOff
 \renewcommand{\thempfootnote}{\arabic{mpfootnote}}
 %
 \begin{bodycode}[text only,float,title={Exemple de bibliographie},label=biblio]
-\StandardFootnotes
 The first assertion is a direct consequence of the Riemann-Roch formula for
 threefolds\autocite[See e.g.][437]{har} and Kawamata-Viehweg
 vanishing\autocite[Theorem~4.3.1]{laz1}. For the second assertion, see
@@ -1176,7 +1202,7 @@ La \vref{env-theorems} liste les théorèmes et objets analogues prédéfinis pa
   Tout espace métrisable séquentiellement compact est compact.
 \end{theorem}
 \begin{definition}[congruence modulo $n$]
-  Soit $n$ un entier supérieur ou égal à $2$. Deux entiers $a$ et $b$
+  Soit $n$ un entier supérieur ou égal à~$2$. Deux entiers $a$ et $b$
   sont dits congruents modulo $n$ si $a - b \in n\bbZ$.
 \end{definition}
 \begin{remark*}
@@ -1231,10 +1257,10 @@ pas, la commande \refCom{newtheorem} permet d'en créer de nouveaux.
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]article,label}}]
 \begin{article*}[dit premier]
-Les hommes naissent et demeurent libres et égaux en droits [...]
+  Les hommes naissent et demeurent libres et égaux en droits [...]
 \end{article*}
 \begin{article}[dit premier]\label{premier}
-Les hommes naissent et demeurent libres et égaux en droits [...]
+  Les hommes naissent et demeurent libres et égaux en droits [...]
 \end{article}
 L'\vref{premier} est le plus célèbre.
 \end{bodycode}
@@ -1253,33 +1279,31 @@ L'\vref{premier} est le plus célèbre.
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
 \begin{fait}\label{majeure}
-Tout ce qui est rare est cher.
+  Tout ce qui est rare est cher.
 \end{fait}
 \begin{fait}\label{mineure}
-Un cheval bon marché est rare.
+  Un cheval bon marché est rare.
 \end{fait}
 En vertu des \cref{mineure,majeure}, un cheval bon marché est
 cher.
 \end{bodycode}
 
-  Si la valeur par défaut du titre récurrent (\meta{Nom}) ne convient pas, il
-  suffit de spécifier en \meta{option(s)} celle souhaitée au moyen de la clé
-  \refKey{title} suivante.
-  \begin{docKey}{title}{={\meta{titre récurrent}}}{pas de
-      valeur par défaut, initialement vide}
-    Cette clé permet de spécifier un \meta{titre récurrent} différent de
-    \meta{Nom}, valable quelle que soit la langue de l'article.
-  \end{docKey}
+  \begin{dbremark}{Caractères accentués dans les noms d'environnements :
+      acceptés}{}
+    Les caractères accentués sont acceptés dans les noms d'environnements, comme
+    en témoigne l'exemple suivant.
+  \end{dbremark}
+
 \begin{preamblecode}
-\newtheorem[title=expérience]{experience}
+\newtheorem{expérience}
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
-\begin{experience}\label{un}
-On lance un dé à 6 faces [...]
-\end{experience}
-\begin{experience}\label{deux}
-On lance deux dés à 6 faces [...]
-\end{experience}
+\begin{expérience}\label{un}
+  On lance un dé à 6 faces [...]
+\end{expérience}
+\begin{expérience}\label{deux}
+  On lance deux dés à 6 faces [...]
+\end{expérience}
 Les \vref{un,deux} mettent en évidence [...]
 \end{bodycode}
 
@@ -1288,56 +1312,50 @@ Les \vref{un,deux} mettent en évidence [...]
   \refCom{cref}), le titre récurrent du ou des \enquote{théorèmes} référencés
   est automatiquement ajouté à la référence et ce, éventuellement sous sa forme
   plurielle. Par défaut, cette dernière est obtenue en ajoutant un \enquote{s}
-  final à \meta{nom} ou au \meta{titre récurrent} fixée par l'option
-  \refKey{title}. Si cette forme plurielle doit être construite différemment, il
-  convient de le spécifier en \meta{option(s)} au moyen de la clé
-  \refKey{title-plural} suivante.
-  \begin{docKey}{title-plural}{={\meta{forme plurielle du titre récurrent}}}{pas de
-      valeur\\par défaut, initialement vide}
-    Cette clé permet de spécifier la forme plurielle du titre récurrent.
+  final à \meta{nom}. Si cette forme plurielle doit être construite
+  différemment, il convient de le spécifier en \meta{option(s)} au moyen de la
+  clé \refKey{refname} suivante.
+  \begin{docKey}[][doc new=2026-02-06]{refname}{=\brackets{\meta{forme singulière},\meta{forme
+          plurielle}}}{pas de valeur\\par défaut, initialement vide}
+    Cette clé permet de spécifier les formes singulière et plurielle du titre
+    récurrent.
   \end{docKey}
 \begin{preamblecode}
-\newtheorem[title-plural=anneaux]{anneau}
+\newtheorem[refname={anneau,anneaux}]{anneau}
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
 \begin{anneau}\label{anneau}
-Considérons un anneau : [...]
+  Considérons un anneau : [...]
 \end{anneau}
 \begin{anneau}\label{anneau-bis}
-Considérons un autre anneau : [...]
+  Considérons un autre anneau : [...]
 \end{anneau}
 Les \vref{anneau,anneau-bis} admettent [...]
 \end{bodycode}
 
+  Si la valeur du titre récurrent doit être différente de \meta{Nom}, il suffit
+  de spécifier celle souhaitée au moyen de la clé \refKey{title} suivante.
+  \begin{docKey}{title}{={\meta{titre récurrent}}}{pas de
+      valeur par défaut, initialement vide}
+    Cette clé permet de spécifier un \meta{titre récurrent} différent de
+    \meta{Nom}, valable quelle que soit la langue de l'article.
+  \end{docKey}
+
 \begin{preamblecode}
-\newtheorem[title=idéal,title-plural=idéaux]{ideal}
+\newtheorem[title=contraventionnalisation]{ctrv}
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
-\begin{ideal}\label{ideal}
-Considérons un idéal : [...]
-\end{ideal}
-\begin{ideal}\label{ideal-bis}
-Considérons un autre idéal : [...]
-\end{ideal}
-Les \vref{ideal,ideal-bis} admettent [...]
+\begin{ctrv}\label{ctrv-un}
+  L'infraction constatée [...]
+\end{ctrv}
+\begin{ctrv}\label{ctrv-deux}
+  Ici, le délit constaté [...]
+\end{ctrv}
+Les \vref{ctrv-un,ctrv-deux} mettent en évidence [...].
+
+La \vref{ctrv-un} met en évidence [...].
 \end{bodycode}
 
-  % Si besoin est, il est même possible de spécifier des titres récurrents
-  % différents selon la langue utilisée au moyen des clés suivantes :
-  % \begin{docKey}{title/english}{={\meta{titre récurrent en anglais}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  % \end{docKey}
-  % \begin{docKey}{title/french}{={\meta{titre récurrent en français}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  % \end{docKey}
-  % \begin{docKey}{title/german}{={\meta{titre récurrent en allemand}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  % \end{docKey}
-  % \begin{docKey}{title/dutch}{={\meta{titre récurrent en néerlandais}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  %   Ces clés permettent de spécifier un \meta{titre récurrent} différent
-  %   de \meta{Nom} pour la langue correspondante.
-  % \end{docKey}
 \end{docCommand}
 
 \subsection{Énumérations}
@@ -1436,16 +1454,16 @@ plurielle selon les cas. Par défaut, la forme :
 Si ces formes singulière ou plurielle doivent être construites différemment, il
 convient de le spécifier en \meta{option(s)} au moyen des clés
 \refKey{singular} et \refKey{plural} suivantes.
-  \begin{docKey}{singular}{={\meta{forme singulière de l'énumération}}}{pas de
-      valeurpar défaut,\\initialement vide}
+  \begin{docKey}{singular}{={\meta{forme singulière}}}{pas de
+      valeurpar défaut, initialement vide}
     Cette clé permet de spécifier la forme singulière de l'énumération.
   \end{docKey}
-  \begin{docKey}{plural}{={\meta{forme plurielle de l'énumération}}}{pas de
-      valeur par défaut,\\initialement vide}
+  \begin{docKey}{plural}{={\meta{forme plurielle}}}{pas de
+      valeur par défaut, initialement vide}
     Cette clé permet de spécifier la forme plurielle de l'énumération.
   \end{docKey}
 \begin{preamblecode}
-\newenumeration[singular=cas]{cas} % Sinon, forme sing. = « ca ».
+\newenumeration[singular=cas]{cas} % Sinon, singulier = « ca ».
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
 \begin{cas}
@@ -1575,8 +1593,8 @@ fournis par des packages automatiquement chargés par la
 \DeclareFixedFootnote{\objets}{Section, équation, théorème, figure, tableau,
   etc.}
 
-Le \Package*{cleveref} rend puissante la gestion des références croisées. Il
-fournit notamment les commandes \refCom{cref} et \refCom{vref} suivantes.
+Les commandes \refCom{cref} et \refCom{vref} suivantes rendent puissante la
+gestion des références croisées.
 
 \begin{docCommand}{cref}{\brackets{\meta{label$_1$},...,\meta{label$_n$}}}
   Si un ou plusieurs objets\objets{} sont labellisés au moyen de
@@ -1586,10 +1604,10 @@ fournit notamment les commandes \refCom{cref} et \refCom{vref} suivantes.
   \begin{itemize}
   \item en affiche les numéros\footnote{Entourés de parenthèses quand c'est
       l'usage, p. ex. pour les équations.} ;
-  \item en détecte les natures\objets{} et affiche avant leurs numéros les mots clés
-    correspondants\footnote{Fonctionnalité fournie par le \Package{cleveref}.},
-    automatiquement traduit dans la langue de l'article\footnote{Fonctionnalité
-      fournie par la \nwejmauthorcl.}.
+  \item en détecte les natures\objets{} et affiche avant leurs numéros les mots
+    clés correspondants\footnote{Fonctionnalité fournie en sous-main par le
+      \Package{zref-clever}.}, automatiquement traduit dans la langue de
+    l'article\footnote{Fonctionnalité fournie par la \nwejmauthorcl.}.
   \end{itemize}
   %
 \begin{bodycode}[listing and text]
@@ -1603,7 +1621,8 @@ On se reportera aux \cref{sec-titre,sec-auteurs} [...]
   \item reprend les fonctionnalités de \refCom{cref} ;
   \item affiche\footnote{Ou pas selon le contexte.} après les numéros des objets
     référencés les (numéros de) pages où ils se situent\footnote{Fonctionnalité
-      fournie par le \Package{varioref}.}.
+      fournie en sous-main par le \Package{zref-vario} (qui s'appuie lui-même sur
+      le \Package{varioref}).}.
   \end{itemize}
 
   %
@@ -1914,10 +1933,10 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
 \item[\package{csquotes} :] citations d'extraits informelles et
   formelles\footnote{Avec citation des sources,
     cf. \vref{sec-guillemets-citations}.} :
-    \begin{description}
-    \item[option par défaut :] \docAuxKey{autostyle} ;
-    \item[réglage par défaut :]
-      \lstinline[alsolanguage={[csquotes]TeX},alsolanguage={[biblatex]TeX}]×\SetCiteCommand{\autocite}× ;
+  \begin{description}
+  \item[option par défaut :] \docAuxKey{autostyle} ;
+  \item[réglage par défaut :]
+    \lstinline[alsolanguage={[csquotes]TeX},alsolanguage={[biblatex]TeX}]×\SetCiteCommand{\autocite}× ;
   \end{description}
 \item[\package{biblatex} :] gestion puissante de la bibliographie ;
 \item[\package{datetime2} :] formats de dates et de (zones de) temps :
@@ -1936,14 +1955,9 @@ différents packages sont donc à disposition des auteurs de la \nwejm{}.
   \begin{description}
   \item[option par défaut :] \docAuxKey{nowarn} ;
   \end{description}
-\item[\package{varioref} :] références de pages intelligentes.
-\item[\package{cleveref} :] références croisées
-  intelligentes\footnote{Cf. \vref{sec-references-croisees}.} ;
-  \begin{description}
-  \item[option par défaut :] \docAuxKey{french}, \docAuxKey{ngerman},
-    \docAuxKey{dutch}, \docAuxKey{english}, \docAuxKey{noabbrev},
-    \docAuxKey{capitalize}.
-  \end{description}
+\item[\package{zref-clever} :] références croisées
+  intelligentes\footnote{Cf. \vref{sec-references-croisees}.}.
+\item[\package{zref-varioref} :] références de pages intelligentes.
 \end{description}
 
 \subsection{Packages non  chargés par la classe}\label{sec:packages-non-charges}

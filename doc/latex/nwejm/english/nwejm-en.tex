@@ -9,8 +9,9 @@
 
 \documentclass[english,nolocaltoc]{nwejmart}
 %
-\DTMsavedate{release-date}{2024-02-08}
-\newcommand{\releaseversion}{1.0.6}
+\DTMsavedate{release-date}{2026-02-10}
+\newcommand{\releaseversion}{2.0}
+
 %
 \usepackage[nwejm]{denisbdoc}
 \usepackage{tabulary}
@@ -33,8 +34,17 @@
   ^^e0^^e1^^e2^^e3^^e4^^e5^^e6^^e7^^e8^^e9^^ea^^eb^^ec^^ed^^ee^^ef%
   ^^f0^^f1^^f2^^f3^^f4^^f5^^f6^^f7^^f8^^f9^^fa^^fb^^fc^^fd^^fe^^ff%
   ^^^^20ac^^^^0153^^^^0152% nouveau pour xetex
-  ^^^^27e8%  Left-Pointing Angle Bracket
-  ^^^^27e9% Right-Pointing Angle Bracket
+  ^^^^201c% for “
+  ^^^^201d% for ”
+  ^^^^215b% for ⅛
+  ^^^^2122% for ™
+  ^^^^2019% for ’
+  ^^^^0153% for œ
+  ^^^^0152% for Œ
+  ^^^^20ac% for €
+  ^^^^27e8% for ⟨
+  ^^^^27e9% for ⟩
+  ^^^^2026% for …
   ^^00}
 \lst@RestoreCatcodes
 \makeatother
@@ -66,9 +76,9 @@
 %
 \newtheorem{article}
 \newtheorem[style=definition]{fact}
-\newtheorem[title=experience]{experience}
-\newtheorem[title-plural=rings]{ring}
-\newtheorem[title=ideal,title-plural=ideals]{ideal}
+\newtheorem{exposé}
+\newtheorem[refname={criterion,criteria}]{criterion}
+\newtheorem[title=random experiment]{rexp}
 %
 \newenumeration{conventions}
 \newenumeration[singular=criterion]{criteria}
@@ -86,15 +96,16 @@
   \releaseversion{} as of \DTMusedate{release-date}}%
 %
 \author[%
-affiliation={%
-  Université du Littoral Côte d'Opale, Laboratoire de math\'ematiques pures et
-  appliqu\'ees (\nolinkurl{denis.bitouze@univ-littoral.fr})%
-},%
+  affiliation={%
+    Université du Littoral Côte d'Opale, Laboratoire de mathématiques pures et
+    appliquées (\nolinkurl{denis.bitouze@univ-littoral.fr})%
+  },%
 ]{Bitouzé, Denis}
 \author[%
-affiliation={%
-  Université de Lille, Laboratoire Paul Painlevé UMR CNRS 8524 (\nolinkurl{philippe.heinrich@univ-lille.fr})%
-},%
+  affiliation={%
+    Université de Lille, Laboratoire Paul Painlevé UMR CNRS 8524
+    (\nolinkurl{philippe.heinrich@univ-lille.fr})%
+  },%
 ]{Heinrich, Philippe}
 %
 \maketitle
@@ -113,9 +124,26 @@ affiliation={%
 \section{Introduction}
 \label{sec-introduction}
 
-\begin{dbremark}{Documentation: work in progress}{}
-This documentation is a work in progress. Readers finding errors or with comments are invited to send them via the email address on the title page.
-\end{dbremark}
+\begin{dbwarning}{Backward compatibility broken with version 2.0}{}
+  Between versions 1.6 and 2.0 (released respectively February 8, 2024 and
+  February 10, 2026) of \textsf{nwejm} et \nwejmauthor{} classes, documented
+  below, backward compatibility has been broken (in favor of better layout) in
+  terms of both:
+  \begin{itemize}
+  \item syntax (see the \refKey{refname} key, which replaces the now obsolete
+    \refAux{title-plural} key);
+  \item layout.
+  \end{itemize}
+  In order to be able to recompile old documents identically, simply load these
+  classes using, respectively:
+\begin{preamblecode}
+\documentclass[...]{nwejm}[=2024-02-08]
+\end{preamblecode}
+  and
+\begin{preamblecode}
+\documentclass[...]{nwejmart}[=2024-02-08]
+\end{preamblecode}
+\end{dbwarning}
 
 \begin{dbwarning}{Class to be used}{}
   The \gls{nwejm} provides two \LaTeX{} classes:
@@ -134,9 +162,10 @@ This documentation is a work in progress. Readers finding errors or with comment
   \item The \Package{biblatex};
   \item The
     \href{https://www.ctan.org/pkg/biber}{\program{biber}}\footnote{Attention!
-      The bibliography must be compiled not with the usual
-      \program{bibtex}, but with \program{biber}. More details in
-      \vref{wa-affichage-auteurs} and \vref{sec-bibliographie}.} program.
+      The bibliography must be compiled not with the usual \program{bibtex}, but
+      with \program{biber}. More details in warning~\ref{wa-affichage-auteurs}
+      page \pageref{wa-affichage-auteurs} and \vref{sec-bibliographie}.}
+    program.
   \end{itemize}
   With Ubuntu for example, if \hologo{TeX}~Live is installed via the GNU/Linux distribution packages, those named \package{texlive-bibtex-extra} and
   \package{biber} are required.
@@ -643,7 +672,7 @@ provides the text appeating in the box entitled  \enquote{An example
 \ExplSyntaxOn
 \makeatletter
 \defbibheading{origsectionnotintoc}[References]{%
-  \__nwejm_section*{#1}%
+  \__nwejm_section:*{#1}%
 }
 \makeatother
 \ExplSyntaxOff
@@ -1110,7 +1139,7 @@ objects predefined by the
   Every metrizable and sequentially compact space is compact.
 \end{theorem}
 \begin{definition}[congruence modulo $n$]
-  Let $n$ be an integer greater than or equal to $2$. Two integers  $a$ and $b$
+  Let $n$ be an integer greater than or equal to~$2$. Two integers  $a$ and $b$
   are said to be  congruent modulo $n$ if  $a - b \in n\bbZ$.
 \end{definition}
 \begin{remark*}
@@ -1163,26 +1192,25 @@ enough, the \refCom{newtheorem} command can create new ones.
   \end{itemize}
   This command also creates the starry environment  \meta{name}×*×
   which produce unnumbered occurrences of this \enquote{theorem}.
-  \end{docCommand}
 
 \begin{preamblecode}[listing options={deletekeywords={[2]article}}]
 \newtheorem{article}
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]article,label}}]
 \begin{article*}[Establishment of the Union]
-Reflecting the will of the citizens and States of Europe to build a
-common future, this Constitution establishes the European Union  [...]
+  Reflecting the will of the citizens and States of Europe to build a
+  common future, this Constitution establishes the European Union  [...]
 \end{article*}
 \begin{article}[Establishment of the Union]\label{premier}
-Reflecting the will of the citizens and States of Europe to build a
-common future, this Constitution establishes the European Union  [...] 
+  Reflecting the will of the citizens and States of Europe to build a
+  common future, this Constitution establishes the European Union  [...]
 \end{article}
 \vref{premier} is fundamental.
 \end{bodycode}
 
- If the  default value of the style (\docValue{theorem}) is not
- suitable, you can specify in \meta{option(s)} the desired one with
- the following  \refKey{style} key.
+  If the  default value of the style (\docValue{theorem}) is not
+  suitable, you can specify in \meta{option(s)} the desired one with
+  the following  \refKey{style} key.
   \begin{docKey}{style}{=\docValue{theorem}\textbar\docValue{definition}\textbar\docValue{proof}}{
       no default value,\\initially \docValue{theorem}}
     This key allows you to specify the style of the \enquote{theorem}
@@ -1194,91 +1222,81 @@ common future, this Constitution establishes the European Union  [...]
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
 \begin{fact}\label{major}
-Everything that is rare is expensive.
+  Everything that is rare is expensive.
 \end{fact}
 \begin{fact}\label{minor}
-A cheap horse is rare.
+  A cheap horse is rare.
 \end{fact}
 According to  \cref{minor,major},  a cheap horse is expensive.
 \end{bodycode}
 
- If the  default value of the recurring title  (\meta{Name}) is not
- suitable, you can specify in \meta{option(s)} the desired one with
- the following  \refKey{title} key.
+  \begin{dbremark}{Accented characters in environment names: accepted}{}
+    Accented characters are accepted in environment names, as shown in the
+    following example.
+  \end{dbremark}
+
+\begin{preamblecode}
+\newtheorem{exposé}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{exposé}\label{one}
+  This is about government corruption [...]
+\end{exposé}
+\begin{exposé}\label{two}
+  This is about business corruption [...]
+\end{exposé}
+The \vref{one,two} highlight [...]
+\end{bodycode}
+
+  Note that, in the case of cross-references using the
+  \refCom{vref}\footnote{Cf. \vref{sec-references-croisees}}(or \refCom{cref})
+  command, the recurring title of the referenced \enquote{theorem(s)} is
+  automatically added to the reference, possibly on its plural form. By default,
+  this latter is obtained by adding a final \enquote{s} in \meta{name} or in
+  \meta{recurring title} set in the title option. If this form should be
+  constructed differently, this should be specified in \meta{option(s)} using
+  the following \refKey{refname} key.
+
+  \begin{docKey}[][doc new=2026-02-06]{refname}{=\brackets{\meta{singular form},\meta{plural form}}}{no default\\value, initially empty}
+    This key is used to specify the singular and plural forms of the recurring title.
+  \end{docKey}
+\begin{preamblecode}
+\newtheorem[refname={criterion,criteria}]{criterion}
+\end{preamblecode}
+\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
+\begin{criterion}\label{criterion}
+  As a starting point, we consider [...]
+\end{criterion}
+\begin{criterion}\label{criterion-bis}
+  Now, consider the following [...]
+\end{criterion}
+Considering \vref{criterion,criterion-bis}, we have [...]
+\end{bodycode}
+
+  If the  default value of the recurring title  (\meta{Name}) is not
+  suitable, you can specify in \meta{option(s)} the desired one with
+  the following  \refKey{title} key.
   \begin{docKey}{title}{={\meta{recurring title}}}{no  default value,
       initially empty}
     This key allows you to specify a \meta{recurring title} different from
     \meta{Name}, regardless of the article language.
   \end{docKey}
 \begin{preamblecode}
-\newtheorem[title=experience]{experience}
+\newtheorem[title=random experiment]{rexp}
 \end{preamblecode}
 \begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
-\begin{experience}\label{one}
-A 6-sided dice is rolled [...]
-\end{experience}
-\begin{experience}\label{two}
-Two 6-sided dice are rolled [...]
-\end{experience}
-The \vref{one,two} highlight [...]
+\begin{rexp}\label{rexp:one}
+  A 6-sided dice is rolled [...]
+\end{rexp}
+\begin{rexp}\label{rexp:two}
+  Two 6-sided dice are rolled [...]
+\end{rexp}
+The \vref{rexp:one,rexp:two} highlight [...]
+
+The \vref{rexp:one} highlights [...].
 \end{bodycode}
 
-  Note that, in the case of cross-references using the \refCom{vref}\footnote{Cf. \vref{sec-references-croisees}}(or
-  \refCom{cref})  command, the recurring title of the referenced
-  \enquote{theorem(s)}  is automatically added to the reference,
-  possibly on its plural form. By default, this latter is obtained by
-  adding a final  \enquote{s} in \meta{name} or in \meta{recurring
-    title} set in the title option. If this form should be constructed
-  differently, this should be specified in \meta{option(s)} using the
-  following \refKey{title-plural} key.
-  
-  \begin{docKey}{title-plural}{={\meta{plural form of the recurring
-          title}}}{no default \\value, initially empty}
-    This key is used to specify the plural form of the recurring title.
-  \end{docKey}
-\begin{preamblecode}
-\newtheorem[title-plural=rings]{ring}
-\end{preamblecode}
-\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
-\begin{ring}\label{ring}
-Consider a ring: [...]
-\end{ring}
-\begin{ring}\label{ring-bis}
-Consider another ring: [...]
-\end{ring}
-The \vref{ring,ring-bis} admit [...]
-\end{bodycode}
-
-\begin{preamblecode}
-\newtheorem[title=ideal,title-plural=ideals]{ideal}
-\end{preamblecode}
-\begin{bodycode}[listing and text,listing options={deletekeywords={[2]label}}]
-\begin{ideal}\label{ideal}
-Consider an ideal: [...]
-\end{ideal}
-\begin{ideal}\label{ideal-bis}
-Consider another ideal: [...]
-\end{ideal}
-The \vref{ideal,ideal-bis} admit [...]
-\end{bodycode}
-
-  % Si besoin est, il est même possible de spécifier des titres récurrents
-  % différents selon la langue utilisée au moyen des clés suivantes :
-  % \begin{docKey}{title/english}{={\meta{titre récurrent en anglais}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  % \end{docKey}
-  % \begin{docKey}{title/french}{={\meta{titre récurrent en français}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  % \end{docKey}
-  % \begin{docKey}{title/german}{={\meta{titre récurrent en allemand}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  % \end{docKey}
-  % \begin{docKey}{title/dutch}{={\meta{titre récurrent en néerlandais}}}{pas de
-  %     valeur par défaut,\\initialement vide}
-  %   Ces clés permettent de spécifier un \meta{titre récurrent} différent
-  %   de \meta{Nom} pour la langue correspondante.
-  % \end{docKey}
-%\end{docCommand}
+\end{docCommand}
 
 \subsection{Enumerations}
 \label{sec:list-dhyp-ou}
@@ -1369,7 +1387,6 @@ to the reference, in its singular or plural form as appropriate. By default,
 \item[The singular form] is obtained by deleting the last
   letter\footnote{Supposed to be an \enquote{s}.} of the  \meta{name}.
 \end{description}
-
 
 If these singular or plural forms must be built differently,  they
 should be specified in the \meta{option(s)} via
@@ -1511,8 +1528,8 @@ packages automatically loaded by the
 \DeclareFixedFootnote{\objets}{Section, equation, theorem, figure,
   array, etc.}
 
-The \Package*{cleveref} package makes cross-referencing powerful. In
-particular, it provides the following commands \refCom{cref} and \refCom{vref}.
+The following commands \refCom{cref} and \refCom{vref} provide powerful
+cross-reference management.
 
 \begin{docCommand}{cref}{\brackets{\meta{label$_1$},...,\meta{label$_n$}}}
   If one or more objects\objets{} are labelled with
@@ -1523,10 +1540,10 @@ particular, it provides the following commands \refCom{cref} and \refCom{vref}.
   \item  displays their numbers\footnote{Surrounded by brackets where
       customary, e.g. for equations.};
   \item detects their nature\objets{} and displays the corresponding
-    keywords\footnote{Feature provided by the \Package{cleveref}
-      package.} before their numbers, automatically translated into
-    the article language\footnote{Feature
-      provided by the \nwejmauthorcl.}. 
+    keywords\footnote{Feature provided behind the scenes by the
+      \Package{zref-clever} package.} before their numbers, automatically
+    translated into the article language\footnote{Feature provided by the
+      \nwejmauthorcl.}.
   \end{itemize}
   %
 \begin{bodycode}[listing and text]
@@ -1538,10 +1555,10 @@ Please refer to \cref{sec-title,sec-authors} [...]
   This command:
   \begin{itemize}
   \item includes the features of \refCom{cref};
-  \item displays\footnote{Or not, depending on the context.} the
-    (numbers of the) pages where they are located\footnote{Feature
-      provided by the \Package{varioref}.} after the numbers of
-    the referenced objects.
+  \item displays\footnote{Or not, depending on the context.} the (numbers of
+    the) pages where they are located\footnote{Feature provided behind the
+      scenes by the \Package{zref-vario} (which itself relies on the
+      \Package{varioref}).} after the numbers of the referenced objects.
   \end{itemize}
 
   %
@@ -1860,13 +1877,9 @@ authors.
   \begin{description}
   \item[default option:] \docAuxKey{nowarn};
   \end{description}
-\item[\package{varioref}:] smart page references.
-\item[\package{cleveref}:] smart cross-referencing\footnote{See \vref{sec-references-croisees}.};
-  \begin{description}
-  \item[default option:] \docAuxKey{french}, \docAuxKey{ngerman},
-    \docAuxKey{dutch}, \docAuxKey{english}, \docAuxKey{noabbrev},
-    \docAuxKey{capitalize}.
-  \end{description}
+\item[\package{zref-clever} :] smart cross-references\footnote{See
+    \vref{sec-references-croisees}.}.
+\item[\package{zref-varioref} :] smart page references.
 \end{description}
 
 \subsection{Packages not loaded by the  class}\label{sec:packages-non-charges}
