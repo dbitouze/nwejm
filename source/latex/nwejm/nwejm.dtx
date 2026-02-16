@@ -1957,6 +1957,8 @@ Running "make install" installs the files in the local TeX tree.
 % \section{Displaying the table of contents}
 %
 %    \begin{macrocode}
+\tl_new:N \g_@@_equation_continues_next_page_tl
+\tl_new:N \g_@@_frontmatter_switch_tl
 \bool_new:N \g_@@_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
@@ -3573,7 +3575,7 @@ Running "make install" installs the files in the local TeX tree.
 % only the ones associated to the (numbered) theorem environments: it should
 % contain the following ones as well:
 %    \begin{macrocode}
-  \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {
+  \clist_gput_right:Nn \g_@@_counters_to_be_reset_clist {
     footnote,
     section,
     figure,
@@ -3767,7 +3769,6 @@ Running "make install" installs the files in the local TeX tree.
 % A private "\_@@_frontmatter_switch_tl" switch is defined in order to
 % automatically insert some settings.
 %    \begin{macrocode}
-%<class>\tl_new:N \g_@@_frontmatter_switch_tl%
 \tl_gset:Nn \g_@@_frontmatter_switch_tl {
   \bool_gset_true:N \g_@@_frontmatter_bool
   \frontmatter
@@ -4512,7 +4513,7 @@ Running "make install" installs the files in the local TeX tree.
       numbered=false,
       #1
     ]
-    \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
+    \clist_gput_right:Nn \g_@@_counters_to_be_reset_clist {#2}
 }
 \cs_new_protected:Nn \_@@_predefined_theorem:nn {
   \AddToHook{begindocument}{%
@@ -4542,7 +4543,7 @@ Running "make install" installs the files in the local TeX tree.
       #1
     ]
   }
-  \clist_put_right:Nn \g_@@_counters_to_be_reset_clist {#2}
+  \clist_gput_right:Nn \g_@@_counters_to_be_reset_clist {#2}
 }
 %    \end{macrocode}
 %
