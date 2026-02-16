@@ -209,6 +209,12 @@
 \RequirePackage[nowarn]{glossaries}%
 \RequirePackage{zref-clever}%
 \RequirePackage{zref-vario}%
+  % \debug_on:n {
+  %   check-declarations,
+  %   check-expressions,
+  %   deprecation,
+  %   % log-functions
+  % }
 \makeglossaries
 \setglossarystyle{indexhypergroup}
 \setacronymstyle{long-sc-short}
@@ -465,6 +471,8 @@
 {%
   \c__nwejm_main_geometry_tl
 }
+\tl_new:N \g__nwejm_equation_continues_next_page_tl
+\tl_new:N \g__nwejm_frontmatter_switch_tl
 \bool_new:N \g__nwejm_tableofcontents_already_used_bool
 \renewcommand\etocbeforetitlehook
 {%
@@ -1505,7 +1513,7 @@
   \bool_gset_false:N \g__nwejm_gradient_nabla_control_bool
   \bool_gset_false:N \g__nwejm_grad_used_bool
   \inputfrom{./}{#2}
-  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {
+  \clist_gput_right:Nn \g__nwejm_counters_to_be_reset_clist {
     footnote,
     section,
     figure,
@@ -1608,7 +1616,6 @@
   {
     \tl_gset_eq:NN \g__nwejm_abstract_body_tl \BODY
   }
-\tl_new:N \g__nwejm_frontmatter_switch_tl%
 \tl_gset:Nn \g__nwejm_frontmatter_switch_tl {
   \bool_gset_true:N \g__nwejm_frontmatter_bool
   \frontmatter
@@ -2108,7 +2115,7 @@
       numbered=false,
       #1
     ]
-    \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
+    \clist_gput_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
 }
 \cs_new_protected:Nn \__nwejm_predefined_theorem:nn {
   \AddToHook{begindocument}{%
@@ -2138,7 +2145,7 @@
       #1
     ]
   }
-  \clist_put_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
+  \clist_gput_right:Nn \g__nwejm_counters_to_be_reset_clist {#2}
 }
 \RenewDocumentCommand{\newtheorem}{O{} m}{
   \__nwejm_new_theorem:nn {#1} {#2}
@@ -2893,7 +2900,7 @@
   }
 }{}{}
 \apptocmd{\MT_shortintertext:n}{\db_add_multiline_eq_label:}{}{}
-\setkeys{\MT_options_name:}{
+\mathtoolsset{%
   original-intertext=false,
   original-shortintertext=false
 }
@@ -3092,9 +3099,10 @@
 \AddToHook{begindocument/end}{%
   \pagestyle{__nwejm_mainmatter_ps}%
 }
+  % \debug_off:n { all }
 \ExplSyntaxOff
 %% 
-%% Copyright (C) 2015-2024 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
+%% Copyright (C) 2015-2026 by Denis Bitouze <denis.bitouze@univ-littoral.fr>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License (LPPL), either
