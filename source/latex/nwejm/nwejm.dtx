@@ -394,11 +394,6 @@ Running "make install" installs the files in the local TeX tree.
   \file{\NWEJM@classname-german.trsl}{\from{\jobname.dtx}{german}}
   \file{\NWEJM@classname-dutch.trsl}{\from{\jobname.dtx}{dutch}}
 }%
-\usedir{tex/latex/\NWEJM@classname/images}
-\generate{%
-  \nopreamble\nopostamble
-  \file{\NWEJM@classname-logos-collection.tex}{\from{\jobname.dtx}{logos-collection}}
-}%
 %</install>
 %<install>\endbatchfile
 %<*internal>
@@ -406,6 +401,11 @@ Running "make install" installs the files in the local TeX tree.
 \generate{
   \nopreamble\nopostamble
   \file{\NWEJM@classname.pkg}{\from{\jobname.dtx}{ctanomat}}
+}%
+\usedir{source/latex/\NWEJM@classname/logos}
+\generate{%
+  \nopreamble\nopostamble
+  \file{\NWEJM@classname-logos-collection.tex}{\from{\jobname.dtx}{logos-collection}}
 }%
 \usedir{source/latex/\NWEJM@classname}
 \generate{
@@ -419,6 +419,10 @@ Running "make install" installs the files in the local TeX tree.
   \file{CHANGELOG.md}{\from{\jobname.dtx}{changelog}}
 }
 \usedir{doc/latex/\NWEJM@classname/french}
+\generate{
+  \file{latexmkrc}{\from{\jobname.dtx}{latexmkrc}}
+}
+\usedir{doc/latex/\NWEJM@classname/english}
 \generate{
   \file{latexmkrc}{\from{\jobname.dtx}{latexmkrc}}
 }
